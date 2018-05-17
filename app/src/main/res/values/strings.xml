@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Beauty Tips</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="image_transition_name">image</string>
+</resources>
