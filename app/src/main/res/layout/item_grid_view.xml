@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout android:layout_width="match_parent"
+<FrameLayout
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,7 +19,16 @@
             android:focusable="true"
             android:background="@drawable/ripple"/>
 
+        <View
+            android:id="@+id/scrim"
+            android:transitionName="@string/scrim_transition_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/scrim" />
+
         <TextView
+            android:id="@+id/title"
+            android:transitionName="@string/title_transition_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
@@ -26,7 +37,6 @@
             android:paddingStart="@dimen/title_start_padding"
             android:paddingEnd="@dimen/title_start_padding"
             android:paddingBottom="@dimen/title_bottom_padding"
-            android:background="@drawable/ripple"
             android:textColor="@android:color/white"
             android:textSize="@dimen/title_text_size"
             android:clickable="true"

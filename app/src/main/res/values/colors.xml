@@ -14,5 +14,6 @@
 
     <color name="bluegrey700">#455a64</color>
     <color name="bluegrey900">#263238</color>
-    <color name="bluegrey900_semi">#dc263238</color>
+    <color name="bluegrey900_semi">#a0263238</color>
+    <color name="black_semi">#86000000</color>
 </resources>
