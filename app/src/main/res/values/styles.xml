@@ -21,7 +21,9 @@
 
     <!-- Navigation drawer -->
     <style name="UsernameStyle" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textSize">@dimen/username_size</item>
+        <item name="android:textSize">@dimen/username_text_size</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">cursive</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

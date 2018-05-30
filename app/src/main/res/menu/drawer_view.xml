@@ -5,32 +5,40 @@
         android:id="@+id/menu_account">
         <item
             android:id="@+id/nav_your_tips"
-            android:title="@string/nav_your_tips" />
+            android:title="@string/nav_your_tips"
+            android:icon="@drawable/ic_assignment"/>
         <item
             android:id="@+id/nav_favourites"
-            android:title="@string/nav_favourites" />
+            android:title="@string/nav_favourites"
+            android:icon="@drawable/ic_heart"/>
         <item
             android:id="@+id/nav_add_new"
-            android:title="@string/nav_add_new" />
+            android:title="@string/nav_add_new"
+            android:icon="@drawable/ic_add"/>
         <item
             android:id="@+id/nav_log_out"
-            android:title="@string/nav_log_out" />
+            android:title="@string/nav_log_out"
+            android:icon="@drawable/ic_logout"/>
     </group>
 
         <group
             android:id="@+id/menu_categories">
             <item
                 android:id="@+id/nav_all"
-                android:title="@string/nav_all" />
+                android:title="@string/nav_all"
+                android:icon="@drawable/ic_folder"/>
             <item
                 android:id="@+id/nav_hair"
-                android:title="@string/nav_hair" />
+                android:title="@string/nav_hair"
+                android:icon="@drawable/ic_hair"/>
             <item
                 android:id="@+id/nav_face"
-                android:title="@string/nav_face" />
+                android:title="@string/nav_face"
+                android:icon="@drawable/ic_kiss"/>
             <item
                 android:id="@+id/nav_body"
-                android:title="@string/nav_body" />
+                android:title="@string/nav_body"
+                android:icon="@drawable/ic_shape"/>
         </group>
 
 </menu>
