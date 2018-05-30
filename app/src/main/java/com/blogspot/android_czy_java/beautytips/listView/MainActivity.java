@@ -1,7 +1,7 @@
-package com.blogspot.android_czy_java.beautytips.gridView;
+package com.blogspot.android_czy_java.beautytips.listView;
 
 import android.content.res.Configuration;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -19,6 +19,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final int NUM_COLUMNS_LAND = 2;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -48,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void prepareRecyclerView() {
+
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2,
+            StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(NUM_COLUMNS_LAND,
                     StaggeredGridLayoutManager.VERTICAL);
-            manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
             mRecyclerView.setLayoutManager(manager);
         }
         else {
@@ -59,8 +61,10 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(manager);
         }
-        GridViewAdapter adapter = new GridViewAdapter(this);
+        ListViewAdapter adapter = new ListViewAdapter(this);
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration((
+                (int) getResources().getDimension(R.dimen.list_padding))));
     }
 
     @Override

@@ -42,12 +42,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
     private void prepareToolbar() {
-        Typeface playfair = Typeface.createFromAsset(getAssets(),
-                "PlayfairDisplay-Regular.ttf");
         mCollapsingToolbarLayout.setTitle("Lorem ipsum");
-        mCollapsingToolbarLayout.setExpandedTitleTypeface(playfair);
-        mCollapsingToolbarLayout.setCollapsedTitleTypeface(playfair);
-
     }
 
 }
