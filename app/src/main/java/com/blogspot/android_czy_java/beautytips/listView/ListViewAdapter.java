@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.gridView;
+package com.blogspot.android_czy_java.beautytips.listView;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -23,11 +22,11 @@ import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.ViewHolder> {
+public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHolder> {
 
     private Typeface playfair;
 
-    GridViewAdapter(Context context) {
+    ListViewAdapter(Context context) {
         playfair = Typeface.createFromAsset(context.getAssets(), "PlayfairDisplay-Regular.ttf");
     }
 
@@ -47,7 +46,6 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.ViewHo
         } else {
             holder.mImage.setImageResource(R.drawable.beauty);
         }
-        holder.mTitle.setTypeface(playfair);
     }
 
     @Override

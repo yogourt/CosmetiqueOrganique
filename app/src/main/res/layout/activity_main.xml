@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.blogspot.android_czy_java.beautytips.gridView.MainActivity">
+        tools:context="com.blogspot.android_czy_java.beautytips.listView.MainActivity">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,12 +21,14 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:navigationIcon="@drawable/ic_menu"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingStart="@dimen/list_padding"
+            android:paddingEnd="@dimen/list_padding"
             android:layoutAnimation="@anim/layout_animation_fall_down" />
 
     </LinearLayout>

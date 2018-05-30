@@ -26,4 +26,16 @@
         <item name="android:fontFamily">cursive</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="TitleStyle" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textAlignment">viewEnd</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">cursive</item>
+    </style>
+
+    <style name="ExpandedTitleStyle" parent="TitleStyle">
+        <item name="android:textSize">@dimen/expanded_title_text_size</item>
+    </style>
 </resources>
