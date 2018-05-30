@@ -28,7 +28,6 @@
 
         <TextView
             android:id="@+id/title"
-            android:transitionName="@string/title_transition_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"

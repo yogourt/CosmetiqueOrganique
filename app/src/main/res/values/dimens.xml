@@ -4,4 +4,9 @@
     <dimen name="title_start_padding">16dp</dimen>
     <dimen name="title_bottom_padding">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- navigation drawer dimens -->
+    <dimen name="header_top_margin">48dp</dimen>
+    <dimen name="header_horiz_margin">32dp</dimen>
+    <dimen name="username_size">18sp</dimen>
 </resources>

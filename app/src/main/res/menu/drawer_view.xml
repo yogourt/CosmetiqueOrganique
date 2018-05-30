@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/menu_account">
+        <item
+            android:id="@+id/nav_your_tips"
+            android:title="@string/nav_your_tips" />
+        <item
+            android:id="@+id/nav_favourites"
+            android:title="@string/nav_favourites" />
+        <item
+            android:id="@+id/nav_add_new"
+            android:title="@string/nav_add_new" />
+        <item
+            android:id="@+id/nav_log_out"
+            android:title="@string/nav_log_out" />
+    </group>
+
+        <group
+            android:id="@+id/menu_categories">
+            <item
+                android:id="@+id/nav_all"
+                android:title="@string/nav_all" />
+            <item
+                android:id="@+id/nav_hair"
+                android:title="@string/nav_hair" />
+            <item
+                android:id="@+id/nav_face"
+                android:title="@string/nav_face" />
+            <item
+                android:id="@+id/nav_body"
+                android:title="@string/nav_body" />
+        </group>
+
+</menu>
