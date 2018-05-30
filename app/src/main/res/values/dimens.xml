@@ -6,7 +6,9 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- navigation drawer dimens -->
-    <dimen name="header_top_margin">48dp</dimen>
-    <dimen name="header_horiz_margin">32dp</dimen>
-    <dimen name="username_size">18sp</dimen>
+    <dimen name="header_top_padding">48dp</dimen>
+    <dimen name="header_bottom_padding">24dp</dimen>
+    <dimen name="header_horiz_padding">16dp</dimen>
+    <dimen name="username_text_size">22sp</dimen>
+    <dimen name="photo_size">80dp</dimen>
 </resources>
