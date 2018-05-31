@@ -6,6 +6,37 @@
     android:layout_height="match_parent"
     tools:context="com.blogspot.android_czy_java.beautytips.detail.DetailActivity">
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <include
+                android:id="@+id/layout_ingredients"
+                layout="@layout/layout_ingredients" />
+
+            <include layout="@layout/layout_author" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lorem_ipsum"
+                android:paddingBottom="@dimen/desc_padding"
+                android:paddingStart="@dimen/desc_padding"
+                android:paddingEnd="@dimen/desc_padding"
+                style="@style/NormalTextStyle"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="192dp"
@@ -15,9 +46,9 @@
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:expandedTitleTextAppearance="@style/TitleStyle"
             app:collapsedTitleTextAppearance="@style/TitleStyle"
             app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleTextAppearance="@style/TitleStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <FrameLayout
@@ -33,10 +64,10 @@
                     app:layout_collapseMode="parallax" />
 
                 <View
-                    android:transitionName="@string/scrim_transition_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/scrim" />
+                    android:background="@drawable/scrim"
+                    android:transitionName="@string/scrim_transition_name" />
 
             </FrameLayout>
 
@@ -47,7 +78,7 @@
                 android:layout_height="?actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:contentInsetStart="72dp"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin" />
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -55,28 +86,16 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.blogspot.android_czy_java.beautytips.detail.DetailActivity"
-        tools:showIn="@layout/activity_detail">
 
-        <include
-            android:id="@+id/layout_ingredients"
-            layout="@layout/layout_ingredients" />
 
-    </android.support.v4.widget.NestedScrollView>
-
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/layout_ingredients"
-        app:layout_anchorGravity="bottom|center"
         android:src="@drawable/ic_heart"
-        android:tint="@color/bluegray700"/>
+        android:tint="@color/bluegray700"
+        app:layout_anchor="@id/layout_ingredients"
+        app:layout_anchorGravity="bottom|center" /> -->
 
 </android.support.design.widget.CoordinatorLayout>
