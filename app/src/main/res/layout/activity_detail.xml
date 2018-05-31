@@ -47,13 +47,36 @@
                 android:layout_height="?actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:contentInsetStart="72dp"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"/>
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_detail" />
+
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.blogspot.android_czy_java.beautytips.detail.DetailActivity"
+        tools:showIn="@layout/activity_detail">
+
+        <include
+            android:id="@+id/layout_ingredients"
+            layout="@layout/layout_ingredients" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@id/layout_ingredients"
+        app:layout_anchorGravity="bottom|center"
+        android:src="@drawable/ic_heart"
+        android:tint="@color/bluegray700"/>
 
 </android.support.design.widget.CoordinatorLayout>
