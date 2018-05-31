@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
     <color name="pink100">#f8bbd0</color>
     <color name="pink200">#f48fb1</color>
     <color name="pink300">#f06292</color>
@@ -12,6 +8,7 @@
     <color name="pink600">#d81b60</color>
     <color name="pink700">#c2185b</color>
 
+    <color name="bluegray50">#eceff1</color>
     <color name="bluegray300">#90A4AE</color>
     <color name="bluegray700">#455a64</color>
     <color name="bluegray900">#263238</color>

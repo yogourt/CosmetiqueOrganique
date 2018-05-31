@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/pink200</item>
         <item name="colorPrimaryDark">@color/pink300</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/bluegray50</item>
         <item name="android:colorBackground">@color/bluegray900</item>
         <item name="android:windowExitTransition">@transition/explode_transition</item>
     </style>
@@ -35,7 +35,10 @@
         <item name="android:fontFamily">cursive</item>
     </style>
 
-    <style name="ExpandedTitleStyle" parent="TitleStyle">
-        <item name="android:textSize">@dimen/expanded_title_text_size</item>
+    <style name="IngredientStyle" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/ingredients_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 </resources>

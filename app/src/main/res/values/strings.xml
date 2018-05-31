@@ -17,4 +17,7 @@
     <string name="nav_body">Body</string>
     <string name="nav_categories">Categories</string>
 
+    <!-- strings for detail screen -->
+    <string name="ingredient_label"> Ingredient</string>
+
 </resources>
