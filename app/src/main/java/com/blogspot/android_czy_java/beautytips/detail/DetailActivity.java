@@ -35,7 +35,7 @@ public class DetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        image.setImageResource(R.drawable.beauty);
+        image.setImageResource(R.drawable.argan_oil);
 
         prepareToolbar();
 

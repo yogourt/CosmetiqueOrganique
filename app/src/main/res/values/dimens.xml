@@ -20,4 +20,9 @@
     <dimen name="ingredients_top_padding">16dp</dimen>
     <dimen name="ingredients_inner_padding">4dp</dimen>
     <dimen name="ingredients_text_size">16sp</dimen>
+    <dimen name="normal_text_size">16sp</dimen>
+    <dimen name="photo_size_detail">60dp</dimen>
+    <dimen name="photo_margin">16dp</dimen>
+    <dimen name="author_padding">16dp</dimen>
+    <dimen name="desc_padding">16dp</dimen>
 </resources>
