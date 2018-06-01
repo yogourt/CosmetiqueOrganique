@@ -19,8 +19,9 @@
         <activity
             android:name=".detail.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".newTip.NewTipActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".listView.MainActivity"/>
+        <activity android:name=".newTip.NewTipActivity" />
     </application>
 
 </manifest>

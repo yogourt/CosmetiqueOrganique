@@ -6,6 +6,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.TransitionManager;
@@ -40,6 +41,9 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.layout_ingredients)
     View mLayoutIngredients;
 
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +51,21 @@ public class DetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        image.setImageResource(R.drawable.argan_oil);
+        image.setImageResource(R.drawable.beauty);
 
         prepareToolbar();
-
         prepareFab();
+        mScrollView.smoothScrollTo(0, 0);
         }
 
     private void prepareToolbar() {
         mCollapsingToolbarLayout.setTitle("Lorem ipsum dolores ames");
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.back_ripple);
+        }
 
     }
 
