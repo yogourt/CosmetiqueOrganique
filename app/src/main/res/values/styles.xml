@@ -51,4 +51,20 @@
         <item name="android:tint">@color/white_title_tint</item>
         <item name="android:textAlignment">viewStart</item>
     </style>
+
+    <style name="LoginStyle" parent="FirebaseUI">
+        <item name="colorPrimary">@color/pink200</item>
+        <item name="colorPrimaryDark">@color/pink300</item>
+        <item name="colorAccent">@color/bluegray50</item>
+        <item name="colorControlHighlight">@color/pink300</item>
+        <item name="colorControlNormal">@color/bluegray700</item>
+        <item name="colorControlActivated">@color/bluegray700</item>
+        <item name="buttonStyle">@style/LoginButton</item>
+        <item name="android:textColor">@color/bluegray700</item>
+        <item name="android:windowBackground">@drawable/stars_background</item>
+    </style>
+
+    <style name="LoginButton" parent="FirebaseUI.Button">
+        <item name="android:textColor">@color/bluegray900</item>
+    </style>
 </resources>
