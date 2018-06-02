@@ -1,25 +1,19 @@
 package com.blogspot.android_czy_java.beautytips.detail;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.TransitionManager;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
-
-import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,7 +58,7 @@ public class DetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.back_ripple);
+            actionBar.setHomeAsUpIndicator(R.drawable.ripple_back);
         }
 
     }
@@ -85,4 +79,15 @@ public class DetailActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        //to provide proper custom animation on return direct call to finishAfterTransition()
+        // is needed
+        if(item.getItemId() == android.R.id.home) {
+            finishAfterTransition();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

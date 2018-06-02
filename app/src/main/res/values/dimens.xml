@@ -25,4 +25,13 @@
     <dimen name="photo_margin">16dp</dimen>
     <dimen name="author_padding">16dp</dimen>
     <dimen name="desc_padding">16dp</dimen>
+    <dimen name="app_bar_layout_height">192dp</dimen>
+
+    <!-- new tip screen dimens -->
+    <dimen name="desc_margin">16dp</dimen>
+    <dimen name="new_tip_desc_padding">8dp</dimen>
+    <dimen name="ingredient_width">75dp</dimen>
+    <dimen name="title_bottom_margin">32dp</dimen>
+    <dimen name="title_horiz_margin">16dp</dimen>
+    <dimen name="title_horiz_padding">8dp</dimen>
 </resources>

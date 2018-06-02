@@ -1,7 +1,9 @@
 package com.blogspot.android_czy_java.beautytips.listView;
 
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,8 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.animation.DecelerateInterpolator;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +47,16 @@ public class MainActivity extends AppCompatActivity {
 
         prepareActionBar();
         prepareRecyclerView();
+        prepareNavigationDrawer();
     }
 
     private void prepareActionBar() {
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
     }
 
     private void prepareRecyclerView() {
@@ -65,6 +75,23 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration((
                 (int) getResources().getDimension(R.dimen.list_padding))));
+    }
+
+    private void prepareNavigationDrawer() {
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        mDrawerLayout.closeDrawers();
+
+                        if(item.getItemId() == R.id.nav_add_new) {
+                            Intent intent = new Intent(getBaseContext(), NewTipActivity.class);
+                            startActivity(intent);
+                        }
+                        return true;
+                    }
+                }
+        );
     }
 
     @Override

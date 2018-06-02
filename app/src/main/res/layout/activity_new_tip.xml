@@ -1,9 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/detail_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:background="?attr/colorPrimary"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_bar_layout_height"
+                    android:scaleType="centerCrop"
+                    android:background="@color/pink200"
+                    android:transitionName="@string/image_transition_name"
+                    app:layout_collapseMode="parallax" />
+
+                <View
+                    android:transitionName="@string/scrim_transition_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/scrim" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:hint="@string/hint_title"
+                    android:layout_marginStart="@dimen/title_horiz_margin"
+                    android:layout_marginEnd="@dimen/title_horiz_margin"
+                    android:paddingStart="@dimen/title_horiz_padding"
+                    android:paddingEnd="@dimen/title_horiz_padding"
+                    android:layout_marginBottom="@dimen/title_bottom_margin"
+                    style="@style/TitleStyle" />
+
+            </FrameLayout>
+
+            <include
+                android:id="@+id/layout_ingredients"
+                layout="@layout/layout_ingredients_new" />
+
+            <include
+                android:id="@+id/layout_author"
+                layout="@layout/layout_author" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_desc"
+                android:tint="@color/white_title_tint"
+                android:paddingBottom="@dimen/desc_padding"
+                android:paddingStart="@dimen/new_tip_desc_padding"
+                android:paddingEnd="@dimen/new_tip_desc_padding"
+                android:layout_marginStart="@dimen/desc_margin"
+                android:layout_marginEnd="@dimen/desc_margin"
+                style="@style/NormalTextStyle"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
