@@ -44,4 +44,8 @@
         sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
         laborum.</string>
 
+    <!-- New tip screen strings -->
+    <string name="hint_desc">Write tip description here</string>
+    <string name="hint_title">Tip title</string>
+    <string name="new_tip_activity_label">New tip</string>
 </resources>

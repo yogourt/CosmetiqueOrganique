@@ -46,4 +46,9 @@
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
+    <style name="NewTipTitleStyle" parent="TitleStyle">
+        <item name="android:tint">@color/white_title_tint</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
 </resources>
