@@ -92,10 +92,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         mDrawerLayout.closeDrawers();
+                        switch ((item.getItemId())) {
+                            case R.id.nav_add_new:
+                                Intent intent = new Intent(getBaseContext(), NewTipActivity.class);
+                                startActivity(intent);
+                                break;
 
-                        if(item.getItemId() == R.id.nav_add_new) {
-                            Intent intent = new Intent(getBaseContext(), NewTipActivity.class);
-                            startActivity(intent);
+                            case R.id.nav_log_out:
+                                mLoginHelper.logOut();
+
                         }
                         return true;
                     }

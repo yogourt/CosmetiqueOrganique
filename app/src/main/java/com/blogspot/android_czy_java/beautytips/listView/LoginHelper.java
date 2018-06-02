@@ -6,6 +6,7 @@ import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.annotation.NonNull;
 
+import com.blogspot.android_czy_java.beautytips.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,10 +53,16 @@ public class LoginHelper implements LifecycleObserver {
                 if(user == null) {
                     activity.startActivityForResult(AuthUI.getInstance()
                             .createSignInIntentBuilder()
+                            .setIsSmartLockEnabled(false)
                             .setAvailableProviders(providers)
+                            .setTheme(R.style.LoginStyle)
                             .build(), RC_SIGN_IN);
                 }
             }
         };
+    }
+
+    public void logOut() {
+        mAuth.signOut();
     }
 }
