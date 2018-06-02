@@ -14,13 +14,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.animation.DecelerateInterpolator;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Provides;
+import dagger.android.AndroidInjection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,12 +41,18 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
+    @Inject
+    LoginHelper mLoginHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        getLifecycle().addObserver(mLoginHelper);
 
         prepareActionBar();
         prepareRecyclerView();
@@ -102,4 +111,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
