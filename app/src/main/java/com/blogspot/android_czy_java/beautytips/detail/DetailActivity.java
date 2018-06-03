@@ -1,6 +1,8 @@
 package com.blogspot.android_czy_java.beautytips.detail;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
@@ -14,14 +16,25 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.listView.MainActivity;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
+
+import static com.blogspot.android_czy_java.beautytips.listView.ListViewAdapter.KEY_IMAGE;
+import static com.blogspot.android_czy_java.beautytips.listView.ListViewAdapter.KEY_TITLE;
 
 public class DetailActivity extends AppCompatActivity {
 
     @BindView(R.id.image)
-    ImageView image;
+    ImageView mImageView;
 
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -38,6 +51,9 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.app_bar)
     Toolbar mToolbar;
 
+    private String mTitle;
+    private String mImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +61,47 @@ public class DetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        image.setImageResource(R.drawable.beauty);
+        supportPostponeEnterTransition();
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            mTitle = bundle.getString(KEY_TITLE);
+            mImage = bundle.getString(KEY_IMAGE);
+
+            loadImage();
+        }
 
         prepareToolbar();
         prepareFab();
         mScrollView.smoothScrollTo(0, 0);
-        }
+    }
+
+    private void loadImage() {
+        mImageView.setTransitionName(mImage);
+
+        Glide.with(this).
+                setDefaultRequestOptions(RequestOptions.centerCropTransform()).
+                load(mImage).
+                listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Drawable> target, boolean isFirstResource) {
+                        supportStartPostponedEnterTransition();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable>
+                            target, DataSource dataSource, boolean isFirstResource) {
+                        supportStartPostponedEnterTransition();
+                        return false;
+                    }
+                }).
+                into(mImageView);
+    }
 
     private void prepareToolbar() {
-        mCollapsingToolbarLayout.setTitle("Lorem ipsum dolores ames");
+        mCollapsingToolbarLayout.setTitle(mTitle);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {

@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -19,17 +19,25 @@ import android.widget.TextView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
 import com.blogspot.android_czy_java.beautytips.model.ListItem;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewAdapter.ViewHolder> {
 
-    ListViewAdapter(FirebaseRecyclerOptions<ListItem> options) {
-        super(options);
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_IMAGE = "image";
 
+    private Context mContext;
+
+    ListViewAdapter(Context context, FirebaseRecyclerOptions<ListItem> options) {
+        super(options);
+        mContext = context;
     }
 
     @NonNull
@@ -43,11 +51,12 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ListItem item) {
-        if(position%2 == 0) {
-            holder.mImage.setImageResource(R.drawable.argan_oil);
-        } else {
-            holder.mImage.setImageResource(R.drawable.beauty);
-        }
+
+        Glide.with(mContext).
+                load(item.getImage()).
+                into(holder.mImage);
+
+        ViewCompat.setTransitionName(holder.mImage, item.getImage());
         holder.mTitle.setText(item.getTitle());
     }
 
@@ -58,9 +67,6 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
 
         @BindView(R.id.title)
         TextView mTitle;
-
-        @BindView(R.id.item_layout)
-        FrameLayout mItemLayout;
 
         @BindView(R.id.scrim)
         View mScrim;
@@ -76,6 +82,14 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
         public void onClick(View view) {
             Context  context = view.getContext();
             Intent detailActivityIntent = new Intent(context, DetailActivity.class);
+
+            ListItem item = getItem(getAdapterPosition());
+            Bundle bundle = new Bundle();
+            bundle.putString(KEY_TITLE, item.getTitle());
+            bundle.putString(KEY_IMAGE, item.getImage());
+
+            detailActivityIntent.putExtras(bundle);
+
             Pair<View, String> imagePair = new Pair<>((View)mImage, mImage.getTransitionName());
             Pair<View, String> scrimPair = new Pair<>(mScrim, mScrim.getTransitionName());
             // Pair<View, String> titlePair = new Pair<>((View)mTitle, mTitle.getTransitionName());

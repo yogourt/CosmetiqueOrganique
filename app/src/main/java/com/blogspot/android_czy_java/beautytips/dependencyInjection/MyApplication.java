@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import timber.log.Timber;
 
 public class MyApplication extends Application implements HasActivityInjector {
 
@@ -20,6 +21,7 @@ public class MyApplication extends Application implements HasActivityInjector {
         super.onCreate();
         DaggerMyApplicationComponent.create().inject(this);
 
+        Timber.plant(new Timber.DebugTree());
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 

@@ -18,14 +18,11 @@ import android.view.MenuItem;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
 import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Provides;
 import dagger.android.AndroidInjection;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
         getLifecycle().addObserver(mLoginHelper);
 
         prepareActionBar();
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(manager);
         }
-        mAdapter = new ListViewAdapter(FirebaseHelper.
+        mAdapter = new ListViewAdapter(this, FirebaseHelper.
                 createFirebaseRecyclerOptions());
         getLifecycle().addObserver(mAdapter);
 

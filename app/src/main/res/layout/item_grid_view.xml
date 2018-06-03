@@ -12,14 +12,8 @@
 
         <ImageView
             android:id="@+id/image"
-            android:transitionName="@string/image_transition_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/ripple"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <View
             android:id="@+id/scrim"
