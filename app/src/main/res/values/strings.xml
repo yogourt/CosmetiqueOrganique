@@ -49,4 +49,7 @@
     <string name="hint_title">Tip title</string>
     <string name="title_activity_new_tip">New tip</string>
 
+    <!-- log in/log out strings -->
+    <string name="message_log_out_no_internet">Unable to log out without internet connection.</string>
+    <string name="label_action_ok">OK</string>
 </resources>

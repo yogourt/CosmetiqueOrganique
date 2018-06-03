@@ -19,7 +19,7 @@ import javax.inject.Singleton;
 @Singleton
 public class LoginHelper implements LifecycleObserver {
 
-    private static final int RC_SIGN_IN = 123;
+    static final int RC_SIGN_IN = 123;
     //list of authentication providers
     private static final List<AuthUI.IdpConfig> providers = Arrays.asList(
             new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -56,13 +56,18 @@ public class LoginHelper implements LifecycleObserver {
                             .setIsSmartLockEnabled(false)
                             .setAvailableProviders(providers)
                             .setTheme(R.style.LoginStyle)
+                            .setLogo(R.drawable.logo_semi)
                             .build(), RC_SIGN_IN);
                 }
             }
         };
     }
 
-    public void logOut() {
+    void logOut() {
         mAuth.signOut();
+    }
+
+    void signIn() {
+
     }
 }

@@ -17,6 +17,9 @@ import android.view.MenuItem;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Inject;
 
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     LoginHelper mLoginHelper;
 
+    private ListViewAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
@@ -51,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
         getLifecycle().addObserver(mLoginHelper);
 
         prepareActionBar();
@@ -80,8 +84,11 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(manager);
         }
-        ListViewAdapter adapter = new ListViewAdapter(this);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new ListViewAdapter(FirebaseHelper.
+                createFirebaseRecyclerOptions());
+        getLifecycle().addObserver(mAdapter);
+
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration((
                 (int) getResources().getDimension(R.dimen.list_padding))));
     }
@@ -99,7 +106,13 @@ public class MainActivity extends AppCompatActivity {
                                 break;
 
                             case R.id.nav_log_out:
-                                mLoginHelper.logOut();
+                                if(NetworkConnectionHelper.isInternetConnection(
+                                        MainActivity.this)) {
+                                    mLoginHelper.logOut();
+                                } else {
+                                    NetworkConnectionHelper.showUnableToLogOut(
+                                            mRecyclerView);
+                                }
 
                         }
                         return true;
@@ -117,4 +130,22 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //This method is called after user signed in or canceled signing in (depending on result code)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == LoginHelper.RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if(resultCode == RESULT_OK) {
+                mLoginHelper.signIn();
+            } else {
+                //if response is null the user canceled sign in flow using back button
+                if (response == null) {
+                    finish();
+                }
+            }
+        }
+    }
 }

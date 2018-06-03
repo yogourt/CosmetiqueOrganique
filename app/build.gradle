@@ -25,8 +25,11 @@ dependencies {
     implementation 'com.android.support:exifinterface:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:design:27.1.1'
+
+    //Tests
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //Dagger 2
@@ -39,7 +42,8 @@ dependencies {
     //Firebase
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
-    implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
+    implementation 'com.firebaseui:firebase-ui-database:4.0.1'
 
     //RecyclerView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
