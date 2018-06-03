@@ -67,4 +67,5 @@
     <style name="LoginButton" parent="FirebaseUI.Button">
         <item name="android:textColor">@color/bluegray900</item>
     </style>
+
 </resources>

@@ -18,16 +18,18 @@ import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
+import com.blogspot.android_czy_java.beautytips.model.ListItem;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHolder> {
+public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewAdapter.ViewHolder> {
 
-    private Typeface playfair;
+    ListViewAdapter(FirebaseRecyclerOptions<ListItem> options) {
+        super(options);
 
-    ListViewAdapter(Context context) {
-        playfair = Typeface.createFromAsset(context.getAssets(), "PlayfairDisplay-Regular.ttf");
     }
 
     @NonNull
@@ -40,17 +42,13 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ListItem item) {
         if(position%2 == 0) {
             holder.mImage.setImageResource(R.drawable.argan_oil);
         } else {
             holder.mImage.setImageResource(R.drawable.beauty);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return 10;
+        holder.mTitle.setText(item.getTitle());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
