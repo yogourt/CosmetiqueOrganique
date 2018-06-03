@@ -39,6 +39,9 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.13' // for support libraries
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.13'
 
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.0'
+
     //Firebase
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
@@ -55,8 +58,9 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    //Picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
     //Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
