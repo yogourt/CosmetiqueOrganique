@@ -1,5 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.listView;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     LoginHelper mLoginHelper;
 
     private ListViewAdapter mAdapter;
+    private ListViewViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        mViewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
+        mViewModel.init();
 
         getLifecycle().addObserver(mLoginHelper);
 
@@ -82,11 +88,12 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(manager);
         }
-        mAdapter = new ListViewAdapter(this, FirebaseHelper.
-                createFirebaseRecyclerOptions());
+        mAdapter = new ListViewAdapter(this, mViewModel.getOptions());
+        //this is done for listening for changes in data, they will be applied automatically by adapter.
         getLifecycle().addObserver(mAdapter);
 
         mRecyclerView.setAdapter(mAdapter);
+        //item decoration is added to make spaces between items in recycler view
         mRecyclerView.addItemDecoration(new SpacesItemDecoration((
                 (int) getResources().getDimension(R.dimen.list_padding))));
     }

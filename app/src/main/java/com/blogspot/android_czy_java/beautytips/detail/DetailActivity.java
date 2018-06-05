@@ -87,6 +87,7 @@ public class DetailActivity extends AppCompatActivity {
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                 Target<Drawable> target, boolean isFirstResource) {
                         supportStartPostponedEnterTransition();
+                        mImageView.setTransitionName(null);
                         return false;
                     }
 
@@ -94,6 +95,7 @@ public class DetailActivity extends AppCompatActivity {
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable>
                             target, DataSource dataSource, boolean isFirstResource) {
                         supportStartPostponedEnterTransition();
+                        mImageView.setTransitionName(null);
                         return false;
                     }
                 }).
@@ -133,9 +135,21 @@ public class DetailActivity extends AppCompatActivity {
         //to provide proper custom animation on return direct call to finishAfterTransition()
         // is needed
         if(item.getItemId() == android.R.id.home) {
-            finishAfterTransition();
+            finish();
+            overrideExitTransition();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overrideExitTransition();
+    }
+
+    private void overrideExitTransition() {
+        overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
     }
 }

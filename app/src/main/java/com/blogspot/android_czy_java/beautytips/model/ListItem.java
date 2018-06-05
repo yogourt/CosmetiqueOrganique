@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.model;
 public class ListItem {
     private String mImage;
     private String mTitle;
+    private String mId;
 
     public ListItem() {}
 
@@ -25,5 +26,13 @@ public class ListItem {
 
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
+    }
+
+    public String getId() {
+        return this.mId;
+    }
+
+    public void setId(String mId) {
+        this.mId = mId;
     }
 }
