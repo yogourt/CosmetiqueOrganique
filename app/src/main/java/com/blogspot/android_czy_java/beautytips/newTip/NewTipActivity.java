@@ -23,8 +23,6 @@ public class NewTipActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_tip);
         ButterKnife.bind(this);
 
-        overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
-
         prepareToolbar();
     }
 
@@ -43,7 +41,15 @@ public class NewTipActivity extends AppCompatActivity {
         if(item.getItemId() == android.R.id.home) {
             finish();
             overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
     }
 }

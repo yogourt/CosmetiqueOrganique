@@ -24,6 +24,10 @@ class NetworkConnectionHelper {
         return false;
     }
 
+    /*
+    shows snackbar with message that there is no internet connection and it's impossible to
+    log out
+    */
     static void showUnableToLogOut(View snackbarView) {
 
         Snackbar snackbar = Snackbar.make(snackbarView, R.string.message_log_out_no_internet,
