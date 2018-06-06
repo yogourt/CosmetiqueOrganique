@@ -4,12 +4,14 @@ public class ListItem {
     private String mImage;
     private String mTitle;
     private String mId;
+    private String mCategory;
     
     public ListItem() {}
 
-    public ListItem(String image, String title) {
+    public ListItem(String image, String title, String category) {
         mImage = image;
         mTitle = title;
+        mCategory = category;
     }
 
     public String getImage() {
@@ -34,5 +36,13 @@ public class ListItem {
 
     public void setId(String mId) {
         this.mId = mId;
+    }
+
+    public String getCategory() {
+        return mCategory;
+    }
+
+    public void setCategory(String mCategory) {
+        this.mCategory = mCategory;
     }
 }

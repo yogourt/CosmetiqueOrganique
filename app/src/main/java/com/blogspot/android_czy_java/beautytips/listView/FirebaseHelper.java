@@ -11,12 +11,14 @@ import com.google.firebase.database.Query;
 
 import javax.inject.Singleton;
 
+import static com.blogspot.android_czy_java.beautytips.listView.MainActivity.CATEGORY_ALL;
+
 @Singleton
 class FirebaseHelper {
 
-    static FirebaseRecyclerOptions<ListItem> createFirebaseRecyclerOptions() {
+    static FirebaseRecyclerOptions<ListItem> createFirebaseRecyclerOptions(String category) {
         return new FirebaseRecyclerOptions.Builder<ListItem>().
-                setQuery(createQuery(), new SnapshotParser<ListItem>() {
+                setQuery(createQuery(category), new SnapshotParser<ListItem>() {
                     @NonNull
                     @Override
                     public ListItem parseSnapshot(@NonNull DataSnapshot snapshot) {
@@ -30,9 +32,17 @@ class FirebaseHelper {
                 build();
     }
 
-    private static Query createQuery() {
+    private static Query createQuery(String category) {
+
+        if(category.equals(CATEGORY_ALL)) {
+            return FirebaseDatabase.getInstance().
+                    getReference().
+                    child("tipList");
+        }
+
         return FirebaseDatabase.getInstance().
                 getReference().
-                child("tipList");
+                child("tipList").
+                orderByChild("category").equalTo(category);
     }
 }
