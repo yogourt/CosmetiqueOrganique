@@ -13,6 +13,8 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,10 +38,12 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     public static final int[] itemHeights = {630, 670, 600, 700};
 
     private Context mContext;
+    private int lastPosition;
 
     ListViewAdapter(Context context, FirebaseRecyclerOptions<ListItem> options) {
         super(options);
         mContext = context;
+        lastPosition = -1;
     }
 
     @NonNull
@@ -65,9 +69,22 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
                 load(item.getImage()).
                 into(holder.mImage);
 
-
         holder.mTitle.setText(item.getTitle());
 
+        setAnimation(holder.itemView, position);
+
+    }
+
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(mContext,
+                    R.anim.item_animation_fall_down);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
