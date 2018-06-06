@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
 import com.blogspot.android_czy_java.beautytips.model.ListItem;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
@@ -30,6 +32,8 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     public static final String KEY_TITLE = "title";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_ID = "id";
+
+    public static final int[] itemHeights = {630, 670, 600, 700};
 
     private Context mContext;
 
@@ -50,12 +54,20 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ListItem item) {
 
+        ViewGroup.LayoutParams params = holder.mCardView.getLayoutParams();
+        params.height = itemHeights[position % 4];
+        holder.mCardView.setLayoutParams(params);
+
+        ViewCompat.setTransitionName(holder.mImage, item.getImage());
+
         Glide.with(mContext).
+                setDefaultRequestOptions(RequestOptions.centerCropTransform()).
                 load(item.getImage()).
                 into(holder.mImage);
 
-        ViewCompat.setTransitionName(holder.mImage, item.getImage());
+
         holder.mTitle.setText(item.getTitle());
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -68,6 +80,9 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
 
         @BindView(R.id.scrim)
         View mScrim;
+
+        @BindView(R.id.item_layout)
+        CardView mCardView;
 
         ViewHolder(View itemView) {
             super(itemView);

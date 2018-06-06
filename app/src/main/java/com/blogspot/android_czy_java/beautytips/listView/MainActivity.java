@@ -74,9 +74,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void prepareRecyclerView() {
 
+        //add adapter
+        mAdapter = new ListViewAdapter(this, FirebaseHelper.createFirebaseRecyclerOptions());
+        //this is done for listening for changes in data, they will be applied automatically by adapter.
+        getLifecycle().addObserver(mAdapter);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        //add layout manager
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(NUM_COLUMNS_LAND,
                     StaggeredGridLayoutManager.VERTICAL);
+            manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
             mRecyclerView.setLayoutManager(manager);
         }
         else {
@@ -84,11 +93,6 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(manager);
         }
-        mAdapter = new ListViewAdapter(this, FirebaseHelper.createFirebaseRecyclerOptions());
-        //this is done for listening for changes in data, they will be applied automatically by adapter.
-        getLifecycle().addObserver(mAdapter);
-
-        mRecyclerView.setAdapter(mAdapter);
         //item decoration is added to make spaces between items in recycler view
         mRecyclerView.addItemDecoration(new SpacesItemDecoration((
                 (int) getResources().getDimension(R.dimen.list_padding))));
