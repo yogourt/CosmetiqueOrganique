@@ -26,6 +26,9 @@ public class MyApplication extends Application implements HasActivityInjector {
         DaggerMyApplicationComponent.create().inject(this);
 
         Timber.plant(new Timber.DebugTree());
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference("tipList").keepSynced(true);
     }
 
     public DispatchingAndroidInjector<Activity> activityInjector() {
