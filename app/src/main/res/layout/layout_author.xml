@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/author_padding">
+    android:paddingTop="@dimen/author_padding"
+    android:paddingStart="@dimen/author_padding"
+    android:paddingEnd="@dimen/author_padding">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="@dimen/photo_size_detail"

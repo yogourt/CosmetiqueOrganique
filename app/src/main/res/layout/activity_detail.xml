@@ -25,15 +25,14 @@
 
             <include
                 android:id="@+id/layout_author"
+                android:visibility="gone"
                 layout="@layout/layout_author" />
 
             <TextView
+                android:id="@+id/description_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/lorem_ipsum"
-                android:paddingBottom="@dimen/desc_padding"
-                android:paddingStart="@dimen/desc_padding"
-                android:paddingEnd="@dimen/desc_padding"
+                android:padding="@dimen/desc_padding"
                 style="@style/NormalTextStyle"/>
 
         </LinearLayout>

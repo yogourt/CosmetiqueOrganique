@@ -23,6 +23,8 @@ public class NewTipActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_tip);
         ButterKnife.bind(this);
 
+        overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
+
         prepareToolbar();
     }
 

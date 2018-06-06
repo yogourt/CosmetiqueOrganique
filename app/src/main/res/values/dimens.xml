@@ -16,7 +16,7 @@
     <dimen name="title_bottom_padding">16dp</dimen>
 
     <!-- detail screen dimens -->
-    <dimen name="ingredients_bottom_padding">24dp</dimen>
+    <dimen name="ingredients_bottom_padding">32dp</dimen>
     <dimen name="ingredients_top_padding">16dp</dimen>
     <dimen name="ingredients_inner_padding">4dp</dimen>
     <dimen name="ingredients_text_size">16sp</dimen>
@@ -25,6 +25,7 @@
     <dimen name="photo_margin">16dp</dimen>
     <dimen name="author_padding">16dp</dimen>
     <dimen name="desc_padding">16dp</dimen>
+    <dimen name="desc_top_padding_no_author">48dp</dimen>
     <dimen name="app_bar_layout_height">192dp</dimen>
 
     <!-- new tip screen dimens -->

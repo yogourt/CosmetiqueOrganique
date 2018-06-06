@@ -11,10 +11,8 @@ import com.google.firebase.database.Query;
 
 import javax.inject.Singleton;
 
-import timber.log.Timber;
-
 @Singleton
-class ListViewRepository {
+class FirebaseHelper {
 
     static FirebaseRecyclerOptions<ListItem> createFirebaseRecyclerOptions() {
         return new FirebaseRecyclerOptions.Builder<ListItem>().
@@ -26,7 +24,6 @@ class ListViewRepository {
                         String id = snapshot.getKey();
                         if(item != null)
                         item.setId(id);
-                        Timber.d(id);
                         return item;
                     }
                 }).

@@ -1,7 +1,5 @@
 package com.blogspot.android_czy_java.beautytips.listView;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
@@ -26,6 +24,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     LoginHelper mLoginHelper;
 
     private ListViewAdapter mAdapter;
-    private ListViewViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        mViewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
-        mViewModel.init();
-
+        Timber.d("On create");
         getLifecycle().addObserver(mLoginHelper);
 
         prepareActionBar();
@@ -88,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(manager);
         }
-        mAdapter = new ListViewAdapter(this, mViewModel.getOptions());
+        mAdapter = new ListViewAdapter(this, FirebaseHelper.createFirebaseRecyclerOptions());
         //this is done for listening for changes in data, they will be applied automatically by adapter.
         getLifecycle().addObserver(mAdapter);
 
