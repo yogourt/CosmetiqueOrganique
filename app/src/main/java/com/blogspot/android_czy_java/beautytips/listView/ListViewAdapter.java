@@ -12,7 +12,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,18 +19,17 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
 import com.blogspot.android_czy_java.beautytips.model.ListItem;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewAdapter.ViewHolder> {
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_IMAGE = "image";
+    public static final String KEY_ID = "id";
 
     private Context mContext;
 
@@ -87,6 +85,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
             Bundle bundle = new Bundle();
             bundle.putString(KEY_TITLE, item.getTitle());
             bundle.putString(KEY_IMAGE, item.getImage());
+            bundle.putString(KEY_ID, item.getId());
 
             detailActivityIntent.putExtras(bundle);
 

@@ -4,7 +4,7 @@ public class ListItem {
     private String mImage;
     private String mTitle;
     private String mId;
-
+    
     public ListItem() {}
 
     public ListItem(String image, String title) {

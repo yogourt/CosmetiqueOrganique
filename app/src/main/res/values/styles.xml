@@ -7,7 +7,6 @@
         <item name="colorPrimaryDark">@color/pink300</item>
         <item name="colorAccent">@color/bluegray50</item>
         <item name="android:colorBackground">@color/bluegray900</item>
-        <item name="android:windowExitTransition">@transition/explode_transition</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

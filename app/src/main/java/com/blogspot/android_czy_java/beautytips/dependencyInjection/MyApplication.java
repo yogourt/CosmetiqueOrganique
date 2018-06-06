@@ -2,8 +2,12 @@ package com.blogspot.android_czy_java.beautytips.dependencyInjection;
 
 import android.app.Activity;
 import android.app.Application;
+import android.support.annotation.NonNull;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import javax.inject.Inject;
 
@@ -22,7 +26,6 @@ public class MyApplication extends Application implements HasActivityInjector {
         DaggerMyApplicationComponent.create().inject(this);
 
         Timber.plant(new Timber.DebugTree());
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     public DispatchingAndroidInjector<Activity> activityInjector() {
