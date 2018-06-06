@@ -106,8 +106,14 @@ public class MainActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         switch ((item.getItemId())) {
                             case R.id.nav_add_new:
-                                Intent intent = new Intent(getBaseContext(), NewTipActivity.class);
-                                startActivity(intent);
+                                if(NetworkConnectionHelper.isInternetConnection(
+                                        MainActivity.this)) {
+                                    Intent intent = new Intent(getBaseContext(), NewTipActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    NetworkConnectionHelper.showUnableToAddTip(
+                                            mRecyclerView);
+                                }
                                 break;
 
                             case R.id.nav_log_out:

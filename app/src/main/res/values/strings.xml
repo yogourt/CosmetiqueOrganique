@@ -52,4 +52,6 @@
     <!-- log in/log out strings -->
     <string name="message_log_out_no_internet">Unable to log out without internet connection.</string>
     <string name="label_action_ok">OK</string>
+    <string name="message_add_tip_no_internet">Adding new tip is impossible without internet
+        connection.</string>
 </resources>
