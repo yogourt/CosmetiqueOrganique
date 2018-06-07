@@ -28,11 +28,14 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener{
 
     public static final int NUM_COLUMNS_LAND = 2;
+    public static final int NUM_COLUMNS_PORT = 1;
 
     public static final String KEY_CATEGORY = "category";
+    //public static final String KEY_POSITION = "position";
+
     public static final String CATEGORY_ALL = "all";
     public static final String CATEGORY_HAIR = "hair";
     public static final String CATEGORY_FACE = "face";
@@ -54,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     LoginHelper mLoginHelper;
 
+    private StaggeredGridLayoutManager mLayoutManager;
     private ListViewAdapter mAdapter;
     private String category;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState != null) {
             category = savedInstanceState.getString(KEY_CATEGORY);
+            Timber.d(String.valueOf(position));
         } else category = CATEGORY_ALL;
 
         Timber.d("On create");
@@ -75,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
         prepareActionBar();
         prepareRecyclerView();
         prepareNavigationDrawer();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRecyclerView.smoothScrollToPosition(position);
     }
 
     @Override
@@ -96,27 +108,29 @@ public class MainActivity extends AppCompatActivity {
 
         //add adapter
         mAdapter = new ListViewAdapter(this, FirebaseHelper.createFirebaseRecyclerOptions(
-                category));
+                category), this);
         //this is done for listening for changes in data, they will be applied automatically by adapter.
         getLifecycle().addObserver(mAdapter);
 
         mRecyclerView.setAdapter(mAdapter);
 
+        int orientation = getResources().getConfiguration().orientation;
         //add layout manager
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(NUM_COLUMNS_LAND,
+        if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mLayoutManager = new StaggeredGridLayoutManager(NUM_COLUMNS_LAND,
                     StaggeredGridLayoutManager.VERTICAL);
-            manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-            mRecyclerView.setLayoutManager(manager);
         }
         else {
-            LinearLayoutManager manager = new LinearLayoutManager(this,
-                    LinearLayoutManager.VERTICAL, false);
-            mRecyclerView.setLayoutManager(manager);
-        }
+            mLayoutManager = new StaggeredGridLayoutManager(NUM_COLUMNS_PORT,
+                    StaggeredGridLayoutManager.VERTICAL);
+        };
+
+        mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
         //item decoration is added to make spaces between items in recycler view
         mRecyclerView.addItemDecoration(new SpacesItemDecoration((
-                (int) getResources().getDimension(R.dimen.list_padding))));
+                (int) getResources().getDimension(R.dimen.list_padding)), orientation));
     }
 
     /*
@@ -198,6 +212,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    @Override
+    public void onClick(int position) {
+        this.position = position;
     }
 
     @Override

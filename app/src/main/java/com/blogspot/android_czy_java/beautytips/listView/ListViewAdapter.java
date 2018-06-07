@@ -39,11 +39,22 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
 
     private Context mContext;
     private int lastPosition;
+    private PositionListener mPositionListener;
 
-    ListViewAdapter(Context context, FirebaseRecyclerOptions<ListItem> options) {
+    ListViewAdapter(Context context, FirebaseRecyclerOptions<ListItem> options, PositionListener
+                    positionListener) {
         super(options);
         mContext = context;
+        mPositionListener = positionListener;
         lastPosition = -1;
+    }
+
+    /*
+      Interface implemented by activity hosting recycler view, to save clicked position and to
+      restore it when coming back from detail screen
+    */
+    interface PositionListener {
+        void onClick(int position);
     }
 
     @NonNull
@@ -112,6 +123,9 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
         public void onClick(View view) {
             Context  context = view.getContext();
             Intent detailActivityIntent = new Intent(context, DetailActivity.class);
+
+            //send position to activity to save it
+            mPositionListener.onClick(getAdapterPosition());
 
             ListItem item = getItem(getAdapterPosition());
             Bundle bundle = new Bundle();
