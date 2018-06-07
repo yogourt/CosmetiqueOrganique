@@ -8,6 +8,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,13 @@ public class MyApplication extends Application implements HasActivityInjector {
     public void onCreate() {
         super.onCreate();
         DaggerMyApplicationComponent.create().inject(this);
+
+        if(LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
 
         Timber.plant(new Timber.DebugTree());
 

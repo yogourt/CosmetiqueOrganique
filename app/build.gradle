@@ -42,6 +42,10 @@ dependencies {
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.0'
 
+    //LeakCanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
     //Firebase
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.1'

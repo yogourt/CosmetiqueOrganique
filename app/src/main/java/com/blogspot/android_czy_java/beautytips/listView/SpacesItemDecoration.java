@@ -2,12 +2,9 @@ package com.blogspot.android_czy_java.beautytips.listView;
 
 import android.content.res.Configuration;
 import android.graphics.Rect;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
-import static com.blogspot.android_czy_java.beautytips.listView.MainActivity.NUM_COLUMNS_LAND;
 
 public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
     private final int mSpace;
