@@ -11,7 +11,8 @@ import com.google.firebase.database.Query;
 
 import javax.inject.Singleton;
 
-import static com.blogspot.android_czy_java.beautytips.listView.MainActivity.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.listView.ActivityPreparationHelper.CATEGORY_ALL;
+
 
 @Singleton
 class FirebaseHelper {

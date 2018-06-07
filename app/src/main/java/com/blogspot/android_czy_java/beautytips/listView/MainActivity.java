@@ -28,18 +28,13 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener{
+import static com.blogspot.android_czy_java.beautytips.listView.ActivityPreparationHelper.CATEGORY_ALL;
 
-    public static final int NUM_COLUMNS_LAND = 2;
-    public static final int NUM_COLUMNS_PORT = 1;
+public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
+        ActivityPreparationHelper.DrawerCreationMethods {
 
     public static final String KEY_CATEGORY = "category";
     //public static final String KEY_POSITION = "position";
-
-    public static final String CATEGORY_ALL = "all";
-    public static final String CATEGORY_HAIR = "hair";
-    public static final String CATEGORY_FACE = "face";
-    public static final String CATEGORY_BODY = "body";
 
 
     @BindView(R.id.recycler_view)
@@ -116,16 +111,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         int orientation = getResources().getConfiguration().orientation;
         //add layout manager
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mLayoutManager = new StaggeredGridLayoutManager(NUM_COLUMNS_LAND,
-                    StaggeredGridLayoutManager.VERTICAL);
-        }
-        else {
-            mLayoutManager = new StaggeredGridLayoutManager(NUM_COLUMNS_PORT,
-                    StaggeredGridLayoutManager.VERTICAL);
-        };
-
-        mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        mLayoutManager = ActivityPreparationHelper.createLayoutManager(orientation);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         //item decoration is added to make spaces between items in recycler view
@@ -145,68 +131,9 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
                         mDrawerLayout.closeDrawers();
 
-                        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-                            @Override
-                            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-                            }
-
-                            @Override
-                            public void onDrawerOpened(@NonNull View drawerView) {
-                            }
-
-                            @Override
-                            public void onDrawerClosed(@NonNull View drawerView) {
-                                switch ((item.getItemId())) {
-                                    case R.id.nav_add_new:
-                                        if(NetworkConnectionHelper.isInternetConnection(
-                                                MainActivity.this)) {
-                                            Intent intent = new Intent(getBaseContext(),
-                                                    NewTipActivity.class);
-                                            startActivity(intent);
-                                        } else {
-                                            NetworkConnectionHelper.showUnableToAddTip(
-                                                    mRecyclerView);
-                                        }
-                                        break;
-
-                                    case R.id.nav_log_out:
-                                        if(NetworkConnectionHelper.isInternetConnection(
-                                                MainActivity.this)) {
-                                            mLoginHelper.logOut();
-                                        } else {
-                                            NetworkConnectionHelper.showUnableToLogOut(
-                                                    mRecyclerView);
-                                        }
-                                        break;
-
-                                    case R.id.nav_all:
-                                        if(category.equals(CATEGORY_ALL)) break;
-                                        category = CATEGORY_ALL;
-                                        recreate();
-                                        break;
-                                    case R.id.nav_hair:
-                                        if(category.equals(CATEGORY_HAIR)) break;
-                                        category = CATEGORY_HAIR;
-                                        recreate();
-                                        break;
-                                    case R.id.nav_face:
-                                        if(category.equals(CATEGORY_FACE)) break;
-                                        category = CATEGORY_FACE;
-                                        recreate();
-                                        break;
-                                    case R.id.nav_body:
-                                        if(category.equals(CATEGORY_BODY)) break;
-                                        category = CATEGORY_BODY;
-                                        recreate();
-                                        break;
-
-                                }
-                            }
-
-                            @Override
-                            public void onDrawerStateChanged(int newState) {
-                            }
-                        });
+                        mDrawerLayout.addDrawerListener(ActivityPreparationHelper.
+                                createDrawerListener(MainActivity.this, MainActivity.this,
+                                        item.getItemId(), category));
 
                         return true;
                     }
@@ -245,5 +172,17 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 }
             }
         }
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
+    public LoginHelper getLoginHelper() {
+        return mLoginHelper;
     }
 }
