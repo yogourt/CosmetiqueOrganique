@@ -208,8 +208,7 @@ public class DetailActivity extends AppCompatActivity {
         //to provide proper custom animation on return direct call to finishAfterTransition()
         // is needed
         if(item.getItemId() == android.R.id.home) {
-            finish();
-            overrideExitTransition();
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
