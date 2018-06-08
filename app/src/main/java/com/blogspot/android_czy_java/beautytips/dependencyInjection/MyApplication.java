@@ -2,12 +2,8 @@ package com.blogspot.android_czy_java.beautytips.dependencyInjection;
 
 import android.app.Activity;
 import android.app.Application;
-import android.support.annotation.NonNull;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;

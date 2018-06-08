@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".listView.MainActivity">
+        <activity android:name=".listView.MainActivity"
+            android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
