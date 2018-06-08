@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
@@ -28,8 +29,15 @@ public class LoginHelper implements LifecycleObserver {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    MainActivity activity;
+
     public LoginHelper(MainActivity activity) {
         mAuth = FirebaseAuth.getInstance();
+        this.activity = activity;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void createAuthListener() {
         mAuthStateListener = createAuthStateListener(activity);
     }
 
@@ -59,6 +67,9 @@ public class LoginHelper implements LifecycleObserver {
                             .setLogo(R.drawable.logo_semi)
                             .build(), RC_SIGN_IN);
                 }
+                else {
+                    signIn();
+                }
             }
         };
     }
@@ -68,6 +79,7 @@ public class LoginHelper implements LifecycleObserver {
     }
 
     void signIn() {
-
+        String nickname = mAuth.getCurrentUser().getDisplayName();
+        activity.setNickname(nickname);
     }
 }

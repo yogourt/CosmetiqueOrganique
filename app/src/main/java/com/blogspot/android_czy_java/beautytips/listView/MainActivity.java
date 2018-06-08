@@ -16,10 +16,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
 import com.firebase.ui.auth.IdpResponse;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -61,6 +64,17 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+
+        /*
+          Here we change the language to always be English. This is done to always have FirebaseUI Auth
+          log in activity in english, because strings are changed only in english version
+        */
+        Locale.setDefault(Locale.ENGLISH);
+        Configuration config = new Configuration();
+        config.locale = Locale.ENGLISH;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
+
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -184,5 +198,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     public LoginHelper getLoginHelper() {
         return mLoginHelper;
+    }
+
+    public void setNickname(String nickname) {
+        View headerLayout = mNavigationView.getHeaderView(0);
+        TextView nicknameTv = headerLayout.findViewById(R.id.nav_nickname);
+        nicknameTv.setText(nickname);
     }
 }

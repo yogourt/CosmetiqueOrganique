@@ -54,4 +54,5 @@
     <string name="label_action_ok">OK</string>
     <string name="message_add_tip_no_internet">Adding new tip is impossible without internet
         connection.</string>
+    <string name="fui_name_hint" translation_description="Hint for nickname field">Nickname</string>
 </resources>

@@ -16,6 +16,7 @@
         android:src="@color/bluegray700"/>
 
     <TextView
+        android:id="@+id/nav_nickname"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
