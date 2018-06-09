@@ -4,18 +4,29 @@ import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import timber.log.Timber;
 
 @Singleton
 public class LoginHelper implements LifecycleObserver {
@@ -28,6 +39,9 @@ public class LoginHelper implements LifecycleObserver {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private ValueEventListener mPhotoChangeListener;
+
+    private DatabaseReference mUserPhotoReference;
 
     MainActivity activity;
 
@@ -58,7 +72,7 @@ public class LoginHelper implements LifecycleObserver {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user == null) {
+                if (user == null) {
                     activity.startActivityForResult(AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setIsSmartLockEnabled(false)
@@ -66,20 +80,61 @@ public class LoginHelper implements LifecycleObserver {
                             .setTheme(R.style.LoginStyle)
                             .setLogo(R.drawable.logo_semi)
                             .build(), RC_SIGN_IN);
-                }
-                else {
+                } else {
                     signIn();
                 }
             }
         };
     }
 
+
     void logOut() {
+        mUserPhotoReference = null;
         mAuth.signOut();
     }
 
     void signIn() {
         String nickname = mAuth.getCurrentUser().getDisplayName();
         activity.setNickname(nickname);
+
+        mUserPhotoReference = FirebaseDatabase.getInstance().getReference("user-photos")
+                .child(getUserId());
+        mUserPhotoReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String dbUserPhotoUrl = dataSnapshot.getValue().toString();
+                activity.setUserPhoto(dbUserPhotoUrl);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    String getUserId() {
+        return mAuth.getCurrentUser().getUid();
+    }
+
+    public void saveUserPhoto(final Uri photoUri) {
+        final StorageReference photoReference = FirebaseStorage.getInstance().getReference("user-photos")
+                .child(getUserId());
+                photoReference.putFile(photoUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        photoReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri storagePhotoUri) {
+                                String storagePhotoString = storagePhotoUri.toString();
+                                Timber.d(storagePhotoString);
+                                mUserPhotoReference.setValue(storagePhotoString);
+                                activity.setUserPhoto(storagePhotoString);
+                            }
+                        });
+                    }
+                });
     }
 }

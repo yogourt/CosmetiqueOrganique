@@ -24,30 +24,4 @@ class NetworkConnectionHelper {
         return false;
     }
 
-    /*
-    shows snackbar with message that there is no internet connection and it's impossible to
-    log out
-    */
-    static void showUnableToLogOut(View snackbarView) {
-        Snackbar snackbar = Snackbar.make(snackbarView, R.string.message_log_out_no_internet,
-                Snackbar.LENGTH_LONG).setAction(R.string.label_action_ok,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    }
-                })
-                .setActionTextColor(snackbarView.getResources().getColor(R.color.pink200));
-        snackbar.getView().setBackgroundColor(snackbarView.
-                getResources().getColor(R.color.bluegray900));
-        snackbar.show();
-    }
-
-    static void showUnableToAddTip(View snackbarView) {
-        Snackbar snackbar = Snackbar.make(snackbarView, R.string.message_add_tip_no_internet,
-                Snackbar.LENGTH_LONG);
-        snackbar.getView().setBackgroundColor(snackbarView.
-                getResources().getColor(R.color.bluegray900));
-        snackbar.show();
-    }
-
 }
