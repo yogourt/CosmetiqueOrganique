@@ -7,12 +7,14 @@
     android:paddingEnd="@dimen/author_padding">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/author_photo"
         android:layout_width="@dimen/photo_size_detail"
         android:layout_height="@dimen/photo_size_detail"
         android:layout_margin="@dimen/photo_margin"
         android:src="@color/bluegray700"/>
 
     <TextView
+        android:id="@+id/nickname_text_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"

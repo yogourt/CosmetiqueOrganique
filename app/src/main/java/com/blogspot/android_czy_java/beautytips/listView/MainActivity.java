@@ -2,15 +2,14 @@ package com.blogspot.android_czy_java.beautytips.listView;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -19,9 +18,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -29,6 +38,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.ActivityPreparationHelper.CATEGORY_ALL;
@@ -37,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         ActivityPreparationHelper.DrawerCreationMethods {
 
     public static final String KEY_CATEGORY = "category";
-    //public static final String KEY_POSITION = "position";
+    public static final int RC_PHOTO_PICKER = 100;
 
 
     @BindView(R.id.recycler_view)
@@ -55,10 +65,15 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Inject
     LoginHelper mLoginHelper;
 
+    private View mHeaderLayout;
+    private CircleImageView photoIv;
+
     private StaggeredGridLayoutManager mLayoutManager;
     private ListViewAdapter mAdapter;
+
     private String category;
     private int position;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         ButterKnife.bind(this);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             category = savedInstanceState.getString(KEY_CATEGORY);
             Timber.d(String.valueOf(position));
         } else category = CATEGORY_ALL;
@@ -90,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         prepareActionBar();
         prepareRecyclerView();
         prepareNavigationDrawer();
+
     }
 
     @Override
@@ -107,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private void prepareActionBar() {
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
@@ -139,6 +155,20 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
       by onDrawerClosed() from DrawerListener.
     */
     private void prepareNavigationDrawer() {
+
+        mHeaderLayout = mNavigationView.getHeaderView(0);
+        photoIv = mHeaderLayout.findViewById(R.id.nav_photo);
+
+        //when user clicks photo circle the photo chooser is opening
+        photoIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, RC_PHOTO_PICKER);
+            }
+        });
+
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -162,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
@@ -174,16 +204,32 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == LoginHelper.RC_SIGN_IN) {
+        if (requestCode == LoginHelper.RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 mLoginHelper.signIn();
             } else {
                 //if response is null the user canceled sign in flow using back button
                 if (response == null) {
                     finish();
                 }
+            }
+        }
+        if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
+            Uri photoUri = data.getData();
+            if (photoUri != null) {
+                if(!NetworkConnectionHelper.isInternetConnection(this)) {
+                    SnackbarHelper.showUnableToAddImage(mRecyclerView);
+                }
+                else {
+                    Glide.with(this)
+                            .load(R.drawable.placeholder)
+                            .into(photoIv);
+
+                    SnackbarHelper.showAddImageMayTakeSomeTime(mRecyclerView);
+                }
+                mLoginHelper.saveUserPhoto(photoUri);
             }
         }
     }
@@ -201,8 +247,17 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     }
 
     public void setNickname(String nickname) {
-        View headerLayout = mNavigationView.getHeaderView(0);
-        TextView nicknameTv = headerLayout.findViewById(R.id.nav_nickname);
+        TextView nicknameTv = mHeaderLayout.findViewById(R.id.nav_nickname);
         nicknameTv.setText(nickname);
     }
+
+    public void setUserPhoto(String imageUri) {
+
+        Glide.with(this)
+                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
+                .load(imageUri)
+                .into(photoIv);
+    }
+
+
 }

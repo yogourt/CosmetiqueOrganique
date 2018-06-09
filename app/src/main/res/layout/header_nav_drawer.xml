@@ -11,6 +11,7 @@
     android:background="@color/pink200">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/nav_photo"
         android:layout_width="@dimen/photo_size"
         android:layout_height="@dimen/photo_size"
         android:src="@color/bluegray700"/>

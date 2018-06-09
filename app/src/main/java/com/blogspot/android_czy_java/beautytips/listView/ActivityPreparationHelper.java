@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ActivityPreparationHelper {
 
@@ -56,12 +58,12 @@ public class ActivityPreparationHelper {
                 switch (itemId) {
                     case R.id.nav_add_new:
                         if(NetworkConnectionHelper.isInternetConnection(
-                                context)) {
+                                context) && FirebaseAuth.getInstance().getCurrentUser() != null) {
                             Intent intent = new Intent(context,
                                     NewTipActivity.class);
                             methods.startActivity(intent);
                         } else {
-                            NetworkConnectionHelper.showUnableToAddTip(
+                            SnackbarHelper.showUnableToAddTip(
                                     methods.getRecyclerView());
                         }
                         break;
@@ -71,7 +73,7 @@ public class ActivityPreparationHelper {
                                 context)) {
                             methods.getLoginHelper().logOut();
                         } else {
-                            NetworkConnectionHelper.showUnableToLogOut(
+                            SnackbarHelper.showUnableToLogOut(
                                     methods.getRecyclerView());
                         }
                         break;
