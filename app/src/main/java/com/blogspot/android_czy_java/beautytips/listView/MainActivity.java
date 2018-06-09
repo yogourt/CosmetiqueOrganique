@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     private StaggeredGridLayoutManager mLayoutManager;
     private ListViewAdapter mAdapter;
+    private DrawerLayout.DrawerListener mDrawerListener;
 
     private String category;
     private int position;
@@ -111,7 +112,18 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     protected void onResume() {
         super.onResume();
-        mRecyclerView.smoothScrollToPosition(position);
+        if(position != 0) {
+            mRecyclerView.smoothScrollToPosition(position);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mDrawerListener != null) {
+            mDrawerLayout.removeDrawerListener(mDrawerListener);
+            mDrawerListener = null;
+        }
     }
 
     @Override
@@ -175,9 +187,20 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
                         mDrawerLayout.closeDrawers();
 
-                        mDrawerLayout.addDrawerListener(ActivityPreparationHelper.
-                                createDrawerListener(MainActivity.this, MainActivity.this,
-                                        item.getItemId(), category));
+                        /*
+                        Here we need mDrawerLisner to properly close NavigationDrawer while
+                        changing category. Without this it will not close on recreate().
+                        mDrawerListener is instantiated in separate class to simplify
+                        this class, so all logic for item selected is moved there.
+                        mDrawerListener needs only to be added once, so if it's null
+                        it means that it wasn't added and we add it.
+                         */
+                        if(mDrawerListener == null) {
+                            mDrawerListener = ActivityPreparationHelper.
+                                    createDrawerListener(MainActivity.this, MainActivity.this,
+                                            item.getItemId(), category);
+                            mDrawerLayout.addDrawerListener(mDrawerListener);
+                        }
 
                         return true;
                     }
@@ -226,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     Glide.with(this)
                             .load(R.drawable.placeholder)
                             .into(photoIv);
-
                     SnackbarHelper.showAddImageMayTakeSomeTime(mRecyclerView);
                 }
                 mLoginHelper.saveUserPhoto(photoUri);

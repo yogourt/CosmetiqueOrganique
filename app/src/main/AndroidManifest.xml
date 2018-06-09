@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".listView.MainActivity"
+            android:launchMode="singleTop"
             android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +27,8 @@
         <activity
             android:name=".newTip.NewTipActivity"
             android:label="@string/title_activity_new_tip"
-            android:parentActivityName=".listView.MainActivity"/>
+            android:parentActivityName=".listView.MainActivity"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>
