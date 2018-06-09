@@ -48,6 +48,8 @@
     <string name="hint_desc">Write tip description here</string>
     <string name="hint_title">Tip title</string>
     <string name="title_activity_new_tip">New tip</string>
+    <string name="button_label">Add tip</string>
+    <string name="spinner_label">Category</string>
 
     <!-- log in/log out strings -->
     <string name="fui_name_hint" translation_description="Hint for nickname field">Nickname</string>

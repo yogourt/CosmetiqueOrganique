@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -13,7 +12,10 @@ import android.view.View;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+
+import javax.inject.Singleton;
+
+import timber.log.Timber;
 
 public class ActivityPreparationHelper {
 
@@ -55,6 +57,7 @@ public class ActivityPreparationHelper {
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
+                Timber.d("onDrawerClosed");
                 switch (itemId) {
                     case R.id.nav_add_new:
                         if(NetworkConnectionHelper.isInternetConnection(
@@ -65,8 +68,8 @@ public class ActivityPreparationHelper {
                         } else {
                             SnackbarHelper.showUnableToAddTip(
                                     methods.getRecyclerView());
-                        }
-                        break;
+                         }
+                        return;
 
                     case R.id.nav_log_out:
                         if(NetworkConnectionHelper.isInternetConnection(
@@ -76,28 +79,28 @@ public class ActivityPreparationHelper {
                             SnackbarHelper.showUnableToLogOut(
                                     methods.getRecyclerView());
                         }
-                        break;
+                        return;
 
                     case R.id.nav_all:
                         if(category.equals(CATEGORY_ALL)) break;
                         methods.setCategory(CATEGORY_ALL);
                         methods.recreate();
-                        break;
+                        return;
                     case R.id.nav_hair:
                         if(category.equals(CATEGORY_HAIR)) break;
                         methods.setCategory(CATEGORY_HAIR);
                         methods.recreate();
-                        break;
+                        return;
                     case R.id.nav_face:
                         if(category.equals(CATEGORY_FACE)) break;
                         methods.setCategory(CATEGORY_FACE);
                         methods.recreate();
-                        break;
+                        return;
                     case R.id.nav_body:
                         if(category.equals(CATEGORY_BODY)) break;
                         methods.setCategory(CATEGORY_BODY);
                         methods.recreate();
-                        break;
+                        return;
 
                 }
             }

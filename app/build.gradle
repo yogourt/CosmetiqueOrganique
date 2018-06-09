@@ -69,6 +69,9 @@ dependencies {
 
     //Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //LabelledSpinner
+    implementation 'com.farbod.labelledspinner:labelledspinner:1.1.5'
 }
 
 
