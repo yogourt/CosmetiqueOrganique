@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView;
+package com.blogspot.android_czy_java.beautytips.appUtils;
 
 
 import android.support.design.widget.Snackbar;

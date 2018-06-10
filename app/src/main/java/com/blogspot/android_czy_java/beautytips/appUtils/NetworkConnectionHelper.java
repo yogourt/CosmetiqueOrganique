@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.firebase;
+package com.blogspot.android_czy_java.beautytips.appUtils;
 
 
 import android.content.Context;

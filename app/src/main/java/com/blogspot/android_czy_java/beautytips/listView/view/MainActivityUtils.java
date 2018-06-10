@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView;
+package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.LoginHelper;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.NetworkConnectionHelper;
+import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
 

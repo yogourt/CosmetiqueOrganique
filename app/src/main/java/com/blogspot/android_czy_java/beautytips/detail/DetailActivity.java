@@ -32,9 +32,9 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.blogspot.android_czy_java.beautytips.listView.ListViewAdapter.KEY_ID;
-import static com.blogspot.android_czy_java.beautytips.listView.ListViewAdapter.KEY_IMAGE;
-import static com.blogspot.android_czy_java.beautytips.listView.ListViewAdapter.KEY_TITLE;
+import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ID;
+import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_IMAGE;
+import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_TITLE;
 
 public class DetailActivity extends AppCompatActivity {
 
