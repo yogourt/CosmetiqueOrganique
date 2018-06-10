@@ -27,6 +27,13 @@ public class MainActivityUtils {
     public static final String CATEGORY_FACE = "face";
     public static final String CATEGORY_BODY = "body";
 
+    public static final int NAV_POSITION_YOUR_TIPS = 0;
+    public static final int NAV_POSITION_FAVOURITES = 1;
+    public static final int NAV_POSITION_ALL = 4;
+    public static final int NAV_POSITION_HAIR = 5;
+    public static final int NAV_POSITION_FACE = 6;
+    public static final int NAV_POSITION_BODY = 7;
+
     public static StaggeredGridLayoutManager createLayoutManager(int orientation) {
 
         StaggeredGridLayoutManager layoutManager;
@@ -59,6 +66,15 @@ public class MainActivityUtils {
             public void onDrawerClosed(@NonNull View drawerView) {
                 Timber.d("onDrawerClosed, itemId=" + itemId);
                 switch (itemId) {
+
+                    case R.id.nav_your_tips:
+                        methods.setNavigationPosition(NAV_POSITION_YOUR_TIPS);
+                        return;
+
+                    case R.id.nav_favourites:
+                        methods.setNavigationPosition(NAV_POSITION_FAVOURITES);
+                        return;
+
                     case R.id.nav_add_new:
                         if(NetworkConnectionHelper.isInternetConnection(
                                 context) && FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -84,21 +100,25 @@ public class MainActivityUtils {
                     case R.id.nav_all:
                         if(category.equals(CATEGORY_ALL)) break;
                         methods.setCategory(CATEGORY_ALL);
+                        methods.setNavigationPosition(NAV_POSITION_ALL);
                         methods.recreate();
                         return;
                     case R.id.nav_hair:
                         if(category.equals(CATEGORY_HAIR)) break;
                         methods.setCategory(CATEGORY_HAIR);
+                        methods.setNavigationPosition(NAV_POSITION_HAIR);
                         methods.recreate();
                         return;
                     case R.id.nav_face:
                         if(category.equals(CATEGORY_FACE)) break;
                         methods.setCategory(CATEGORY_FACE);
+                        methods.setNavigationPosition(NAV_POSITION_FACE);
                         methods.recreate();
                         return;
                     case R.id.nav_body:
                         if(category.equals(CATEGORY_BODY)) break;
                         methods.setCategory(CATEGORY_BODY);
+                        methods.setNavigationPosition(NAV_POSITION_BODY);
                         methods.recreate();
                         return;
 
@@ -114,6 +134,7 @@ public class MainActivityUtils {
     interface DrawerCreationMethods {
         void recreate();
         void setCategory(String category);
+        void setNavigationPosition(int newPosition);
         void startActivity(Intent intent);
         RecyclerView getRecyclerView();
         LoginHelper getLoginHelper();
