@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.model;
+package com.blogspot.android_czy_java.beautytips.listView.model;
 
 public class ListItem {
     private String mImage;

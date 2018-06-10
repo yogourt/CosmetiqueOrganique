@@ -18,19 +18,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.LoginHelper;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.NetworkConnectionHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -41,10 +35,10 @@ import dagger.android.AndroidInjection;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.ActivityPreparationHelper.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.listView.MainActivityUtils.CATEGORY_ALL;
 
 public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
-        ActivityPreparationHelper.DrawerCreationMethods {
+        MainActivityUtils.DrawerCreationMethods {
 
     public static final String KEY_CATEGORY = "category";
     public static final int RC_PHOTO_PICKER = 100;
@@ -153,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         int orientation = getResources().getConfiguration().orientation;
         //add layout manager
-        mLayoutManager = ActivityPreparationHelper.createLayoutManager(orientation);
+        mLayoutManager = MainActivityUtils.createLayoutManager(orientation);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         //item decoration is added to make spaces between items in recycler view
@@ -196,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                         it means that it wasn't added and we add it.
                          */
                         if(mDrawerListener == null) {
-                            mDrawerListener = ActivityPreparationHelper.
+                            mDrawerListener = MainActivityUtils.
                                     createDrawerListener(MainActivity.this, MainActivity.this,
                                             item.getItemId(), category);
                             mDrawerLayout.addDrawerListener(mDrawerListener);

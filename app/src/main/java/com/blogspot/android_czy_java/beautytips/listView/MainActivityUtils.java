@@ -10,14 +10,14 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.LoginHelper;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-import javax.inject.Singleton;
-
 import timber.log.Timber;
 
-public class ActivityPreparationHelper {
+public class MainActivityUtils {
 
     public static final int NUM_COLUMNS_LAND = 2;
     public static final int NUM_COLUMNS_PORT = 1;

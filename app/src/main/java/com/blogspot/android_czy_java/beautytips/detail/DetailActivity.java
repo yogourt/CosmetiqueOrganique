@@ -160,7 +160,6 @@ public class DetailActivity extends AppCompatActivity {
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                 Target<Drawable> target, boolean isFirstResource) {
                         supportStartPostponedEnterTransition();
-                        //mImageView.setTransitionName(null);
                         return false;
                     }
 
@@ -168,7 +167,6 @@ public class DetailActivity extends AppCompatActivity {
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable>
                             target, DataSource dataSource, boolean isFirstResource) {
                         supportStartPostponedEnterTransition();
-                        //mImageView.setTransitionName(null);
                         return false;
                     }
                 }).

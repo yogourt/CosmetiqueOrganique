@@ -1,21 +1,22 @@
 package com.blogspot.android_czy_java.beautytips.newTip;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.listView.SnackbarHelper;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.NetworkConnectionHelper;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.farbod.labelledspinner.LabelledSpinner;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +31,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 public class NewTipActivity extends AppCompatActivity {
+
+    private static final int RC_PHOTO_PICKER = 100;
 
     @BindView(R.id.app_bar)
     Toolbar mToolbar;
@@ -56,7 +59,8 @@ public class NewTipActivity extends AppCompatActivity {
 
         prepareToolbar();
         prepareAuthorDesc();
-        prepareCategoryList();
+        prepareSpinner();
+        prepareImageView();
 
         Timber.d("onCreate");
     }
@@ -90,10 +94,20 @@ public class NewTipActivity extends AppCompatActivity {
         mNicknameTv.setText(user.getDisplayName());
     }
 
-    private void prepareCategoryList() {
+    private void prepareSpinner() {
         mCategorySpinner.setItemsArray(R.array.categories);
     }
 
+    private void prepareImageView() {
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, RC_PHOTO_PICKER);
+            }
+        });
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -110,6 +124,20 @@ public class NewTipActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
+            Uri photoUri = data.getData();
+            if (photoUri != null) {
+                    Glide.with(this)
+                            .setDefaultRequestOptions(RequestOptions.centerCropTransform())
+                            .load(photoUri)
+                            .into(mImageView);
+            }
+        }
     }
 
     @Override

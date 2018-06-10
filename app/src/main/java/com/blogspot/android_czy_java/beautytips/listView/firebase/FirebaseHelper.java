@@ -1,8 +1,8 @@
-package com.blogspot.android_czy_java.beautytips.listView;
+package com.blogspot.android_czy_java.beautytips.listView.firebase;
 
 import android.support.annotation.NonNull;
 
-import com.blogspot.android_czy_java.beautytips.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DataSnapshot;
@@ -11,13 +11,13 @@ import com.google.firebase.database.Query;
 
 import javax.inject.Singleton;
 
-import static com.blogspot.android_czy_java.beautytips.listView.ActivityPreparationHelper.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.listView.MainActivityUtils.CATEGORY_ALL;
 
 
 @Singleton
-class FirebaseHelper {
+public class FirebaseHelper {
 
-    static FirebaseRecyclerOptions<ListItem> createFirebaseRecyclerOptions(String category) {
+    public static FirebaseRecyclerOptions<ListItem> createFirebaseRecyclerOptions(String category) {
         return new FirebaseRecyclerOptions.Builder<ListItem>().
                 setQuery(createQuery(category), new SnapshotParser<ListItem>() {
                     @NonNull
