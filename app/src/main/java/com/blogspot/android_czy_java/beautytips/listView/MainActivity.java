@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         MainActivityUtils.DrawerCreationMethods {
 
     public static final String KEY_CATEGORY = "category";
+    public static final String KEY_NAV_POSITION = "navigation_position";
     public static final int RC_PHOTO_PICKER = 100;
 
 
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         if (savedInstanceState != null) {
             category = savedInstanceState.getString(KEY_CATEGORY);
+            navigationPosition = savedInstanceState.getInt(KEY_NAV_POSITION, 4);
         } else {
             category = CATEGORY_ALL;
             //set navigation position to "All"
@@ -128,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(KEY_CATEGORY, category);
+        outState.putInt(KEY_NAV_POSITION, navigationPosition);
         super.onSaveInstanceState(outState);
     }
 
@@ -282,5 +285,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 .into(photoIv);
     }
 
+    public void setNavigationPosition(int newPosition) {
+        navigationPosition = newPosition;
+        mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
+
+    }
 
 }
