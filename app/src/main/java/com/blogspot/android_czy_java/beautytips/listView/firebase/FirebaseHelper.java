@@ -11,7 +11,7 @@ import com.google.firebase.database.Query;
 
 import javax.inject.Singleton;
 
-import static com.blogspot.android_czy_java.beautytips.listView.MainActivityUtils.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivityUtils.CATEGORY_ALL;
 
 
 @Singleton

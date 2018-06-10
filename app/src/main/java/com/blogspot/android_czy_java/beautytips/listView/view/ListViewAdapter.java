@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView;
+package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.app.Activity;
 import android.app.ActivityOptions;

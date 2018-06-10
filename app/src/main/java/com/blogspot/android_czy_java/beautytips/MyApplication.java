@@ -1,26 +1,17 @@
-package com.blogspot.android_czy_java.beautytips.dependencyInjection;
+package com.blogspot.android_czy_java.beautytips;
 
-import android.app.Activity;
 import android.app.Application;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.leakcanary.LeakCanary;
 
-import javax.inject.Inject;
-
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
 import timber.log.Timber;
 
-public class MyApplication extends Application implements HasActivityInjector {
-
-    @Inject
-    DispatchingAndroidInjector<Activity> mDispatchingAndroidInjector;
+public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        DaggerMyApplicationComponent.create().inject(this);
 
         if(LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -35,7 +26,4 @@ public class MyApplication extends Application implements HasActivityInjector {
         FirebaseDatabase.getInstance().getReference("tipList").keepSynced(true);
     }
 
-    public DispatchingAndroidInjector<Activity> activityInjector() {
-        return mDispatchingAndroidInjector;
-    }
 }

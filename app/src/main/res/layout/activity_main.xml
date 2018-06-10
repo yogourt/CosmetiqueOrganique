@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.blogspot.android_czy_java.beautytips.listView.MainActivity">
+        tools:context="com.blogspot.android_czy_java.beautytips.listView.view.MainActivity">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

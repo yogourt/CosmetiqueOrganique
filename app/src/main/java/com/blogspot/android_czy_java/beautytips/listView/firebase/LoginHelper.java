@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.MainActivity;
+import com.blogspot.android_czy_java.beautytips.listView.view.MainActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +29,6 @@ import javax.inject.Singleton;
 
 import timber.log.Timber;
 
-@Singleton
 public class LoginHelper implements LifecycleObserver {
 
     public static final int RC_SIGN_IN = 123;
@@ -40,7 +39,6 @@ public class LoginHelper implements LifecycleObserver {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private ValueEventListener mPhotoChangeListener;
 
     private DatabaseReference mUserPhotoReference;
 

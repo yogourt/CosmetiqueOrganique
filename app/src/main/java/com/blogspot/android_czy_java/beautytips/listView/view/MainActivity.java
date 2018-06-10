@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView;
+package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -18,9 +18,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.LoginHelper;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.NetworkConnectionHelper;
+import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
@@ -34,8 +35,6 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
-
-import static com.blogspot.android_czy_java.beautytips.listView.MainActivityUtils.CATEGORY_ALL;
 
 public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
         MainActivityUtils.DrawerCreationMethods {
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
         /*
@@ -95,12 +93,13 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             category = savedInstanceState.getString(KEY_CATEGORY);
             navigationPosition = savedInstanceState.getInt(KEY_NAV_POSITION, 4);
         } else {
-            category = CATEGORY_ALL;
+            category = MainActivityUtils.CATEGORY_ALL;
             //set navigation position to "All"
-            navigationPosition = 4;
+            navigationPosition = MainActivityUtils.NAV_POSITION_ALL;
         }
 
         Timber.d("On create");
+        mLoginHelper = new LoginHelper(this);
         getLifecycle().addObserver(mLoginHelper);
 
         prepareActionBar();
