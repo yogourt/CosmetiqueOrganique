@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         prepareActionBar();
         prepareRecyclerView();
-        prepareNavigationDrawer();
 
     }
 
@@ -109,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         if(position != 0) {
             mRecyclerView.smoothScrollToPosition(position);
         }
+        prepareNavigationDrawer();
     }
 
     @Override

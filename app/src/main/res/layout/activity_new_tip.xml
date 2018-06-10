@@ -42,6 +42,7 @@
 
 
             <EditText
+                android:id="@+id/title_edit_text"
                 style="@style/TitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
             layout="@layout/layout_author" />
 
         <EditText
+            android:id="@+id/description_edit_text"
             style="@style/NormalTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +102,8 @@
                 android:layout_weight="1"
                 android:layout_marginStart="@dimen/spinner_button_margin"
                 android:backgroundTint="@color/pink200"
-                android:text="@string/button_label"/>
+                android:text="@string/button_label"
+                android:onClick="addTip"/>
         </LinearLayout>
 
     </LinearLayout>
