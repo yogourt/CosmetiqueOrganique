@@ -12,19 +12,19 @@ public class SnackbarHelper {
     shows snackbar with message that there is no internet connection and it's impossible to
     log out
     */
-    static void showUnableToLogOut(View snackbarView) {
+    public static void showUnableToLogOut(View snackbarView) {
         snackbarWithOk(R.string.message_log_out_no_internet, snackbarView);
     }
 
-    static void showUnableToAddTip(View snackbarView) {
+    public static void showUnableToAddTip(View snackbarView) {
+        snackbarWithOk(R.string.message_add_tip_no_internet, snackbarView);
+    }
+
+    public static void showUnableToAddImage(View snackbarView) {
         simpleSnackbar(R.string.message_add_photo_no_internet, snackbarView);
     }
 
-    static void showUnableToAddImage(View snackbarView) {
-        simpleSnackbar(R.string.message_add_photo_no_internet, snackbarView);
-    }
-
-    static void showAddImageMayTakeSomeTime(View snackbarView) {
+    public static void showAddImageMayTakeSomeTime(View snackbarView) {
         snackbarWithOk(R.string.message_add_photo_is_long, snackbarView);
     }
 

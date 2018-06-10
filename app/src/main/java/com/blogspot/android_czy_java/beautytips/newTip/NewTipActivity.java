@@ -7,8 +7,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +36,10 @@ public class NewTipActivity extends AppCompatActivity {
 
     private static final int RC_PHOTO_PICKER = 100;
 
+    public static final String KEY_IMAGE_PATH = "image_path";
+    public static final String KEY_CATEGORY = "category";
+
+
     @BindView(R.id.app_bar)
     Toolbar mToolbar;
 
@@ -49,6 +55,10 @@ public class NewTipActivity extends AppCompatActivity {
     @BindView(R.id.image)
     ImageView mImageView;
 
+    private int category;
+    private String imagePath;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +67,26 @@ public class NewTipActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
 
+        if(savedInstanceState != null) {
+            category = savedInstanceState.getInt(KEY_CATEGORY);
+            imagePath = savedInstanceState.getString(KEY_IMAGE_PATH, "");
+        }
+
         prepareToolbar();
         prepareAuthorDesc();
         prepareSpinner();
         prepareImageView();
 
         Timber.d("onCreate");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_CATEGORY, category);
+        if(imagePath != null) {
+            outState.putString(KEY_IMAGE_PATH, imagePath);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     private void prepareToolbar() {
@@ -89,6 +113,7 @@ public class NewTipActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.e("Database error: " + databaseError.getMessage());
                     }
                 });
         mNicknameTv.setText(user.getDisplayName());
@@ -96,9 +121,25 @@ public class NewTipActivity extends AppCompatActivity {
 
     private void prepareSpinner() {
         mCategorySpinner.setItemsArray(R.array.categories);
+        mCategorySpinner.setSelection(category);
+        mCategorySpinner.setOnItemChosenListener(new LabelledSpinner.OnItemChosenListener() {
+            @Override
+            public void onItemChosen(View labelledSpinner, AdapterView<?> adapterView,
+                                     View itemView, int position, long id) {
+                category = position;
+            }
+
+            @Override
+            public void onNothingChosen(View labelledSpinner, AdapterView<?> adapterView) {
+            }
+        });
     }
 
     private void prepareImageView() {
+        if(!TextUtils.isEmpty(imagePath)) {
+            loadImageWithGlide();
+        }
+
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +149,7 @@ public class NewTipActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -132,17 +174,25 @@ public class NewTipActivity extends AppCompatActivity {
         if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             Uri photoUri = data.getData();
             if (photoUri != null) {
-                    Glide.with(this)
-                            .setDefaultRequestOptions(RequestOptions.centerCropTransform())
-                            .load(photoUri)
-                            .into(mImageView);
+                imagePath = photoUri.toString();
+                loadImageWithGlide();
             }
         }
     }
-
-    @Override
-    protected void onDestroy() {
-        Timber.d("onDestroy");
-        super.onDestroy();
+    private void loadImageWithGlide() {
+        Glide.with(this)
+                .setDefaultRequestOptions(RequestOptions.centerCropTransform())
+                .load(imagePath)
+                .into(mImageView);
     }
+
+    //method to be called when "add tip" button is clicked
+    public void addTip(View view) {
+        if(!NetworkConnectionHelper.isInternetConnection(this)) {
+            SnackbarHelper.showUnableToAddTip(view);
+        } else {
+
+        }
+    }
+
 }
