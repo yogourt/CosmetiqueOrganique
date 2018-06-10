@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private DrawerLayout.DrawerListener mDrawerListener;
 
     private String category;
-    private int position;
+    private int listPosition;
+    private int navigationPosition;
 
 
     @Override
@@ -91,8 +92,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         if (savedInstanceState != null) {
             category = savedInstanceState.getString(KEY_CATEGORY);
-            Timber.d(String.valueOf(position));
-        } else category = CATEGORY_ALL;
+        } else {
+            category = CATEGORY_ALL;
+            //set navigation position to "All"
+            navigationPosition = 4;
+        }
 
         Timber.d("On create");
         getLifecycle().addObserver(mLoginHelper);
@@ -105,15 +109,16 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     protected void onResume() {
         super.onResume();
-        if(position != 0) {
-            mRecyclerView.smoothScrollToPosition(position);
+        if(listPosition != 0) {
+            mRecyclerView.smoothScrollToPosition(listPosition);
         }
         prepareNavigationDrawer();
+        mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if(mDrawerListener != null) {
             mDrawerLayout.removeDrawerListener(mDrawerListener);
             mDrawerListener = null;
@@ -181,20 +186,22 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
                         mDrawerLayout.closeDrawers();
 
+                        Timber.d("on Navigation item selected");
+
                         /*
-                        Here we need mDrawerLisner to properly close NavigationDrawer while
+                        Here we need mDrawerListener to properly close NavigationDrawer while
                         changing category. Without this it will not close on recreate().
                         mDrawerListener is instantiated in separate class to simplify
                         this class, so all logic for item selected is moved there.
                         mDrawerListener needs only to be added once, so if it's null
                         it means that it wasn't added and we add it.
                          */
-                        if(mDrawerListener == null) {
+                            mDrawerLayout.removeDrawerListener(mDrawerListener);
                             mDrawerListener = MainActivityUtils.
                                     createDrawerListener(MainActivity.this, MainActivity.this,
                                             item.getItemId(), category);
                             mDrawerLayout.addDrawerListener(mDrawerListener);
-                        }
+
 
                         return true;
                     }
@@ -204,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     @Override
     public void onClick(int position) {
-        this.position = position;
+        this.listPosition = position;
     }
 
     @Override

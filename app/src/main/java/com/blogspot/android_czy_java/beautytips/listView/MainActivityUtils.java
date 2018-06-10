@@ -57,7 +57,7 @@ public class MainActivityUtils {
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-                Timber.d("onDrawerClosed");
+                Timber.d("onDrawerClosed, itemId=" + itemId);
                 switch (itemId) {
                     case R.id.nav_add_new:
                         if(NetworkConnectionHelper.isInternetConnection(
