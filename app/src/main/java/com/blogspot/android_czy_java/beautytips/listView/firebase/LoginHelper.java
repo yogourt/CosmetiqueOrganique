@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView;
+package com.blogspot.android_czy_java.beautytips.listView.firebase;
 
 import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.listView.MainActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +32,7 @@ import timber.log.Timber;
 @Singleton
 public class LoginHelper implements LifecycleObserver {
 
-    static final int RC_SIGN_IN = 123;
+    public static final int RC_SIGN_IN = 123;
     //list of authentication providers
     private static final List<AuthUI.IdpConfig> providers = Arrays.asList(
             new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -88,12 +89,12 @@ public class LoginHelper implements LifecycleObserver {
     }
 
 
-    void logOut() {
+    public void logOut() {
         mUserPhotoReference = null;
         mAuth.signOut();
     }
 
-    void signIn() {
+    public void signIn() {
         String nickname = mAuth.getCurrentUser().getDisplayName();
         activity.setNickname(nickname);
 

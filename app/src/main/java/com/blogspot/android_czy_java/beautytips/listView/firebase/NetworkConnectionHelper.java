@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView;
+package com.blogspot.android_czy_java.beautytips.listView.firebase;
 
 
 import android.content.Context;
@@ -9,10 +9,10 @@ import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
 
-class NetworkConnectionHelper {
+public class NetworkConnectionHelper {
 
     //checks if there is internet connection
-    static boolean isInternetConnection(Context context) {
+    public static boolean isInternetConnection(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
