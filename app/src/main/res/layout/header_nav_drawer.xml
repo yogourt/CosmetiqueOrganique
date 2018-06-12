@@ -14,13 +14,14 @@
         android:id="@+id/nav_photo"
         android:layout_width="@dimen/photo_size"
         android:layout_height="@dimen/photo_size"
+        android:layout_marginEnd="@dimen/photo_margin"
         android:src="@color/bluegray700"/>
 
     <TextView
         android:id="@+id/nav_nickname"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:text="Username"
         style="@style/UsernameStyle"/>
 

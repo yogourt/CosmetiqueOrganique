@@ -42,6 +42,8 @@ public class FirebaseLoginHelper implements LifecycleObserver {
 
     private DatabaseReference mUserPhotoReference;
 
+    private UploadTask mSavingUserPhotoTask;
+
     MainActivity activity;
 
     public FirebaseLoginHelper(MainActivity activity) {
@@ -122,8 +124,8 @@ public class FirebaseLoginHelper implements LifecycleObserver {
     public void saveUserPhoto(final Uri photoUri) {
         final StorageReference photoReference = FirebaseStorage.getInstance().getReference("userPhotos")
                 .child(getUserId());
-                photoReference.putFile(photoUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                mSavingUserPhotoTask = photoReference.putFile(photoUri);
+                mSavingUserPhotoTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -138,5 +140,11 @@ public class FirebaseLoginHelper implements LifecycleObserver {
                         });
                     }
                 });
+    }
+
+    public void stopPreviousUserPhotoSaving() {
+        if(mSavingUserPhotoTask != null && mSavingUserPhotoTask.isInProgress())
+            mSavingUserPhotoTask.cancel();
+        activity.setIsPhotoSaving(false);
     }
 }
