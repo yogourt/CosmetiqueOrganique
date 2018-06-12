@@ -86,20 +86,19 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user != null) {
 
-                    //save details: author, description, ingredients
-                    String author = user.getDisplayName();
+                    //save details: description, ingredients
                     TipDetailsItem details;
                     if(ingredients.size() < 2) {
-                        details = new TipDetailsItem(description, ingredients.get(0), author);
+                        details = new TipDetailsItem(description, ingredients.get(0));
                     } else if(ingredients.size() < 3) {
                         details = new TipDetailsItem(description, ingredients.get(0),
-                                ingredients.get(1), author);
+                                ingredients.get(1));
                     } else if(ingredients.size() < 4) {
                         details = new TipDetailsItem(description, ingredients.get(0),
-                                ingredients.get(1), ingredients.get(2), author);
+                                ingredients.get(1), ingredients.get(2));
                     } else {
                         details = new TipDetailsItem(description, ingredients.get(0),
-                                ingredients.get(1), ingredients.get(2), ingredients.get(3), author);
+                                ingredients.get(1), ingredients.get(2), ingredients.get(3));
                     }
                     detailsReference.setValue(details);
 
@@ -121,10 +120,12 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                     //save new tip number
                     tipNumReference.setValue(tipNumber);
 
+                    String author = user.getDisplayName();
+
                     final DatabaseReference listReference = FirebaseDatabase.getInstance()
                             .getReference("tipList/" + tipPath);
-                    //save title and category
-                    TipListItem listItem = new TipListItem(title, category);
+                    //save title, category and author
+                    TipListItem listItem = new TipListItem(title, category, author);
                     listReference.setValue(listItem);
 
                     //save tip image

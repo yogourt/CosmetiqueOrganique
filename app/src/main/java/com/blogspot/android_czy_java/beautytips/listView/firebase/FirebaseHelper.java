@@ -24,9 +24,12 @@ public class FirebaseHelper {
                     @Override
                     public ListItem parseSnapshot(@NonNull DataSnapshot snapshot) {
                         ListItem item = snapshot.getValue(ListItem.class);
+                        String author = String.valueOf(snapshot.child("author").getValue());
                         String id = snapshot.getKey();
-                        if(item != null)
-                        item.setId(id);
+                        if(item != null) {
+                            item.setId(id);
+                            if(!author.equals("null")) item.setAuthor(author);
+                        }
                         return item;
                     }
                 }).
