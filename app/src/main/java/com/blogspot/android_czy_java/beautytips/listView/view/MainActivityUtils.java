@@ -13,7 +13,7 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
-import com.blogspot.android_czy_java.beautytips.newTip.NewTipActivity;
+import com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import timber.log.Timber;

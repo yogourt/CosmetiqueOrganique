@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.newTip;
+package com.blogspot.android_czy_java.beautytips.newTip.view;
 
 import android.content.Intent;
 import android.net.Uri;
