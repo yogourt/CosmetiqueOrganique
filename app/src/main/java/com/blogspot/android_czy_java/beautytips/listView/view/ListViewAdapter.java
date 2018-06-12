@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     public static final String KEY_TITLE = "title";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_ID = "id";
+    public static final String KEY_AUTHOR = "author";
 
     public static final int[] itemHeights = {630, 670, 600, 700};
 
@@ -132,6 +134,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
             bundle.putString(KEY_TITLE, item.getTitle());
             bundle.putString(KEY_IMAGE, item.getImage());
             bundle.putString(KEY_ID, item.getId());
+            if( !TextUtils.isEmpty(item.getAuthor()) ) bundle.putString(KEY_AUTHOR, item.getAuthor());
 
             detailActivityIntent.putExtras(bundle);
 

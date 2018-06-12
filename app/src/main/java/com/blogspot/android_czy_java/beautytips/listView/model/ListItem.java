@@ -5,6 +5,7 @@ public class ListItem {
     private String mTitle;
     private String mId;
     private String mCategory;
+    private String mAuthor;
     
     public ListItem() {}
 
@@ -45,4 +46,13 @@ public class ListItem {
     public void setCategory(String mCategory) {
         this.mCategory = mCategory;
     }
+
+    public String getAuthor() {
+        return mAuthor;
+    }
+
+    public void setAuthor(String mAuthor) {
+        this.mAuthor = mAuthor;
+    }
 }
+

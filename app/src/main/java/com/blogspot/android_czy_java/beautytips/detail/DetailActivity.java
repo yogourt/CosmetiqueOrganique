@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_AUTHOR;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_IMAGE;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_TITLE;
@@ -84,6 +85,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private String mTitle;
     private String mImage;
+    private String mAuthor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,13 +94,13 @@ public class DetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        //this call is n
         supportPostponeEnterTransition();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             mTitle = bundle.getString(KEY_TITLE);
             mImage = bundle.getString(KEY_IMAGE);
+            if(bundle.containsKey(KEY_AUTHOR)) mAuthor = bundle.getString(KEY_AUTHOR);
             String id = bundle.getString(KEY_ID);
 
             FirebaseDatabase.getInstance().getReference("tips/" + id)
@@ -147,16 +149,15 @@ public class DetailActivity extends AppCompatActivity {
             mIngredient4.setText(ingredient4);
         }
 
-        String username = (String) dataSnapshot.child("author").getValue();
-        Timber.d(username);
+
+        if(!TextUtils.isEmpty(mAuthor)) {
         String authorPhoto = (String) dataSnapshot.child("authorPhoto").getValue();
         Timber.d(authorPhoto);
-        mAuthorTv.setText(username);
+        mAuthorTv.setText(mAuthor);
         Glide.with(this)
                 .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
                 .load(authorPhoto)
                 .into(mAuthorPhoto);
-        if(!TextUtils.isEmpty(username)) {
             mAuthorLayout.setVisibility(View.VISIBLE);
         } else {
             int padding = (int) getResources().getDimension(R.dimen.desc_padding);
