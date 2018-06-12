@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.widget.LinearLayout;
 
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
+import com.blogspot.android_czy_java.beautytips.newTip.model.TipDetailsItem;
+import com.blogspot.android_czy_java.beautytips.newTip.model.TipListItem;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -77,28 +79,36 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                 int tipNumber = Integer.valueOf(String.valueOf(dataSnapshot.getValue()));
                 Timber.d(String.valueOf(tipNumber));
                 tipNumber++;
+                String tipPath = "" + tipNumber;
 
-                //save new tip number
-                tipNumReference.setValue(tipNumber);
-                String tipPath = tipNumber + "tip";
-
-                final DatabaseReference listReference = FirebaseDatabase.getInstance()
-                        .getReference("tipList/" + tipPath);
-                //save title
-                listReference.child("title").setValue(title);
-                //save category
-                listReference.child("category").setValue(category);
+                final DatabaseReference detailsReference = FirebaseDatabase.getInstance()
+                        .getReference("tips/" + tipPath);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user != null) {
-                    //save author
-                    listReference.child("author").setValue(user.getDisplayName());
+
+                    //save details: author, description, ingredients
+                    String author = user.getDisplayName();
+                    TipDetailsItem details;
+                    if(ingredients.size() < 2) {
+                        details = new TipDetailsItem(description, ingredients.get(0), author);
+                    } else if(ingredients.size() < 3) {
+                        details = new TipDetailsItem(description, ingredients.get(0),
+                                ingredients.get(1), author);
+                    } else if(ingredients.size() < 4) {
+                        details = new TipDetailsItem(description, ingredients.get(0),
+                                ingredients.get(1), ingredients.get(2), author);
+                    } else {
+                        details = new TipDetailsItem(description, ingredients.get(0),
+                                ingredients.get(1), ingredients.get(2), ingredients.get(3), author);
+                    }
+                    detailsReference.setValue(details);
 
                     //save author's photo
                     FirebaseDatabase.getInstance().getReference("userPhotos/" + user.getUid())
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    listReference.child("authorPhoto").setValue(dataSnapshot
+                                    detailsReference.child("authorPhoto").setValue(dataSnapshot
                                             .getValue());
                                 }
 
@@ -107,49 +117,51 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                                     Timber.d(databaseError.getMessage());
                                 }
                             });
-                }
 
-                //save tip image
-                final StorageReference imageReference = FirebaseStorage.getInstance()
-                        .getReference().child("tip" + tipNumber + "-photo");
-                imageReference.putFile(Uri.parse(imagePath))
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    //save new tip number
+                    tipNumReference.setValue(tipNumber);
 
-                                imageReference.getDownloadUrl().addOnSuccessListener(
-                                        new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri storageImageUri) {
-                                        String storageImageString = storageImageUri.toString();
-                                        listReference.child("image")
-                                                .setValue(storageImageString);
-                                    }
-                                });
-                            }
-                        });
+                    final DatabaseReference listReference = FirebaseDatabase.getInstance()
+                            .getReference("tipList/" + tipPath);
+                    //save title and category
+                    TipListItem listItem = new TipListItem(title, category);
+                    listReference.setValue(listItem);
 
-                DatabaseReference detailsReference = FirebaseDatabase.getInstance()
-                        .getReference("tips/" + tipPath);
-                //save description
-                detailsReference.child("description").setValue(description);
-                //save ingredients
-                detailsReference.child("ingredient1").setValue(ingredients.get(0));
-                if(ingredients.size() > 1) {
-                    detailsReference.child("ingredient2").setValue(ingredients.get(1));
+                    //save tip image
+                    final StorageReference imageReference = FirebaseStorage.getInstance()
+                            .getReference().child("tip" + tipNumber + "-photo");
+                    imageReference.putFile(Uri.parse(imagePath))
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    imageReference.getDownloadUrl().addOnSuccessListener(
+                                            new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri storageImageUri) {
+                                                    String storageImageString = storageImageUri.toString();
+                                                    listReference.child("image")
+                                                            .setValue(storageImageString);
+                                                }
+                                            });
+                                }
+                            });
+
                 }
-                if(ingredients.size() > 2) {
-                    detailsReference.child("ingredient3").setValue(ingredients.get(2));
+                //if user was null show an error
+                else {
+                    SnackbarHelper.showAddingTipError(activity.getLayout());
                 }
-                if(ingredients.size() > 3) {
-                    detailsReference.child("ingredient4").setValue(ingredients.get(3));
-                }
+                //delete reference to activity to prevent activity leak
+                activity = null;
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Timber.e(databaseError.getMessage());
                 SnackbarHelper.showAddingTipError(activity.getLayout());
+                activity = null;
             }
         });
     }
