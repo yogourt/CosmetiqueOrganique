@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private int listPosition;
     private int navigationPosition;
 
+    private boolean isPhotoSaving;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,7 +255,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                             .into(photoIv);
                     SnackbarHelper.showAddImageMayTakeSomeTime(mRecyclerView);
                 }
+                if(isPhotoSaving) {
+                    mLoginHelper.stopPreviousUserPhotoSaving();
+                }
                 mLoginHelper.saveUserPhoto(photoUri);
+                isPhotoSaving = true;
             }
         }
     }
@@ -287,6 +293,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         navigationPosition = newPosition;
         mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
 
+    }
+
+    public void setIsPhotoSaving(boolean isPhotoSaving) {
+        this.isPhotoSaving = isPhotoSaving;
     }
 
 }
