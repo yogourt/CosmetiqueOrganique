@@ -29,7 +29,7 @@ import javax.inject.Singleton;
 
 import timber.log.Timber;
 
-public class LoginHelper implements LifecycleObserver {
+public class FirebaseLoginHelper implements LifecycleObserver {
 
     public static final int RC_SIGN_IN = 123;
     //list of authentication providers
@@ -44,7 +44,7 @@ public class LoginHelper implements LifecycleObserver {
 
     MainActivity activity;
 
-    public LoginHelper(MainActivity activity) {
+    public FirebaseLoginHelper(MainActivity activity) {
         mAuth = FirebaseAuth.getInstance();
         this.activity = activity;
     }
@@ -93,23 +93,26 @@ public class LoginHelper implements LifecycleObserver {
     }
 
     public void signIn() {
-        String nickname = mAuth.getCurrentUser().getDisplayName();
-        activity.setNickname(nickname);
+            String nickname = mAuth.getCurrentUser().getDisplayName();
+            activity.setNickname(nickname);
 
-        mUserPhotoReference = FirebaseDatabase.getInstance().getReference("user-photos")
-                .child(getUserId());
-        mUserPhotoReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String dbUserPhotoUrl = dataSnapshot.getValue().toString();
-                activity.setUserPhoto(dbUserPhotoUrl);
-            }
+            mUserPhotoReference = FirebaseDatabase.getInstance().getReference("userPhotos")
+                    .child(getUserId());
+            mUserPhotoReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue() != null) {
+                        String dbUserPhotoUrl = dataSnapshot.getValue().toString();
+                        activity.setUserPhoto(dbUserPhotoUrl);
+                    }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
     }
 
     String getUserId() {
@@ -117,7 +120,7 @@ public class LoginHelper implements LifecycleObserver {
     }
 
     public void saveUserPhoto(final Uri photoUri) {
-        final StorageReference photoReference = FirebaseStorage.getInstance().getReference("user-photos")
+        final StorageReference photoReference = FirebaseStorage.getInstance().getReference("userPhotos")
                 .child(getUserId());
                 photoReference.putFile(photoUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

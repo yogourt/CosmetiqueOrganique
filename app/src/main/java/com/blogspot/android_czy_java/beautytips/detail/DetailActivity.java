@@ -31,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_IMAGE;
@@ -74,6 +76,12 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.layout_author)
     View mAuthorLayout;
 
+    @BindView(R.id.author_photo)
+    CircleImageView mAuthorPhoto;
+
+    @BindView(R.id.nickname_text_view)
+    TextView mAuthorTv;
+
     private String mTitle;
     private String mImage;
 
@@ -84,6 +92,7 @@ public class DetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        //this call is n
         supportPostponeEnterTransition();
 
         Bundle bundle = getIntent().getExtras();
@@ -139,6 +148,14 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         String username = (String) dataSnapshot.child("author").getValue();
+        Timber.d(username);
+        String authorPhoto = (String) dataSnapshot.child("authorPhoto").getValue();
+        Timber.d(authorPhoto);
+        mAuthorTv.setText(username);
+        Glide.with(this)
+                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
+                .load(authorPhoto)
+                .into(mAuthorPhoto);
         if(!TextUtils.isEmpty(username)) {
             mAuthorLayout.setVisibility(View.VISIBLE);
         } else {
@@ -184,8 +201,11 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    /*
+      I want FAB to be visible when ingredients layout is visible, and when user scrolls lower,
+      it hides
+     */
     private void prepareFab() {
-
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(
                 new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
@@ -203,8 +223,10 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        //to provide proper custom animation on return direct call to finishAfterTransition()
-        // is needed
+        /*
+        here is call to onBackPressed() to provide proper exit animation (for some reason it
+        wasn't working without super.onBackPressed())
+        */
         if(item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;

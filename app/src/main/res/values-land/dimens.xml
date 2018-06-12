@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- new tip activity resources -->
+    <dimen name="desc_margin">32dp</dimen>
+    <dimen name="title_horiz_margin">32dp</dimen>
+    <dimen name="spinner_button_int_margin">64dp</dimen>
+    <dimen name="spinner_button_ext_margin">48dp</dimen>
+</resources>

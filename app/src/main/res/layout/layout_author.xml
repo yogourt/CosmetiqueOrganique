@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="end"
     android:paddingTop="@dimen/author_padding"
     android:paddingStart="@dimen/author_padding"
-    android:paddingEnd="@dimen/author_padding">
+    android:paddingEnd="@dimen/author_padding"
+    android:paddingBottom="@dimen/author_bottom_padding">
+
+    <TextView
+        android:id="@+id/nickname_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:text="Username"
+        style="@style/UsernameStyle"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/author_photo"
         android:layout_width="@dimen/photo_size_detail"
         android:layout_height="@dimen/photo_size_detail"
-        android:layout_margin="@dimen/photo_margin"
+        android:layout_marginTop="@dimen/photo_margin"
+        android:layout_marginStart="@dimen/photo_margin"
+        android:layout_marginBottom="@dimen/photo_margin"
         android:src="@color/bluegray700"/>
 
-    <TextView
-        android:id="@+id/nickname_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:text="Username"
-        style="@style/UsernameStyle"/>
 
 </LinearLayout>

@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.LoginHelper;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -32,7 +32,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.AndroidInjection;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     NavigationView mNavigationView;
 
     @Inject
-    LoginHelper mLoginHelper;
+    FirebaseLoginHelper mLoginHelper;
 
     private View mHeaderLayout;
     private CircleImageView photoIv;
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
 
         Timber.d("On create");
-        mLoginHelper = new LoginHelper(this);
+        mLoginHelper = new FirebaseLoginHelper(this);
         getLifecycle().addObserver(mLoginHelper);
 
         prepareActionBar();
@@ -230,11 +229,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LoginHelper.RC_SIGN_IN) {
+        if (requestCode == FirebaseLoginHelper.RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                mLoginHelper.signIn();
+                //signing in is handling by mLoginHelper
             } else {
                 //if response is null the user canceled sign in flow using back button
                 if (response == null) {
@@ -267,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         return mRecyclerView;
     }
 
-    public LoginHelper getLoginHelper() {
+    public FirebaseLoginHelper getLoginHelper() {
         return mLoginHelper;
     }
 

@@ -7,7 +7,7 @@
     <dimen name="header_bottom_padding">24dp</dimen>
     <dimen name="header_horiz_padding">16dp</dimen>
     <dimen name="username_text_size">22sp</dimen>
-    <dimen name="photo_size">80dp</dimen>
+    <dimen name="photo_size">72dp</dimen>
 
     <!-- list view dimens -->
     <dimen name="list_padding">4dp</dimen>
@@ -21,9 +21,10 @@
     <dimen name="ingredients_inner_padding">4dp</dimen>
     <dimen name="ingredients_text_size">16sp</dimen>
     <dimen name="normal_text_size">16sp</dimen>
-    <dimen name="photo_size_detail">60dp</dimen>
+    <dimen name="photo_size_detail">64dp</dimen>
     <dimen name="photo_margin">16dp</dimen>
-    <dimen name="author_padding">16dp</dimen>
+    <dimen name="author_padding">32dp</dimen>
+    <dimen name="author_bottom_padding">16dp</dimen>
     <dimen name="desc_padding">16dp</dimen>
     <dimen name="desc_top_padding_no_author">48dp</dimen>
     <dimen name="app_bar_layout_height">192dp</dimen>
@@ -37,7 +38,9 @@
     <dimen name="title_horiz_padding">8dp</dimen>
     <dimen name="spinner_width">200dp</dimen>
     <dimen name="spinner_top_margin">48dp</dimen>
-    <dimen name="spinner_button_margin">8dp</dimen>
+    <dimen name="spinner_button_int_margin">16dp</dimen>
+    <dimen name="spinner_button_ext_margin">24dp</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
