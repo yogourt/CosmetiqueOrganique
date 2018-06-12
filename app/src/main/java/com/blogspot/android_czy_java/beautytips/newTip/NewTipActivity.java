@@ -2,7 +2,6 @@ package com.blogspot.android_czy_java.beautytips.newTip;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,34 +10,40 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
+import com.blogspot.android_czy_java.beautytips.newTip.firebase.NewTipFirebaseHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.farbod.labelledspinner.LabelledSpinner;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
-public class NewTipActivity extends AppCompatActivity {
+public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseHelper.NewTipViewInterface {
 
     private static final int RC_PHOTO_PICKER = 100;
 
     public static final String KEY_IMAGE_PATH = "image_path";
     public static final String KEY_CATEGORY = "category";
 
+    public static final String CATEGORY_HAIR = "hair";
+    public static final String CATEGORY_FACE = "face";
+    public static final String CATEGORY_BODY = "body";
+
+
+    @BindView(R.id.linear_layout)
+    LinearLayout mNewTipLayout;
 
     @BindView(R.id.app_bar)
     Toolbar mToolbar;
@@ -55,6 +60,25 @@ public class NewTipActivity extends AppCompatActivity {
     @BindView(R.id.image)
     ImageView mImageView;
 
+    @BindView(R.id.title_edit_text)
+    EditText mTitleEt;
+
+    @BindView(R.id.ingredient1)
+    EditText mIngredient1Et;
+
+    @BindView(R.id.ingredient2)
+    EditText mIngredient2Et;
+
+    @BindView(R.id.ingredient3)
+    EditText mIngredient3Et;
+
+    @BindView(R.id.ingredient4)
+    EditText mIngredient4Et;
+
+    @BindView(R.id.description_edit_text)
+    EditText mDescriptionEt;
+
+    private NewTipFirebaseHelper mFirebaseHelper;
     private int category;
     private String imagePath;
 
@@ -72,6 +96,8 @@ public class NewTipActivity extends AppCompatActivity {
             imagePath = savedInstanceState.getString(KEY_IMAGE_PATH, "");
         }
 
+        mFirebaseHelper = new NewTipFirebaseHelper(this);
+
         prepareToolbar();
         prepareAuthorDesc();
         prepareSpinner();
@@ -80,6 +106,10 @@ public class NewTipActivity extends AppCompatActivity {
         Timber.d("onCreate");
     }
 
+    /*
+      On rotation we have to save chosen category in spinner and local path to chosen tip image.
+      Texts from EditTexts are saved automatically.
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(KEY_CATEGORY, category);
@@ -99,24 +129,7 @@ public class NewTipActivity extends AppCompatActivity {
     }
 
     private void prepareAuthorDesc() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference("user-photos").child(user.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String path = (String)dataSnapshot.getValue();
-                        Timber.d(path);
-                        Glide.with(NewTipActivity.this)
-                                .load(path)
-                                .into(mAuthorPhotoIv);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Timber.e("Database error: " + databaseError.getMessage());
-                    }
-                });
-        mNicknameTv.setText(user.getDisplayName());
+        mFirebaseHelper.setAuthorDetails();
     }
 
     private void prepareSpinner() {
@@ -154,8 +167,7 @@ public class NewTipActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == android.R.id.home) {
-            finish();
-            overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
+            finishWithTransition();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -164,6 +176,10 @@ public class NewTipActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finishWithTransition();
+    }
+
+    private void finishWithTransition() {
         finish();
         overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
     }
@@ -186,13 +202,73 @@ public class NewTipActivity extends AppCompatActivity {
                 .into(mImageView);
     }
 
+    @Override
+    public void setAuthorPhoto(String url) {
+        Glide.with(NewTipActivity.this)
+                .load(url)
+                .into(mAuthorPhotoIv);
+    }
+
+    @Override
+    public void setAuthorNickname(String nickname) {
+        mNicknameTv.setText(nickname);
+    }
+
+    @Override
+    public LinearLayout getLayout() {
+        return mNewTipLayout;
+    }
+
     //method to be called when "add tip" button is clicked
     public void addTip(View view) {
         if(!NetworkConnectionHelper.isInternetConnection(this)) {
             SnackbarHelper.showUnableToAddTip(view);
         } else {
+            String title = mTitleEt.getText().toString();
+            if(TextUtils.isEmpty(title)) {
+                SnackbarHelper.showCannotBeEmpty(mNewTipLayout,
+                        getResources().getString(R.string.element_title));
+                return;
+            }
 
+            String ingredient1 = mIngredient1Et.getText().toString();
+            String ingredient2 = mIngredient2Et.getText().toString();
+            String ingredient3 = mIngredient3Et.getText().toString();
+            String ingredient4 = mIngredient4Et.getText().toString();
+            ArrayList<String> ingredients = new ArrayList<>();
+            if(!TextUtils.isEmpty(ingredient1)) ingredients.add(ingredient1);
+            if(!TextUtils.isEmpty(ingredient2)) ingredients.add(ingredient2);
+            if(!TextUtils.isEmpty(ingredient3)) ingredients.add(ingredient3);
+            if(!TextUtils.isEmpty(ingredient4)) ingredients.add(ingredient4);
+            if(ingredients.isEmpty()) {
+                SnackbarHelper.showCannotBeEmpty(mNewTipLayout,
+                        getResources().getString(R.string.element_ingredient_list));
+                return;
+            }
+
+            String description = mDescriptionEt.getText().toString();
+            if(TextUtils.isEmpty(description)) {
+                SnackbarHelper.showCannotBeEmpty(mNewTipLayout,
+                        getResources().getString(R.string.element_description));
+                return;
+            }
+
+            if(TextUtils.isEmpty(imagePath)) {
+                SnackbarHelper.showImageCannotBeEmpty(mNewTipLayout);
+                return;
+            }
+            mFirebaseHelper.addTip(title, ingredients, description, getCategory(), imagePath);
+            finishWithTransition();
         }
+    }
+
+    private String getCategory() {
+        switch (category){
+            case 0: return CATEGORY_HAIR;
+            case 1: return CATEGORY_FACE;
+            case 2: return CATEGORY_BODY;
+        }
+        return CATEGORY_HAIR;
     }
 
 }

@@ -15,13 +15,13 @@
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
         android:tint="@color/white_semi"
-        app:layout_constraintEnd_toStartOf="@+id/ingredient3"
+        app:layout_constraintEnd_toStartOf="@+id/ingredient2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/ingredient3"
+        android:id="@+id/ingredient2"
         style="@style/IngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:layout_constraintStart_toEndOf="@+id/ingredient1" />
 
     <EditText
-        android:id="@+id/ingredient2"
+        android:id="@+id/ingredient3"
         style="@style/IngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
@@ -50,9 +50,9 @@
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
         android:tint="@color/white_semi"
-        app:layout_constraintBottom_toBottomOf="@+id/ingredient2"
+        app:layout_constraintBottom_toBottomOf="@+id/ingredient3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ingredient2" />
+        app:layout_constraintStart_toEndOf="@+id/ingredient3" />
 
 </android.support.constraint.ConstraintLayout>

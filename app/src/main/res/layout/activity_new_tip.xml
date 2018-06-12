@@ -81,8 +81,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginStart="@dimen/desc_margin"
-            android:layout_marginEnd="@dimen/desc_margin"
+            android:layout_marginStart="@dimen/spinner_button_ext_margin"
+            android:layout_marginEnd="@dimen/spinner_button_ext_margin"
             android:layout_marginBottom="@dimen/desc_margin"
             android:layout_marginTop="@dimen/spinner_top_margin"
             android:gravity="center">
@@ -91,7 +91,7 @@
                 android:id="@+id/category_spinner"
                 app:labelText="@string/spinner_label"
                 app:widgetColor="@color/white_title_tint"
-                android:layout_marginEnd="@dimen/spinner_button_margin"
+                android:layout_marginEnd="@dimen/spinner_button_int_margin"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
@@ -100,7 +100,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="@dimen/spinner_button_margin"
+                android:layout_marginStart="@dimen/spinner_button_int_margin"
                 android:backgroundTint="@color/pink200"
                 android:text="@string/button_label"
                 android:onClick="addTip"/>

@@ -62,5 +62,10 @@
     <string name="message_add_photo_no_internet">Adding photo won\'t work without internet
         connection.</string>
     <string name="message_add_photo_is_long">Loading photo may take some time.</string>
+    <string name="message_cannot_be_empty">Please, fill in %1$s before adding new tip.</string>
+    <string name="element_title">tip title</string>
+    <string name="element_ingredient_list">ingredient list</string>
+    <string name="element_description">tip description</string>
+    <string name="message_image_cannot_be_empty">Please, choose tip image before adding new tip.</string>
 
 </resources>

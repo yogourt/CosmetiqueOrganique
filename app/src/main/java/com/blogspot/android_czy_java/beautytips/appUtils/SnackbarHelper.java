@@ -28,6 +28,20 @@ public class SnackbarHelper {
         snackbarWithOk(R.string.message_add_photo_is_long, snackbarView);
     }
 
+    public static void showCannotBeEmpty(View snackbarView, String element) {
+        String message = snackbarView.getResources().getString(
+                R.string.message_cannot_be_empty, element);
+        simpleSnackbar(message, snackbarView);
+    }
+
+    public static void showImageCannotBeEmpty(View snackbarView) {
+        simpleSnackbar(R.string.message_image_cannot_be_empty, snackbarView);
+    }
+
+    public static void showAddingTipError(View snackbarView) {
+
+    }
+
     private static void snackbarWithOk(int message, View snackbarView) {
         Snackbar snackbar = Snackbar.make(snackbarView, message,
                 Snackbar.LENGTH_LONG).setAction(R.string.label_action_ok,
@@ -43,6 +57,14 @@ public class SnackbarHelper {
     }
 
     private static void simpleSnackbar(int message, View snackbarView) {
+        Snackbar snackbar = Snackbar.make(snackbarView, message,
+                Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(snackbarView.
+                getResources().getColor(R.color.bluegray900));
+        snackbar.show();
+    }
+
+    private static void simpleSnackbar(String message, View snackbarView) {
         Snackbar snackbar = Snackbar.make(snackbarView, message,
                 Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(snackbarView.
