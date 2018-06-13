@@ -39,7 +39,13 @@ public class SnackbarHelper {
     }
 
     public static void showAddingTipError(View snackbarView) {
+        simpleSnackbar(R.string.message_add_tip_error, snackbarView);
+    }
 
+    public static void showFeatureForLoggedInUsersOnly(String feature, View snackbarView) {
+        String message = snackbarView.getResources().getString(
+                R.string.message_feature_for_logged_in_only, feature);
+        simpleSnackbar(message, snackbarView);
     }
 
     private static void snackbarWithOk(int message, View snackbarView) {
