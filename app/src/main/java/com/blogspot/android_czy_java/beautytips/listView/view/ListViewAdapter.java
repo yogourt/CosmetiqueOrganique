@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
+import com.blogspot.android_czy_java.beautytips.detail.view.DetailActivity;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;

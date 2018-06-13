@@ -1,5 +1,6 @@
-package com.blogspot.android_czy_java.beautytips.detail;
+package com.blogspot.android_czy_java.beautytips.detail.view;
 
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,12 +19,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
+import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -39,7 +43,8 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAda
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_IMAGE;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_TITLE;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements
+        DetailFirebaseHelper.DetailViewInterface {
 
     @BindView(R.id.image)
     ImageView mImageView;
@@ -86,6 +91,9 @@ public class DetailActivity extends AppCompatActivity {
     private String mTitle;
     private String mImage;
     private String mAuthor;
+    private String mId;
+
+    private DetailFirebaseHelper mFirebaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,31 +109,24 @@ public class DetailActivity extends AppCompatActivity {
             mTitle = bundle.getString(KEY_TITLE);
             mImage = bundle.getString(KEY_IMAGE);
             if(bundle.containsKey(KEY_AUTHOR)) mAuthor = bundle.getString(KEY_AUTHOR);
-            String id = bundle.getString(KEY_ID);
+            mId = bundle.getString(KEY_ID);
 
-            FirebaseDatabase.getInstance().getReference("tips/" + id)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            prepareContent(dataSnapshot);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
+            mFirebaseHelper = new DetailFirebaseHelper(this, mId);
 
             loadImage();
+            mFirebaseHelper.getFirebaseDatabaseData();
+            prepareToolbar();
+            prepareFab();
+            mScrollView.smoothScrollTo(0, 0);
+        }
+        else {
+            finish();
         }
 
-        prepareToolbar();
-        prepareFab();
-        mScrollView.smoothScrollTo(0, 0);
+
     }
 
-    private void prepareContent(@NonNull DataSnapshot dataSnapshot) {
+    public void prepareContent(@NonNull DataSnapshot dataSnapshot) {
         String description = (String) dataSnapshot.child("description").getValue();
         mDescTextView.setText(description);
         String ingredient1 = (String) dataSnapshot.child("ingredient1").getValue();
@@ -219,6 +220,8 @@ public class DetailActivity extends AppCompatActivity {
                     }
                 }
         );
+        mFirebaseHelper.setFabState();
+
     }
 
     @Override
@@ -245,4 +248,27 @@ public class DetailActivity extends AppCompatActivity {
     private void overrideExitTransition() {
         overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
     }
+
+    public void changeFavouriteState(View view) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            SnackbarHelper.showFeatureForLoggedInUsersOnly(
+                    getResources().getString(R.string.feature_favourites), mScrollView);
+            return;
+        }
+        int bluegray700 = getResources().getColor(R.color.bluegray700);
+        if(mFab.getImageTintList().getDefaultColor() == bluegray700) {
+            setFabActive();
+            mFirebaseHelper.addTipToFavourites();
+
+        } else {
+            mFab.setImageTintList(ColorStateList.valueOf(bluegray700));
+            mFirebaseHelper.removeTipFromFavourites();
+        }
+    }
+
+    @Override
+    public void setFabActive() {
+        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
+    }
+
 }

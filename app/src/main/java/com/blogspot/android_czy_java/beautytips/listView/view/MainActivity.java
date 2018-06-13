@@ -1,5 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -36,10 +37,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
-        MainActivityUtils.DrawerCreationInterface {
+        MyDrawerLayoutListener.DrawerCreationInterface {
 
     public static final String KEY_CATEGORY = "category";
     public static final String KEY_NAV_POSITION = "navigation_position";
+    public static final String KEY_NAV_ITEM_ID = "navigation_item_id";
     public static final int RC_PHOTO_PICKER = 100;
 
 
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     private StaggeredGridLayoutManager mLayoutManager;
     private ListViewAdapter mAdapter;
-    private DrawerLayout.DrawerListener mDrawerListener;
+    private MyDrawerLayoutListener mDrawerListener;
 
     /*
       Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
      */
     private String category;
     private int navigationPosition;
+    private int navigationItemId;
 
     private int listPosition;
 
@@ -97,11 +100,13 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         if (savedInstanceState != null) {
             category = savedInstanceState.getString(KEY_CATEGORY);
-            navigationPosition = savedInstanceState.getInt(KEY_NAV_POSITION, 4);
+            navigationPosition = savedInstanceState.getInt(KEY_NAV_POSITION,
+                    MyDrawerLayoutListener.NAV_POSITION_ALL);
+            navigationItemId = savedInstanceState.getInt(KEY_NAV_ITEM_ID);
         } else {
-            category = MainActivityUtils.CATEGORY_ALL;
+            category = MyDrawerLayoutListener.CATEGORY_ALL;
             //set navigation position to "All"
-            navigationPosition = MainActivityUtils.NAV_POSITION_ALL;
+            navigationPosition = MyDrawerLayoutListener.NAV_POSITION_ALL;
         }
 
         Timber.d("On create");
@@ -121,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
         prepareNavigationDrawer();
         mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
+        mDrawerListener = new MyDrawerLayoutListener(this, navigationItemId, category);
+        mDrawerLayout.addDrawerListener(mDrawerListener);
     }
 
     @Override
@@ -136,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(KEY_CATEGORY, category);
         outState.putInt(KEY_NAV_POSITION, navigationPosition);
+        outState.putInt(KEY_NAV_ITEM_ID, navigationItemId);
         super.onSaveInstanceState(outState);
     }
 
@@ -198,18 +206,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
                         /*
                         Here we need mDrawerListener to properly close NavigationDrawer while
-                        changing category. Without this it will not close on recreate().
-                        mDrawerListener is instantiated in separate class to simplify
-                        this class, so all logic for item selected is moved there.
-                        mDrawerListener needs only to be added once, so if it's null
-                        it means that it wasn't added and we add it.
+                        changing category, which is added onResume(). Without this navigation drawer
+                         will not close on recreate().
                          */
-                            mDrawerLayout.removeDrawerListener(mDrawerListener);
-                            mDrawerListener = MainActivityUtils.
-                                    createDrawerListener(MainActivity.this, MainActivity.this,
-                                            item.getItemId(), category);
-                            mDrawerLayout.addDrawerListener(mDrawerListener);
-
+                        navigationItemId = item.getItemId();
+                        mDrawerListener.setItemId(item.getItemId());
 
                         return true;
                     }
@@ -279,6 +280,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     public FirebaseLoginHelper getLoginHelper() {
         return mLoginHelper;
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     public void setNickname(String nickname) {
