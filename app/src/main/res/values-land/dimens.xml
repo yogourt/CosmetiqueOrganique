@@ -5,4 +5,5 @@
     <dimen name="title_horiz_margin">32dp</dimen>
     <dimen name="spinner_button_int_margin">64dp</dimen>
     <dimen name="spinner_button_ext_margin">48dp</dimen>
+    <dimen name="ingredient_width">180dp</dimen>
 </resources>

@@ -67,5 +67,10 @@
     <string name="element_ingredient_list">ingredient list</string>
     <string name="element_description">tip description</string>
     <string name="message_image_cannot_be_empty">Please, choose tip image before adding new tip.</string>
+    <string name="message_add_tip_error">An error occurred while adding your tip. Please, try again.</string>
+    <string name="feature_new_tip">Creating a new tip</string>
+    <string name="feature_favourites">List of favourite tips</string>
+    <string name="feature_your_tips">List of own tips</string>
+    <string name="message_feature_for_logged_in_only">%1$s is the feature for logged in users only.</string>
 
 </resources>

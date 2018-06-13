@@ -27,7 +27,9 @@ import com.google.firebase.storage.UploadTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import timber.log.Timber;
@@ -79,7 +81,12 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                 int tipNumber = Integer.valueOf(String.valueOf(dataSnapshot.getValue()));
                 Timber.d(String.valueOf(tipNumber));
                 tipNumber++;
-                String tipPath = "" + tipNumber;
+
+                /*
+                  path to tip is negative number, so when loading the new ones are on top
+                  (Firebase Database supports only ascending order)
+                 */
+                String tipPath = "-" + tipNumber;
 
                 final DatabaseReference detailsReference = FirebaseDatabase.getInstance()
                         .getReference("tips/" + tipPath);
@@ -125,7 +132,8 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                     final DatabaseReference listReference = FirebaseDatabase.getInstance()
                             .getReference("tipList/" + tipPath);
                     //save title, category and author
-                    TipListItem listItem = new TipListItem(title, category, author);
+                    TipListItem listItem = new TipListItem(title, category, author,
+                            System.currentTimeMillis() * (-1));
                     listReference.setValue(listItem);
 
                     //save tip image

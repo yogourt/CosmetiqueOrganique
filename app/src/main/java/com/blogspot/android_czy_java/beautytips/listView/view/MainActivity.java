@@ -36,7 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
-        MainActivityUtils.DrawerCreationMethods {
+        MainActivityUtils.DrawerCreationInterface {
 
     public static final String KEY_CATEGORY = "category";
     public static final String KEY_NAV_POSITION = "navigation_position";
@@ -65,9 +65,14 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private ListViewAdapter mAdapter;
     private DrawerLayout.DrawerListener mDrawerListener;
 
+    /*
+      Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
+      to check selected item (it's rose), category is used when creating firebase query
+     */
     private String category;
-    private int listPosition;
     private int navigationPosition;
+
+    private int listPosition;
 
     private boolean isPhotoSaving;
 
