@@ -13,9 +13,9 @@ import com.google.firebase.database.Query;
 
 import javax.inject.Singleton;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivityUtils.CATEGORY_ALL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivityUtils.CATEGORY_FAVOURITES;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivityUtils.CATEGORY_YOUR_TIPS;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_FAVOURITES;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_YOUR_TIPS;
 
 
 @Singleton
