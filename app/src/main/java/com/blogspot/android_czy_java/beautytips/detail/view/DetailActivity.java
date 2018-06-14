@@ -89,7 +89,7 @@ public class DetailActivity extends AppCompatActivity implements
 
     private String mTitle;
     private String mImage;
-    private String mAuthor;
+    private String mAuthorId;
     private String mId;
 
     private DetailFirebaseHelper mFirebaseHelper;
@@ -107,7 +107,7 @@ public class DetailActivity extends AppCompatActivity implements
         if(bundle != null) {
             mTitle = bundle.getString(KEY_TITLE);
             mImage = bundle.getString(KEY_IMAGE);
-            if(bundle.containsKey(KEY_AUTHOR)) mAuthor = bundle.getString(KEY_AUTHOR);
+            if(bundle.containsKey(KEY_AUTHOR)) mAuthorId = bundle.getString(KEY_AUTHOR);
             mId = bundle.getString(KEY_ID);
 
             mFirebaseHelper = new DetailFirebaseHelper(this, mId);
@@ -150,11 +150,11 @@ public class DetailActivity extends AppCompatActivity implements
         }
 
 
-        if(!TextUtils.isEmpty(mAuthor)) {
+        if(!TextUtils.isEmpty(mAuthorId)) {
         String authorPhoto = (String) dataSnapshot.child("authorPhoto").getValue();
         Timber.d(authorPhoto);
-        mAuthorTv.setText(mAuthor);
-        Glide.with(this)
+            mFirebaseHelper.getNicknameFromDb(mAuthorId);
+            Glide.with(this)
                 .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
                 .load(authorPhoto)
                 .into(mAuthorPhoto);
@@ -165,6 +165,10 @@ public class DetailActivity extends AppCompatActivity implements
                     R.dimen.desc_top_padding_no_author);
             mDescTextView.setPadding(padding, topPadding, padding, padding);
         }
+    }
+
+    public  void setAuthor(String nickname) {
+        mAuthorTv.setText(nickname);
     }
 
     private void loadImage() {
