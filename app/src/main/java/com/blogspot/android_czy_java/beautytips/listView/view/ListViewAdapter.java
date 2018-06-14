@@ -134,7 +134,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
             bundle.putString(KEY_TITLE, item.getTitle());
             bundle.putString(KEY_IMAGE, item.getImage());
             bundle.putString(KEY_ID, item.getId());
-            if( !TextUtils.isEmpty(item.getAuthor()) ) bundle.putString(KEY_AUTHOR, item.getAuthor());
+            if( !TextUtils.isEmpty(item.getAuthorId()) ) bundle.putString(KEY_AUTHOR, item.getAuthorId());
 
             detailActivityIntent.putExtras(bundle);
 

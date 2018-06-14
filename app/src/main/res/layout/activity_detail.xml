@@ -95,7 +95,7 @@
         android:src="@drawable/ic_heart"
         android:tint="@color/bluegray700"
         app:layout_anchor="@id/layout_ingredients"
-        app:layout_anchorGravity="bottom|center"/>
+        app:layout_anchorGravity="bottom|left"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

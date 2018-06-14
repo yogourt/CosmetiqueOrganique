@@ -15,7 +15,8 @@
     <dimen name="title_start_padding">16dp</dimen>
     <dimen name="title_bottom_padding">16dp</dimen>
     <dimen name="dialog_padding">16dp</dimen>
-    <dimen name="dialog_title_top_padding">8dp</dimen>
+    <dimen name="dialog_width">300dp</dimen>
+
 
     <!-- detail screen dimens -->
     <dimen name="ingredients_bottom_padding">32dp</dimen>

@@ -51,6 +51,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
     public void setAuthorDetails() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
+            //set user's photo
             FirebaseDatabase.getInstance().getReference("userPhotos").child(user.getUid())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -62,10 +63,22 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Timber.e("Database error: " + databaseError.getMessage());
+                            Timber.e(databaseError.getMessage());
                         }
                     });
-            activity.setAuthorNickname(user.getDisplayName());
+            //set user's nickname
+            FirebaseDatabase.getInstance().getReference("userNicknames").child(user.getUid())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            activity.setAuthorNickname(String.valueOf(dataSnapshot.getValue()));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Timber.e(databaseError.getMessage());
+                        }
+                    });
         }
     }
 
@@ -124,15 +137,15 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                                 }
                             });
 
+
                     //save new tip number
                     tipNumReference.setValue(tipNumber);
 
-                    String author = user.getDisplayName();
-
                     final DatabaseReference listReference = FirebaseDatabase.getInstance()
                             .getReference("tipList/" + tipPath);
+
                     //save title, category and author
-                    TipListItem listItem = new TipListItem(title, category, author,
+                    TipListItem listItem = new TipListItem(title, category, user.getUid(),
                             System.currentTimeMillis() * (-1));
                     listReference.setValue(listItem);
 

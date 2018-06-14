@@ -32,7 +32,7 @@ public class FirebaseHelper {
                         String id = snapshot.getKey();
                         if (item != null) {
                             item.setId(id);
-                            if (!author.equals("null")) item.setAuthor(author);
+                            if (!author.equals("null")) item.setAuthorId(author);
                         }
                         return item;
                     }
@@ -54,7 +54,7 @@ public class FirebaseHelper {
                 return FirebaseDatabase.getInstance()
                         .getReference()
                         .child("tipList")
-                        .orderByChild("author").equalTo(user.getDisplayName());
+                        .orderByChild("author").equalTo(user.getUid());
         }
 
         if(category.equals(CATEGORY_FAVOURITES)) {

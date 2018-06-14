@@ -7,16 +7,9 @@
     android:padding="@dimen/dialog_padding"
     android:background="@color/bluegray900">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dialog_title"
-        android:paddingTop="@dimen/dialog_title_top_padding"
-        style="@style/NormalTextStyle"/>
-
     <EditText
         android:id="@+id/nickname_edit_text"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/dialog_width"
         android:layout_height="wrap_content"
         style="@style/UsernameStyle" />
 

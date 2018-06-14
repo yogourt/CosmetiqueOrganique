@@ -31,6 +31,8 @@ public class NicknamePickerDialog extends DialogFragment {
         View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_nickname_picker, null);
         builder.setView(R.layout.dialog_nickname_picker);
 
+        builder.setTitle(R.string.dialog_title);
+        builder.setMessage(R.string.dialog_message);
         builder.setPositiveButton(R.string.dialog_button_positive_label,
                 new DialogInterface.OnClickListener() {
             @Override

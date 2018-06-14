@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import timber.log.Timber;
+
 public class DetailFirebaseHelper {
 
     private static String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -24,6 +26,7 @@ public class DetailFirebaseHelper {
     public interface DetailViewInterface {
         void setFabActive();
         void prepareContent(DataSnapshot dataSnapshot);
+        void setAuthor(String username);
     }
 
     public void getFirebaseDatabaseData() {
@@ -69,5 +72,20 @@ public class DetailFirebaseHelper {
                     }
                 });
 
+    }
+
+    public void getNicknameFromDb(String userId) {
+        FirebaseDatabase.getInstance().getReference("userNicknames/" + userId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        activity.setAuthor(String.valueOf(dataSnapshot.getValue()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.d(databaseError.getMessage());
+                    }
+                });
     }
 }

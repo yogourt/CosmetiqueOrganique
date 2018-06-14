@@ -1,58 +1,58 @@
 package com.blogspot.android_czy_java.beautytips.listView.model;
 
 public class ListItem {
-    private String mImage;
-    private String mTitle;
-    private String mId;
-    private String mCategory;
-    private String mAuthor;
+    private String image;
+    private String title;
+    private String tipId;
+    private String category;
+    private String authorId;
     
     public ListItem() {}
 
     public ListItem(String image, String title, String category) {
-        mImage = image;
-        mTitle = title;
-        mCategory = category;
+        this.image = image;
+        this.title = title;
+        this.category = category;
     }
 
     public String getImage() {
-        return mImage;
+        return image;
     }
 
     public void setImage(String mImage) {
-        this.mImage = mImage;
+        this.image = mImage;
     }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
+        this.title = mTitle;
     }
 
     public String getId() {
-        return this.mId;
+        return this.tipId;
     }
 
     public void setId(String mId) {
-        this.mId = mId;
+        this.tipId = mId;
     }
 
     public String getCategory() {
-        return mCategory;
+        return category;
     }
 
     public void setCategory(String mCategory) {
-        this.mCategory = mCategory;
+        this.category = mCategory;
     }
 
-    public String getAuthor() {
-        return mAuthor;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(String mAuthor) {
-        this.mAuthor = mAuthor;
+    public void setAuthorId(String mAuthor) {
+        this.authorId = mAuthor;
     }
 }
 

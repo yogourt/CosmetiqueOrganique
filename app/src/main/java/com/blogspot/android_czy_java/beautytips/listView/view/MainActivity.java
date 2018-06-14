@@ -297,6 +297,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     public void onDialogSaveButtonClick(String nickname) {
         mLoginHelper.saveNickname(nickname);
+        setNickname(nickname);
     }
 
 
