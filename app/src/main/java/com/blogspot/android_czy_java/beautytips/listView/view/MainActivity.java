@@ -1,5 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,6 +17,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
@@ -37,12 +40,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
-        MyDrawerLayoutListener.DrawerCreationInterface {
+        MyDrawerLayoutListener.DrawerCreationInterface, FirebaseLoginHelper.MainViewInterface,
+        NicknamePickerDialog.DialogListener {
 
     public static final String KEY_CATEGORY = "category";
     public static final String KEY_NAV_POSITION = "navigation_position";
     public static final String KEY_NAV_ITEM_ID = "navigation_item_id";
     public static final int RC_PHOTO_PICKER = 100;
+    public static final String TAG_DIALOG = "photo_picker_dialog";
 
 
     @BindView(R.id.recycler_view)
@@ -78,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private int listPosition;
 
     private boolean isPhotoSaving;
+
+    private DialogFragment mDialogFragment;
 
 
     @Override
@@ -144,6 +151,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         outState.putString(KEY_CATEGORY, category);
         outState.putInt(KEY_NAV_POSITION, navigationPosition);
         outState.putInt(KEY_NAV_ITEM_ID, navigationItemId);
+
+        if(mDialogFragment != null) {
+            mDialogFragment.dismiss();
+            mLoginHelper.setIsDialogShown(false);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -269,6 +281,24 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             }
         }
     }
+
+    public  void showPickNicknameDialog() {
+        mDialogFragment = new NicknamePickerDialog();
+        mDialogFragment.show(getFragmentManager(), TAG_DIALOG);
+        getFragmentManager().executePendingTransactions();
+        Window dialogWindow = mDialogFragment.getDialog().getWindow();
+        if(dialogWindow != null) {
+            dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                    | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+            dialogWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+    @Override
+    public void onDialogSaveButtonClick(String nickname) {
+        mLoginHelper.saveNickname(nickname);
+    }
+
 
     public void setCategory(String category) {
         this.category = category;
