@@ -14,6 +14,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -29,9 +31,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -250,6 +249,9 @@ public class DetailActivity extends AppCompatActivity implements
     }
 
     public void changeFavouriteState(View view) {
+        Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
+        mFab.startAnimation(scaleAnim);
+
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             SnackbarHelper.showFeatureForLoggedInUsersOnly(
                     getResources().getString(R.string.feature_favourites), mScrollView);

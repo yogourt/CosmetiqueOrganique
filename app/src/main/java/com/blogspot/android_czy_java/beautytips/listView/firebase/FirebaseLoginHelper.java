@@ -1,14 +1,13 @@
 package com.blogspot.android_czy_java.beautytips.listView.firebase;
 
-import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.view.MainActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,8 +24,6 @@ import com.google.firebase.storage.UploadTask;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Singleton;
-
 import timber.log.Timber;
 
 public class FirebaseLoginHelper implements LifecycleObserver {
@@ -41,14 +38,26 @@ public class FirebaseLoginHelper implements LifecycleObserver {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private DatabaseReference mUserPhotoReference;
+    private DatabaseReference mNicknamesReference;
 
     private UploadTask mSavingUserPhotoTask;
 
-    MainActivity activity;
+    private boolean isDialogShown;
 
-    public FirebaseLoginHelper(MainActivity activity) {
+    MainViewInterface activity;
+
+    public FirebaseLoginHelper(MainViewInterface activity) {
         mAuth = FirebaseAuth.getInstance();
         this.activity = activity;
+        mNicknamesReference = FirebaseDatabase.getInstance().getReference("userNicknames");
+    }
+
+    public interface MainViewInterface {
+        void startActivityForResult(Intent intent, int requestCode);
+        void setNickname(String nickname);
+        void setUserPhoto(String url);
+        void setIsPhotoSaving(boolean value);
+        void showPickNicknameDialog();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -59,6 +68,11 @@ public class FirebaseLoginHelper implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void addAuthStateListener() {
         mAuth.addAuthStateListener(mAuthStateListener);
+
+        if(!isDialogShown) {
+            getNickname();
+            isDialogShown = true;
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -68,7 +82,7 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         }
     }
 
-    private FirebaseAuth.AuthStateListener createAuthStateListener(final Activity activity) {
+    private FirebaseAuth.AuthStateListener createAuthStateListener(final MainViewInterface activity) {
         return new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -95,8 +109,6 @@ public class FirebaseLoginHelper implements LifecycleObserver {
     }
 
     public void signIn() {
-            String nickname = mAuth.getCurrentUser().getDisplayName();
-            activity.setNickname(nickname);
 
             mUserPhotoReference = FirebaseDatabase.getInstance().getReference("userPhotos")
                     .child(getUserId());
@@ -115,6 +127,28 @@ public class FirebaseLoginHelper implements LifecycleObserver {
                 }
             });
 
+    }
+
+    private void getNickname() {
+        if(mAuth.getCurrentUser() != null) {
+            mNicknamesReference.child(getUserId())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String nickname = String.valueOf(dataSnapshot.getValue());
+                            if (nickname.equals("null")) activity.showPickNicknameDialog();
+                            else activity.setNickname(nickname);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+        }
+    }
+
+    public void saveNickname(String nickname) {
+        mNicknamesReference.child(getUserId()).setValue(nickname);
     }
 
     String getUserId() {
@@ -146,5 +180,9 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         if(mSavingUserPhotoTask != null && mSavingUserPhotoTask.isInProgress())
             mSavingUserPhotoTask.cancel();
         activity.setIsPhotoSaving(false);
+    }
+
+    public void setIsDialogShown(boolean value) {
+        isDialogShown = value;
     }
 }

@@ -53,6 +53,8 @@
 
     <!-- log in/log out strings -->
     <string name="fui_name_hint" translation_description="Hint for nickname field">Nickname</string>
+    <string name="dialog_button_positive_label">Save</string>
+    <string name="dialog_title">Choose nickname:</string>
 
     <!-- snackbar strings -->
     <string name="message_log_out_no_internet">Unable to log out without internet connection.</string>
