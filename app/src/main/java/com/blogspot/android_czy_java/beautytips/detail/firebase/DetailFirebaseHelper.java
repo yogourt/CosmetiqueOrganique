@@ -27,6 +27,7 @@ public class DetailFirebaseHelper {
         void setFabActive();
         void prepareContent(DataSnapshot dataSnapshot);
         void setAuthor(String username);
+        void setAuthorPhoto(String photoUrl);
     }
 
     public void getFirebaseDatabaseData() {
@@ -80,6 +81,22 @@ public class DetailFirebaseHelper {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         activity.setAuthor(String.valueOf(dataSnapshot.getValue()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.d(databaseError.getMessage());
+                    }
+                });
+    }
+
+    public void getAuthorPhotoFromDb(String userId) {
+        FirebaseDatabase.getInstance().getReference("userPhotos/" + userId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String photoUrl = String.valueOf(dataSnapshot.getValue());
+                        if(!photoUrl.equals("null")) activity.setAuthorPhoto(photoUrl);
                     }
 
                     @Override
