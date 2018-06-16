@@ -50,6 +50,7 @@
     <string name="title_activity_new_tip">New tip</string>
     <string name="button_label">Add tip</string>
     <string name="spinner_label">Category</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <!-- log in/log out strings -->
     <string name="fui_name_hint" translation_description="Hint for nickname field">Nickname</string>

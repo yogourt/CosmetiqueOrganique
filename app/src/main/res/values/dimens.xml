@@ -30,6 +30,7 @@
     <dimen name="author_padding">32dp</dimen>
     <dimen name="desc_padding">16dp</dimen>
     <dimen name="desc_top_padding_no_author">64dp</dimen>
+    <dimen name="desc_bottom_margin">64dp</dimen>
     <dimen name="app_bar_layout_height">192dp</dimen>
     <dimen name="fab_margin">32dp</dimen>
 
