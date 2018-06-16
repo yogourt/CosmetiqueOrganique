@@ -29,6 +29,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
@@ -87,12 +90,16 @@ public class DetailActivity extends AppCompatActivity implements
     @BindView(R.id.nickname_text_view)
     TextView mAuthorTv;
 
+    @BindView(R.id.adView)
+    AdView mAdView;
+
     private String mTitle;
     private String mImage;
     private String mAuthorId;
     private String mId;
 
     private DetailFirebaseHelper mFirebaseHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +123,7 @@ public class DetailActivity extends AppCompatActivity implements
             mFirebaseHelper.getFirebaseDatabaseData();
             prepareToolbar();
             prepareFab();
-            mScrollView.smoothScrollTo(0, 0);
+            prepareAdView();
         }
         else {
             finish();
@@ -226,6 +233,12 @@ public class DetailActivity extends AppCompatActivity implements
                 }
         );
         mFirebaseHelper.setFabState();
+
+    }
+
+    private void prepareAdView() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
     }
 
