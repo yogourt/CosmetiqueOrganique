@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -17,6 +18,7 @@ import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -34,6 +36,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+
+import java.time.Duration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,6 +96,9 @@ public class DetailActivity extends AppCompatActivity implements
 
     @BindView(R.id.adView)
     AdView mAdView;
+
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout mAppBarLayout;
 
     private String mTitle;
     private String mImage;
@@ -163,9 +170,11 @@ public class DetailActivity extends AppCompatActivity implements
             mFirebaseHelper.getNicknameFromDb(mAuthorId);
         } else {
             int padding = (int) getResources().getDimension(R.dimen.desc_padding);
+            int bottomPadding = (int) getResources().getDimension(
+                    R.dimen.author_bottom_margin);
             int topPadding = (int) getResources().getDimension(
-                    R.dimen.desc_top_padding_no_author);
-            mDescTextView.setPadding(padding, topPadding, padding, padding);
+                    R.dimen.desc_top_padding);
+            mDescTextView.setPadding(padding, topPadding, padding, bottomPadding);
         }
     }
 
@@ -213,6 +222,15 @@ public class DetailActivity extends AppCompatActivity implements
             actionBar.setHomeAsUpIndicator(R.drawable.ripple_back);
         }
 
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if(Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                    showAdView();
+                } else hideAdView();
+            }
+        });
+
     }
 
     /*
@@ -239,6 +257,7 @@ public class DetailActivity extends AppCompatActivity implements
     private void prepareAdView() {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        mAdView.setAlpha(0);
 
     }
 
@@ -290,6 +309,20 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void setFabActive() {
         mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
+    }
+
+    private void showAdView() {
+        mAdView.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start();
+    }
+
+    private void hideAdView() {
+        mAdView.animate()
+                .alpha(0f)
+                .setDuration(300)
+                .start();
     }
 
 }

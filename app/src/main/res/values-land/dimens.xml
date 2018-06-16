@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <!-- new tip activity resources -->
+    <!-- new tip activity dimens -->
     <dimen name="desc_margin">32dp</dimen>
     <dimen name="title_horiz_margin">32dp</dimen>
     <dimen name="spinner_button_int_margin">64dp</dimen>
     <dimen name="spinner_button_ext_margin">48dp</dimen>
     <dimen name="ingredient_width">180dp</dimen>
+
+    <!-- detail activity dimens -->
+    <dimen name="fab_margin">64dp</dimen>
+    <dimen name="exp_title_text_size">30sp</dimen>
+    <dimen name="desc_padding">32dp</dimen>
+    <dimen name="author_padding_start">48dp</dimen>
 </resources>

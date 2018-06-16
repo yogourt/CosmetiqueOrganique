@@ -37,7 +37,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     public static final String KEY_ID = "id";
     public static final String KEY_AUTHOR = "author";
 
-    public static final int[] itemHeights = {630, 670, 600, 700};
+    public static final int[] itemHeights = {630, 600, 670, 650};
 
     private Context mContext;
     private int lastPosition;
