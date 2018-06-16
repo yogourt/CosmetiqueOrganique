@@ -34,6 +34,10 @@
         <item name="android:fontFamily">cursive</item>
     </style>
 
+    <style name="ExpandedTitleStyle" parent="TitleStyle">
+        <item name="android:textSize">@dimen/exp_title_text_size</item>
+    </style>
+
     <style name="NormalTextStyle" parent="TextAppearance.AppCompat.Small">
         <item name="android:textSize">@dimen/normal_text_size</item>
         <item name="android:textColor">@color/bluegray50</item>

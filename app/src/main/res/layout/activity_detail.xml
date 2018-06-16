@@ -26,27 +26,20 @@
                 android:id="@+id/layout_ingredients"
                 layout="@layout/layout_ingredients" />
 
-            <include
-                android:id="@+id/layout_author"
-                layout="@layout/layout_author"
-                android:visibility="gone" />
-
             <TextView
                 android:id="@+id/description_text_view"
                 style="@style/NormalTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/desc_bottom_margin"
-                android:padding="@dimen/desc_padding" />
+                android:paddingTop="@dimen/desc_top_padding"
+                android:paddingStart="@dimen/desc_padding"
+                android:paddingEnd="@dimen/desc_padding"/>
 
-                <com.google.android.gms.ads.AdView
-                    android:id="@+id/adView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    ads:adSize="BANNER"
-                    ads:adUnitId="@string/banner_ad_unit_id"/>
+            <include
+                android:id="@+id/layout_author"
+                layout="@layout/layout_author"
+                android:visibility="gone" />
+
 
         </LinearLayout>
 
@@ -65,7 +58,7 @@
             android:layout_height="match_parent"
             app:collapsedTitleTextAppearance="@style/TitleStyle"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleTextAppearance="@style/TitleStyle"
+            app:expandedTitleTextAppearance="@style/ExpandedTitleStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <FrameLayout
@@ -110,5 +103,14 @@
         android:tint="@color/bluegray700"
         app:layout_anchor="@id/layout_ingredients"
         app:layout_anchorGravity="bottom|right" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"/>
 
 </android.support.design.widget.CoordinatorLayout>
