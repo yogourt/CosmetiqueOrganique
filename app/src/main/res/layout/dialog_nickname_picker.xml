@@ -13,4 +13,13 @@
         android:layout_height="wrap_content"
         style="@style/UsernameStyle" />
 
+    <TextView
+        android:id="@+id/error_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginStart="@dimen/error_margin_start"
+        android:text="@string/dialog_no_nickname_error_message"
+        android:textColor="@android:color/holo_red_light"/>
+
 </LinearLayout>
