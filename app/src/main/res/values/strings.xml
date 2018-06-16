@@ -56,6 +56,7 @@
     <string name="dialog_button_positive_label">Save</string>
     <string name="dialog_title">Welcome in Beauty Tips!</string>
     <string name="dialog_message">First, choose your nickname:</string>
+    <string name="dialog_no_nickname_error_message">Field cannot be empty.</string>
 
     <!-- snackbar strings -->
     <string name="message_log_out_no_internet">Unable to log out without internet connection.</string>
