@@ -122,22 +122,6 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                     }
                     detailsReference.setValue(details);
 
-                    //save author's photo
-                    FirebaseDatabase.getInstance().getReference("userPhotos/" + user.getUid())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    detailsReference.child("authorPhoto").setValue(dataSnapshot
-                                            .getValue());
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    Timber.d(databaseError.getMessage());
-                                }
-                            });
-
-
                     //save new tip number
                     tipNumReference.setValue(tipNumber);
 
