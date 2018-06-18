@@ -45,10 +45,28 @@ public class SnackbarHelper {
     public static void showFeatureForLoggedInUsersOnly(String feature, View snackbarView) {
         String message = snackbarView.getResources().getString(
                 R.string.message_feature_for_logged_in_only, feature);
-        simpleSnackbar(message, snackbarView);
+        snackbarWithOk(message, snackbarView);
+    }
+
+    public static void showUnableToLogIn(View snackbarView) {
+        snackbarWithOk(R.string.message_log_in_no_internet, snackbarView);
     }
 
     private static void snackbarWithOk(int message, View snackbarView) {
+        Snackbar snackbar = Snackbar.make(snackbarView, message,
+                Snackbar.LENGTH_LONG).setAction(R.string.label_action_ok,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    }
+                })
+                .setActionTextColor(snackbarView.getResources().getColor(R.color.pink200));
+        snackbar.getView().setBackgroundColor(snackbarView.
+                getResources().getColor(R.color.bluegray900));
+        snackbar.show();
+    }
+
+    private static void snackbarWithOk(String message, View snackbarView) {
         Snackbar snackbar = Snackbar.make(snackbarView, message,
                 Snackbar.LENGTH_LONG).setAction(R.string.label_action_ok,
                 new View.OnClickListener() {

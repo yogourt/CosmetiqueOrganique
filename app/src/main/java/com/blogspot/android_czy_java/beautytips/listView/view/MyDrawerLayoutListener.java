@@ -14,6 +14,7 @@ import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import timber.log.Timber;
 
@@ -29,6 +30,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
     public static final int NAV_POSITION_YOUR_TIPS = 0;
     public static final int NAV_POSITION_FAVOURITES = 1;
+    public static final int NAV_POSITION_LOG_OUT = 3;
     public static final int NAV_POSITION_ALL = 4;
     public static final int NAV_POSITION_HAIR = 5;
     public static final int NAV_POSITION_FACE = 6;
@@ -50,8 +52,9 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
         void setCategory(String category);
         void setNavigationPosition(int newPosition);
         void startActivity(Intent intent);
+        void logOut();
+        void signInAnonymousUser();
         RecyclerView getRecyclerView();
-        FirebaseLoginHelper getLoginHelper();
         Resources getResources();
         Context getContext();
     }
@@ -71,84 +74,103 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     @Override
     public void onDrawerClosed(@NonNull View drawerView) {
         Timber.d("onDrawerClosed, itemId=" + itemId);
-        switch (itemId) {
 
-            case R.id.nav_your_tips:
-                if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    if (category.equals(CATEGORY_YOUR_TIPS)) break;
-                    activity.setCategory(CATEGORY_YOUR_TIPS);
-                    activity.setNavigationPosition(NAV_POSITION_YOUR_TIPS);
-                    activity.recreate();
-                } else {
-                    SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getResources()
-                                    .getString(R.string.feature_your_tips),
-                            activity.getRecyclerView());
-                }
-                return;
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-            case R.id.nav_favourites:
-                if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    if (category.equals(CATEGORY_FAVOURITES)) break;
-                    activity.setCategory(CATEGORY_FAVOURITES);
-                    activity.setNavigationPosition(NAV_POSITION_FAVOURITES);
-                    activity.recreate();
-                } else {
-                    SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getResources()
-                            .getString(R.string.feature_favourites), activity.getRecyclerView());
-                }
-                return;
+            if(user != null) {
 
-            case R.id.nav_add_new:
-                if(NetworkConnectionHelper.isInternetConnection(
-                        activity.getContext())) {
-                    if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-                        Intent intent = new Intent(activity.getContext(),
-                                NewTipActivity.class);
-                        activity.startActivity(intent);
+                switch (itemId) {
+                case R.id.nav_your_tips:
+                    if (!user.isAnonymous()) {
+                        if (category.equals(CATEGORY_YOUR_TIPS)) break;
+                        activity.setCategory(CATEGORY_YOUR_TIPS);
+                        activity.setNavigationPosition(NAV_POSITION_YOUR_TIPS);
+                        activity.recreate();
                     } else {
                         SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getResources()
-                                .getString(R.string.feature_new_tip), activity.getRecyclerView());
+                                        .getString(R.string.feature_your_tips),
+                                activity.getRecyclerView());
                     }
-                } else {
-                    SnackbarHelper.showUnableToAddTip(
-                            activity.getRecyclerView());
-                }
-                return;
+                    return;
 
-            case R.id.nav_log_out:
-                if(NetworkConnectionHelper.isInternetConnection(
-                        activity.getContext())) {
-                    activity.getLoginHelper().logOut();
-                } else {
-                    SnackbarHelper.showUnableToLogOut(
-                            activity.getRecyclerView());
-                }
-                return;
+                case R.id.nav_favourites:
+                    if (!user.isAnonymous()) {
+                        if (category.equals(CATEGORY_FAVOURITES)) break;
+                        activity.setCategory(CATEGORY_FAVOURITES);
+                        activity.setNavigationPosition(NAV_POSITION_FAVOURITES);
+                        activity.recreate();
+                    } else {
+                        SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getResources()
+                                .getString(R.string.feature_favourites), activity.getRecyclerView());
+                    }
+                    return;
 
-            case R.id.nav_all:
-                if(category.equals(CATEGORY_ALL)) break;
-                activity.setCategory(CATEGORY_ALL);
-                activity.setNavigationPosition(NAV_POSITION_ALL);
-                activity.recreate();
-                return;
-            case R.id.nav_hair:
-                if(category.equals(CATEGORY_HAIR)) break;
-                activity.setCategory(CATEGORY_HAIR);
-                activity.setNavigationPosition(NAV_POSITION_HAIR);
-                activity.recreate();
-                return;
-            case R.id.nav_face:
-                if(category.equals(CATEGORY_FACE)) break;
-                activity.setCategory(CATEGORY_FACE);
-                activity.setNavigationPosition(NAV_POSITION_FACE);
-                activity.recreate();
-                return;
-            case R.id.nav_body:
-                if(category.equals(CATEGORY_BODY)) break;
-                activity.setCategory(CATEGORY_BODY);
-                activity.setNavigationPosition(NAV_POSITION_BODY);
-                activity.recreate();
-                return;
+                case R.id.nav_add_new:
+                    if(!user.isAnonymous()) {
+                        if (NetworkConnectionHelper.isInternetConnection(
+                                activity.getContext())) {
+                                Intent intent = new Intent(activity.getContext(),
+                                        NewTipActivity.class);
+                                activity.startActivity(intent);
+                        } else {
+                            SnackbarHelper.showUnableToAddTip(
+                                    activity.getRecyclerView());
+                        }
+                    } else {
+                        SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getResources()
+                                        .getString(R.string.feature_new_tip),
+                                activity.getRecyclerView());
+                    }
+                    return;
+
+                case R.id.nav_log_out:
+
+                    if(user.isAnonymous()) {
+                        if(NetworkConnectionHelper.isInternetConnection(
+                                activity.getContext())) {
+                            activity.signInAnonymousUser();
+                        } else {
+                            SnackbarHelper.showUnableToLogIn(
+                                    activity.getRecyclerView());
+                        }
+                    } else {
+                        if (NetworkConnectionHelper.isInternetConnection(
+                                activity.getContext())) {
+                            activity.logOut();
+                        } else {
+                            SnackbarHelper.showUnableToLogOut(
+                                    activity.getRecyclerView());
+                        }
+                    }
+                        return;
+
+
+                case R.id.nav_all:
+                    if (category.equals(CATEGORY_ALL)) break;
+                    activity.setCategory(CATEGORY_ALL);
+                    activity.setNavigationPosition(NAV_POSITION_ALL);
+                    activity.recreate();
+                    return;
+                case R.id.nav_hair:
+                    if (category.equals(CATEGORY_HAIR)) break;
+                    activity.setCategory(CATEGORY_HAIR);
+                    activity.setNavigationPosition(NAV_POSITION_HAIR);
+                    activity.recreate();
+                    return;
+                case R.id.nav_face:
+                    if (category.equals(CATEGORY_FACE)) break;
+                    activity.setCategory(CATEGORY_FACE);
+                    activity.setNavigationPosition(NAV_POSITION_FACE);
+                    activity.recreate();
+                    return;
+                case R.id.nav_body:
+                    if (category.equals(CATEGORY_BODY)) break;
+                    activity.setCategory(CATEGORY_BODY);
+                    activity.setNavigationPosition(NAV_POSITION_BODY);
+                    activity.recreate();
+                    return;
+
+            }
 
         }
     }
