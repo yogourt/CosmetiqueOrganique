@@ -18,22 +18,21 @@ import timber.log.Timber;
 
 public class NicknamePickerDialog extends DialogFragment {
 
-    public interface DialogListener {
+    public interface NicknamePickerDialogListener {
         void onDialogSaveButtonClick(String nickname);
     }
 
-    private DialogListener mDialogListener;
+    private NicknamePickerDialogListener mNicknamePickerDialogListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogStyle);
 
-
-        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_nickname_picker, null);
         builder.setView(R.layout.dialog_nickname_picker);
 
-        builder.setTitle(R.string.dialog_title);
-        builder.setMessage(R.string.dialog_message);
+        builder.setTitle(R.string.dialog_nickname_title);
+        builder.setMessage(R.string.dialog_nickname_message);
+        builder.setIcon(R.drawable.ic_soap);
         builder.setPositiveButton(R.string.dialog_button_positive_label,
                 new DialogInterface.OnClickListener() {
             @Override
@@ -50,10 +49,10 @@ public class NicknamePickerDialog extends DialogFragment {
         super.onAttach(activity);
 
         try {
-            mDialogListener = (DialogListener) activity;
+            mNicknamePickerDialogListener = (NicknamePickerDialogListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement NicknamePickerDialog" +
-                    ".DialogLister");
+                    ".NicknamePickerDialogListener");
         }
 
     }
@@ -96,7 +95,7 @@ public class NicknamePickerDialog extends DialogFragment {
                             Timber.d("Nickname is empty");
                             getDialog().findViewById(R.id.error_text_view).setVisibility(View.VISIBLE);
                         } else {
-                            mDialogListener.onDialogSaveButtonClick(nicknameEt.getText().toString());
+                            mNicknamePickerDialogListener.onDialogSaveButtonClick(nicknameEt.getText().toString());
                             dialog.dismiss();
 
                         }

@@ -42,9 +42,7 @@ public class FirebaseLoginHelper implements LifecycleObserver {
 
     private UploadTask mSavingUserPhotoTask;
 
-    private boolean isDialogShown;
-
-    MainViewInterface activity;
+    private MainViewInterface activity;
 
     public FirebaseLoginHelper(MainViewInterface activity) {
         mAuth = FirebaseAuth.getInstance();
@@ -54,25 +52,26 @@ public class FirebaseLoginHelper implements LifecycleObserver {
 
     public interface MainViewInterface {
         void startActivityForResult(Intent intent, int requestCode);
+
         void setNickname(String nickname);
+
         void setUserPhoto(String url);
+
         void setIsPhotoSaving(boolean value);
+
         void showPickNicknameDialog();
+
+        void showWelcomeDialog();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void createAuthListener() {
-        mAuthStateListener = createAuthStateListener(activity);
+        mAuthStateListener = createAuthStateListener();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void addAuthStateListener() {
         mAuth.addAuthStateListener(mAuthStateListener);
-
-        if(!isDialogShown) {
-            getNickname();
-            isDialogShown = true;
-        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -82,24 +81,28 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         }
     }
 
-    private FirebaseAuth.AuthStateListener createAuthStateListener(final MainViewInterface activity) {
+    private FirebaseAuth.AuthStateListener createAuthStateListener() {
         return new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    activity.startActivityForResult(AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setIsSmartLockEnabled(false)
-                            .setAvailableProviders(providers)
-                            .setTheme(R.style.LoginStyle)
-                            .setLogo(R.drawable.logo_semi)
-                            .build(), RC_SIGN_IN);
-                } else {
+                    activity.showWelcomeDialog();
+                } else if (!user.isAnonymous()) {
                     signIn();
                 }
             }
         };
+    }
+
+    public void showSignInScreen() {
+        activity.startActivityForResult(AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setIsSmartLockEnabled(false)
+                .setAvailableProviders(providers)
+                .setTheme(R.style.LoginStyle)
+                .setLogo(R.drawable.logo_semi)
+                .build(), RC_SIGN_IN);
     }
 
 
@@ -108,36 +111,43 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         mAuth.signOut();
     }
 
-    public void signIn() {
+    private void signIn() {
 
-            mUserPhotoReference = FirebaseDatabase.getInstance().getReference("userPhotos")
-                    .child(getUserId());
-            mUserPhotoReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue() != null) {
-                        String dbUserPhotoUrl = dataSnapshot.getValue().toString();
-                        activity.setUserPhoto(dbUserPhotoUrl);
-                    }
+        setNicknameInNavDrawer();
+
+        mUserPhotoReference = FirebaseDatabase.getInstance().getReference("userPhotos")
+                .child(getUserId());
+        mUserPhotoReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    String dbUserPhotoUrl = dataSnapshot.getValue().toString();
+                    activity.setUserPhoto(dbUserPhotoUrl);
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
+            }
+        });
 
     }
 
-    private void getNickname() {
-        if(mAuth.getCurrentUser() != null) {
+    public void signInAnonymously() {
+        mAuth.signInAnonymously();
+    }
+
+    private void setNicknameInNavDrawer() {
+        if (mAuth.getCurrentUser() != null) {
             mNicknamesReference.child(getUserId())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             String nickname = String.valueOf(dataSnapshot.getValue());
-                            if (nickname.equals("null")) activity.showPickNicknameDialog();
-                            else activity.setNickname(nickname);
+                            if (nickname.equals("null")) {
+                                activity.showPickNicknameDialog();
+                            } else activity.setNickname(nickname);
                         }
 
                         @Override
@@ -151,38 +161,38 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         mNicknamesReference.child(getUserId()).setValue(nickname);
     }
 
-    String getUserId() {
+    private String getUserId() {
         return mAuth.getCurrentUser().getUid();
     }
 
     public void saveUserPhoto(final Uri photoUri) {
         final StorageReference photoReference = FirebaseStorage.getInstance().getReference("userPhotos")
                 .child(getUserId());
-                mSavingUserPhotoTask = photoReference.putFile(photoUri);
-                mSavingUserPhotoTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        mSavingUserPhotoTask = photoReference.putFile(photoUri);
+        mSavingUserPhotoTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        photoReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri storagePhotoUri) {
-                                String storagePhotoString = storagePhotoUri.toString();
-                                Timber.d(storagePhotoString);
-                                mUserPhotoReference.setValue(storagePhotoString);
-                                activity.setUserPhoto(storagePhotoString);
-                            }
-                        });
+                photoReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri storagePhotoUri) {
+                        String storagePhotoString = storagePhotoUri.toString();
+                        Timber.d(storagePhotoString);
+                        mUserPhotoReference.setValue(storagePhotoString);
+                        activity.setUserPhoto(storagePhotoString);
                     }
                 });
+            }
+        });
     }
 
     public void stopPreviousUserPhotoSaving() {
-        if(mSavingUserPhotoTask != null && mSavingUserPhotoTask.isInProgress())
+        if (mSavingUserPhotoTask != null && mSavingUserPhotoTask.isInProgress())
             mSavingUserPhotoTask.cancel();
         activity.setIsPhotoSaving(false);
     }
 
-    public void setIsDialogShown(boolean value) {
-        isDialogShown = value;
+    public boolean isUserAnonymous() {
+        return (mAuth.getCurrentUser() == null || mAuth.getCurrentUser().isAnonymous());
     }
 }

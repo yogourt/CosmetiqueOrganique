@@ -39,15 +39,19 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
+
 public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
         MyDrawerLayoutListener.DrawerCreationInterface, FirebaseLoginHelper.MainViewInterface,
-        NicknamePickerDialog.DialogListener {
+        NicknamePickerDialog.NicknamePickerDialogListener, WelcomeDialog.WelcomeDialogListener {
 
     public static final String KEY_CATEGORY = "category";
     public static final String KEY_NAV_POSITION = "navigation_position";
     public static final String KEY_NAV_ITEM_ID = "navigation_item_id";
     public static final int RC_PHOTO_PICKER = 100;
-    public static final String TAG_DIALOG = "photo_picker_dialog";
+
+    public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
+    public static final String TAG_WELCOME_DIALOG = "welcome_dialog";
 
 
     @BindView(R.id.recycler_view)
@@ -154,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         if(mDialogFragment != null) {
             mDialogFragment.dismiss();
-            mLoginHelper.setIsDialogShown(false);
         }
         super.onSaveInstanceState(outState);
     }
@@ -195,18 +198,29 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     */
     private void prepareNavigationDrawer() {
 
+        MenuItem logOutItem = mNavigationView.getMenu().getItem(NAV_POSITION_LOG_OUT);
+
         mHeaderLayout = mNavigationView.getHeaderView(0);
         photoIv = mHeaderLayout.findViewById(R.id.nav_photo);
 
-        //when user clicks photo circle the photo chooser is opening
-        photoIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, RC_PHOTO_PICKER);
-            }
-        });
+        if(mLoginHelper.isUserAnonymous()) {
+            logOutItem.setTitle(R.string.nav_log_in);
+            logOutItem.setIcon(R.drawable.ic_login);
+            photoIv.setOnClickListener(null);
+        } else {
+            logOutItem.setTitle(R.string.nav_log_out);
+            logOutItem.setIcon(R.drawable.ic_logout);
+
+            //when user clicks photo circle the photo chooser is opening
+            photoIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, RC_PHOTO_PICKER);
+                }
+            });
+        }
 
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -282,12 +296,18 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
     }
 
+    public void showWelcomeDialog() {
+        mDialogFragment = new WelcomeDialog();
+        mDialogFragment.show(getFragmentManager(), TAG_WELCOME_DIALOG);
+    }
+
     public  void showPickNicknameDialog() {
         mDialogFragment = new NicknamePickerDialog();
-        mDialogFragment.show(getFragmentManager(), TAG_DIALOG);
+        mDialogFragment.show(getFragmentManager(), TAG_NICKNAME_DIALOG);
         getFragmentManager().executePendingTransactions();
         Window dialogWindow = mDialogFragment.getDialog().getWindow();
         if(dialogWindow != null) {
+            //show soft keyboard
             dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
             dialogWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -307,10 +327,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     public RecyclerView getRecyclerView() {
         return mRecyclerView;
-    }
-
-    public FirebaseLoginHelper getLoginHelper() {
-        return mLoginHelper;
     }
 
     @Override
@@ -337,8 +353,29 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     }
 
+    @Override
+    public void logOut() {
+        mLoginHelper.logOut();
+    }
+
+    @Override
+    public void signInAnonymousUser() {
+        mLoginHelper.showSignInScreen();
+    }
+
     public void setIsPhotoSaving(boolean isPhotoSaving) {
         this.isPhotoSaving = isPhotoSaving;
     }
 
+    @Override
+    public void onPositiveButtonClicked() {
+        mLoginHelper.showSignInScreen();
+    }
+
+    @Override
+    public void onNegativeButtonClicked() {
+        mLoginHelper.signInAnonymously();
+        prepareNavigationDrawer();
+
+    }
 }
