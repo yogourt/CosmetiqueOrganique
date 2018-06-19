@@ -4,12 +4,14 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +37,6 @@ public class FirebaseLoginHelper implements LifecycleObserver {
             new AuthUI.IdpConfig.GoogleBuilder().build());
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private DatabaseReference mUserPhotoReference;
     private DatabaseReference mNicknamesReference;
@@ -43,6 +44,7 @@ public class FirebaseLoginHelper implements LifecycleObserver {
     private UploadTask mSavingUserPhotoTask;
 
     private MainViewInterface activity;
+
 
     public FirebaseLoginHelper(MainViewInterface activity) {
         mAuth = FirebaseAuth.getInstance();
@@ -62,37 +64,23 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         void showPickNicknameDialog();
 
         void showWelcomeDialog();
+
+        boolean isRecreating();
+
+        Resources getResources();
+
+        void recreate();
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public void createAuthListener() {
-        mAuthStateListener = createAuthStateListener();
-    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    public void addAuthStateListener() {
-        mAuth.addAuthStateListener(mAuthStateListener);
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    public void removeAuthStateListener() {
-        if (mAuthStateListener != null) {
-            mAuth.removeAuthStateListener(mAuthStateListener);
+    public void logInUserOrAnonymous() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            if(!activity.isRecreating()) activity.showWelcomeDialog();
+        } else if (!user.isAnonymous()) {
+            prepareNavDrawerHeader();
         }
-    }
-
-    private FirebaseAuth.AuthStateListener createAuthStateListener() {
-        return new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    activity.showWelcomeDialog();
-                } else if (!user.isAnonymous()) {
-                    signIn();
-                }
-            }
-        };
     }
 
     public void showSignInScreen() {
@@ -109,10 +97,20 @@ public class FirebaseLoginHelper implements LifecycleObserver {
     public void logOut() {
         mUserPhotoReference = null;
         mAuth.signOut();
+        signInAnonymously();
     }
 
-    private void signIn() {
+    public void signIn() {
+        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                activity.recreate();
+            }
+        });
 
+    }
+
+    private void prepareNavDrawerHeader() {
         setNicknameInNavDrawer();
 
         mUserPhotoReference = FirebaseDatabase.getInstance().getReference("userPhotos")
@@ -128,14 +126,20 @@ public class FirebaseLoginHelper implements LifecycleObserver {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Timber.e(databaseError.getMessage());
             }
         });
-
     }
 
     public void signInAnonymously() {
-        mAuth.signInAnonymously();
+        mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                activity.setUserPhoto(null);
+                activity.setNickname(activity.getResources().getString(R.string.label_anonymous));
+                activity.recreate();
+            }
+        });
     }
 
     private void setNicknameInNavDrawer() {
@@ -195,4 +199,5 @@ public class FirebaseLoginHelper implements LifecycleObserver {
     public boolean isUserAnonymous() {
         return (mAuth.getCurrentUser() == null || mAuth.getCurrentUser().isAnonymous());
     }
+
 }

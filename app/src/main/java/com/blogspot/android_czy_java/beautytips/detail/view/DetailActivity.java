@@ -3,6 +3,8 @@ package com.blogspot.android_czy_java.beautytips.detail.view;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -107,6 +109,8 @@ public class DetailActivity extends AppCompatActivity implements
 
     private DetailFirebaseHelper mFirebaseHelper;
 
+    private Handler adHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +141,12 @@ public class DetailActivity extends AppCompatActivity implements
         }
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        adHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 
     public void prepareContent(@NonNull DataSnapshot dataSnapshot) {
@@ -250,15 +260,25 @@ public class DetailActivity extends AppCompatActivity implements
                     }
                 }
         );
-        mFirebaseHelper.setFabState();
+        if(!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
+                !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+            mFirebaseHelper.setFabState();
+        }
 
     }
 
     private void prepareAdView() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        mAdView.setAlpha(0);
 
+        adHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+                mAdView.setAlpha(0);
+                return false;
+            }
+        });
+        adHandler.sendEmptyMessageDelayed(0, 1000);
     }
 
     @Override
@@ -290,7 +310,8 @@ public class DetailActivity extends AppCompatActivity implements
         Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
         mFab.startAnimation(scaleAnim);
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null ||
+                        FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             SnackbarHelper.showFeatureForLoggedInUsersOnly(
                     getResources().getString(R.string.feature_favourites), mScrollView);
             return;
