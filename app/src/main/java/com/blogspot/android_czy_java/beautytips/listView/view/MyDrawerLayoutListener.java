@@ -40,6 +40,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     private int itemId;
     private String category;
 
+
     public MyDrawerLayoutListener(final DrawerCreationInterface activity, 
                                   final int itemId, final String category) {
         this.activity = activity;
@@ -53,6 +54,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
         void setNavigationPosition(int newPosition);
         void startActivity(Intent intent);
         void logOut();
+        void removeDrawerListenerFromDrawerLayout();
         void signInAnonymousUser();
         RecyclerView getRecyclerView();
         Resources getResources();
@@ -74,6 +76,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     @Override
     public void onDrawerClosed(@NonNull View drawerView) {
         Timber.d("onDrawerClosed, itemId=" + itemId);
+        activity.removeDrawerListenerFromDrawerLayout();
 
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -125,6 +128,10 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
                 case R.id.nav_log_out:
 
+                    activity.setCategory(CATEGORY_ALL);
+                    activity.setNavigationPosition(NAV_POSITION_ALL);
+                    itemId = R.id.nav_all;
+                    //it's actually logging in
                     if(user.isAnonymous()) {
                         if(NetworkConnectionHelper.isInternetConnection(
                                 activity.getContext())) {
@@ -133,7 +140,9 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                             SnackbarHelper.showUnableToLogIn(
                                     activity.getRecyclerView());
                         }
-                    } else {
+                    }
+                    //this part is logging out
+                    else {
                         if (NetworkConnectionHelper.isInternetConnection(
                                 activity.getContext())) {
                             activity.logOut();

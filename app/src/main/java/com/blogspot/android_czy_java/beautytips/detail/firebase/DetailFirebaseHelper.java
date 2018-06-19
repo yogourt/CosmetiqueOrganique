@@ -63,6 +63,7 @@ public class DetailFirebaseHelper {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Timber.d("userId = " + userId);
                         String value = String.valueOf(dataSnapshot.getValue());
                         if(!value.equals("null")) activity.setFabActive();
                     }

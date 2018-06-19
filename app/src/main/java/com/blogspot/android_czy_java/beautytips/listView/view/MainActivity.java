@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private int listPosition;
 
     private boolean isPhotoSaving;
+    private boolean isRecreating;
 
     private DialogFragment mDialogFragment;
 
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             navigationPosition = savedInstanceState.getInt(KEY_NAV_POSITION,
                     MyDrawerLayoutListener.NAV_POSITION_ALL);
             navigationItemId = savedInstanceState.getInt(KEY_NAV_ITEM_ID);
+            isRecreating = true;
         } else {
             category = MyDrawerLayoutListener.CATEGORY_ALL;
             //set navigation position to "All"
@@ -122,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         Timber.d("On create");
         mLoginHelper = new FirebaseLoginHelper(this);
-        getLifecycle().addObserver(mLoginHelper);
 
         prepareActionBar();
         prepareRecyclerView();
@@ -130,7 +131,14 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        getLifecycle().addObserver(mLoginHelper);
+    }
+
+    @Override
     protected void onResume() {
+        Timber.d("On resume");
         super.onResume();
         if(listPosition != 0) {
             mRecyclerView.smoothScrollToPosition(listPosition);
@@ -138,16 +146,18 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         prepareNavigationDrawer();
         mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
         mDrawerListener = new MyDrawerLayoutListener(this, navigationItemId, category);
-        mDrawerLayout.addDrawerListener(mDrawerListener);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if(mDrawerListener != null) {
-            mDrawerLayout.removeDrawerListener(mDrawerListener);
-            mDrawerListener = null;
-        }
+    protected void onStop() {
+        super.onStop();
+        getLifecycle().removeObserver(mLoginHelper);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mLoginHelper = null;
+        super.onDestroy();
     }
 
     @Override
@@ -204,10 +214,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         photoIv = mHeaderLayout.findViewById(R.id.nav_photo);
 
         if(mLoginHelper.isUserAnonymous()) {
+            Timber.d("prepareNavDrawer - user is anonymous");
             logOutItem.setTitle(R.string.nav_log_in);
             logOutItem.setIcon(R.drawable.ic_login);
             photoIv.setOnClickListener(null);
         } else {
+            Timber.d("prepareNavDrawer - user is not anonymous");
             logOutItem.setTitle(R.string.nav_log_out);
             logOutItem.setIcon(R.drawable.ic_logout);
 
@@ -231,10 +243,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                         Timber.d("on Navigation item selected");
 
                         /*
-                        Here we need mDrawerListener to properly close NavigationDrawer while
-                        changing category, which is added onResume(). Without this navigation drawer
-                         will not close on recreate().
+                        Here we need mDrawerListener to properly close NavigationDrawer when calling
+                        recreate().
                          */
+                        mDrawerLayout.addDrawerListener(mDrawerListener);
                         navigationItemId = item.getItemId();
                         mDrawerListener.setItemId(item.getItemId());
 
@@ -267,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                //signing in is handling by mLoginHelper
+                mLoginHelper.signIn();
             } else {
                 //if response is null the user canceled sign in flow using back button
                 if (response == null) {
@@ -358,6 +370,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         mLoginHelper.logOut();
     }
 
+    //This is called by navigation drawer when clicking on "log in"
     @Override
     public void signInAnonymousUser() {
         mLoginHelper.showSignInScreen();
@@ -375,7 +388,14 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     public void onNegativeButtonClicked() {
         mLoginHelper.signInAnonymously();
-        prepareNavigationDrawer();
+    }
 
+    @Override
+    public boolean isRecreating() {
+        return isRecreating;
+    }
+
+    public void removeDrawerListenerFromDrawerLayout() {
+        mDrawerLayout.removeDrawerListener(mDrawerListener);
     }
 }
