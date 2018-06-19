@@ -54,7 +54,7 @@ public class FirebaseHelper {
                 return FirebaseDatabase.getInstance()
                         .getReference()
                         .child("tipList")
-                        .orderByChild("author").equalTo(user.getUid());
+                        .orderByChild("authorId").equalTo(user.getUid());
         }
 
         if(category.equals(CATEGORY_FAVOURITES)) {
