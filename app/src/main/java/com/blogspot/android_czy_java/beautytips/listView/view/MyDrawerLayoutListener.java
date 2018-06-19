@@ -35,29 +35,38 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     public static final int NAV_POSITION_HAIR = 5;
     public static final int NAV_POSITION_FACE = 6;
     public static final int NAV_POSITION_BODY = 7;
-    
+
     private DrawerCreationInterface activity;
     private int itemId;
     private String category;
 
 
-    public MyDrawerLayoutListener(final DrawerCreationInterface activity, 
+    public MyDrawerLayoutListener(final DrawerCreationInterface activity,
                                   final int itemId, final String category) {
         this.activity = activity;
         this.itemId = itemId;
         this.category = category;
     }
-    
+
     interface DrawerCreationInterface {
         void recreate();
+
         void setCategory(String category);
+
         void setNavigationPosition(int newPosition);
+
         void startActivity(Intent intent);
+
         void logOut();
+
         void removeDrawerListenerFromDrawerLayout();
+
         void signInAnonymousUser();
+
         RecyclerView getRecyclerView();
+
         Resources getResources();
+
         Context getContext();
     }
 
@@ -78,11 +87,11 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
         Timber.d("onDrawerClosed, itemId=" + itemId);
         activity.removeDrawerListenerFromDrawerLayout();
 
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-            if(user != null) {
+        if (user != null) {
 
-                switch (itemId) {
+            switch (itemId) {
                 case R.id.nav_your_tips:
                     if (!user.isAnonymous()) {
                         if (category.equals(CATEGORY_YOUR_TIPS)) break;
@@ -109,12 +118,12 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                     return;
 
                 case R.id.nav_add_new:
-                    if(!user.isAnonymous()) {
+                    if (!user.isAnonymous()) {
                         if (NetworkConnectionHelper.isInternetConnection(
                                 activity.getContext())) {
-                                Intent intent = new Intent(activity.getContext(),
-                                        NewTipActivity.class);
-                                activity.startActivity(intent);
+                            Intent intent = new Intent(activity.getContext(),
+                                    NewTipActivity.class);
+                            activity.startActivity(intent);
                         } else {
                             SnackbarHelper.showUnableToAddTip(
                                     activity.getRecyclerView());
@@ -132,8 +141,8 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                     activity.setNavigationPosition(NAV_POSITION_ALL);
                     itemId = R.id.nav_all;
                     //it's actually logging in
-                    if(user.isAnonymous()) {
-                        if(NetworkConnectionHelper.isInternetConnection(
+                    if (user.isAnonymous()) {
+                        if (NetworkConnectionHelper.isInternetConnection(
                                 activity.getContext())) {
                             activity.signInAnonymousUser();
                         } else {
@@ -151,7 +160,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                                     activity.getRecyclerView());
                         }
                     }
-                        return;
+                    return;
 
 
                 case R.id.nav_all:
@@ -187,5 +196,5 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     @Override
     public void onDrawerStateChanged(int newState) {
     }
-    
+
 }

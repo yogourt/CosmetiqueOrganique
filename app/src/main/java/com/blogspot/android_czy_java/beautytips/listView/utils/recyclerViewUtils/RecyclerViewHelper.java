@@ -1,9 +1,9 @@
-package com.blogspot.android_czy_java.beautytips.listView.view;
+package com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils;
 
 import android.content.res.Configuration;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
-public class MainActivityUtils {
+public class RecyclerViewHelper {
 
     public static final int NUM_COLUMNS_LAND = 2;
     public static final int NUM_COLUMNS_PORT = 1;
