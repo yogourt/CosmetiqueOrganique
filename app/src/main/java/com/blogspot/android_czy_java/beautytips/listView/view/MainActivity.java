@@ -3,7 +3,6 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -23,14 +22,17 @@ import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.WelcomeDialog;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
+import com.blogspot.android_czy_java.beautytips.listView.utils.LanguageHelper;
+import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.RecyclerViewHelper;
+import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
-
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -96,15 +98,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-          Here we change the language to always be English. This is done to always have FirebaseUI Auth
-          log in activity in english, because strings are changed only in english version
-        */
-        Locale.setDefault(Locale.ENGLISH);
-        Configuration config = new Configuration();
-        config.locale = Locale.ENGLISH;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
+        LanguageHelper.setLanguageToEnglish(this);
 
         setContentView(R.layout.activity_main);
 
@@ -193,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         int orientation = getResources().getConfiguration().orientation;
         //add layout manager
-        mLayoutManager = MainActivityUtils.createLayoutManager(orientation);
+        mLayoutManager = RecyclerViewHelper.createLayoutManager(orientation);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         //item decoration is added to make spaces between items in recycler view
@@ -214,12 +208,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         photoIv = mHeaderLayout.findViewById(R.id.nav_photo);
 
         if(mLoginHelper.isUserAnonymous()) {
-            Timber.d("prepareNavDrawer - user is anonymous");
             logOutItem.setTitle(R.string.nav_log_in);
             logOutItem.setIcon(R.drawable.ic_login);
             photoIv.setOnClickListener(null);
         } else {
-            Timber.d("prepareNavDrawer - user is not anonymous");
             logOutItem.setTitle(R.string.nav_log_out);
             logOutItem.setIcon(R.drawable.ic_logout);
 
@@ -244,7 +236,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
                         /*
                         Here we need mDrawerListener to properly close NavigationDrawer when calling
-                        recreate().
+                        recreate(), this is why DrawerListener is added and inside it selection of item
+                        is handled.
                          */
                         mDrawerLayout.addDrawerListener(mDrawerListener);
                         navigationItemId = item.getItemId();
@@ -254,11 +247,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     }
                 }
         );
-    }
-
-    @Override
-    public void onClick(int position) {
-        this.listPosition = position;
     }
 
     @Override
@@ -308,11 +296,92 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
     }
 
-    public void showWelcomeDialog() {
-        mDialogFragment = new WelcomeDialog();
-        mDialogFragment.show(getFragmentManager(), TAG_WELCOME_DIALOG);
+
+
+    /*
+       Here is the beginning of interfaces methods
+     */
+
+
+
+    /*
+       implementation of ListViewAdapter.PositionListener
+     */
+    @Override
+    public void onClick(int position) {
+        this.listPosition = position;
     }
 
+
+
+    /*
+       implementation of MyDrawerLayoutListener.DrawerCreationInterface
+     */
+
+    @Override
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    @Override
+    public void setNavigationPosition(int newPosition) {
+        navigationPosition = newPosition;
+        mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
+    }
+
+    @Override
+    public void logOut() {
+        mLoginHelper.logOut();
+    }
+
+    @Override
+    public void removeDrawerListenerFromDrawerLayout() {
+        mDrawerLayout.removeDrawerListener(mDrawerListener);
+    }
+
+    //This is called by navigation drawer when clicking on "log in"
+    @Override
+    public void signInAnonymousUser() {
+        mLoginHelper.showSignInScreen();
+    }
+
+    @Override
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+
+
+    /*
+      Implementation of FirebaseLoginHelper.MainViewInterface
+     */
+
+    @Override
+    public void setNickname(String nickname) {
+        TextView nicknameTv = mHeaderLayout.findViewById(R.id.nav_nickname);
+        nicknameTv.setText(nickname);
+    }
+
+    @Override
+    public void setUserPhoto(String imageUri) {
+
+        Glide.with(this)
+                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
+                .load(imageUri)
+                .into(photoIv);
+    }
+
+    @Override
+    public void setIsPhotoSaving(boolean isPhotoSaving) {
+        this.isPhotoSaving = isPhotoSaving;
+    }
+
+    @Override
     public  void showPickNicknameDialog() {
         mDialogFragment = new NicknamePickerDialog();
         mDialogFragment.show(getFragmentManager(), TAG_NICKNAME_DIALOG);
@@ -327,59 +396,31 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     }
 
     @Override
+    public void showWelcomeDialog() {
+        mDialogFragment = new WelcomeDialog();
+        mDialogFragment.show(getFragmentManager(), TAG_WELCOME_DIALOG);
+    }
+
+    @Override
+    public boolean isRecreating() {
+        return isRecreating;
+    }
+
+
+
+    /*
+       Implementation of NicknamePickerDialog.NicknamePickerDialogListener
+     */
+    @Override
     public void onDialogSaveButtonClick(String nickname) {
         mLoginHelper.saveNickname(nickname);
         setNickname(nickname);
     }
 
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public RecyclerView getRecyclerView() {
-        return mRecyclerView;
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    public void setNickname(String nickname) {
-        TextView nicknameTv = mHeaderLayout.findViewById(R.id.nav_nickname);
-        nicknameTv.setText(nickname);
-    }
-
-    public void setUserPhoto(String imageUri) {
-
-        Glide.with(this)
-                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
-                .load(imageUri)
-                .into(photoIv);
-    }
-
-    public void setNavigationPosition(int newPosition) {
-        navigationPosition = newPosition;
-        mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
-
-    }
-
-    @Override
-    public void logOut() {
-        mLoginHelper.logOut();
-    }
-
-    //This is called by navigation drawer when clicking on "log in"
-    @Override
-    public void signInAnonymousUser() {
-        mLoginHelper.showSignInScreen();
-    }
-
-    public void setIsPhotoSaving(boolean isPhotoSaving) {
-        this.isPhotoSaving = isPhotoSaving;
-    }
-
+    /*
+      Implementation of WelcomeDialog.WelcomeDialogListener
+     */
     @Override
     public void onPositiveButtonClicked() {
         mLoginHelper.showSignInScreen();
@@ -390,12 +431,4 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         mLoginHelper.signInAnonymously();
     }
 
-    @Override
-    public boolean isRecreating() {
-        return isRecreating;
-    }
-
-    public void removeDrawerListenerFromDrawerLayout() {
-        mDrawerLayout.removeDrawerListener(mDrawerListener);
-    }
 }

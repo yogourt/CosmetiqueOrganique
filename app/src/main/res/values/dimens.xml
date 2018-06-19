@@ -19,7 +19,7 @@
 
 
     <!-- detail screen dimens -->
-    <dimen name="ingredients_bottom_padding">32dp</dimen>
+    <dimen name="ingredients_bottom_padding">16dp</dimen>
     <dimen name="ingredients_top_padding">16dp</dimen>
     <dimen name="ingredients_inner_padding">4dp</dimen>
     <dimen name="ingredients_text_size">16sp</dimen>
@@ -44,9 +44,10 @@
     <dimen name="title_horiz_margin">16dp</dimen>
     <dimen name="title_horiz_padding">8dp</dimen>
     <dimen name="spinner_width">200dp</dimen>
-    <dimen name="spinner_top_margin">48dp</dimen>
+    <dimen name="spinner_top_margin">16dp</dimen>
     <dimen name="spinner_button_int_margin">16dp</dimen>
     <dimen name="spinner_button_ext_margin">24dp</dimen>
+    <dimen name="ingredients_new_bottom_padding">32dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

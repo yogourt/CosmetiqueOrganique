@@ -60,10 +60,6 @@
             android:id="@+id/layout_ingredients"
             layout="@layout/layout_ingredients_new" />
 
-        <include
-            android:id="@+id/layout_author"
-            layout="@layout/layout_author" />
-
         <EditText
             android:id="@+id/description_edit_text"
             style="@style/NormalTextStyle"
@@ -73,9 +69,14 @@
             android:layout_marginStart="@dimen/desc_margin"
             android:hint="@string/hint_desc"
             android:paddingBottom="@dimen/desc_padding"
+            android:paddingTop="@dimen/desc_top_padding"
             android:paddingEnd="@dimen/new_tip_desc_padding"
             android:paddingStart="@dimen/new_tip_desc_padding"
             android:tint="@color/white_title_tint" />
+
+        <include
+            android:id="@+id/layout_author"
+            layout="@layout/layout_author_new" />
 
         <LinearLayout
             android:layout_width="match_parent"
