@@ -6,15 +6,19 @@ import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
+import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
 
 import timber.log.Timber;
 
@@ -36,26 +40,21 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     public static final int NAV_POSITION_FACE = 6;
     public static final int NAV_POSITION_BODY = 7;
 
+
     private DrawerCreationInterface activity;
     private int itemId;
-    private String category;
+
+    private ListViewViewModel viewModel;
 
 
-    public MyDrawerLayoutListener(final DrawerCreationInterface activity,
-                                  final int itemId, final String category) {
+    public MyDrawerLayoutListener(final DrawerCreationInterface activity, ListViewViewModel viewModel,
+                                  final int itemId) {
         this.activity = activity;
         this.itemId = itemId;
-        this.category = category;
+        this.viewModel = viewModel;
     }
 
     interface DrawerCreationInterface {
-        void recreate();
-
-        void setCategory(String category);
-
-        void setNavigationPosition(int newPosition);
-
-        void startActivity(Intent intent);
 
         void logOut();
 
@@ -65,13 +64,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
         RecyclerView getRecyclerView();
 
-        Resources getResources();
-
         Context getContext();
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
     }
 
     @Override
@@ -94,12 +87,11 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
             switch (itemId) {
                 case R.id.nav_your_tips:
                     if (!user.isAnonymous()) {
-                        if (category.equals(CATEGORY_YOUR_TIPS)) break;
-                        activity.setCategory(CATEGORY_YOUR_TIPS);
-                        activity.setNavigationPosition(NAV_POSITION_YOUR_TIPS);
-                        activity.recreate();
+                        viewModel.setNavigationPosition(NAV_POSITION_YOUR_TIPS);
+                        viewModel.setCategory(CATEGORY_YOUR_TIPS);
                     } else {
-                        SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getResources()
+                        SnackbarHelper.showFeatureForLoggedInUsersOnly(
+                                activity.getContext().getResources()
                                         .getString(R.string.feature_your_tips),
                                 activity.getRecyclerView());
                     }
@@ -107,13 +99,12 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
                 case R.id.nav_favourites:
                     if (!user.isAnonymous()) {
-                        if (category.equals(CATEGORY_FAVOURITES)) break;
-                        activity.setCategory(CATEGORY_FAVOURITES);
-                        activity.setNavigationPosition(NAV_POSITION_FAVOURITES);
-                        activity.recreate();
+                        viewModel.setNavigationPosition(NAV_POSITION_FAVOURITES);
+                        viewModel.setCategory(CATEGORY_FAVOURITES);
                     } else {
-                        SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getResources()
-                                .getString(R.string.feature_favourites), activity.getRecyclerView());
+                        SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getContext()
+                                        .getResources().getString(R.string.feature_favourites),
+                                activity.getRecyclerView());
                     }
                     return;
 
@@ -123,23 +114,21 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                                 activity.getContext())) {
                             Intent intent = new Intent(activity.getContext(),
                                     NewTipActivity.class);
-                            activity.startActivity(intent);
+                            activity.getContext().startActivity(intent);
                         } else {
                             SnackbarHelper.showUnableToAddTip(
                                     activity.getRecyclerView());
                         }
                     } else {
-                        SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getResources()
-                                        .getString(R.string.feature_new_tip),
+                        SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getContext()
+                                        .getResources().getString(R.string.feature_new_tip),
                                 activity.getRecyclerView());
                     }
                     return;
 
                 case R.id.nav_log_out:
 
-                    activity.setCategory(CATEGORY_ALL);
-                    activity.setNavigationPosition(NAV_POSITION_ALL);
-                    itemId = R.id.nav_all;
+                    viewModel.setNavigationPosition(NAV_POSITION_ALL);
                     //it's actually logging in
                     if (user.isAnonymous()) {
                         if (NetworkConnectionHelper.isInternetConnection(
@@ -164,29 +153,20 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
 
                 case R.id.nav_all:
-                    if (category.equals(CATEGORY_ALL)) break;
-                    activity.setCategory(CATEGORY_ALL);
-                    activity.setNavigationPosition(NAV_POSITION_ALL);
-                    activity.recreate();
+                    viewModel.setNavigationPosition(NAV_POSITION_ALL);
+                    viewModel.setCategory(CATEGORY_ALL);
                     return;
                 case R.id.nav_hair:
-                    if (category.equals(CATEGORY_HAIR)) break;
-                    activity.setCategory(CATEGORY_HAIR);
-                    activity.setNavigationPosition(NAV_POSITION_HAIR);
-                    activity.recreate();
+                    viewModel.setNavigationPosition(NAV_POSITION_HAIR);
+                    viewModel.setCategory(CATEGORY_HAIR);
                     return;
                 case R.id.nav_face:
-                    if (category.equals(CATEGORY_FACE)) break;
-                    activity.setCategory(CATEGORY_FACE);
-                    activity.setNavigationPosition(NAV_POSITION_FACE);
-                    activity.recreate();
+                    viewModel.setNavigationPosition(NAV_POSITION_FACE);
+                    viewModel.setCategory(CATEGORY_FACE);
                     return;
                 case R.id.nav_body:
-                    if (category.equals(CATEGORY_BODY)) break;
-                    activity.setCategory(CATEGORY_BODY);
-                    activity.setNavigationPosition(NAV_POSITION_BODY);
-                    activity.recreate();
-                    return;
+                    viewModel.setNavigationPosition(NAV_POSITION_BODY);
+                    viewModel.setCategory(CATEGORY_BODY);
 
             }
 

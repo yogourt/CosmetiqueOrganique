@@ -19,7 +19,7 @@
 
 
     <!-- detail screen dimens -->
-    <dimen name="ingredients_bottom_padding">16dp</dimen>
+    <dimen name="ingredients_bottom_padding">24dp</dimen>
     <dimen name="ingredients_top_padding">16dp</dimen>
     <dimen name="ingredients_inner_padding">4dp</dimen>
     <dimen name="ingredients_text_size">16sp</dimen>

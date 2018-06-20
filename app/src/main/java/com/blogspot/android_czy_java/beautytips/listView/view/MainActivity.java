@@ -1,10 +1,13 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.app.DialogFragment;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,14 +17,17 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
+import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.WelcomeDialog;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
@@ -30,9 +36,11 @@ import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper
 import com.blogspot.android_czy_java.beautytips.listView.utils.LanguageHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.RecyclerViewHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
+import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
+import com.squareup.haha.perflib.Main;
 
 import javax.inject.Inject;
 
@@ -41,16 +49,16 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_ANONYMOUS;
+import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
 
 public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
         MyDrawerLayoutListener.DrawerCreationInterface, FirebaseLoginHelper.MainViewInterface,
         NicknamePickerDialog.NicknamePickerDialogListener, WelcomeDialog.WelcomeDialogListener {
 
-    public static final String KEY_CATEGORY = "category";
-    public static final String KEY_NAV_POSITION = "navigation_position";
-    public static final String KEY_NAV_ITEM_ID = "navigation_item_id";
     public static final int RC_PHOTO_PICKER = 100;
+    public static final int RC_WELCOME_ACTIVITY = 200;
 
     public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
     public static final String TAG_WELCOME_DIALOG = "welcome_dialog";
@@ -73,25 +81,22 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     private View mHeaderLayout;
     private CircleImageView photoIv;
+    TextView nicknameTv;
 
     private StaggeredGridLayoutManager mLayoutManager;
     private ListViewAdapter mAdapter;
     private MyDrawerLayoutListener mDrawerListener;
 
-    /*
-      Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
-      to check selected item (it's rose), category is used when creating firebase query
-     */
-    private String category;
-    private int navigationPosition;
-    private int navigationItemId;
-
     private int listPosition;
 
     private boolean isPhotoSaving;
-    private boolean isRecreating;
 
     private DialogFragment mDialogFragment;
+
+    private ListViewViewModel viewModel;
+
+    private Observer<String> categoryObserver;
+    private Observer<String> userStateObserver;
 
 
     @Override
@@ -104,42 +109,82 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         ButterKnife.bind(this);
 
+        viewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
+        viewModel.init();
+
         if (savedInstanceState != null) {
-            category = savedInstanceState.getString(KEY_CATEGORY);
-            navigationPosition = savedInstanceState.getInt(KEY_NAV_POSITION,
-                    MyDrawerLayoutListener.NAV_POSITION_ALL);
-            navigationItemId = savedInstanceState.getInt(KEY_NAV_ITEM_ID);
-            isRecreating = true;
-        } else {
-            category = MyDrawerLayoutListener.CATEGORY_ALL;
-            //set navigation position to "All"
-            navigationPosition = MyDrawerLayoutListener.NAV_POSITION_ALL;
+            Timber.d("activity is recreating");
         }
 
-        Timber.d("On create");
-        mLoginHelper = new FirebaseLoginHelper(this);
+        mLoginHelper = new FirebaseLoginHelper(this, viewModel);
 
         prepareActionBar();
         prepareRecyclerView();
 
+        categoryObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String category) {
+                Timber.d("onChanged() category observer's method, new category: " + category);
+                prepareRecyclerView();
+                prepareNavigationDrawer();
+            }
+        };
+
+        userStateObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String userState) {
+                Timber.d("onChanged() user state observer's method, new state: " + userState);
+                MenuItem logOutItem = mNavigationView.getMenu().getItem(NAV_POSITION_LOG_OUT);
+                if (userState.equals(USER_STATE_NULL)) {
+                    Intent welcomeActivityIntent = new Intent(MainActivity.this,
+                            WelcomeActivity.class);
+                    startActivityForResult(welcomeActivityIntent, RC_WELCOME_ACTIVITY);
+                }
+                else if (userState.equals(USER_STATE_ANONYMOUS)) {
+                    logOutItem.setTitle(R.string.nav_log_in);
+                    logOutItem.setIcon(R.drawable.ic_login);
+                    photoIv.setOnClickListener(null);
+                    photoIv.setImageDrawable(getResources().getDrawable(R.drawable.placeholder));
+                    nicknameTv.setText(R.string.label_anonymous);
+                } else {
+                    logOutItem.setTitle(R.string.nav_log_out);
+                    logOutItem.setIcon(R.drawable.ic_logout);
+                    mLoginHelper.prepareNavDrawerHeader();
+
+                    //when user clicks photo circle the photo chooser is opening
+                    photoIv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, RC_PHOTO_PICKER);
+                        }
+                    });
+                }
+            }
+
+        };
     }
+
 
     @Override
     protected void onStart() {
+        Timber.d("onStart()");
         super.onStart();
         getLifecycle().addObserver(mLoginHelper);
+
+        viewModel.getCategoryLiveData().observe(this, categoryObserver);
+        viewModel.getUserStateLiveData().observe(this, userStateObserver);
     }
 
     @Override
     protected void onResume() {
         Timber.d("On resume");
         super.onResume();
-        if(listPosition != 0) {
+        if (listPosition != 0) {
             mRecyclerView.smoothScrollToPosition(listPosition);
         }
-        prepareNavigationDrawer();
-        mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
-        mDrawerListener = new MyDrawerLayoutListener(this, navigationItemId, category);
+
     }
 
     @Override
@@ -156,11 +201,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(KEY_CATEGORY, category);
-        outState.putInt(KEY_NAV_POSITION, navigationPosition);
-        outState.putInt(KEY_NAV_ITEM_ID, navigationItemId);
-
-        if(mDialogFragment != null) {
+        if (mDialogFragment != null) {
             mDialogFragment.dismiss();
         }
         super.onSaveInstanceState(outState);
@@ -179,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         //add adapter
         mAdapter = new ListViewAdapter(this, FirebaseHelper.createFirebaseRecyclerOptions(
-                category), this);
+                viewModel.getCategory()), this);
         //this is done for listening for changes in data, they will be applied automatically by adapter.
         getLifecycle().addObserver(mAdapter);
 
@@ -191,8 +232,9 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         //item decoration is added to make spaces between items in recycler view
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration((
-                (int) getResources().getDimension(R.dimen.list_padding)), orientation));
+        if (mRecyclerView.getItemDecorationCount() == 0)
+            mRecyclerView.addItemDecoration(new SpacesItemDecoration((
+                    (int) getResources().getDimension(R.dimen.list_padding)), orientation));
     }
 
     /*
@@ -202,29 +244,16 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     */
     private void prepareNavigationDrawer() {
 
-        MenuItem logOutItem = mNavigationView.getMenu().getItem(NAV_POSITION_LOG_OUT);
-
         mHeaderLayout = mNavigationView.getHeaderView(0);
         photoIv = mHeaderLayout.findViewById(R.id.nav_photo);
+        nicknameTv = mHeaderLayout.findViewById(R.id.nav_nickname);
 
-        if(mLoginHelper.isUserAnonymous()) {
-            logOutItem.setTitle(R.string.nav_log_in);
-            logOutItem.setIcon(R.drawable.ic_login);
-            photoIv.setOnClickListener(null);
-        } else {
-            logOutItem.setTitle(R.string.nav_log_out);
-            logOutItem.setIcon(R.drawable.ic_logout);
 
-            //when user clicks photo circle the photo chooser is opening
-            photoIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    startActivityForResult(intent, RC_PHOTO_PICKER);
-                }
-            });
+        //make all items in menu unchecked and then check the one that was selected recently
+        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
+            mNavigationView.getMenu().getItem(i).setChecked(false);
         }
+        mNavigationView.getMenu().getItem(viewModel.getNavigationPosition()).setChecked(true);
 
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -239,9 +268,9 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                         recreate(), this is why DrawerListener is added and inside it selection of item
                         is handled.
                          */
+                        mDrawerListener = new MyDrawerLayoutListener(MainActivity.this, viewModel,
+                                item.getItemId());
                         mDrawerLayout.addDrawerListener(mDrawerListener);
-                        navigationItemId = item.getItemId();
-                        mDrawerListener.setItemId(item.getItemId());
 
                         return true;
                     }
@@ -278,16 +307,15 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             Uri photoUri = data.getData();
             if (photoUri != null) {
-                if(!NetworkConnectionHelper.isInternetConnection(this)) {
+                if (!NetworkConnectionHelper.isInternetConnection(this)) {
                     SnackbarHelper.showUnableToAddImage(mRecyclerView);
-                }
-                else {
+                } else {
                     Glide.with(this)
                             .load(R.drawable.placeholder)
                             .into(photoIv);
                     SnackbarHelper.showAddImageMayTakeSomeTime(mRecyclerView);
                 }
-                if(isPhotoSaving) {
+                if (isPhotoSaving) {
                     mLoginHelper.stopPreviousUserPhotoSaving();
                 }
                 mLoginHelper.saveUserPhoto(photoUri);
@@ -303,7 +331,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
      */
 
 
-
     /*
        implementation of ListViewAdapter.PositionListener
      */
@@ -317,17 +344,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     /*
        implementation of MyDrawerLayoutListener.DrawerCreationInterface
      */
-
-    @Override
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    @Override
-    public void setNavigationPosition(int newPosition) {
-        navigationPosition = newPosition;
-        mNavigationView.getMenu().getItem(navigationPosition).setChecked(true);
-    }
 
     @Override
     public void logOut() {
@@ -363,7 +379,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     @Override
     public void setNickname(String nickname) {
-        TextView nicknameTv = mHeaderLayout.findViewById(R.id.nav_nickname);
         nicknameTv.setText(nickname);
     }
 
@@ -382,12 +397,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     }
 
     @Override
-    public  void showPickNicknameDialog() {
+    public void showPickNicknameDialog() {
         mDialogFragment = new NicknamePickerDialog();
         mDialogFragment.show(getFragmentManager(), TAG_NICKNAME_DIALOG);
         getFragmentManager().executePendingTransactions();
         Window dialogWindow = mDialogFragment.getDialog().getWindow();
-        if(dialogWindow != null) {
+        if (dialogWindow != null) {
             //show soft keyboard
             dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
@@ -397,16 +412,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     @Override
     public void showWelcomeDialog() {
+        Timber.d("showWelcomeDialog()");
         mDialogFragment = new WelcomeDialog();
         mDialogFragment.show(getFragmentManager(), TAG_WELCOME_DIALOG);
     }
-
-    @Override
-    public boolean isRecreating() {
-        return isRecreating;
-    }
-
-
 
     /*
        Implementation of NicknamePickerDialog.NicknamePickerDialogListener

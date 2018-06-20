@@ -6,8 +6,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Layout;
 
 import com.blogspot.android_czy_java.beautytips.R;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class WelcomeDialog extends DialogFragment {
 
@@ -43,6 +47,7 @@ public class WelcomeDialog extends DialogFragment {
                     }
                 });
         return builder.create();
+
     }
 
     @Override
@@ -56,4 +61,10 @@ public class WelcomeDialog extends DialogFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getDialog().getWindow().setLayout(MATCH_PARENT, MATCH_PARENT);
+    }
 }
