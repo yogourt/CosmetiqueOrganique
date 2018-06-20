@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".listView.view.MainActivity"
+        <activity
+            android:name=".listView.view.MainActivity"
             android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,8 +27,9 @@
         <activity
             android:name=".newTip.view.NewTipActivity"
             android:label="@string/title_activity_new_tip"
-            android:parentActivityName=".listView.view.MainActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:parentActivityName=".listView.view.MainActivity" />
+        <activity android:name=".welcome.WelcomeActivity"></activity>
     </application>
 
 </manifest>

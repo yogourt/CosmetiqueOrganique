@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -28,6 +29,8 @@ import java.util.List;
 
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+
 public class FirebaseLoginHelper implements LifecycleObserver {
 
     public static final int RC_SIGN_IN = 123;
@@ -45,10 +48,13 @@ public class FirebaseLoginHelper implements LifecycleObserver {
 
     private MainViewInterface activity;
 
+    private ListViewViewModel viewModel;
 
-    public FirebaseLoginHelper(MainViewInterface activity) {
+
+    public FirebaseLoginHelper(MainViewInterface activity, ListViewViewModel viewModel) {
         mAuth = FirebaseAuth.getInstance();
         this.activity = activity;
+        this.viewModel = viewModel;
         mNicknamesReference = FirebaseDatabase.getInstance().getReference("userNicknames");
     }
 
@@ -64,23 +70,6 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         void showPickNicknameDialog();
 
         void showWelcomeDialog();
-
-        boolean isRecreating();
-
-        Resources getResources();
-
-        void recreate();
-    }
-
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    public void logInUserOrAnonymous() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            if(!activity.isRecreating()) activity.showWelcomeDialog();
-        } else if (!user.isAnonymous()) {
-            prepareNavDrawerHeader();
-        }
     }
 
     public void showSignInScreen() {
@@ -100,17 +89,26 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         signInAnonymously();
     }
 
+    /*
+      The actual signing in is handled by FirebaseUI-auth and we are just listening for change to
+      update listView UI
+     */
     public void signIn() {
         mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                activity.recreate();
+                viewModel.setCategory(CATEGORY_ALL);
+                viewModel.changeUserState(ListViewViewModel.USER_STATE_LOGGED_IN);
+
+                //this listener has to be removed - to properly handled signing out (we don't want
+                //this method to be called then)
+                mAuth.removeAuthStateListener(this);
             }
         });
 
     }
 
-    private void prepareNavDrawerHeader() {
+    public void prepareNavDrawerHeader() {
         setNicknameInNavDrawer();
 
         mUserPhotoReference = FirebaseDatabase.getInstance().getReference("userPhotos")
@@ -135,9 +133,9 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                activity.setUserPhoto(null);
-                activity.setNickname(activity.getResources().getString(R.string.label_anonymous));
-                activity.recreate();
+                Timber.d("signInAnonymously()");
+                viewModel.setCategory(CATEGORY_ALL);
+                viewModel.changeUserState(ListViewViewModel.USER_STATE_ANONYMOUS);
             }
         });
     }
@@ -196,8 +194,12 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         activity.setIsPhotoSaving(false);
     }
 
-    public boolean isUserAnonymous() {
-        return (mAuth.getCurrentUser() == null || mAuth.getCurrentUser().isAnonymous());
+    public static boolean isUserNull() {
+        return FirebaseAuth.getInstance().getCurrentUser() == null;
+    }
+
+    public static boolean isUserAnonymous() {
+        return FirebaseAuth.getInstance().getCurrentUser().isAnonymous();
     }
 
 }
