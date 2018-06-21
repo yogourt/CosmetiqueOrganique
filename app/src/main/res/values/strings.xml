@@ -81,11 +81,11 @@
     <string name="feature_your_tips">List of your own tips</string>
     <string name="message_feature_for_logged_in_only">%1$s is the feature for logged in users only.</string>
 
-    <!-- welcome dialog -->
-    <string name="welcome_dialog_title">Welcome in Beauty tips!</string>
-    <string name="welcome_dialog_message">\nWould you like to log in to get access to all the features like
+    <!-- welcome screen -->
+    <string name="welcome_title">Welcome in Beauty tips!</string>
+    <string name="welcome_message">Would you like to log in to get access to all the features like
     creating a list of favourites or adding your own tips?
     \n\nYou can always change your mind - the login button is located in the side menu.\n</string>
-    <string name="welcome_dialog_pos_button_label">Log in</string>
-    <string name="welcome_dialog_neg_button_label">Not now</string>
+    <string name="welcome_pos_button_label">Log in</string>
+    <string name="welcome_neg_button_label">Not now</string>
 </resources>

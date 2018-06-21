@@ -54,8 +54,6 @@ public class ListViewViewModel extends ViewModel {
 
     public void setCategory(String category) {
         Timber.d("setCategory: " + category);
-        //if category was the same, don't change it, because it will call onChanged() method of the observer
-        if(categoryLiveData.getValue().equals(category)) return;
         this.categoryLiveData.setValue(category);
     }
 
