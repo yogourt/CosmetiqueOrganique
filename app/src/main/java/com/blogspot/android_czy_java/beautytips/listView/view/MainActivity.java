@@ -17,19 +17,16 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.WelcomeDialog;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
@@ -40,7 +37,6 @@ import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
-import com.squareup.haha.perflib.Main;
 
 import javax.inject.Inject;
 
@@ -52,10 +48,13 @@ import timber.log.Timber;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_ANONYMOUS;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
+import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN;
+import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN_ANONYMOUSLY;
+import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_TERMINATE;
 
 public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
         MyDrawerLayoutListener.DrawerCreationInterface, FirebaseLoginHelper.MainViewInterface,
-        NicknamePickerDialog.NicknamePickerDialogListener, WelcomeDialog.WelcomeDialogListener {
+        NicknamePickerDialog.NicknamePickerDialogListener {
 
     public static final int RC_PHOTO_PICKER = 100;
     public static final int RC_WELCOME_ACTIVITY = 200;
@@ -292,15 +291,26 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == RC_WELCOME_ACTIVITY) {
+            if(resultCode == RESULT_TERMINATE) {
+                onBackPressed();
+            } else if(resultCode == RESULT_LOG_IN) {
+                mLoginHelper.showSignInScreen();
+            } else if(resultCode == RESULT_LOG_IN_ANONYMOUSLY) {
+                mLoginHelper.signInAnonymously();
+            }
+        }
+
         if (requestCode == FirebaseLoginHelper.RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
                 mLoginHelper.signIn();
             } else {
-                //if response is null the user canceled sign in flow using back button
+                //if response is null the user canceled sign in flow using back button, so we sign
+                //him anonymously.
                 if (response == null) {
-                    finish();
+                    mLoginHelper.signInAnonymously();
                 }
             }
         }
@@ -410,13 +420,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
     }
 
-    @Override
-    public void showWelcomeDialog() {
-        Timber.d("showWelcomeDialog()");
-        mDialogFragment = new WelcomeDialog();
-        mDialogFragment.show(getFragmentManager(), TAG_WELCOME_DIALOG);
-    }
-
     /*
        Implementation of NicknamePickerDialog.NicknamePickerDialogListener
      */
@@ -424,20 +427,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public void onDialogSaveButtonClick(String nickname) {
         mLoginHelper.saveNickname(nickname);
         setNickname(nickname);
-    }
-
-
-    /*
-      Implementation of WelcomeDialog.WelcomeDialogListener
-     */
-    @Override
-    public void onPositiveButtonClicked() {
-        mLoginHelper.showSignInScreen();
-    }
-
-    @Override
-    public void onNegativeButtonClicked() {
-        mLoginHelper.signInAnonymously();
     }
 
 }

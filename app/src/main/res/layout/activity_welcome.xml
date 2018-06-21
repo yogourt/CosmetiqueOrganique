@@ -1,7 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/positive_button"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="@dimen/welcome_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:title="@string/app_name" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/logo" />
+
+        <TextView
+            style="@style/ExpandedTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/welcome_title"
+            android:textAlignment="center"
+            android:textColor="@color/pink200"
+            android:textSize="@dimen/welcome_text_size" />
+
+        <TextView
+            style="@style/NormalTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/welcome_padding"
+            android:text="@string/welcome_message" />
+    </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/welcome_button_padding"
+        android:layout_marginStart="@dimen/welcome_button_padding"
+        android:text="@string/welcome_neg_button_label"
+        android:textAllCaps="true"
+        android:textSize="@dimen/welcome_button_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="onNegativeButtonClicked"/>
+
+    <TextView
+        android:id="@+id/positive_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/welcome_button_padding"
+        android:layout_marginEnd="@dimen/welcome_button_padding"
+        android:text="@string/welcome_pos_button_label"
+        android:textAllCaps="true"
+        android:textColor="@color/pink200"
+        android:textSize="@dimen/welcome_button_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onLogInButtonClicked"/>
+
+</android.support.constraint.ConstraintLayout>

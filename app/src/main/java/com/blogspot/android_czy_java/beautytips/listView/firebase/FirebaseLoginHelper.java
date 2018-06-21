@@ -68,8 +68,6 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         void setIsPhotoSaving(boolean value);
 
         void showPickNicknameDialog();
-
-        void showWelcomeDialog();
     }
 
     public void showSignInScreen() {
@@ -134,8 +132,8 @@ public class FirebaseLoginHelper implements LifecycleObserver {
             @Override
             public void onSuccess(AuthResult authResult) {
                 Timber.d("signInAnonymously()");
-                viewModel.setCategory(CATEGORY_ALL);
                 viewModel.changeUserState(ListViewViewModel.USER_STATE_ANONYMOUS);
+                viewModel.setCategory(CATEGORY_ALL);
             }
         });
     }
