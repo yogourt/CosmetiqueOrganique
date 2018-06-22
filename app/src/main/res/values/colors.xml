@@ -11,6 +11,7 @@
     <color name="bluegray50">#eceff1</color>
     <color name="bluegray300">#90A4AE</color>
     <color name="bluegray700">#455a64</color>
+    <color name="bluegray700_semi">#77455a64</color>
     <color name="bluegray900">#263238</color>
     <color name="bluegray900_semi">#55263238</color>
     <color name="black_semi">#73000000</color>

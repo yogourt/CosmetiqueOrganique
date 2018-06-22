@@ -77,4 +77,12 @@
         <item name="android:colorAccent">@color/pink200</item>
     </style>
 
+    <style name="RippleCircularButtonStyle" >
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">@dimen/inner_button_padding</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/welcome_button_text_size</item>
+    </style>
 </resources>
