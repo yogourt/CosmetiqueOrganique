@@ -88,4 +88,9 @@
     \n\nYou can always change your mind - the login button is located in the side menu.\n</string>
     <string name="welcome_pos_button_label">Log in</string>
     <string name="welcome_neg_button_label">Not now</string>
+
+
+    <!-- widget strings -->
+    <string name="widget_title">Today\'s tip</string>
+    <string name="add_widget">Add widget</string>
 </resources>

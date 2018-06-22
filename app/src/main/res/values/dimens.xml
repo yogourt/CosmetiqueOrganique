@@ -19,7 +19,7 @@
 
 
     <!-- detail screen dimens -->
-    <dimen name="ingredients_bottom_padding">24dp</dimen>
+    <dimen name="ingredients_bottom_padding">32dp</dimen>
     <dimen name="ingredients_top_padding">16dp</dimen>
     <dimen name="ingredients_inner_padding">4dp</dimen>
     <dimen name="ingredients_text_size">16sp</dimen>
@@ -58,4 +58,18 @@
     <dimen name="welcome_button_text_size">16sp</dimen>
     <dimen name="welcome_padding">16dp</dimen>
     <dimen name="welcome_button_padding">32dp</dimen>
+    <dimen name="welcome_button_end_padding">48dp</dimen>
+    <dimen name="inner_button_padding">8dp</dimen>
+
+
+    <!-- widget dimens -->
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_desc_padding">8dp</dimen>
+    <dimen name="widget_iv_padding">8dp</dimen>
+    <dimen name="widget_iv_margin">2dp</dimen>
+    <dimen name="widget_iv_dimen">60dp</dimen>
 </resources>

@@ -52,31 +52,25 @@
     </ScrollView>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/RippleCircularButtonStyle"
         android:layout_marginBottom="@dimen/welcome_button_padding"
         android:layout_marginStart="@dimen/welcome_button_padding"
         android:text="@string/welcome_neg_button_label"
-        android:textAllCaps="true"
-        android:textSize="@dimen/welcome_button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:onClick="onNegativeButtonClicked"/>
+        android:onClick="onNegativeButtonClicked"
+        android:background="@drawable/ripple_button"/>
 
     <TextView
         android:id="@+id/positive_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/RippleCircularButtonStyle"
         android:layout_marginBottom="@dimen/welcome_button_padding"
         android:layout_marginEnd="@dimen/welcome_button_padding"
         android:text="@string/welcome_pos_button_label"
-        android:textAllCaps="true"
         android:textColor="@color/pink200"
-        android:textSize="@dimen/welcome_button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onLogInButtonClicked"/>
+        android:onClick="onLogInButtonClicked"
+        android:background="@drawable/ripple_button"/>
 
 </android.support.constraint.ConstraintLayout>

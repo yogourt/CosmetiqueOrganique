@@ -29,7 +29,17 @@
             android:label="@string/title_activity_new_tip"
             android:launchMode="singleTop"
             android:parentActivityName=".listView.view.MainActivity" />
-        <activity android:name=".welcome.WelcomeActivity"></activity>
+        <activity android:name=".welcome.WelcomeActivity" />
+
+        <receiver android:name=".widget.TipWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/tip_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

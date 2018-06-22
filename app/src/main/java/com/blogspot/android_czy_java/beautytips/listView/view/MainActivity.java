@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     logOutItem.setIcon(R.drawable.ic_logout);
                     mLoginHelper.prepareNavDrawerHeader();
 
-                    //when user clicks photo circle the photo chooser is opening
+                    //when user clicks photo button_background the photo chooser is opening
                     photoIv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

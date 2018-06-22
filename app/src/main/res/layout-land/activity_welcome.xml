@@ -31,8 +31,8 @@
         android:id="@+id/title_and_message"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingTop="@dimen/welcome_padding"
         android:paddingBottom="@dimen/welcome_padding"
+        android:paddingTop="@dimen/welcome_padding"
         app:layout_constraintBottom_toTopOf="@+id/positive_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/logo"
@@ -64,30 +64,24 @@
     </ScrollView>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/RippleCircularButtonStyle"
         android:layout_marginBottom="@dimen/welcome_button_padding"
         android:layout_marginStart="@dimen/welcome_button_padding"
+        android:background="@drawable/ripple_button"
+        android:onClick="onNegativeButtonClicked"
         android:text="@string/welcome_neg_button_label"
-        android:textAllCaps="true"
-        android:textSize="@dimen/welcome_button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/title_and_message"
-        tools:layout_editor_absoluteX="32dp"
-        android:onClick="onNegativeButtonClicked"/>
+        app:layout_constraintStart_toStartOf="@id/title_and_message" />
 
     <TextView
         android:id="@+id/positive_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/RippleCircularButtonStyle"
         android:layout_marginBottom="@dimen/welcome_button_padding"
-        android:layout_marginEnd="@dimen/welcome_button_padding"
-        android:backgroundTint="@android:color/transparent"
+        android:layout_marginEnd="@dimen/welcome_button_end_padding"
+        android:background="@drawable/ripple_button"
+        android:onClick="onLogInButtonClicked"
         android:text="@string/welcome_pos_button_label"
-        android:textAllCaps="true"
         android:textColor="@color/pink200"
-        android:textSize="@dimen/welcome_button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onLogInButtonClicked"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>
