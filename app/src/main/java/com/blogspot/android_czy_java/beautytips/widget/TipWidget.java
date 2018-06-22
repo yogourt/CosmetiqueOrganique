@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.widget;
 
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.widget.RemoteViews;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.view.DetailActivity;
 import com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter;
+import com.blogspot.android_czy_java.beautytips.listView.view.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -69,8 +71,12 @@ public class TipWidget extends AppWidgetProvider {
                                     bundle.putString(ListViewAdapter.KEY_AUTHOR, author);
 
                                 tipIntent.putExtras(bundle);
-                                PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                                        0, tipIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                PendingIntent pendingIntent = TaskStackBuilder.create(context)
+                                        .addParentStack(MainActivity.class)
+                                        .addNextIntentWithParentStack(tipIntent)
+                                        .getPendingIntent(0,
+                                                PendingIntent.FLAG_UPDATE_CURRENT);
+
                                 views.setOnClickPendingIntent(R.id.tip_widget_layout, pendingIntent);
 
                                 //update widget

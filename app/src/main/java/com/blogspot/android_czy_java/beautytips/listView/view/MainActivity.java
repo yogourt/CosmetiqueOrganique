@@ -47,6 +47,7 @@ import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_ANONYMOUS;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN_ANONYMOUSLY;
@@ -204,6 +205,15 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             mDialogFragment.dismiss();
         }
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        //the first and the last screen user sees is all tips to provide proper and predictible
+        // navigation
+        if(!viewModel.getCategory().equals(CATEGORY_ALL)) viewModel.setCategory(CATEGORY_ALL);
+        else super.onBackPressed();
     }
 
     private void prepareActionBar() {
