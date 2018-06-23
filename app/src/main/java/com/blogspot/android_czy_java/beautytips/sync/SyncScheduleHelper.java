@@ -24,6 +24,7 @@ import timber.log.Timber;
 public class SyncScheduleHelper {
 
     private static final String TAG_SYNC = "tag_for_syncing";
+    private static final String TAG_FIRST_SYNC = "tag_for_first_syncing";
     private static final int INTERVAL_SEC = (int) TimeUnit.HOURS.toSeconds(20);
     private static final int FLEXTIME_SEC = (int) TimeUnit.HOURS.toSeconds(8);
 
@@ -53,24 +54,21 @@ public class SyncScheduleHelper {
 
         sInitialized = true;
         scheduleSync(context);
-        immediateSync();
     }
 
-    public static void immediateSync() {
+    public static void immediateSync(Context context) {
         Timber.d("immediateSync()");
-        FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Timber.d("data is cached");
-                        System.out.println(String.valueOf(dataSnapshot.getValue()));
-                    }
+        Driver driver = new GooglePlayDriver(context);
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(driver);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Timber.d("Data is not cached");
-                        Timber.d(databaseError.getMessage());
-                    }
-                });
+        Job.Builder builder = dispatcher.newJobBuilder()
+                .setService(SyncJobService.class)
+                .setTag(TAG_FIRST_SYNC)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .setReplaceCurrent(true)
+                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                .setTrigger(Trigger.executionWindow(0, 0));
+
+        dispatcher.mustSchedule(builder.build());
     }
 }

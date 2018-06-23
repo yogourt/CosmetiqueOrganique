@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
+import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,12 +58,18 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void onLogInButtonClicked(View view) {
-        setResult(RESULT_LOG_IN);
-        finish();
+        if(NetworkConnectionHelper.isInternetConnection(this)) {
+            setResult(RESULT_LOG_IN);
+            finish();
+        }
+        else SnackbarHelper.showUnableToLogIn(mToolbar);
     }
 
     public void onNegativeButtonClicked(View view) {
-        setResult(RESULT_LOG_IN_ANONYMOUSLY);
-        finish();
+        if(NetworkConnectionHelper.isInternetConnection(this)) {
+            setResult(RESULT_LOG_IN_ANONYMOUSLY);
+            finish();
+        }
+        else SnackbarHelper.showUnableToLogInAnonymously(mToolbar);
     }
 }

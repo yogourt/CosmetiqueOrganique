@@ -1,11 +1,14 @@
 package com.blogspot.android_czy_java.beautytips.listView.model;
 
+import android.support.annotation.Keep;
+
+@Keep
 public class ListItem {
-    private String image;
-    private String title;
-    private String tipId;
-    private String category;
-    private String authorId;
+    public String image;
+    public String title;
+    public String tipId;
+    public String category;
+    public String authorId;
     
     public ListItem() {}
 

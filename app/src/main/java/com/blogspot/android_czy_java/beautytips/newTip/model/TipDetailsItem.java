@@ -1,7 +1,9 @@
 package com.blogspot.android_czy_java.beautytips.newTip.model;
 
-import android.support.annotation.Nullable;
 
+import android.support.annotation.Keep;
+
+@Keep
 public class TipDetailsItem {
 
     //keys in firebase db
