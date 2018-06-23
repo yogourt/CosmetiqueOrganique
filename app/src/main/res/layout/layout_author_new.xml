@@ -15,6 +15,7 @@
         android:layout_marginTop="@dimen/photo_vert_margin"
         android:layout_marginEnd="@dimen/photo_margin"
         android:layout_marginBottom="@dimen/photo_vert_margin"
+        android:contentDescription="@string/description_user_image"
         android:src="@color/bluegray700"/>
 
     <TextView

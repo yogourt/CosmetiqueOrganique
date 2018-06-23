@@ -18,6 +18,7 @@
     <string name="nav_body">Body</string>
     <string name="nav_categories">Categories</string>
     <string name="label_anonymous">Anonymous</string>
+    <string name="description_user_image">User photo</string>
 
     <!-- strings for detail screen -->
     <string name="ingredient_label"> Ingredient</string>
@@ -53,6 +54,7 @@
     <string name="button_label">Add tip</string>
     <string name="spinner_label">Category</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="description_image">Tip image</string>
 
     <!-- log in/log out strings -->
     <string name="fui_name_hint" translation_description="Hint for nickname field">Nickname</string>
@@ -88,9 +90,11 @@
     \n\nYou can always change your mind - the login button is located in the side menu.\n</string>
     <string name="welcome_pos_button_label">Log in</string>
     <string name="welcome_neg_button_label">Not now</string>
+    <string name="description_logo">App logo</string>
 
 
     <!-- widget strings -->
     <string name="widget_title">Today\'s tip</string>
     <string name="add_widget">Add widget</string>
+    <string name="description_app_logo">Beauty Tips App logo</string>
 </resources>

@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;

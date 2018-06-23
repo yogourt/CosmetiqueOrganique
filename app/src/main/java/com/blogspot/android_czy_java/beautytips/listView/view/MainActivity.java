@@ -38,10 +38,12 @@ import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.haha.perflib.Main;
 
 import javax.inject.Inject;
 
@@ -119,9 +121,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         if (savedInstanceState != null) {
             Timber.d("activity is recreating");
-        } else {
-            SyncScheduleHelper.initialize(this);
         }
+
+        SyncScheduleHelper.initialize(this);
+
 
         mLoginHelper = new FirebaseLoginHelper(this, viewModel);
 
@@ -147,13 +150,16 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                             WelcomeActivity.class);
                     startActivityForResult(welcomeActivityIntent, RC_WELCOME_ACTIVITY);
                 }
+                //user just logged in anonymously
                 else if (userState.equals(USER_STATE_ANONYMOUS)) {
                     logOutItem.setTitle(R.string.nav_log_in);
                     logOutItem.setIcon(R.drawable.ic_login);
                     photoIv.setOnClickListener(null);
                     photoIv.setImageDrawable(getResources().getDrawable(R.drawable.placeholder));
                     nicknameTv.setText(R.string.label_anonymous);
-                } else {
+                }
+                //user just logged in
+                else {
                     logOutItem.setTitle(R.string.nav_log_out);
                     logOutItem.setIcon(R.drawable.ic_logout);
                     mLoginHelper.prepareNavDrawerHeader();

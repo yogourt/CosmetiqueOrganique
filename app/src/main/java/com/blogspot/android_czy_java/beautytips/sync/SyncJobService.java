@@ -17,6 +17,7 @@ public class SyncJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters job) {
 
+        Timber.d("onStartJob()");
         //this call to Firebase is done for syncing purposes. Persistence of data is enabled in
         //MyApplication class, so this call will update the cache on the device for use without
         //internet.

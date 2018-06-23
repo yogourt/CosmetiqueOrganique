@@ -11,6 +11,7 @@
         android:layout_height="@dimen/widget_iv_dimen"
         android:background="@color/pink200"
         android:padding="@dimen/widget_iv_padding"
+        android:contentDescription="@string/description_app_logo"
         android:src="@drawable/ic_soap" />
 
     <TextView
