@@ -54,6 +54,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
     implementation 'com.firebaseui:firebase-ui-database:4.0.1'
     implementation 'com.google.firebase:firebase-ads:15.0.1'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
     //RecyclerView
     implementation 'com.android.support:recyclerview-v7:27.1.1'
