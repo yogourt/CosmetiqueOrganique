@@ -38,14 +38,6 @@ import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.haha.perflib.Main;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public static final int RC_WELCOME_ACTIVITY = 200;
 
     public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
-    public static final String TAG_WELCOME_DIALOG = "welcome_dialog";
 
 
     @BindView(R.id.recycler_view)
@@ -83,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
-    @Inject
     FirebaseLoginHelper mLoginHelper;
 
     private View mHeaderLayout;
@@ -224,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     public void onBackPressed() {
 
-        //the first and the last screen user sees is all tips to provide proper and predictible
+        //the first and the last screen user sees is all tips to provide proper and predictable
         // navigation
         if(!viewModel.getCategory().equals(CATEGORY_ALL)) viewModel.setCategory(CATEGORY_ALL);
         else super.onBackPressed();
@@ -330,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
             if (resultCode == RESULT_OK) {
                 mLoginHelper.signIn();
+                SyncScheduleHelper.immediateSync(this);
             } else {
                 //if response is null the user canceled sign in flow using back button, so we sign
                 //him anonymously.

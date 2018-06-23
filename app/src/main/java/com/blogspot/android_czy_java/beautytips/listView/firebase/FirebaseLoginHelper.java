@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.listView.firebase;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -61,6 +62,8 @@ public class FirebaseLoginHelper implements LifecycleObserver {
 
     public interface MainViewInterface {
         void startActivityForResult(Intent intent, int requestCode);
+
+        Context getContext();
 
         void setNickname(String nickname);
 
@@ -135,6 +138,8 @@ public class FirebaseLoginHelper implements LifecycleObserver {
                 Timber.d("signInAnonymously()");
                 viewModel.changeUserState(ListViewViewModel.USER_STATE_ANONYMOUS);
                 viewModel.setCategory(CATEGORY_ALL);
+                //cache all data for use without network
+                SyncScheduleHelper.immediateSync(activity.getContext());
             }
         });
     }

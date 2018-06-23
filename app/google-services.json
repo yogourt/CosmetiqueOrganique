@@ -23,8 +23,12 @@
           }
         },
         {
-          "client_id": "689797563562-t0kgeebf51keltuejc45201grtp80bq7.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "689797563562-ca2olbrhv09bj035tkdfaijbnqmbtn4k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blogspot.android_czy_java.beautytips",
+            "certificate_hash": "084e578ab0b08fd6f4195ac10eb2eeaae3b18ef2"
+          }
         },
         {
           "client_id": "689797563562-t0kgeebf51keltuejc45201grtp80bq7.apps.googleusercontent.com",
