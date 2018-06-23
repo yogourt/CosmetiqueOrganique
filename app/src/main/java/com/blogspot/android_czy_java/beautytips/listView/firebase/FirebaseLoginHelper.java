@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;

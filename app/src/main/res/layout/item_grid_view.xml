@@ -27,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
-            android:text="Lorem ipsum"
             android:paddingStart="@dimen/title_start_padding"
             android:paddingEnd="@dimen/title_start_padding"
             android:paddingBottom="@dimen/title_bottom_padding"

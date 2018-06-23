@@ -1,7 +1,9 @@
 package com.blogspot.android_czy_java.beautytips.sync;
 
 import android.content.Context;
+import android.content.Intent;
 import android.provider.SyncStateContract;
+import android.support.annotation.NonNull;
 
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.Driver;
@@ -10,8 +12,14 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 public class SyncScheduleHelper {
 
@@ -45,6 +53,24 @@ public class SyncScheduleHelper {
 
         sInitialized = true;
         scheduleSync(context);
+        immediateSync();
     }
 
+    public static void immediateSync() {
+        Timber.d("immediateSync()");
+        FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Timber.d("data is cached");
+                        System.out.println(String.valueOf(dataSnapshot.getValue()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.d("Data is not cached");
+                        Timber.d(databaseError.getMessage());
+                    }
+                });
+    }
 }

@@ -30,6 +30,7 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:contentDescription="@string/description_logo"
             android:src="@drawable/logo" />
 
         <TextView
