@@ -40,6 +40,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/tip_widget_info" />
         </receiver>
+
+        <service
+            android:exported="false"
+            android:name=".sync.SyncJobService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
