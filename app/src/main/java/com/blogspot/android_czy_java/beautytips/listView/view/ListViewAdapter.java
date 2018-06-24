@@ -83,7 +83,8 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
                 into(holder.mImage);
 
         holder.mTitle.setText(item.getTitle());
-        holder.mImage.setContentDescription(item.getTitle() + " image");
+        holder.mImage.setContentDescription(mContext.getResources()
+                .getString(R.string.description_tip_image, item.getTitle()));
 
         setAnimation(holder.itemView, position);
 
