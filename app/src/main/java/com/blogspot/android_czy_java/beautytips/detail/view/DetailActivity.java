@@ -188,7 +188,8 @@ public class DetailActivity extends AppCompatActivity implements
             mDescTextView.setPadding(padding, topPadding, padding, bottomPadding);
         }
 
-        mImageView.setContentDescription(mTitle + " image");
+        mImageView.setContentDescription(getResources()
+                .getString(R.string.description_tip_image, mTitle));
     }
 
     public  void setAuthor(String nickname) {

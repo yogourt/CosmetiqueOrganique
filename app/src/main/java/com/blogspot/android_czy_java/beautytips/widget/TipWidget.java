@@ -59,7 +59,7 @@ public class TipWidget extends AppWidgetProvider {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Timber.d("creating bundle");
                                 String title = (String)dataSnapshot.child("title").getValue();
-                                views.setTextViewText(R.id.widget_title, "   " + title);
+                                views.setTextViewText(R.id.widget_title, title);
                                 bundle.putString(ListViewAdapter.KEY_TITLE,
                                         title);
                                 bundle.putString(ListViewAdapter.KEY_IMAGE,

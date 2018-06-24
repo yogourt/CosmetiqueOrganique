@@ -2,6 +2,9 @@
     <string name="app_name">Beauty Tips</string>
     <string name="title_activity_detail">DetailActivity</string>
 
+    <!-- strings for listView screen -->
+    <string name="description_tip_image">%1$s image</string>
+
     <!-- transition names for shared element transition -->
     <string name="image_transition_name">image</string>
     <string name="scrim_transition_name">scrim</string>
@@ -22,6 +25,7 @@
 
     <!-- strings for detail screen -->
     <string name="ingredient_label"> Ingredient</string>
+    <string name="description_fab">Add to favourites button</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
         exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
