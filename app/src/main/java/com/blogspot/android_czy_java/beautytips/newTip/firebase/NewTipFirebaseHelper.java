@@ -24,13 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 import timber.log.Timber;
 
@@ -129,8 +123,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                             .getReference("tipList/" + tipPath);
 
                     //save title, category and author
-                    TipListItem listItem = new TipListItem(title, category, user.getUid(),
-                            System.currentTimeMillis() * (-1));
+                    TipListItem listItem = new TipListItem(title, category, user.getUid());
                     listReference.setValue(listItem);
 
                     //save tip image
