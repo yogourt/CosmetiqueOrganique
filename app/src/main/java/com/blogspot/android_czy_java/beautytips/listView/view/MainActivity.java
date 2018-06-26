@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.AppInfoDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public static final int RC_WELCOME_ACTIVITY = 200;
 
     public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
+    public static final String TAG_INFO_DIALOG = "app_info_dialog";
 
 
     @BindView(R.id.recycler_view)
@@ -170,6 +173,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
     @Override
     protected void onStart() {
@@ -296,6 +304,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         if (item.getItemId() == android.R.id.home) {
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
+        }
+        if (item.getItemId() == R.id.menu_about) {
+            AppInfoDialog dialog = new AppInfoDialog();
+            dialog.show(getFragmentManager(), TAG_INFO_DIALOG);
         }
         return super.onOptionsItemSelected(item);
     }

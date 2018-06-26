@@ -97,6 +97,14 @@
     <string name="welcome_neg_button_label">Not now</string>
     <string name="description_logo">App logo</string>
 
+    <!-- info dialog -->
+    <string name="info_dialog_title">About Beauty Tips</string>
+    <string name="info_dialog_message">\n Hello! Thank you for using my app. If you have any comments,
+    you are welcome to share them via e-mail: jagoda.sylwester@gmail.com \n\n
+        Icons used in this app are made by authors from www.flaticon.com: login, logout and kiss icons by Freepik,
+    heart icon by Google, hair and soap icon (which is app icon) by Smashicons, body icon by fjstudio.
+    Background patterns are designed by anastock from www.Freepik.com. \n </string>
+    <string name="info_dialog_positive_button">Close</string>
 
     <!-- widget strings -->
     <string name="widget_title">Today\'s tip</string>

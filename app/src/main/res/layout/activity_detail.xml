@@ -102,7 +102,7 @@
         android:src="@drawable/ic_heart"
         android:tint="@color/bluegray700"
         app:layout_anchor="@id/layout_ingredients"
-        app:layout_anchorGravity="bottom|right"
+        app:layout_anchorGravity="bottom|end"
         android:contentDescription="@string/description_fab"/>
 
     <com.google.android.gms.ads.AdView
