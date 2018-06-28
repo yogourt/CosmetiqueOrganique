@@ -27,6 +27,16 @@
                 layout="@layout/layout_ingredients" />
 
             <TextView
+                android:id="@+id/fav_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fav_margin_top"
+                android:paddingStart="@dimen/desc_padding"
+                android:paddingEnd="@dimen/desc_padding"
+                style="@style/NormalTextStyle"
+                android:textColor="@color/bluegray300"/>
+
+            <TextView
                 android:id="@+id/description_text_view"
                 style="@style/NormalTextStyle"
                 android:layout_width="match_parent"
@@ -110,7 +120,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id"/>
 

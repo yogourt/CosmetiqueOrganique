@@ -9,13 +9,15 @@ public class ListItem {
     public String tipId;
     public String category;
     public String authorId;
+    public long favNum;
     
     public ListItem() {}
 
-    public ListItem(String image, String title, String category) {
+    public ListItem(String image, String title, String category, long favNum) {
         this.image = image;
         this.title = title;
         this.category = category;
+        this.favNum = favNum;
     }
 
     public String getImage() {
@@ -57,5 +59,14 @@ public class ListItem {
     public void setAuthorId(String mAuthor) {
         this.authorId = mAuthor;
     }
+
+    public long getFavNum() {
+        return favNum;
+    }
+
+    public void setFavNum(long favNum) {
+        this.favNum = favNum;
+    }
+
 }
 

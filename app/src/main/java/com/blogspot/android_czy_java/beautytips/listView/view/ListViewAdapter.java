@@ -36,6 +36,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     public static final String KEY_IMAGE = "image";
     public static final String KEY_ID = "id";
     public static final String KEY_AUTHOR = "author";
+    public static final String KEY_FAV_NUM = "favourites_number";
 
     public static final int[] itemHeights = {630, 600, 670, 650};
 
@@ -136,6 +137,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
             bundle.putString(KEY_TITLE, item.getTitle());
             bundle.putString(KEY_IMAGE, item.getImage());
             bundle.putString(KEY_ID, item.getId());
+            bundle.putLong(KEY_FAV_NUM, item.getFavNum());
             if( !TextUtils.isEmpty(item.getAuthorId()) ) bundle.putString(KEY_AUTHOR, item.getAuthorId());
 
             detailActivityIntent.putExtras(bundle);

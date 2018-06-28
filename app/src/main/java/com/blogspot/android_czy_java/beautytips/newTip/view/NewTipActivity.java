@@ -19,6 +19,7 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.newTip.firebase.NewTipFirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.newTip.view.dialog.ConfirmationDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.farbod.labelledspinner.LabelledSpinner;
@@ -30,9 +31,11 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
-public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseHelper.NewTipViewInterface {
+public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseHelper.NewTipViewInterface,
+        ConfirmationDialog.ConfirmationDialogListener {
 
     private static final int RC_PHOTO_PICKER = 100;
+    public static final String TAG_CONF_DIALOG = "confirmation_dialog";
 
     public static final String KEY_IMAGE_PATH = "image_path";
     public static final String KEY_CATEGORY = "category";
@@ -40,7 +43,6 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     public static final String CATEGORY_HAIR = "hair";
     public static final String CATEGORY_FACE = "face";
     public static final String CATEGORY_BODY = "body";
-
 
     @BindView(R.id.linear_layout)
     LinearLayout mNewTipLayout;
@@ -81,6 +83,10 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     private NewTipFirebaseHelper mFirebaseHelper;
     private int category;
     private String imagePath;
+    private String title;
+    private ArrayList<String> ingredients;
+    private String description;
+
 
 
     @Override
@@ -222,9 +228,9 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     //method to be called when "add tip" button is clicked
     public void addTip(View view) {
         if(!NetworkConnectionHelper.isInternetConnection(this)) {
-            SnackbarHelper.showUnableToAddTip(view);
+            SnackbarHelper.showUnableToAddTip(mNewTipLayout);
         } else {
-            String title = mTitleEt.getText().toString();
+            title = mTitleEt.getText().toString();
             if(TextUtils.isEmpty(title)) {
                 SnackbarHelper.showCannotBeEmpty(mNewTipLayout,
                         getResources().getString(R.string.element_title));
@@ -235,7 +241,7 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
             String ingredient2 = mIngredient2Et.getText().toString();
             String ingredient3 = mIngredient3Et.getText().toString();
             String ingredient4 = mIngredient4Et.getText().toString();
-            ArrayList<String> ingredients = new ArrayList<>();
+            ingredients = new ArrayList<>();
             if(!TextUtils.isEmpty(ingredient1)) ingredients.add(ingredient1);
             if(!TextUtils.isEmpty(ingredient2)) ingredients.add(ingredient2);
             if(!TextUtils.isEmpty(ingredient3)) ingredients.add(ingredient3);
@@ -246,7 +252,7 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
                 return;
             }
 
-            String description = mDescriptionEt.getText().toString();
+            description = mDescriptionEt.getText().toString();
             if(TextUtils.isEmpty(description)) {
                 SnackbarHelper.showCannotBeEmpty(mNewTipLayout,
                         getResources().getString(R.string.element_description));
@@ -257,8 +263,8 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
                 SnackbarHelper.showImageCannotBeEmpty(mNewTipLayout);
                 return;
             }
-            mFirebaseHelper.addTip(title, ingredients, description, getCategory(), imagePath);
-            finishWithTransition();
+
+            new ConfirmationDialog().show(getFragmentManager(), TAG_CONF_DIALOG);
         }
     }
 
@@ -271,4 +277,15 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
         return CATEGORY_HAIR;
     }
 
+
+    /*
+      ConfirmationDialog.ConfirmationDialogListener interface method
+     */
+
+    @Override
+    public void onDialogSaveButtonClick() {
+        Timber.d(imagePath);
+        mFirebaseHelper.addTip(title, ingredients, description, getCategory(), imagePath);
+        finishWithTransition();
+    }
 }

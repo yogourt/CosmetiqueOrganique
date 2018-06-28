@@ -30,15 +30,17 @@
     <dimen name="author_padding">32dp</dimen>
     <dimen name="author_padding_start">@dimen/author_padding</dimen>
     <dimen name="desc_padding">16dp</dimen>
-    <dimen name="desc_top_padding">48dp</dimen>
+    <dimen name="desc_top_padding">16dp</dimen>
     <dimen name="author_bottom_margin">80dp</dimen>
     <dimen name="app_bar_layout_height">192dp</dimen>
     <dimen name="fab_margin">32dp</dimen>
     <dimen name="exp_title_text_size">@dimen/title_text_size</dimen>
+    <dimen name="fav_margin_top">16dp</dimen>
 
     <!-- new tip screen dimens -->
     <dimen name="desc_margin">16dp</dimen>
     <dimen name="new_tip_desc_padding">8dp</dimen>
+    <dimen name="new_tip_desc_top_padding">32dp</dimen>
     <dimen name="ingredient_width">120dp</dimen>
     <dimen name="title_bottom_margin">32dp</dimen>
     <dimen name="title_horiz_margin">16dp</dimen>

@@ -48,6 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_AUTHOR;
+import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_FAV_NUM;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_IMAGE;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_TITLE;
@@ -103,10 +104,14 @@ public class DetailActivity extends AppCompatActivity implements
     @BindView(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
 
+    @BindView(R.id.fav_text_view)
+    TextView mFavTv;
+
     private String mTitle;
     private String mImage;
     private String mAuthorId;
     private String mId;
+    private long mFavNum;
 
     private DetailFirebaseHelper mFirebaseHelper;
 
@@ -128,6 +133,7 @@ public class DetailActivity extends AppCompatActivity implements
             mImage = bundle.getString(KEY_IMAGE);
             if(bundle.containsKey(KEY_AUTHOR)) mAuthorId = bundle.getString(KEY_AUTHOR);
             mId = bundle.getString(KEY_ID);
+            mFavNum = bundle.getLong(KEY_FAV_NUM);
 
             mFirebaseHelper = new DetailFirebaseHelper(this, mId);
 
@@ -190,6 +196,14 @@ public class DetailActivity extends AppCompatActivity implements
 
         mImageView.setContentDescription(getResources()
                 .getString(R.string.description_tip_image, mTitle));
+        prepareFavNum();
+    }
+
+    private void prepareFavNum() {
+        if(mFavNum != 0) {
+            mFavTv.setText(getResources().getString(R.string.fav_label, String.valueOf(mFavNum)));
+            mFavTv.setVisibility(View.VISIBLE);
+        } else mFavTv.setVisibility(View.INVISIBLE);
     }
 
     public  void setAuthor(String nickname) {
@@ -323,11 +337,14 @@ public class DetailActivity extends AppCompatActivity implements
         int bluegray700 = getResources().getColor(R.color.bluegray700);
         if(mFab.getImageTintList().getDefaultColor() == bluegray700) {
             setFabActive();
-            mFirebaseHelper.addTipToFavourites();
-
+            mFavNum++;
+            mFirebaseHelper.addTipToFavourites(mFavNum);
+            prepareFavNum();
         } else {
             mFab.setImageTintList(ColorStateList.valueOf(bluegray700));
-            mFirebaseHelper.removeTipFromFavourites();
+            mFavNum--;
+            mFirebaseHelper.removeTipFromFavourites(mFavNum);
+            prepareFavNum();
         }
     }
 
