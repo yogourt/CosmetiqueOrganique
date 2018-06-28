@@ -133,11 +133,12 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                                    Timber.d("image added to storage");
                                     imageReference.getDownloadUrl().addOnSuccessListener(
                                             new OnSuccessListener<Uri>() {
                                                 @Override
                                                 public void onSuccess(Uri storageImageUri) {
+                                                    Timber.d("image path added to database");
                                                     String storageImageString = storageImageUri.toString();
                                                     listReference.child("image")
                                                             .setValue(storageImageString);

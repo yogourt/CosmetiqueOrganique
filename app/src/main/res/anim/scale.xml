@@ -3,8 +3,8 @@
     android:duration="@android:integer/config_shortAnimTime"
     >
 
-    <scale android:fromXScale="1.5" android:toXScale="1"
-        android:fromYScale="1.5" android:toYScale="1"
+    <scale android:fromXScale="1.3" android:toXScale="1"
+        android:fromYScale="1.3" android:toYScale="1"
         android:pivotX="50%"
         android:pivotY="50%"
         android:interpolator="@android:anim/accelerate_interpolator" />

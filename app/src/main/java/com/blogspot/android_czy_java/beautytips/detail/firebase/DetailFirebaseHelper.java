@@ -45,16 +45,22 @@ public class DetailFirebaseHelper {
                 });
     }
 
-    public void addTipToFavourites() {
+    public void addTipToFavourites(long favNum) {
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child(userId)
                 .setValue(true);
+        FirebaseDatabase.getInstance().getReference("tipList/ " + tipId)
+                .child("favNum")
+                .setValue(favNum);
     }
 
-    public void removeTipFromFavourites() {
+    public void removeTipFromFavourites(long favNum) {
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child(userId)
                 .removeValue();
+        FirebaseDatabase.getInstance().getReference("tipList/ " + tipId)
+                .child("favNum")
+                .setValue(favNum);
     }
 
     public void setFabState() {

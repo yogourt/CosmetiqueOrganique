@@ -437,7 +437,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public void showPickNicknameDialog() {
         mDialogFragment = new NicknamePickerDialog();
         mDialogFragment.show(getFragmentManager(), TAG_NICKNAME_DIALOG);
-        getFragmentManager().executePendingTransactions();
         Window dialogWindow = mDialogFragment.getDialog().getWindow();
         if (dialogWindow != null) {
             //show soft keyboard

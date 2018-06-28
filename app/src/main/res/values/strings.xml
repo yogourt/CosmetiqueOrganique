@@ -26,6 +26,7 @@
     <!-- strings for detail screen -->
     <string name="ingredient_label"> Ingredient</string>
     <string name="description_fab">Add to favourites button</string>
+    <string name="fav_label">%1$s \u2764</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
         exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
@@ -59,6 +60,16 @@
     <string name="spinner_label">Category</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="description_image">Tip image</string>
+    <string name="conf_message">*After the tip is saved, you cannot modify or delete it.
+    Please, review if it contains all the needful information and details.
+    \nAdding tip means that you agree the owner of this app can modify it in order to improve it
+    or delete it if it\'s not relevant with the app\'s content.\n</string>
+
+    <!-- confirmation dialog in new tip screen -->
+    <string name="conf_dialog_title">Are you sure?</string>
+    <string name="conf_dialog_message">Adding tip is irreversible. Please see the note it the bottom. </string>
+    <string name="conf_dialog_pos_button">Add tip</string>
+    <string name="conf_dialog_neg_button">Review</string>
 
     <!-- log in/log out strings -->
     <string name="fui_name_hint" translation_description="Hint for nickname field">Nickname</string>
