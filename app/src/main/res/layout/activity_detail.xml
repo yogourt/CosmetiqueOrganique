@@ -28,7 +28,7 @@
 
             <TextView
                 android:id="@+id/fav_text_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fav_margin_top"
                 android:paddingStart="@dimen/desc_padding"

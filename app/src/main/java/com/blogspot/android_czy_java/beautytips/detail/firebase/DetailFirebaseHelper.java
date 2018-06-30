@@ -49,7 +49,7 @@ public class DetailFirebaseHelper {
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child(userId)
                 .setValue(true);
-        FirebaseDatabase.getInstance().getReference("tipList/ " + tipId)
+        FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child("favNum")
                 .setValue(favNum);
     }
@@ -58,7 +58,7 @@ public class DetailFirebaseHelper {
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child(userId)
                 .removeValue();
-        FirebaseDatabase.getInstance().getReference("tipList/ " + tipId)
+        FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child("favNum")
                 .setValue(favNum);
     }

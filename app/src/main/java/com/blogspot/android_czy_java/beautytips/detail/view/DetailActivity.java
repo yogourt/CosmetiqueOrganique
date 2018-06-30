@@ -37,6 +37,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
@@ -133,7 +134,12 @@ public class DetailActivity extends AppCompatActivity implements
             mImage = bundle.getString(KEY_IMAGE);
             if(bundle.containsKey(KEY_AUTHOR)) mAuthorId = bundle.getString(KEY_AUTHOR);
             mId = bundle.getString(KEY_ID);
-            mFavNum = bundle.getLong(KEY_FAV_NUM);
+
+            //get the fav num from bundle (it comes from db) when the activity opens for the first
+            //time, and if it's orientation change get it from saved instance state, as it may
+            //change and not being already in db.
+            if(savedInstanceState == null) mFavNum = bundle.getLong(KEY_FAV_NUM);
+            else mFavNum = savedInstanceState.getLong(KEY_FAV_NUM);
 
             mFirebaseHelper = new DetailFirebaseHelper(this, mId);
 
@@ -141,6 +147,7 @@ public class DetailActivity extends AppCompatActivity implements
             mFirebaseHelper.getFirebaseDatabaseData();
             prepareToolbar();
             prepareFab();
+            prepareFavNum();
             prepareAdView();
         }
         else {
@@ -148,6 +155,12 @@ public class DetailActivity extends AppCompatActivity implements
         }
 
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(KEY_FAV_NUM, mFavNum);
     }
 
     @Override
@@ -196,7 +209,6 @@ public class DetailActivity extends AppCompatActivity implements
 
         mImageView.setContentDescription(getResources()
                 .getString(R.string.description_tip_image, mTitle));
-        prepareFavNum();
     }
 
     private void prepareFavNum() {

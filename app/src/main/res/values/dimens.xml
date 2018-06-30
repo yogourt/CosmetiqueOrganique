@@ -36,6 +36,7 @@
     <dimen name="fab_margin">32dp</dimen>
     <dimen name="exp_title_text_size">@dimen/title_text_size</dimen>
     <dimen name="fav_margin_top">16dp</dimen>
+    <dimen name="fav_margin_start">16dp</dimen>
 
     <!-- new tip screen dimens -->
     <dimen name="desc_margin">16dp</dimen>
