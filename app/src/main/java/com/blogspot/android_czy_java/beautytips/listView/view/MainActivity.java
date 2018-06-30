@@ -379,6 +379,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
      */
     @Override
     public void onClick(int position) {
+
+        Timber.d("listPosition: " + position);
         this.listPosition = position;
     }
 
