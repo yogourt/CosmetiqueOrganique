@@ -40,6 +40,7 @@ import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.ads.MobileAds;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,6 +115,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         if (savedInstanceState != null) {
             Timber.d("activity is recreating");
+        }
+        //initialize AdMobs only once in app lifetime
+        else {
+            Timber.d("add mob is initialized");
+            MobileAds.initialize(this, getResources().getString(R.string.add_mob_app_id));
         }
 
         SyncScheduleHelper.initialize(this);
