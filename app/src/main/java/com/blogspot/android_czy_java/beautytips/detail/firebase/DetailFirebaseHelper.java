@@ -13,8 +13,6 @@ import timber.log.Timber;
 
 public class DetailFirebaseHelper {
 
-    private static String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
     private DetailViewInterface activity;
     private String tipId;
 
@@ -30,6 +28,9 @@ public class DetailFirebaseHelper {
         void setAuthorPhoto(String photoUrl);
     }
 
+    private String getUserId() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
     public void getFirebaseDatabaseData() {
         FirebaseDatabase.getInstance().getReference("tips/" + tipId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -47,7 +48,7 @@ public class DetailFirebaseHelper {
 
     public void addTipToFavourites(long favNum) {
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
-                .child(userId)
+                .child(getUserId())
                 .setValue(true);
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child("favNum")
@@ -56,7 +57,7 @@ public class DetailFirebaseHelper {
 
     public void removeTipFromFavourites(long favNum) {
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
-                .child(userId)
+                .child(getUserId())
                 .removeValue();
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child("favNum")
@@ -65,11 +66,11 @@ public class DetailFirebaseHelper {
 
     public void setFabState() {
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
-                .child(userId)
+                .child(getUserId())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Timber.d("userId = " + userId);
+                        Timber.d("userId = " + getUserId());
                         String value = String.valueOf(dataSnapshot.getValue());
                         if(!value.equals("null")) activity.setFabActive();
                     }

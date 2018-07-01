@@ -56,6 +56,10 @@ public class SnackbarHelper {
         snackbarWithOk(R.string.message_log_in_anonymously_no_internet, snackbarView);
     }
 
+    public static void showExtStoragePermissionDenied(View snackbarView) {
+        snackbarWithOk(R.string.message_ext_storage_denied, snackbarView);
+    }
+
     private static void snackbarWithOk(int message, View snackbarView) {
         Snackbar snackbar = Snackbar.make(snackbarView, message,
                 Snackbar.LENGTH_LONG).setAction(R.string.label_action_ok,

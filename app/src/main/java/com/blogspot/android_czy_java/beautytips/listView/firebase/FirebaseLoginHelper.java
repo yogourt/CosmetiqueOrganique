@@ -152,7 +152,8 @@ public class FirebaseLoginHelper implements LifecycleObserver {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             String nickname = String.valueOf(dataSnapshot.getValue());
                             if (nickname.equals("null")) {
-                                activity.showPickNicknameDialog();
+                                activity.setNickname(activity.getContext()
+                                        .getResources().getString(R.string.label_anonymous));
                             } else activity.setNickname(nickname);
                         }
 
