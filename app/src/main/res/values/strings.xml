@@ -99,6 +99,7 @@
     <string name="feature_your_tips">List of your own tips</string>
     <string name="message_feature_for_logged_in_only">%1$s is the feature for logged in users only.</string>
     <string name="message_log_in_anonymously_no_internet">Unable to load app data without internet connection.</string>
+    <string name="message_ext_storage_denied">Without storage permission you cannot add photo.</string>
 
     <!-- welcome screen -->
     <string name="welcome_title">Welcome in Beauty tips!</string>

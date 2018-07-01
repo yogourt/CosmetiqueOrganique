@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.AppInfoDialog;
@@ -47,6 +49,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_ANONYMOUS;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
@@ -167,9 +170,13 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     photoIv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(Intent.ACTION_PICK);
-                            intent.setType("image/*");
-                            startActivityForResult(intent, RC_PHOTO_PICKER);
+                            if(ExternalStoragePermissionHelper
+                                    .isPermissionGranted(MainActivity.this)) {
+                                ExternalStoragePermissionHelper.showPhotoPicker(MainActivity.this);
+                            } else {
+                                ExternalStoragePermissionHelper.askForPermission(
+                                        MainActivity.this);
+                            }
                         }
                     });
                 }
@@ -338,6 +345,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
             if (resultCode == RESULT_OK) {
                 mLoginHelper.signIn();
+                showPickNicknameDialog();
                 SyncScheduleHelper.immediateSync(this);
             } else {
                 //if response is null the user canceled sign in flow using back button, so we sign
@@ -368,8 +376,18 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
 
-    /*
+        if(requestCode == RC_PERMISSION_EXT_STORAGE) {
+            ExternalStoragePermissionHelper.answerForPermissionResult(this, grantResults,
+                    mRecyclerView);
+        }
+    }
+
+
+   /*
        Here is the beginning of interfaces methods
      */
 
@@ -380,8 +398,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     public void onClick(int position) {
 
-        Timber.d("listPosition: " + position);
-        this.listPosition = position;
+        Timber.d("listPosition: ");this.listPosition = position;
     }
 
 
@@ -445,13 +462,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public void showPickNicknameDialog() {
         mDialogFragment = new NicknamePickerDialog();
         mDialogFragment.show(getFragmentManager(), TAG_NICKNAME_DIALOG);
-        Window dialogWindow = mDialogFragment.getDialog().getWindow();
-        if (dialogWindow != null) {
-            //show soft keyboard
-            dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                    | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-            dialogWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
     }
 
     /*

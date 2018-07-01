@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.newTip.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.newTip.firebase.NewTipFirebaseHelper;
@@ -23,6 +25,7 @@ import com.blogspot.android_czy_java.beautytips.newTip.view.dialog.ConfirmationD
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.farbod.labelledspinner.LabelledSpinner;
+import com.squareup.haha.perflib.Main;
 
 import java.util.ArrayList;
 
@@ -30,6 +33,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
+
+import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
 
 public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseHelper.NewTipViewInterface,
         ConfirmationDialog.ConfirmationDialogListener {
@@ -162,9 +167,11 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, RC_PHOTO_PICKER);
+                if(ExternalStoragePermissionHelper.isPermissionGranted(NewTipActivity.this)) {
+                    ExternalStoragePermissionHelper.showPhotoPicker(NewTipActivity.this);
+                } else {
+                    ExternalStoragePermissionHelper.askForPermission(NewTipActivity.this);
+                }
             }
         });
     }
@@ -201,6 +208,17 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
             }
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+
+        if(requestCode == RC_PERMISSION_EXT_STORAGE) {
+            ExternalStoragePermissionHelper.answerForPermissionResult(this, grantResults,
+                    mNewTipLayout);
+        }
+    }
+
     private void loadImageWithGlide() {
         Glide.with(this)
                 .setDefaultRequestOptions(RequestOptions.centerCropTransform())
