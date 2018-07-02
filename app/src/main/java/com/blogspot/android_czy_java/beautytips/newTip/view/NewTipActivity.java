@@ -25,7 +25,6 @@ import com.blogspot.android_czy_java.beautytips.newTip.view.dialog.ConfirmationD
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.farbod.labelledspinner.LabelledSpinner;
-import com.squareup.haha.perflib.Main;
 
 import java.util.ArrayList;
 
