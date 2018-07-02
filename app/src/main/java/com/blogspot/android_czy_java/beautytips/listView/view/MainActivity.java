@@ -41,6 +41,7 @@ import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
 import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.crashlytics.android.Crashlytics;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.MobileAds;
 
