@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,6 +14,10 @@ import android.widget.EditText;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import timber.log.Timber;
 
@@ -74,6 +79,25 @@ public class NicknamePickerDialog extends DialogFragment {
 
         final AlertDialog dialog = (AlertDialog)getDialog();
 
+
+        //if this is not first login of this user, nickname saved in db is shown in dialog
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase.getInstance().getReference("userNicknames/" + userId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String nickname = String.valueOf(dataSnapshot.getValue());
+                        if(!nickname.equals("null") && !TextUtils.isEmpty(nickname)) {
+                            EditText nicknameEt = getDialog().findViewById(R.id.nickname_edit_text);
+                            nicknameEt.setText(nickname);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.d(databaseError.getMessage());
+                    }
+                });
         /*
         Prevent dialog from closing when clicking on activity in background - this is done because
         we need user to choose nickname at the beginning
