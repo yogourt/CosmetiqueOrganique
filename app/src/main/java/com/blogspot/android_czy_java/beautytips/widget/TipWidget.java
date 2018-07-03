@@ -42,18 +42,15 @@ public class TipWidget extends AppWidgetProvider {
         //create bundle for intent
         final Bundle bundle = new Bundle();
 
-        //first we get number of tips
-        FirebaseDatabase.getInstance().getReference("tipNumber").addListenerForSingleValueEvent(
+        //first we get tip of the day number
+        FirebaseDatabase.getInstance().getReference("tipOfTheDay").addListenerForSingleValueEvent(
                 new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 long tipNumber = (long)dataSnapshot.getValue();
-                Timber.d(String.valueOf(tipNumber));
-                int newTip = (int)(Math.random()*tipNumber) + 1;
-                Timber.d("new tip: " + String.valueOf(newTip));
 
-                //then we get info about selected tip
-                FirebaseDatabase.getInstance().getReference("tipList/-" + String.valueOf(newTip))
+                //then we get info about this tip
+                FirebaseDatabase.getInstance().getReference("tipList/" + String.valueOf(tipNumber))
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
