@@ -14,6 +14,8 @@
     <dimen name="title_start_padding">16dp</dimen>
     <dimen name="title_bottom_padding">16dp</dimen>
     <dimen name="dialog_padding">16dp</dimen>
+    <dimen name="dialog_msg_text_size">16sp</dimen>
+    <dimen name="dialog_credits_text_size">12sp</dimen>
     <dimen name="dialog_width">300dp</dimen>
     <dimen name="error_margin_start">8dp</dimen>
 
@@ -68,6 +70,10 @@
     <!-- list of own tips dimens -->
     <dimen name="close_icon_size">28dp</dimen>
     <dimen name="close_icon_margin">8dp</dimen>
+
+    <!-- info dialog dimens -->
+    <dimen name="info_dialog_padding">24dp</dimen>
+    <dimen name="info_dialog_msg_bottom_padding">4dp</dimen>
 
     <!-- widget dimens -->
     <!--
