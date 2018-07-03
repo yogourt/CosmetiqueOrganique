@@ -168,8 +168,8 @@ public class FirebaseLoginHelper implements LifecycleObserver {
         mNicknamesReference.child(getUserId()).setValue(nickname);
     }
 
-    private String getUserId() {
-        return mAuth.getCurrentUser().getUid();
+    public static String getUserId() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     public void saveUserPhoto(final Uri photoUri) {

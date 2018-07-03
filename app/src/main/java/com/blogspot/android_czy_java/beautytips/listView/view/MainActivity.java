@@ -29,6 +29,7 @@ import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissi
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.AppInfoDialog;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
@@ -40,7 +41,6 @@ import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
 import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.crashlytics.android.Crashlytics;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.MobileAds;
 
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
     public static final String TAG_INFO_DIALOG = "app_info_dialog";
+    public static final String TAG_DELETE_TIP_DIALOG = "delete_tip_dialog";
 
 
     @BindView(R.id.recycler_view)
@@ -397,8 +398,14 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
      */
     @Override
     public void onClick(int position) {
-
         Timber.d("listPosition: ");this.listPosition = position;
+    }
+
+    @Override
+    public void onClickDeleteTip(String tipId) {
+        mDialogFragment = new DeleteTipDialog();
+        ((DeleteTipDialog)mDialogFragment).setTipId(tipId);
+        mDialogFragment.show(getFragmentManager(), TAG_DELETE_TIP_DIALOG);
     }
 
 

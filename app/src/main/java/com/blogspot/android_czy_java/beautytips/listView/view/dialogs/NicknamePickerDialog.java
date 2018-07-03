@@ -112,7 +112,7 @@ public class NicknamePickerDialog extends DialogFragment {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
         /*
-        We also prevent dialog from closin when edit text is empty
+        We also prevent dialog from closing when edit text is empty
          */
         dialog.getButton(Dialog.BUTTON_POSITIVE).setOnClickListener
                 (new View.OnClickListener() {
@@ -131,7 +131,6 @@ public class NicknamePickerDialog extends DialogFragment {
                         }
                     }
                 });
-
 
     }
 }

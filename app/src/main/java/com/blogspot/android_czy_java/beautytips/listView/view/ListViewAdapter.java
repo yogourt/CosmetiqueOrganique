@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.view.DetailActivity;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -29,6 +34,8 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_YOUR_TIPS;
 
 public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewAdapter.ViewHolder> {
 
@@ -58,6 +65,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     */
     interface PositionListener {
         void onClick(int position);
+        void onClickDeleteTip(String tipId);
     }
 
     @NonNull
@@ -70,7 +78,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ListItem item) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final ListItem item) {
 
         ViewGroup.LayoutParams params = holder.mCardView.getLayoutParams();
         params.height = itemHeights[position % 4];
@@ -86,6 +94,21 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
         holder.mTitle.setText(item.getTitle());
         holder.mImage.setContentDescription(mContext.getResources()
                 .getString(R.string.description_tip_image, item.getTitle()));
+
+        if(item.getAuthorId() != null && item.getAuthorId().equals(FirebaseLoginHelper.getUserId())) {
+            holder.mDeleteTipIcon.setVisibility(View.VISIBLE);
+            holder.mDeleteTipIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(holder.mImage.getDrawable() != null) {
+                        mPositionListener.onClickDeleteTip(item.getId());
+                    }
+                    else {
+                        SnackbarHelper.showWaitForImageLoad(holder.itemView);
+                    }
+                }
+            });
+        } else holder.mDeleteTipIcon.setVisibility(View.INVISIBLE);
 
         setAnimation(holder.itemView, position);
 
@@ -117,6 +140,9 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
         @BindView(R.id.item_layout)
         CardView mCardView;
 
+        @BindView(R.id.delete_tip_icon)
+        ImageView mDeleteTipIcon;
+
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -126,6 +152,12 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
 
         @Override
         public void onClick(View view) {
+
+            if(mImage.getDrawable() == null) {
+                SnackbarHelper.showWaitForImageLoad(itemView);
+                return;
+            }
+
             Context  context = view.getContext();
             Intent detailActivityIntent = new Intent(context, DetailActivity.class);
 

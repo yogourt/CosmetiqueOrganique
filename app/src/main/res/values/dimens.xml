@@ -65,6 +65,10 @@
     <dimen name="inner_button_padding">8dp</dimen>
 
 
+    <!-- list of own tips dimens -->
+    <dimen name="close_icon_size">28dp</dimen>
+    <dimen name="close_icon_margin">8dp</dimen>
+
     <!-- widget dimens -->
     <!--
 Refer to App Widget Documentation for margin information
