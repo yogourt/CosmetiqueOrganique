@@ -14,9 +14,24 @@
         <TextView
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
-            android:autoLink="email"
             android:paddingBottom="@dimen/info_dialog_msg_bottom_padding"
-            android:text="@string/info_dialog_message"
+            android:text="@string/info_dialog_hello"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dialog_msg_text_size" />
+
+        <TextView
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/info_dialog_msg_bottom_padding"
+            android:text="@string/info_dialog_improv"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dialog_msg_text_size" />
+
+        <TextView
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
+            android:text="@string/info_dialog_email"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_msg_text_size" />
 
