@@ -137,8 +137,9 @@ public class DetailActivity extends AppCompatActivity implements
 
             //get the fav num from bundle (it comes from db) when the activity opens for the first
             //time, and if it's orientation change get it from saved instance state, as it may
-            //change and not being already in db.
-            if(savedInstanceState == null) mFavNum = bundle.getLong(KEY_FAV_NUM);
+            //changed and not being already in db.
+            //fav num is negative in db - it allows sorting in descending order of popularity
+            if(savedInstanceState == null) mFavNum = bundle.getLong(KEY_FAV_NUM) * -1;
             else mFavNum = savedInstanceState.getLong(KEY_FAV_NUM);
 
             mFirebaseHelper = new DetailFirebaseHelper(this, mId);

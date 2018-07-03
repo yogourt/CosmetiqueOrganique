@@ -52,7 +52,7 @@ public class DetailFirebaseHelper {
                 .setValue(true);
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child("favNum")
-                .setValue(favNum);
+                .setValue(favNum * -1);
     }
 
     public void removeTipFromFavourites(long favNum) {
@@ -61,7 +61,7 @@ public class DetailFirebaseHelper {
                 .removeValue();
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child("favNum")
-                .setValue(favNum);
+                .setValue(favNum * -1);
     }
 
     public void setFabState() {
