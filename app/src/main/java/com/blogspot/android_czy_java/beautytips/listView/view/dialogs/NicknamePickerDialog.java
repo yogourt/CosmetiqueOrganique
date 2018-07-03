@@ -122,7 +122,7 @@ public class NicknamePickerDialog extends DialogFragment {
                         String nickname = nicknameEt.getText().toString().trim();
                         Timber.d("Chosen nickname: " + nickname);
                         if(TextUtils.isEmpty(nickname)) {
-                            Timber.d("Nickname is empty");
+                            Timber.d  ("Nickname is empty");
                             getDialog().findViewById(R.id.error_text_view).setVisibility(View.VISIBLE);
                         } else {
                             mNicknamePickerDialogListener.onDialogSaveButtonClick(nicknameEt.getText().toString());
