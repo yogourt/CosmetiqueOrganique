@@ -89,6 +89,9 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                 Timber.d(String.valueOf(tipNumber));
                 tipNumber++;
 
+                //save new tip number
+                tipNumReference.setValue(tipNumber);
+
                 /*
                   path to tip is negative number, so when loading the new ones are on top
                   (Firebase Database supports only ascending order)
@@ -116,8 +119,6 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                     }
                     detailsReference.setValue(details);
 
-                    //save new tip number
-                    tipNumReference.setValue(tipNumber);
 
                     final DatabaseReference listReference = FirebaseDatabase.getInstance()
                             .getReference("tipList/" + tipPath);
@@ -128,7 +129,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
 
                     //save tip image
                     final StorageReference imageReference = FirebaseStorage.getInstance()
-                            .getReference().child("tip" + tipNumber + "-photo");
+                            .getReference().child("-" + tipNumber);
                     imageReference.putFile(Uri.parse(imagePath))
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -140,6 +141,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                                                 public void onSuccess(Uri storageImageUri) {
                                                     Timber.d("image path added to database");
                                                     String storageImageString = storageImageUri.toString();
+
                                                     listReference.child("image")
                                                             .setValue(storageImageString);
                                                 }

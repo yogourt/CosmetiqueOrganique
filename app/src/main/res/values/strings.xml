@@ -61,14 +61,14 @@
     <string name="button_label">Add tip</string>
     <string name="spinner_label">Category</string>
     <string name="description_image">Tip image</string>
-    <string name="conf_message">*After the tip is saved, you cannot modify or delete it.
+    <string name="conf_message">*After the tip is saved, you cannot modify it, but you can always delete it.
     Please, review if it contains all the needful information and details.
     \nAdding tip means that you agree the owner of this app can modify it in order to improve it
     or delete it if it\'s not relevant with the app\'s content.\n</string>
 
     <!-- confirmation dialog in new tip screen -->
     <string name="conf_dialog_title">Are you sure?</string>
-    <string name="conf_dialog_message">Adding tip is irreversible. Please see the note it the bottom. </string>
+    <string name="conf_dialog_message">Are you sure your tip description is complete? </string>
     <string name="conf_dialog_pos_button">Add tip</string>
     <string name="conf_dialog_neg_button">Review</string>
 
@@ -100,6 +100,7 @@
     <string name="message_feature_for_logged_in_only">%1$s is the feature for logged in users only.</string>
     <string name="message_log_in_anonymously_no_internet">Unable to load app data without internet connection.</string>
     <string name="message_ext_storage_denied">Without storage permission you cannot add photo.</string>
+    <string name="message_wait_for_loading_image">Please wait for image loading.</string>
 
     <!-- welcome screen -->
     <string name="welcome_title">Welcome in Beauty tips!</string>
@@ -118,6 +119,12 @@
     heart icon by Google, hair and soap icon (which is the app icon) by Smashicons, body icon by fjstudio.
     Background patterns are designed by anastock from www.Freepik.com. \n </string>
     <string name="info_dialog_positive_button">Close</string>
+
+    <!-- delete tip dialog -->
+    <string name="delete_dialog_title">Delete this tip</string>
+    <string name="delete_dialog_message">Are you sure you want to delete this tip?</string>
+    <string name="delete_dialog_pos_button">Delete</string>
+    <string name="delete_dialog_neg_button">Cancel</string>
 
     <!-- widget strings -->
     <string name="widget_title">Today\'s tip</string>
