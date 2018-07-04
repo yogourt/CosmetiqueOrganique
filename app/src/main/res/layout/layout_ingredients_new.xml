@@ -11,10 +11,9 @@
 
     <EditText
         android:id="@+id/ingredient1"
-        style="@style/IngredientStyle"
+        style="@style/NewIngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
-        android:tint="@color/white_semi"
         app:layout_constraintEnd_toStartOf="@+id/ingredient2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +21,7 @@
 
     <EditText
         android:id="@+id/ingredient2"
-        style="@style/IngredientStyle"
+        style="@style/NewIngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
         android:tint="@color/white_semi"
@@ -33,7 +32,7 @@
 
     <EditText
         android:id="@+id/ingredient3"
-        style="@style/IngredientStyle"
+        style="@style/NewIngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
         android:tint="@color/white_semi"
@@ -46,7 +45,7 @@
 
     <EditText
         android:id="@+id/ingredient4"
-        style="@style/IngredientStyle"
+        style="@style/NewIngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
         android:tint="@color/white_semi"
