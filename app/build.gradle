@@ -24,8 +24,8 @@ android {
         applicationId "com.blogspot.android_czy_java.beautytips"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 6
-        versionName "1.0"
+        versionCode 7
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

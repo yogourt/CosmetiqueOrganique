@@ -50,6 +50,11 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="NewIngredientStyle" parent="IngredientStyle">
+        <item name="android:textStyle">normal</item>
+        <item name="android:tint">@color/white_semi</item>
+    </style>
+
     <style name="NewTipTitleStyle" parent="TitleStyle">
         <item name="android:tint">@color/white_title_tint</item>
         <item name="android:textAlignment">viewStart</item>
