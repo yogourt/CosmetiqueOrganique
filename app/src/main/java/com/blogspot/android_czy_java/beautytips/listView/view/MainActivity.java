@@ -205,9 +205,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     @Override
     protected void onResume() {
-        Timber.d("On resume");
+        Timber.d("On resume: " + listPosition);
         super.onResume();
         if (listPosition != 0) {
+            mRecyclerView.scrollToPosition(listPosition);
             mRecyclerView.smoothScrollToPosition(listPosition);
         }
 
