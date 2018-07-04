@@ -90,4 +90,9 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/welcome_button_text_size</item>
     </style>
+
+    <style name="SourceTextStyle" parent="NormalTextStyle">
+        <item name="android:textSize">@dimen/source_text_size</item>
+        <item name="android:textColor">@color/bluegray300</item>
+    </style>
 </resources>

@@ -7,6 +7,7 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.LinearLayout;
 
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
@@ -34,7 +35,9 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
 
     public interface NewTipViewInterface {
         void setAuthorPhoto(String url);
+
         void setAuthorNickname(String nickname);
+
         LinearLayout getLayout();
     }
 
@@ -51,7 +54,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             String path = (String) dataSnapshot.getValue();
-                            if(!TextUtils.isEmpty(path)) activity.setAuthorPhoto(path);
+                            if (!TextUtils.isEmpty(path)) activity.setAuthorPhoto(path);
                             Timber.d(path);
                         }
 
@@ -77,7 +80,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
     }
 
     public void addTip(final String title, final ArrayList<String> ingredients, final String description,
-                       final String category, final String imagePath) {
+                       final String category, final String imagePath, final String source) {
 
 
         final DatabaseReference tipNumReference = FirebaseDatabase.getInstance()
@@ -101,16 +104,16 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                 final DatabaseReference detailsReference = FirebaseDatabase.getInstance()
                         .getReference("tips/" + tipPath);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user != null) {
+                if (user != null) {
 
                     //save details: description, ingredients
                     TipDetailsItem details;
-                    if(ingredients.size() < 2) {
+                    if (ingredients.size() < 2) {
                         details = new TipDetailsItem(description, ingredients.get(0));
-                    } else if(ingredients.size() < 3) {
+                    } else if (ingredients.size() < 3) {
                         details = new TipDetailsItem(description, ingredients.get(0),
                                 ingredients.get(1));
-                    } else if(ingredients.size() < 4) {
+                    } else if (ingredients.size() < 4) {
                         details = new TipDetailsItem(description, ingredients.get(0),
                                 ingredients.get(1), ingredients.get(2));
                     } else {
@@ -118,6 +121,13 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                                 ingredients.get(1), ingredients.get(2), ingredients.get(3));
                     }
                     detailsReference.setValue(details);
+
+                    //set source if it's valid web url
+                    if (Patterns.WEB_URL.matcher(source).matches()) {
+                        if (!source.contains("https://") && !source.contains("http://")) {
+                            detailsReference.child("source").setValue("https://" + source);
+                        } else detailsReference.child("source").setValue(source);
+                    }
 
 
                     final DatabaseReference listReference = FirebaseDatabase.getInstance()
@@ -167,4 +177,5 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
             }
         });
     }
+
 }

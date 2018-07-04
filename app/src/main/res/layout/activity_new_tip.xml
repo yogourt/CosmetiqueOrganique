@@ -74,6 +74,32 @@
             android:paddingStart="@dimen/new_tip_desc_padding"
             android:tint="@color/white_title_tint" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/new_tip_source_start_margin"
+            android:layout_marginEnd="@dimen/desc_margin"
+            android:layout_marginTop="@dimen/source_top_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_tip_source_label"
+                style="@style/SourceTextStyle"/>
+
+            <EditText
+                android:id="@+id/source_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingStart="@dimen/new_tip_desc_padding"
+                android:paddingEnd="@dimen/new_tip_desc_padding"
+                android:hint="@string/hint_source"
+                style="@style/SourceTextStyle"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
         <include
             android:id="@+id/layout_author"
             layout="@layout/layout_author_new" />

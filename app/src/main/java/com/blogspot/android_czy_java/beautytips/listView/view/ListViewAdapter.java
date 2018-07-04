@@ -31,9 +31,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_YOUR_TIPS;
 
@@ -95,6 +100,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
         holder.mImage.setContentDescription(mContext.getResources()
                 .getString(R.string.description_tip_image, item.getTitle()));
 
+        //set visibility of cross
         if(item.getAuthorId() != null && item.getAuthorId().equals(FirebaseLoginHelper.getUserId())) {
             holder.mDeleteTipIcon.setVisibility(View.VISIBLE);
             holder.mDeleteTipIcon.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +115,10 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
                 }
             });
         } else holder.mDeleteTipIcon.setVisibility(View.INVISIBLE);
+
+        //set visibility of heart
+        if(item.inFav) holder.mHeartIcon.setVisibility(View.VISIBLE);
+        else holder.mHeartIcon.setVisibility(View.INVISIBLE);
 
         setAnimation(holder.itemView, position);
 
@@ -126,7 +136,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         @BindView(R.id.image)
         ImageView mImage;
@@ -142,6 +152,9 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
 
         @BindView(R.id.delete_tip_icon)
         ImageView mDeleteTipIcon;
+
+        @BindView(R.id.heart_icon)
+        ImageView mHeartIcon;
 
         ViewHolder(View itemView) {
             super(itemView);

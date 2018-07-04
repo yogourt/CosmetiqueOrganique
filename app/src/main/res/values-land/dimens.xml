@@ -6,6 +6,7 @@
     <dimen name="spinner_button_int_margin">64dp</dimen>
     <dimen name="spinner_button_ext_margin">48dp</dimen>
     <dimen name="ingredient_width">180dp</dimen>
+    <dimen name="new_tip_source_start_margin">40dp</dimen>
 
     <!-- detail activity dimens -->
     <dimen name="fab_margin">64dp</dimen>

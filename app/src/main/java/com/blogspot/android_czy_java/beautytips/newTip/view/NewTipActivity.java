@@ -84,6 +84,9 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     @BindView(R.id.description_edit_text)
     EditText mDescriptionEt;
 
+    @BindView(R.id.source_edit_text)
+    EditText mSourceEt;
+
     private NewTipFirebaseHelper mFirebaseHelper;
     private int category;
     private String imagePath;
@@ -302,7 +305,8 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     @Override
     public void onDialogSaveButtonClick() {
         Timber.d(imagePath);
-        mFirebaseHelper.addTip(title, ingredients, description, getCategory(), imagePath);
+        String source = mSourceEt.getText().toString();
+            mFirebaseHelper.addTip(title, ingredients, description, getCategory(), imagePath, source);
         finishWithTransition();
     }
 }

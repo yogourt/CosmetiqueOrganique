@@ -10,6 +10,7 @@ public class ListItem {
     public String category;
     public String authorId;
     public long favNum;
+    public boolean inFav;
     
     public ListItem() {}
 
@@ -66,6 +67,14 @@ public class ListItem {
 
     public void setFavNum(long favNum) {
         this.favNum = favNum;
+    }
+
+    public boolean getInFav() {
+        return inFav;
+    }
+
+    public void setInFav(boolean inFav) {
+        this.inFav = inFav;
     }
 
 }

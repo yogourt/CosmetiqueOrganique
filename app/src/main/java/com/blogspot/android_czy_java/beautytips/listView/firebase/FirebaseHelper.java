@@ -1,8 +1,11 @@
 package com.blogspot.android_czy_java.beautytips.listView.firebase;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+
+import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_FAVOURITES;
@@ -34,6 +39,11 @@ public class FirebaseHelper {
                         if (item != null) {
                             item.setId(id);
                             if (!author.equals("null")) item.setAuthorId(author);
+                        }
+                        if(!FirebaseLoginHelper.isUserNull() && !FirebaseLoginHelper.isUserAnonymous()
+                                && snapshot.child(FirebaseLoginHelper.getUserId()).getValue() != null
+                                && item != null) {
+                            item.setInFav(true);
                         }
                         return item;
                     }
@@ -78,4 +88,4 @@ public class FirebaseHelper {
         FirebaseDatabase.getInstance().getReference().child("tips/" + id).removeValue();
         FirebaseStorage.getInstance().getReference(id).delete();
     }
-}
+    }
