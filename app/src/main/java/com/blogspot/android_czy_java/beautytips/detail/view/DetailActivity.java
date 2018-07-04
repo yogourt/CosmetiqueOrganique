@@ -14,7 +14,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -108,6 +111,9 @@ public class DetailActivity extends AppCompatActivity implements
     @BindView(R.id.fav_text_view)
     TextView mFavTv;
 
+    @BindView(R.id.source_text_view)
+    TextView mSourceTv;
+
     private String mTitle;
     private String mImage;
     private String mAuthorId;
@@ -174,28 +180,28 @@ public class DetailActivity extends AppCompatActivity implements
         String description = (String) dataSnapshot.child("description").getValue();
         mDescTextView.setText(description);
         String ingredient1 = (String) dataSnapshot.child("ingredient1").getValue();
-        if(!TextUtils.isEmpty(ingredient1)) {
+        if (!TextUtils.isEmpty(ingredient1)) {
             mIngredient1.setVisibility(View.VISIBLE);
             mIngredient1.setText(ingredient1);
         }
         String ingredient2 = (String) dataSnapshot.child("ingredient2").getValue();
-        if(!TextUtils.isEmpty(ingredient2)) {
+        if (!TextUtils.isEmpty(ingredient2)) {
             mIngredient2.setVisibility(View.VISIBLE);
             mIngredient2.setText(ingredient2);
         }
         String ingredient3 = (String) dataSnapshot.child("ingredient3").getValue();
-        if(!TextUtils.isEmpty(ingredient3)) {
+        if (!TextUtils.isEmpty(ingredient3)) {
             mIngredient3.setVisibility(View.VISIBLE);
             mIngredient3.setText(ingredient3);
         }
         String ingredient4 = (String) dataSnapshot.child("ingredient4").getValue();
-        if(!TextUtils.isEmpty(ingredient4)) {
+        if (!TextUtils.isEmpty(ingredient4)) {
             mIngredient4.setVisibility(View.GONE);
             mIngredient4.setText(ingredient4);
         }
 
 
-        if(!TextUtils.isEmpty(mAuthorId)) {
+        if (!TextUtils.isEmpty(mAuthorId)) {
             mAuthorLayout.setVisibility(View.VISIBLE);
             mFirebaseHelper.getAuthorPhotoFromDb(mAuthorId);
             mFirebaseHelper.getNicknameFromDb(mAuthorId);
@@ -205,16 +211,26 @@ public class DetailActivity extends AppCompatActivity implements
                     R.dimen.author_bottom_margin);
             int topPadding = (int) getResources().getDimension(
                     R.dimen.desc_top_padding);
+
             mDescTextView.setPadding(padding, topPadding, padding, bottomPadding);
         }
 
+
         mImageView.setContentDescription(getResources()
                 .getString(R.string.description_tip_image, mTitle));
+
+        //set source if it's in database
+        if (dataSnapshot.child("source").getValue() != null) {
+            String source = String.valueOf(dataSnapshot.child("source").getValue());
+            mSourceTv.setVisibility(View.VISIBLE);
+            mSourceTv.setText(Html.fromHtml(getResources().getString(R.string.source_label, source)));
+            mSourceTv.setMovementMethod(LinkMovementMethod.getInstance());
+        }
     }
 
     private void prepareFavNum() {
+        mFavTv.setText(getResources().getString(R.string.fav_label, String.valueOf(mFavNum)));
         if(mFavNum != 0) {
-            mFavTv.setText(getResources().getString(R.string.fav_label, String.valueOf(mFavNum)));
             mFavTv.setVisibility(View.VISIBLE);
         } else mFavTv.setVisibility(View.INVISIBLE);
     }

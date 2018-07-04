@@ -19,31 +19,49 @@
             android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:descendantFocusability="blocksDescendants">
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/layout_ingredients"
                 layout="@layout/layout_ingredients" />
 
-            <TextView
-                android:id="@+id/fav_text_view"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fav_margin_top"
-                android:paddingStart="@dimen/desc_padding"
-                android:paddingEnd="@dimen/desc_padding"
-                style="@style/NormalTextStyle"
-                android:textColor="@color/bluegray300"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fav_text_view"
+                    style="@style/NormalTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/fav_padding_end"
+                    android:paddingStart="@dimen/desc_padding"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/bluegray300" />
+
+                <TextView
+                    android:id="@+id/source_text_view"
+                    style="@style/NormalTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/source_label"
+                    android:textColorLink="@color/bluegray300"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/description_text_view"
                 style="@style/NormalTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/desc_top_padding"
+                android:paddingEnd="@dimen/desc_padding"
                 android:paddingStart="@dimen/desc_padding"
-                android:paddingEnd="@dimen/desc_padding"/>
+                android:paddingTop="@dimen/desc_top_padding" />
 
             <include
                 android:id="@+id/layout_author"
@@ -108,12 +126,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fab_margin"
+        android:contentDescription="@string/description_fab"
         android:onClick="changeFavouriteState"
         android:src="@drawable/ic_heart"
         android:tint="@color/bluegray700"
         app:layout_anchor="@id/layout_ingredients"
-        app:layout_anchorGravity="bottom|end"
-        android:contentDescription="@string/description_fab"/>
+        app:layout_anchorGravity="bottom|end" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -121,6 +139,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"/>
+        ads:adUnitId="@string/banner_ad_unit_id" />
 
 </android.support.design.widget.CoordinatorLayout>

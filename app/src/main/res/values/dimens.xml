@@ -32,13 +32,16 @@
     <dimen name="author_padding">32dp</dimen>
     <dimen name="author_padding_start">@dimen/author_padding</dimen>
     <dimen name="desc_padding">16dp</dimen>
-    <dimen name="desc_top_padding">16dp</dimen>
+    <dimen name="desc_top_padding">32dp</dimen>
     <dimen name="author_bottom_margin">80dp</dimen>
     <dimen name="app_bar_layout_height">192dp</dimen>
     <dimen name="fab_margin">32dp</dimen>
     <dimen name="exp_title_text_size">@dimen/title_text_size</dimen>
     <dimen name="fav_margin_top">16dp</dimen>
     <dimen name="fav_margin_start">16dp</dimen>
+    <dimen name="source_margin">16dp</dimen>
+    <dimen name="source_top_padding">8dp</dimen>
+    <dimen name="fav_padding_end">40dp</dimen>
 
     <!-- new tip screen dimens -->
     <dimen name="desc_margin">16dp</dimen>
@@ -53,6 +56,9 @@
     <dimen name="spinner_button_int_margin">16dp</dimen>
     <dimen name="spinner_button_ext_margin">24dp</dimen>
     <dimen name="ingredients_new_bottom_padding">32dp</dimen>
+    <dimen name="new_tip_source_start_margin">24dp</dimen>
+    <dimen name="source_top_margin">32dp</dimen>
+    <dimen name="source_text_size">14sp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
@@ -68,8 +74,8 @@
 
 
     <!-- list of own tips dimens -->
-    <dimen name="close_icon_size">28dp</dimen>
-    <dimen name="close_icon_margin">8dp</dimen>
+    <dimen name="item_icon_size">28dp</dimen>
+    <dimen name="item_icon_margin">8dp</dimen>
 
     <!-- info dialog dimens -->
     <dimen name="info_dialog_padding">24dp</dimen>

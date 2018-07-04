@@ -32,12 +32,20 @@
             android:paddingBottom="@dimen/title_bottom_padding"
             style="@style/TitleStyle"/>
 
+    <ImageView
+        android:id="@+id/heart_icon"
+        android:layout_width="@dimen/item_icon_size"
+        android:layout_height="@dimen/item_icon_size"
+        android:layout_gravity="top|start"
+        android:layout_margin="@dimen/item_icon_margin"
+        android:background="@drawable/ic_heart_stroked" />
+
         <ImageView
             android:id="@+id/delete_tip_icon"
-            android:layout_width="@dimen/close_icon_size"
-            android:layout_height="@dimen/close_icon_size"
+            android:layout_width="@dimen/item_icon_size"
+            android:layout_height="@dimen/item_icon_size"
             android:layout_gravity="top|end"
-            android:layout_margin="@dimen/close_icon_margin"
+            android:layout_margin="@dimen/item_icon_margin"
             android:background="@drawable/ic_close"
             android:visibility="gone"/>
 

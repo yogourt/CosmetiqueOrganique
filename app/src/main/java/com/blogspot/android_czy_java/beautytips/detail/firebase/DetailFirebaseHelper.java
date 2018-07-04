@@ -31,6 +31,7 @@ public class DetailFirebaseHelper {
     private String getUserId() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+
     public void getFirebaseDatabaseData() {
         FirebaseDatabase.getInstance().getReference("tips/" + tipId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
