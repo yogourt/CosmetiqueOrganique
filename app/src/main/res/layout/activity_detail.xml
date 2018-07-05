@@ -40,6 +40,8 @@
                     android:paddingEnd="@dimen/fav_padding_end"
                     android:paddingStart="@dimen/desc_padding"
                     android:layout_gravity="center_vertical"
+                    android:drawableEnd="@drawable/ic_heart_gray"
+                    android:drawablePadding="@dimen/icon_padding"
                     android:textColor="@color/bluegray300" />
 
                 <TextView
