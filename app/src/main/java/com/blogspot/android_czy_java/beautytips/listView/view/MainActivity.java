@@ -5,7 +5,9 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public static final String TAG_INFO_DIALOG = "app_info_dialog";
     public static final String TAG_DELETE_TIP_DIALOG = "delete_tip_dialog";
 
+    public static final String KEY_RECYCLER_STATE = "recycler_instance_state";
+
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private ListViewAdapter mAdapter;
     private MyDrawerLayoutListener mDrawerListener;
 
-    private int listPosition;
+    private int[] into;
 
     private boolean isPhotoSaving;
 
@@ -132,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         mLoginHelper = new FirebaseLoginHelper(this, viewModel);
 
         prepareActionBar();
-        prepareRecyclerView();
 
         categoryObserver = new Observer<String>() {
             @Override
@@ -205,11 +208,16 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     @Override
     protected void onResume() {
-        Timber.d("On resume: " + listPosition);
         super.onResume();
-        if (listPosition != 0) {
-            mRecyclerView.scrollToPosition(listPosition);
-            mRecyclerView.smoothScrollToPosition(listPosition);
+
+        if(into != null) {
+            Timber.d("into!= null, " + into[0]);
+            int newPosition;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                newPosition = into[1];
+            } else newPosition = into[0];
+            ((StaggeredGridLayoutManager) mRecyclerView.getLayoutManager())
+                    .scrollToPositionWithOffset(newPosition, 0);
         }
 
     }
@@ -399,7 +407,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
      */
     @Override
     public void onClick(int position) {
-        Timber.d("listPosition: ");this.listPosition = position;
+        into = new int[2];
+        ((StaggeredGridLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPositions(into);
     }
 
     @Override
