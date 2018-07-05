@@ -42,6 +42,7 @@
     <dimen name="source_margin">16dp</dimen>
     <dimen name="source_top_padding">8dp</dimen>
     <dimen name="fav_padding_end">40dp</dimen>
+    <dimen name="icon_padding">4dp</dimen>
 
     <!-- new tip screen dimens -->
     <dimen name="desc_margin">16dp</dimen>

@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.detail.view;
 
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -279,14 +280,23 @@ public class DetailActivity extends AppCompatActivity implements
             actionBar.setHomeAsUpIndicator(R.drawable.ripple_back);
         }
 
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if(Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                    showAdView();
-                } else hideAdView();
-            }
-        });
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Timber.d("orientation landscape");
+            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                        showAdView();
+                    } else hideAdView();
+                }
+            });
+        }
+        //add is always visible in portrait mode
+        else {
+            showAdView();
+            mAdView.setVisibility(View.VISIBLE);
+            Timber.d("showing ad view");
+        }
 
     }
 
@@ -321,7 +331,6 @@ public class DetailActivity extends AppCompatActivity implements
             public boolean handleMessage(Message message) {
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
-                mAdView.setAlpha(0);
                 return false;
             }
         });

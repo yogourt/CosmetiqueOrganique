@@ -27,7 +27,7 @@
     <string name="ingredient_label"> Ingredient</string>
     <string name="source_label">&lt;a href=\"%1$s\">Source&lt;/a></string>
     <string name="description_fab">Add to favourites button</string>
-    <string name="fav_label">%1$s \u2764</string>
+    <string name="fav_label">%1$s</string>
     <string name="banner_ad_unit_id">ca-app-pub-5993828134151976/3917748262</string>
     <string name="add_mob_app_id">ca-app-pub-5993828134151976~2879998761</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
