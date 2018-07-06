@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         mLoginHelper = new FirebaseLoginHelper(this, viewModel);
 
         prepareActionBar();
+        setListenerToNavigationView();
 
         categoryObserver = new Observer<String>() {
             @Override
@@ -200,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onStart() {
         Timber.d("onStart()");
         super.onStart();
-        getLifecycle().addObserver(mLoginHelper);
 
         viewModel.getCategoryLiveData().observe(this, categoryObserver);
         viewModel.getUserStateLiveData().observe(this, userStateObserver);
@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         super.onResume();
 
         if(into != null) {
-            Timber.d("into!= null, " + into[0]);
             int newPosition;
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 newPosition = into[1];
@@ -225,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     protected void onStop() {
         super.onStop();
-        getLifecycle().removeObserver(mLoginHelper);
     }
 
     @Override
@@ -298,7 +296,9 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             mNavigationView.getMenu().getItem(i).setChecked(false);
         }
         mNavigationView.getMenu().getItem(viewModel.getNavigationPosition()).setChecked(true);
+    }
 
+    private void setListenerToNavigationView() {
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override

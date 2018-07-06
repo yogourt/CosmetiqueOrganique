@@ -33,7 +33,7 @@ import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
-public class FirebaseLoginHelper implements LifecycleObserver {
+public class FirebaseLoginHelper {
 
     public static final int RC_SIGN_IN = 123;
     //list of authentication providers
