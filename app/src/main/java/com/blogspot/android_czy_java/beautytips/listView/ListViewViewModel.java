@@ -27,6 +27,8 @@ public class ListViewViewModel extends ViewModel {
 
     private MutableLiveData<String> userStateLiveData;
 
+    private int[] into;
+
     public void init() {
         if(categoryLiveData == null) {
             categoryLiveData = new MutableLiveData<>();
@@ -54,6 +56,7 @@ public class ListViewViewModel extends ViewModel {
 
     public void setCategory(String category) {
         Timber.d("setCategory: " + category);
+        if(!categoryLiveData.getValue().equals(category)) into = null;
         this.categoryLiveData.setValue(category);
     }
 
@@ -71,5 +74,13 @@ public class ListViewViewModel extends ViewModel {
 
     public void changeUserState(String newState) {
         userStateLiveData.setValue(newState);
+    }
+
+    public int[] getInto() {
+        return into;
+    }
+
+    public void setInto(int[] into) {
+        this.into = into;
     }
 }

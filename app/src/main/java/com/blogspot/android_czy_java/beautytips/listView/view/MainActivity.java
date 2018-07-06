@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Parcelable;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -22,8 +22,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
@@ -71,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public static final String TAG_INFO_DIALOG = "app_info_dialog";
     public static final String TAG_DELETE_TIP_DIALOG = "delete_tip_dialog";
 
-    public static final String KEY_RECYCLER_STATE = "recycler_instance_state";
-
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -96,16 +92,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private ListViewAdapter mAdapter;
     private MyDrawerLayoutListener mDrawerListener;
 
-    private int[] into;
-
     private boolean isPhotoSaving;
 
     private DialogFragment mDialogFragment;
 
     private ListViewViewModel viewModel;
-
-    private Observer<String> categoryObserver;
-    private Observer<String> userStateObserver;
 
 
     @Override
@@ -126,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
         //initialize AdMobs only once in app lifetime
         else {
-            Timber.d("add mob is initialized");
+            Timber.d("ad mob is initialized");
             MobileAds.initialize(this, getResources().getString(R.string.add_mob_app_id));
         }
 
@@ -136,18 +127,93 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         mLoginHelper = new FirebaseLoginHelper(this, viewModel);
 
         prepareActionBar();
+
+        //it has to be added here to avoid adding it multiple times. It doesn't have to be done on category change,
+        //this is why it's not part of prepareNavigationDrawer()
         setListenerToNavigationView();
 
-        categoryObserver = new Observer<String>() {
+        viewModel.getCategoryLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String category) {
-                Timber.d("onChanged() category observer's method, new category: " + category);
+                Timber.d("category changed");
                 prepareRecyclerView();
                 prepareNavigationDrawer();
             }
-        };
+        });
 
-        userStateObserver = new Observer<String>() {
+        viewModel.getUserStateLiveData().observe(this, createUserStateObserver());
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //scroll is done after little delay, because sometimes when user leaves the app and come back
+        //the list is loading again. After delay the scroll is done correctly.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(viewModel.getInto() != null && mAdapter.getItemCount() != 0) {
+                    int newPosition;
+                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        newPosition = viewModel.getInto()[1];
+                        //when on orientation change from port to land into[1] is 0, get into[0] for landscape
+                        if(newPosition == 0) newPosition = viewModel.getInto()[0];
+                    } else newPosition = viewModel.getInto()[0];
+                    ((StaggeredGridLayoutManager) mRecyclerView.getLayoutManager())
+                            .scrollToPositionWithOffset(newPosition, 0);
+                }
+            }
+        }, 100);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        viewModel.setInto(new int[2]);
+        ((StaggeredGridLayoutManager)mRecyclerView.getLayoutManager())
+                .findFirstVisibleItemPositions(viewModel.getInto());
+    }
+
+    @Override
+    protected void onDestroy() {
+        mLoginHelper = null;
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mDialogFragment != null) {
+            mDialogFragment.dismiss();
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        //the first and the last screen user sees is all tips to provide proper and predictable
+        // navigation
+        if(!viewModel.getCategory().equals(CATEGORY_ALL)) viewModel.setCategory(CATEGORY_ALL);
+        else super.onBackPressed();
+    }
+
+    @NonNull
+    private Observer<String> createUserStateObserver() {
+        return new Observer<String>() {
             @Override
             public void onChanged(@Nullable String userState) {
                 Timber.d("onChanged() user state observer's method, new state: " + userState);
@@ -188,66 +254,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             }
 
         };
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    protected void onStart() {
-        Timber.d("onStart()");
-        super.onStart();
-
-        viewModel.getCategoryLiveData().observe(this, categoryObserver);
-        viewModel.getUserStateLiveData().observe(this, userStateObserver);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if(into != null) {
-            int newPosition;
-            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                newPosition = into[1];
-            } else newPosition = into[0];
-            ((StaggeredGridLayoutManager) mRecyclerView.getLayoutManager())
-                    .scrollToPositionWithOffset(newPosition, 0);
-        }
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mLoginHelper = null;
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if (mDialogFragment != null) {
-            mDialogFragment.dismiss();
-        }
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        //the first and the last screen user sees is all tips to provide proper and predictable
-        // navigation
-        if(!viewModel.getCategory().equals(CATEGORY_ALL)) viewModel.setCategory(CATEGORY_ALL);
-        else super.onBackPressed();
-    }
 
     private void prepareActionBar() {
         setSupportActionBar(mToolbar);
@@ -407,8 +415,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
      */
     @Override
     public void onClick(int position) {
-        into = new int[2];
-        ((StaggeredGridLayoutManager)mRecyclerView.getLayoutManager()).findFirstVisibleItemPositions(into);
     }
 
     @Override
