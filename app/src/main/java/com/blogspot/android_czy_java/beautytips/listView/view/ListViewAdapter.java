@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Service;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.view.DetailActivity;
+import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
@@ -55,13 +57,15 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     private Context mContext;
     private int lastPosition;
     private PositionListener mPositionListener;
+    private ListViewViewModel viewModel;
 
     ListViewAdapter(Context context, FirebaseRecyclerOptions<ListItem> options, PositionListener
-                    positionListener) {
+                    positionListener, ListViewViewModel viewModel) {
         super(options);
         mContext = context;
         mPositionListener = positionListener;
         lastPosition = -1;
+        this.viewModel = viewModel;
     }
 
     /*
@@ -69,7 +73,6 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
       restore it when coming back from detail screen
     */
     interface PositionListener {
-        void onClick(int position);
         void onClickDeleteTip(String tipId);
     }
 
@@ -171,11 +174,9 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
                 return;
             }
 
+            viewModel.setIsSearchVisible(false);
             Context  context = view.getContext();
             Intent detailActivityIntent = new Intent(context, DetailActivity.class);
-
-            //send position to activity to save it
-            mPositionListener.onClick(getAdapterPosition());
 
             ListItem item = getItem(getAdapterPosition());
             Bundle bundle = new Bundle();

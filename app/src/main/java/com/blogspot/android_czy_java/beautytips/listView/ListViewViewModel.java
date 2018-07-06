@@ -28,6 +28,7 @@ public class ListViewViewModel extends ViewModel {
     private MutableLiveData<String> userStateLiveData;
 
     private int[] into;
+    private MutableLiveData<Boolean> searchLiveData;
 
     public void init() {
         if(categoryLiveData == null) {
@@ -43,6 +44,10 @@ public class ListViewViewModel extends ViewModel {
             if(FirebaseLoginHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
             else if(FirebaseLoginHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
             else userStateLiveData.setValue(USER_STATE_LOGGED_IN);
+
+            //set search visibility value
+            searchLiveData = new MutableLiveData<>();
+            searchLiveData.setValue(false);
         }
     }
 
@@ -82,5 +87,13 @@ public class ListViewViewModel extends ViewModel {
 
     public void setInto(int[] into) {
         this.into = into;
+    }
+
+    public void setIsSearchVisible(boolean isSearchVisible) {
+        searchLiveData.setValue(isSearchVisible);
+    }
+
+    public LiveData<Boolean> getSearchLiveData() {
+        return searchLiveData;
     }
 }

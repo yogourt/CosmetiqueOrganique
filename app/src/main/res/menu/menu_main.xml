@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_about"
+    <item android:id="@+id/menu_search"
         android:title=""
-        android:icon="@drawable/ic_info"
+        android:icon="@drawable/ic_search"
         app:showAsAction="always"/>
 </menu>
