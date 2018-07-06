@@ -138,6 +138,7 @@ public class FirebaseLoginHelper {
                 Timber.d("signInAnonymously()");
                 viewModel.changeUserState(ListViewViewModel.USER_STATE_ANONYMOUS);
                 viewModel.setCategory(CATEGORY_ALL);
+                viewModel.notifyRecyclerDataHasChanged();
                 //cache all data for use without network
                 SyncScheduleHelper.immediateSync(activity.getContext());
             }

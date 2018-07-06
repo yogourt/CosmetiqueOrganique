@@ -104,6 +104,9 @@
     <string name="message_log_in_anonymously_no_internet">Unable to load app data without internet connection.</string>
     <string name="message_ext_storage_denied">Without storage permission you cannot add photo.</string>
     <string name="message_wait_for_loading_image">Please wait for image loading.</string>
+    <string name="message_new_tip_soon">Your tip will be visible in a while. Please, be patient.</string>
+    <string name="message_add_tip_error_try_again">An error occurred while adding your tip. </string>
+    <string name="label_action_try_again">Try again</string>
 
     <!-- welcome screen -->
     <string name="welcome_title">Welcome in Beauty tips!</string>

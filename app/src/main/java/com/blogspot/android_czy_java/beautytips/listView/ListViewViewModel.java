@@ -4,7 +4,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
+import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -28,10 +33,16 @@ public class ListViewViewModel extends ViewModel {
     private MutableLiveData<String> userStateLiveData;
 
     private int[] into;
+
     private MutableLiveData<Boolean> searchLiveData;
+
+    private MutableLiveData<List<ListItem>> recyclerViewLiveData;
+
+    private FirebaseHelper mFirebaseHelper;
 
     public void init() {
         if(categoryLiveData == null) {
+            mFirebaseHelper = new FirebaseHelper(this);
             categoryLiveData = new MutableLiveData<>();
             categoryLiveData.setValue(CATEGORY_ALL);
             Timber.d("init() - categoryLiveData initiation");
@@ -48,6 +59,9 @@ public class ListViewViewModel extends ViewModel {
             //set search visibility value
             searchLiveData = new MutableLiveData<>();
             searchLiveData.setValue(false);
+
+            recyclerViewLiveData = new MutableLiveData<>();
+            notifyRecyclerDataHasChanged();
         }
     }
 
@@ -61,8 +75,13 @@ public class ListViewViewModel extends ViewModel {
 
     public void setCategory(String category) {
         Timber.d("setCategory: " + category);
-        if(!categoryLiveData.getValue().equals(category)) into = null;
+        boolean categoryIsTheSame = categoryLiveData.getValue().equals(category);
+
         this.categoryLiveData.setValue(category);
+        if(!categoryIsTheSame) {
+            into = null;
+            notifyRecyclerDataHasChanged();
+        }
     }
 
     public LiveData<String> getCategoryLiveData() {
@@ -95,5 +114,27 @@ public class ListViewViewModel extends ViewModel {
 
     public LiveData<Boolean> getSearchLiveData() {
         return searchLiveData;
+    }
+
+    public LiveData<List<ListItem>> getRecyclerViewLiveData() {
+        return recyclerViewLiveData;
+    }
+
+    public void setRecyclerViewList(List<ListItem> list) {
+        recyclerViewLiveData.setValue(list);
+    }
+
+    public void deleteTipWithId(String id) {
+        mFirebaseHelper.deleteTipWithId(id);
+        //requery database, because data has changed
+        notifyRecyclerDataHasChanged();
+    }
+
+    public void notifyRecyclerDataHasChanged() {
+        mFirebaseHelper.setItemListToViewModel();
+    }
+
+    public void waitForAddingImage(String tipNum) {
+        mFirebaseHelper.waitForAddingImage(tipNum);
     }
 }

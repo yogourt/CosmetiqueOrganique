@@ -7,14 +7,17 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.ListView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 
 public class DeleteTipDialog extends DialogFragment {
 
     private String mTipId;
 
+    private ListViewViewModel viewModel;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -27,7 +30,7 @@ public class DeleteTipDialog extends DialogFragment {
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                FirebaseHelper.deleteTipWithId(mTipId);
+                viewModel.deleteTipWithId(mTipId);
             }
         });
 
@@ -37,5 +40,9 @@ public class DeleteTipDialog extends DialogFragment {
 
     public void setTipId(String tipId) {
         mTipId = tipId;
+    }
+
+    public void setViewModel(ListViewViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 }

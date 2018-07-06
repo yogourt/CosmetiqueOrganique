@@ -64,6 +64,10 @@ public class SnackbarHelper {
         snackbarWithOk(R.string.message_wait_for_loading_image, snackbarView);
     }
 
+    public static void showNewTipVisibleSoon(View snackbarView) {
+        snackbarWithOk(R.string.message_new_tip_soon, snackbarView);
+    }
+
     private static void snackbarWithOk(int message, View snackbarView) {
         Snackbar snackbar = Snackbar.make(snackbarView, message,
                 Snackbar.LENGTH_LONG).setAction(R.string.label_action_ok,
