@@ -1,5 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -21,6 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 
 import timber.log.Timber;
+
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RC_NEW_TIP_ACTIVITY;
 
 
 public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
@@ -115,7 +118,8 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                                 activity.getContext())) {
                             Intent intent = new Intent(activity.getContext(),
                                     NewTipActivity.class);
-                            activity.getContext().startActivity(intent);
+                            ((Activity)activity.getContext()).startActivityForResult(
+                                    intent, RC_NEW_TIP_ACTIVITY);
                         } else {
                             SnackbarHelper.showUnableToAddTip(
                                     activity.getRecyclerView());

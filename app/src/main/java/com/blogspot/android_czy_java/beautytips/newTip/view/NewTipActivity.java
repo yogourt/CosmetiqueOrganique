@@ -2,7 +2,9 @@ package com.blogspot.android_czy_java.beautytips.newTip.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RESULT_DATA_CHANGE;
 
 public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseHelper.NewTipViewInterface,
         ConfirmationDialog.ConfirmationDialogListener {
@@ -47,6 +50,9 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     public static final String CATEGORY_HAIR = "hair";
     public static final String CATEGORY_FACE = "face";
     public static final String CATEGORY_BODY = "body";
+
+    public static final String KEY_TIP_NUMBER = "tip_number";
+
 
     @BindView(R.id.linear_layout)
     LinearLayout mNewTipLayout;
@@ -93,6 +99,9 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     private String title;
     private ArrayList<String> ingredients;
     private String description;
+    private String newTipNum;
+
+    private int numGeneratingTries;
 
 
 
@@ -297,6 +306,9 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
         return CATEGORY_HAIR;
     }
 
+    public void setTipNumber(String tipNumber) {
+        newTipNum = tipNumber;
+    }
 
     /*
       ConfirmationDialog.ConfirmationDialogListener interface method
@@ -304,9 +316,49 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
 
     @Override
     public void onDialogSaveButtonClick() {
-        Timber.d(imagePath);
-        String source = mSourceEt.getText().toString();
-            mFirebaseHelper.addTip(title, ingredients, description, getCategory(), imagePath, source);
-        finishWithTransition();
+
+        mFirebaseHelper.generateNewTipNum();
+        saveDataWhenNumIsGenerated();
+
+    }
+
+    private void saveDataWhenNumIsGenerated() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(!newTipNum.isEmpty()) {
+                    Intent data = new Intent();
+                    data.putExtra(KEY_TIP_NUMBER, newTipNum);
+                    setResult(RESULT_DATA_CHANGE, data);
+                    String source = mSourceEt.getText().toString();
+                    mFirebaseHelper.addTip(title, ingredients, description, getCategory(),
+                            imagePath, source, newTipNum);
+                    finishWithTransition();
+                } else {
+                    if(numGeneratingTries > 10) {
+                        setResult(RESULT_CANCELED);
+                        showSnackbar();
+                        finishWithTransition();
+                    }
+                    saveDataWhenNumIsGenerated();
+                    numGeneratingTries++;
+                }
+            }
+        }, 50);
+    }
+
+    private void showSnackbar() {
+        Snackbar snackbar = Snackbar.make(mToolbar, R.string.message_add_tip_error_try_again,
+                Snackbar.LENGTH_LONG).setAction(R.string.label_action_try_again,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        numGeneratingTries = 0;
+                        onDialogSaveButtonClick();
+                    }
+                })
+                .setActionTextColor(getResources().getColor(R.color.pink200));
+        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.bluegray900));
+        snackbar.show();
     }
 }

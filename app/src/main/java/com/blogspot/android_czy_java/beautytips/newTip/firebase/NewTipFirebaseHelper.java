@@ -38,6 +38,8 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
 
         void setAuthorNickname(String nickname);
 
+        void setTipNumber(String tipNumber);
+
         LinearLayout getLayout();
     }
 
@@ -80,9 +82,85 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
     }
 
     public void addTip(final String title, final ArrayList<String> ingredients, final String description,
-                       final String category, final String imagePath, final String source) {
+                       final String category, final String imagePath, final String source,
+                       final String tipNumber) {
 
 
+                /*
+                  path to tip is negative number, so when loading the new ones are on top
+                  (Firebase Database supports only ascending order)
+                 */
+
+        final DatabaseReference detailsReference = FirebaseDatabase.getInstance()
+                .getReference("tips/" + tipNumber);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+
+            //save details: description, ingredients
+            TipDetailsItem details;
+            if (ingredients.size() < 2) {
+                details = new TipDetailsItem(description, ingredients.get(0));
+            } else if (ingredients.size() < 3) {
+                details = new TipDetailsItem(description, ingredients.get(0),
+                        ingredients.get(1));
+            } else if (ingredients.size() < 4) {
+                details = new TipDetailsItem(description, ingredients.get(0),
+                        ingredients.get(1), ingredients.get(2));
+            } else {
+                details = new TipDetailsItem(description, ingredients.get(0),
+                        ingredients.get(1), ingredients.get(2), ingredients.get(3));
+            }
+            detailsReference.setValue(details);
+
+            //set source if it's valid web url
+            if (Patterns.WEB_URL.matcher(source).matches()) {
+                if (!source.contains("https://") && !source.contains("http://")) {
+                    detailsReference.child("source").setValue("https://" + source);
+                } else detailsReference.child("source").setValue(source);
+            }
+
+
+            final DatabaseReference listReference = FirebaseDatabase.getInstance()
+                    .getReference("tipList/" + tipNumber);
+
+            //save title, category and author
+            TipListItem listItem = new TipListItem(title, category, user.getUid());
+            listReference.setValue(listItem);
+
+            //save tip image
+            final StorageReference imageReference = FirebaseStorage.getInstance()
+                    .getReference().child("-" + tipNumber);
+            imageReference.putFile(Uri.parse(imagePath))
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Timber.d("image added to storage");
+                            imageReference.getDownloadUrl().addOnSuccessListener(
+                                    new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri storageImageUri) {
+                                            Timber.d("image path added to database");
+                                            String storageImageString = storageImageUri.toString();
+
+                                            listReference.child("image")
+                                                    .setValue(storageImageString);
+                                        }
+                                    });
+                        }
+                    });
+
+        }
+        //if user was null show an error
+        else {
+            SnackbarHelper.showAddingTipError(activity.getLayout());
+        }
+        //delete reference to activity to prevent activity leak
+        activity = null;
+
+    }
+
+
+    public void generateNewTipNum() {
         final DatabaseReference tipNumReference = FirebaseDatabase.getInstance()
                 .getReference("tipNumber");
         tipNumReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,78 +172,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
 
                 //save new tip number
                 tipNumReference.setValue(tipNumber);
-
-                /*
-                  path to tip is negative number, so when loading the new ones are on top
-                  (Firebase Database supports only ascending order)
-                 */
-                String tipPath = "-" + tipNumber;
-
-                final DatabaseReference detailsReference = FirebaseDatabase.getInstance()
-                        .getReference("tips/" + tipPath);
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-
-                    //save details: description, ingredients
-                    TipDetailsItem details;
-                    if (ingredients.size() < 2) {
-                        details = new TipDetailsItem(description, ingredients.get(0));
-                    } else if (ingredients.size() < 3) {
-                        details = new TipDetailsItem(description, ingredients.get(0),
-                                ingredients.get(1));
-                    } else if (ingredients.size() < 4) {
-                        details = new TipDetailsItem(description, ingredients.get(0),
-                                ingredients.get(1), ingredients.get(2));
-                    } else {
-                        details = new TipDetailsItem(description, ingredients.get(0),
-                                ingredients.get(1), ingredients.get(2), ingredients.get(3));
-                    }
-                    detailsReference.setValue(details);
-
-                    //set source if it's valid web url
-                    if (Patterns.WEB_URL.matcher(source).matches()) {
-                        if (!source.contains("https://") && !source.contains("http://")) {
-                            detailsReference.child("source").setValue("https://" + source);
-                        } else detailsReference.child("source").setValue(source);
-                    }
-
-
-                    final DatabaseReference listReference = FirebaseDatabase.getInstance()
-                            .getReference("tipList/" + tipPath);
-
-                    //save title, category and author
-                    TipListItem listItem = new TipListItem(title, category, user.getUid());
-                    listReference.setValue(listItem);
-
-                    //save tip image
-                    final StorageReference imageReference = FirebaseStorage.getInstance()
-                            .getReference().child("-" + tipNumber);
-                    imageReference.putFile(Uri.parse(imagePath))
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    Timber.d("image added to storage");
-                                    imageReference.getDownloadUrl().addOnSuccessListener(
-                                            new OnSuccessListener<Uri>() {
-                                                @Override
-                                                public void onSuccess(Uri storageImageUri) {
-                                                    Timber.d("image path added to database");
-                                                    String storageImageString = storageImageUri.toString();
-
-                                                    listReference.child("image")
-                                                            .setValue(storageImageString);
-                                                }
-                                            });
-                                }
-                            });
-
-                }
-                //if user was null show an error
-                else {
-                    SnackbarHelper.showAddingTipError(activity.getLayout());
-                }
-                //delete reference to activity to prevent activity leak
-                activity = null;
+                activity.setTipNumber(String.valueOf(tipNumber * -1));
 
             }
 
@@ -173,9 +180,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Timber.e(databaseError.getMessage());
                 SnackbarHelper.showAddingTipError(activity.getLayout());
-                activity = null;
             }
         });
     }
-
 }

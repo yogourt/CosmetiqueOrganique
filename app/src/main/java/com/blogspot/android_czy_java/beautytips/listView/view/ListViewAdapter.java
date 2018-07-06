@@ -38,13 +38,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RC_DETAIL_ACTIVITY;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_YOUR_TIPS;
 
-public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewAdapter.ViewHolder> {
+public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHolder> {
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_IMAGE = "image";
@@ -58,11 +61,12 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     private int lastPosition;
     private PositionListener mPositionListener;
     private ListViewViewModel viewModel;
+    private List<ListItem> list;
 
-    ListViewAdapter(Context context, FirebaseRecyclerOptions<ListItem> options, PositionListener
+    ListViewAdapter(Context context, List<ListItem> list, PositionListener
                     positionListener, ListViewViewModel viewModel) {
-        super(options);
         mContext = context;
+        this.list = list;
         mPositionListener = positionListener;
         lastPosition = -1;
         this.viewModel = viewModel;
@@ -76,6 +80,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
         void onClickDeleteTip(String tipId);
     }
 
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -86,8 +91,9 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final ListItem item) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
+        final ListItem item = list.get(position);
         ViewGroup.LayoutParams params = holder.mCardView.getLayoutParams();
         params.height = itemHeights[position % 4];
         holder.mCardView.setLayoutParams(params);
@@ -125,6 +131,11 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
 
         setAnimation(holder.itemView, position);
 
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
     }
 
     private void setAnimation(View viewToAnimate, int position)
@@ -178,7 +189,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
             Context  context = view.getContext();
             Intent detailActivityIntent = new Intent(context, DetailActivity.class);
 
-            ListItem item = getItem(getAdapterPosition());
+            ListItem item = list.get(getAdapterPosition());
             Bundle bundle = new Bundle();
             bundle.putString(KEY_TITLE, item.getTitle());
             bundle.putString(KEY_IMAGE, item.getImage());
@@ -193,7 +204,7 @@ public class ListViewAdapter extends FirebaseRecyclerAdapter<ListItem, ListViewA
             // Pair<View, String> titlePair = new Pair<>((View)mTitle, mTitle.getTransitionName());
             Bundle animation = ActivityOptions.makeSceneTransitionAnimation((Activity)context,
                     imagePair, scrimPair).toBundle();
-            context.startActivity(detailActivityIntent, animation);
+            ((Activity) context).startActivityForResult(detailActivityIntent, RC_DETAIL_ACTIVITY, animation);
         }
     }
 }

@@ -29,10 +29,9 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.AppInfoDialog;
+import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.LanguageHelper;
@@ -44,6 +43,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +57,7 @@ import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewMode
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
+import static com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity.KEY_TIP_NUMBER;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN_ANONYMOUSLY;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_TERMINATE;
@@ -65,9 +68,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     public static final int RC_PHOTO_PICKER = 100;
     public static final int RC_WELCOME_ACTIVITY = 200;
+    public static final int RC_DETAIL_ACTIVITY = 300;
+    public static final int RC_NEW_TIP_ACTIVITY = 400;
+
+    public static final int RESULT_DATA_CHANGE = 10;
 
     public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
-    public static final String TAG_INFO_DIALOG = "app_info_dialog";
     public static final String TAG_DELETE_TIP_DIALOG = "delete_tip_dialog";
 
 
@@ -141,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             @Override
             public void onChanged(@Nullable String category) {
                 Timber.d("category changed");
-                prepareRecyclerView();
                 prepareNavigationDrawer();
             }
         });
@@ -151,10 +156,17 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         viewModel.getSearchLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isSearchVisible) {
-                if(isSearchVisible != null) {
+                if (isSearchVisible != null) {
                     if (isSearchVisible) mSearchView.setVisibility(View.VISIBLE);
                     else mSearchView.setVisibility(View.INVISIBLE);
                 }
+            }
+        });
+
+        viewModel.getRecyclerViewLiveData().observe(this, new Observer<List<ListItem>>() {
+            @Override
+            public void onChanged(@Nullable List<ListItem> list) {
+                prepareRecyclerView(list);
             }
         });
 
@@ -180,12 +192,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(viewModel.getInto() != null && mAdapter.getItemCount() != 0) {
+                if (viewModel.getInto() != null && mAdapter.getItemCount() != 0) {
                     int newPosition;
-                    if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                         newPosition = viewModel.getInto()[1];
                         //when on orientation change from port to land into[1] is 0, get into[0] for landscape
-                        if(newPosition == 0) newPosition = viewModel.getInto()[0];
+                        if (newPosition == 0) newPosition = viewModel.getInto()[0];
                     } else newPosition = viewModel.getInto()[0];
                     ((StaggeredGridLayoutManager) mRecyclerView.getLayoutManager())
                             .scrollToPositionWithOffset(newPosition, 0);
@@ -198,9 +210,13 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onStop() {
         super.onStop();
 
-        viewModel.setInto(new int[2]);
-        ((StaggeredGridLayoutManager)mRecyclerView.getLayoutManager())
-                .findFirstVisibleItemPositions(viewModel.getInto());
+        //layout manager might not have been already initialized, as it's initialized when data is
+        //fetched in FirebaseHelper and this is done in background
+        if (mRecyclerView.getLayoutManager() != null) {
+            viewModel.setInto(new int[2]);
+            ((StaggeredGridLayoutManager) mRecyclerView.getLayoutManager())
+                    .findFirstVisibleItemPositions(viewModel.getInto());
+        }
     }
 
     @Override
@@ -222,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         //the first and the last screen user sees is all tips to provide proper and predictable
         // navigation
-        if(!viewModel.getCategory().equals(CATEGORY_ALL)) viewModel.setCategory(CATEGORY_ALL);
+        if (!viewModel.getCategory().equals(CATEGORY_ALL)) viewModel.setCategory(CATEGORY_ALL);
         else super.onBackPressed();
     }
 
@@ -256,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     photoIv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if(ExternalStoragePermissionHelper
+                            if (ExternalStoragePermissionHelper
                                     .isPermissionGranted(MainActivity.this)) {
                                 ExternalStoragePermissionHelper.showPhotoPicker(MainActivity.this);
                             } else {
@@ -281,13 +297,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
     }
 
-    private void prepareRecyclerView() {
+    private void prepareRecyclerView(List<ListItem> recyclerViewList) {
 
         //add adapter
-        mAdapter = new ListViewAdapter(this, FirebaseHelper.createFirebaseRecyclerOptions(
-                viewModel.getCategory()), this, viewModel);
-        //this is done for listening for changes in data, they will be applied automatically by adapter.
-        getLifecycle().addObserver(mAdapter);
+        mAdapter = new ListViewAdapter(this, recyclerViewList, this, viewModel);
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -354,12 +367,18 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             }
         });
 
-        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View view) {
-                String query = mSearchView.getQuery().toString();
+            public boolean onQueryTextSubmit(String query) {
                 Timber.d(query);
+                return true;
             }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
         });
     }
 
@@ -369,8 +388,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
-        if(item.getItemId() == R.id.menu_search) {
-            if(mSearchView.getVisibility() == View.INVISIBLE) {
+        if (item.getItemId() == R.id.menu_search) {
+            if (mSearchView.getVisibility() == View.INVISIBLE) {
                 mSearchView.setIconified(false);
                 viewModel.setIsSearchVisible(true);
             }
@@ -389,12 +408,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == RC_WELCOME_ACTIVITY) {
-            if(resultCode == RESULT_TERMINATE) {
+        if (requestCode == RC_WELCOME_ACTIVITY) {
+            if (resultCode == RESULT_TERMINATE) {
                 onBackPressed();
-            } else if(resultCode == RESULT_LOG_IN) {
+            } else if (resultCode == RESULT_LOG_IN) {
                 mLoginHelper.showSignInScreen();
-            } else if(resultCode == RESULT_LOG_IN_ANONYMOUSLY) {
+            } else if (resultCode == RESULT_LOG_IN_ANONYMOUSLY) {
                 mLoginHelper.signInAnonymously();
             }
         }
@@ -406,6 +425,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 mLoginHelper.signIn();
                 showPickNicknameDialog();
                 SyncScheduleHelper.immediateSync(this);
+                //reload data to show if user likes tip
+                viewModel.notifyRecyclerDataHasChanged();
             } else {
                 //if response is null the user canceled sign in flow using back button, so we sign
                 //him anonymously.
@@ -432,6 +453,17 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 isPhotoSaving = true;
             }
         }
+
+        if (requestCode == RC_DETAIL_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
+            viewModel.notifyRecyclerDataHasChanged();
+        }
+
+        if (requestCode == RC_NEW_TIP_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
+            viewModel.waitForAddingImage(data.getStringExtra(KEY_TIP_NUMBER));
+            SnackbarHelper.showNewTipVisibleSoon(mRecyclerView);
+        } else if (resultCode == RESULT_CANCELED) {
+            SnackbarHelper.showAddingTipError(mRecyclerView);
+        }
     }
 
 
@@ -439,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
 
-        if(requestCode == RC_PERMISSION_EXT_STORAGE) {
+        if (requestCode == RC_PERMISSION_EXT_STORAGE) {
             ExternalStoragePermissionHelper.answerForPermissionResult(this, grantResults,
                     mRecyclerView);
         }
@@ -451,13 +483,14 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
      */
 
 
-   /*
-        Implementation of ListViewAdapter.PositionListener
-    */
+    /*
+         Implementation of ListViewAdapter.PositionListener
+     */
     @Override
     public void onClickDeleteTip(String tipId) {
         mDialogFragment = new DeleteTipDialog();
-        ((DeleteTipDialog)mDialogFragment).setTipId(tipId);
+        ((DeleteTipDialog) mDialogFragment).setTipId(tipId);
+        ((DeleteTipDialog) mDialogFragment).setViewModel(viewModel);
         mDialogFragment.show(getFragmentManager(), TAG_DELETE_TIP_DIALOG);
     }
 

@@ -57,9 +57,12 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAda
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_IMAGE;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_TITLE;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RESULT_DATA_CHANGE;
 
 public class DetailActivity extends AppCompatActivity implements
         DetailFirebaseHelper.DetailViewInterface {
+
+    public static final String KEY_FAV_NUM_HAS_CHANGED = "fav_num_has_changed";
 
     @BindView(R.id.image)
     ImageView mImageView;
@@ -125,6 +128,8 @@ public class DetailActivity extends AppCompatActivity implements
 
     private Handler adHandler;
 
+    private boolean mFavNumHasChanged;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +152,10 @@ public class DetailActivity extends AppCompatActivity implements
             //changed and not being already in db.
             //fav num is negative in db - it allows sorting in descending order of popularity
             if(savedInstanceState == null) mFavNum = bundle.getLong(KEY_FAV_NUM) * -1;
-            else mFavNum = savedInstanceState.getLong(KEY_FAV_NUM);
+            else {
+                mFavNum = savedInstanceState.getLong(KEY_FAV_NUM);
+                mFavNumHasChanged = savedInstanceState.getBoolean(KEY_FAV_NUM_HAS_CHANGED);
+            }
 
             mFirebaseHelper = new DetailFirebaseHelper(this, mId);
 
@@ -169,6 +177,7 @@ public class DetailActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(KEY_FAV_NUM, mFavNum);
+        outState.putBoolean(KEY_FAV_NUM_HAS_CHANGED, mFavNumHasChanged);
     }
 
     @Override
@@ -354,6 +363,7 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if(mFavNumHasChanged) setResult(RESULT_DATA_CHANGE);
         finish();
         overrideExitTransition();
     }
@@ -384,6 +394,8 @@ public class DetailActivity extends AppCompatActivity implements
             mFirebaseHelper.removeTipFromFavourites(mFavNum);
             prepareFavNum();
         }
+
+        mFavNumHasChanged = true;
     }
 
     @Override
