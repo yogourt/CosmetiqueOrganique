@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -82,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
+    @BindView(R.id.search_view)
+    SearchView mSearchView;
+
     FirebaseLoginHelper mLoginHelper;
 
     private View mHeaderLayout;
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         mLoginHelper = new FirebaseLoginHelper(this, viewModel);
 
         prepareActionBar();
+        prepareSearchView();
 
         //it has to be added here to avoid adding it multiple times. It doesn't have to be done on category change,
         //this is why it's not part of prepareNavigationDrawer()
@@ -142,6 +147,16 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         });
 
         viewModel.getUserStateLiveData().observe(this, createUserStateObserver());
+
+        viewModel.getSearchLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isSearchVisible) {
+                if(isSearchVisible != null) {
+                    if (isSearchVisible) mSearchView.setVisibility(View.VISIBLE);
+                    else mSearchView.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
     }
 
@@ -270,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         //add adapter
         mAdapter = new ListViewAdapter(this, FirebaseHelper.createFirebaseRecyclerOptions(
-                viewModel.getCategory()), this);
+                viewModel.getCategory()), this, viewModel);
         //this is done for listening for changes in data, they will be applied automatically by adapter.
         getLifecycle().addObserver(mAdapter);
 
@@ -330,16 +345,42 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         );
     }
 
+    private void prepareSearchView() {
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                viewModel.setIsSearchVisible(false);
+                return true;
+            }
+        });
+
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String query = mSearchView.getQuery().toString();
+                Timber.d(query);
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
-        if (item.getItemId() == R.id.menu_about) {
+        if(item.getItemId() == R.id.menu_search) {
+            if(mSearchView.getVisibility() == View.INVISIBLE) {
+                mSearchView.setIconified(false);
+                viewModel.setIsSearchVisible(true);
+            }
+            //when user clicks icon second time, the search view disappears
+            else viewModel.setIsSearchVisible(false);
+        }
+        /*if (item.getItemId() == R.id.menu_about) {
             AppInfoDialog dialog = new AppInfoDialog();
             dialog.show(getFragmentManager(), TAG_INFO_DIALOG);
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -410,13 +451,9 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
      */
 
 
-    /*
-       implementation of ListViewAdapter.PositionListener
-     */
-    @Override
-    public void onClick(int position) {
-    }
-
+   /*
+        Implementation of ListViewAdapter.PositionListener
+    */
     @Override
     public void onClickDeleteTip(String tipId) {
         mDialogFragment = new DeleteTipDialog();
