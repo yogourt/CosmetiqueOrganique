@@ -110,7 +110,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
                 .getString(R.string.description_tip_image, item.getTitle()));
 
         //set visibility of cross
-        if(item.getAuthorId() != null && item.getAuthorId().equals(FirebaseLoginHelper.getUserId())) {
+        if(item.getAuthorId() != null && !FirebaseLoginHelper.isUserNull()
+                && item.getAuthorId().equals(FirebaseLoginHelper.getUserId())) {
             holder.mDeleteTipIcon.setVisibility(View.VISIBLE);
             holder.mDeleteTipIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -185,7 +186,6 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
                 return;
             }
 
-            viewModel.setIsSearchVisible(false);
             Context  context = view.getContext();
             Intent detailActivityIntent = new Intent(context, DetailActivity.class);
 

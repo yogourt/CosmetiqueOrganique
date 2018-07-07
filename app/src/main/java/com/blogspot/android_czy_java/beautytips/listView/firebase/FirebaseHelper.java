@@ -20,6 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import timber.log.Timber;
@@ -68,6 +70,68 @@ public class FirebaseHelper {
                 });
     }
 
+
+    public void searchAndSetListToViewModel(final String query) {
+        createQuery(viewModel.getCategory())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        final List<ListItem> list = new ArrayList<>();
+                        String[] queryArray = query.split(" ");
+                        Timber.d(queryArray[0]);
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            ListItem item = snapshot.getValue(ListItem.class);
+
+                            //check if this item should appear in search
+                            String[] tagArray = String.valueOf(snapshot
+                                    .child("tags").getValue()).split(" ");
+
+                            int matches = 0;
+                            for(String tag: tagArray) {
+                                for(String query: queryArray) {
+                                    if(tag.equals(query)) {
+                                        matches++;
+                                    }
+                                }
+                            }
+                            //if no tag appeared in search, do not add this item, else continue adding
+                            if(matches == 0) continue;
+
+                            String author = String.valueOf(snapshot.child("author").getValue());
+                            String id = snapshot.getKey();
+                            if (item != null) {
+                                item.setId(id);
+                                if (!author.equals("null")) item.setAuthorId(author);
+
+                                if (!FirebaseLoginHelper.isUserNull() && !FirebaseLoginHelper.isUserAnonymous()
+                                        && snapshot.child(FirebaseLoginHelper.getUserId()).getValue() != null) {
+                                    item.setInFav(true);
+                                }
+                                item.setMatches(matches);
+                                list.add(item);
+                            }
+                        }
+
+                        //sort the list, so the items with higher number of matches will be first
+                        Collections.sort(list, new Comparator<ListItem>() {
+                            @Override
+                            public int compare(ListItem o1, ListItem o2) {
+                                return o2.getMatches() - o1.getMatches();
+                            }
+                        });
+                        viewModel.setRecyclerViewList(list);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Timber.d(databaseError.getMessage());
+                    }
+                });
+    }
+
+    /*
+        Helper method to create query that is used in two methods above
+     */
     private static Query createQuery(String category) {
 
         if (category.equals(CATEGORY_ALL)) {
@@ -99,6 +163,7 @@ public class FirebaseHelper {
                 child("tipList").
                 orderByChild("category").equalTo(category);
     }
+
 
     public void deleteTipWithId(String id) {
         FirebaseDatabase.getInstance().getReference().child("tipList/" + id).removeValue();
