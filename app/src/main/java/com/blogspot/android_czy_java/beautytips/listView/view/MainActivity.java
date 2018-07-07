@@ -179,34 +179,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        //scroll is done after little delay, because sometimes when user leaves the app and come back
-        //the list is loading again. After delay the scroll is done correctly.
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (viewModel.getInto() != null && mAdapter.getItemCount() != 0) {
-                    int newPosition;
-                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                        newPosition = viewModel.getInto()[1];
-                        //when on orientation change from port to land into[1] is 0, get into[0] for landscape
-                        if (newPosition == 0) newPosition = viewModel.getInto()[0];
-                    } else newPosition = viewModel.getInto()[0];
-                    ((StaggeredGridLayoutManager) mRecyclerView.getLayoutManager())
-                            .scrollToPositionWithOffset(newPosition, 0);
-                }
-            }
-        }, 100);
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
 
