@@ -147,6 +147,7 @@ public class ListViewViewModel extends ViewModel {
 
     //implementation of search tip list in searchView
     public void search(String query) {
+        if(query == null) return;
         query = query.toLowerCase();
         mFirebaseHelper.searchAndSetListToViewModel(query);
         searchWasConducted = true;

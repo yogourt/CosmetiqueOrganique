@@ -101,7 +101,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         ViewCompat.setTransitionName(holder.mImage, item.getImage());
 
         Glide.with(mContext).
-                setDefaultRequestOptions(RequestOptions.centerCropTransform()).
+                setDefaultRequestOptions(new RequestOptions().centerCrop()
+                        .placeholder(R.drawable.placeholder)).
                 load(item.getImage()).
                 into(holder.mImage);
 

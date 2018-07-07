@@ -364,8 +364,8 @@ public class DetailActivity extends AppCompatActivity implements
     public void onBackPressed() {
         super.onBackPressed();
         if(mFavNumHasChanged) setResult(RESULT_DATA_CHANGE);
-        finish();
-        overrideExitTransition();
+        finishAfterTransition();
+        //overrideExitTransition();
     }
 
     private void overrideExitTransition() {
