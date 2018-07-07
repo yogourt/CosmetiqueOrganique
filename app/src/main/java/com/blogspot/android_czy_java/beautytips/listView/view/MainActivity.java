@@ -402,10 +402,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             //when user clicks icon second time, the search view disappears
             else viewModel.setIsSearchVisible(false);
         }
-        /*if (item.getItemId() == R.id.menu_about) {
-            AppInfoDialog dialog = new AppInfoDialog();
-            dialog.show(getFragmentManager(), TAG_INFO_DIALOG);
-        }*/
+
         return super.onOptionsItemSelected(item);
     }
 

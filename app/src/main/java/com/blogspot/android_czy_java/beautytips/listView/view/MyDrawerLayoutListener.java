@@ -15,6 +15,7 @@ import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.AppInfoDialog;
 import com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,7 +43,9 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     public static final int NAV_POSITION_HAIR = 5;
     public static final int NAV_POSITION_FACE = 6;
     public static final int NAV_POSITION_BODY = 7;
+    public static final int NAV_POSITION_ABOUT_APP = 8;
 
+    public static final String TAG_INFO_DIALOG = "about_this_app_dialog";
 
     private DrawerCreationInterface activity;
     private int itemId;
@@ -118,7 +121,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                                 activity.getContext())) {
                             Intent intent = new Intent(activity.getContext(),
                                     NewTipActivity.class);
-                            ((Activity)activity.getContext()).startActivityForResult(
+                            ((Activity) activity.getContext()).startActivityForResult(
                                     intent, RC_NEW_TIP_ACTIVITY);
                         } else {
                             SnackbarHelper.showUnableToAddTip(
@@ -172,6 +175,11 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                 case R.id.nav_body:
                     viewModel.setNavigationPosition(NAV_POSITION_BODY);
                     viewModel.setCategory(CATEGORY_BODY);
+                    return;
+                case R.id.nav_about_app:
+                    AppInfoDialog dialog = new AppInfoDialog();
+                    dialog.show(((Activity)activity.getContext())
+                            .getFragmentManager(), TAG_INFO_DIALOG);
 
             }
 
