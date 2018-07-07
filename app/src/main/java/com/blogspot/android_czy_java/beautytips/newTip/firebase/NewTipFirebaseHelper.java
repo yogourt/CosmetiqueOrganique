@@ -119,12 +119,18 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                 } else detailsReference.child("source").setValue(source);
             }
 
+            StringBuilder tagBuilder = new StringBuilder(title);
+            for(int i = 0; i < ingredients.size(); i++) {
+                tagBuilder.append(" " + ingredients.get(i));
+            }
+
+            String tags = tagBuilder.toString();
 
             final DatabaseReference listReference = FirebaseDatabase.getInstance()
                     .getReference("tipList/" + tipNumber);
 
-            //save title, category and author
-            TipListItem listItem = new TipListItem(title, category, user.getUid());
+            //save title, category, author and tags
+            TipListItem listItem = new TipListItem(title, category, user.getUid(), tags);
             listReference.setValue(listItem);
 
             //save tip image

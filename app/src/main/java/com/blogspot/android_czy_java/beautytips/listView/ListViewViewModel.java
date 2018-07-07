@@ -40,6 +40,8 @@ public class ListViewViewModel extends ViewModel {
 
     private FirebaseHelper mFirebaseHelper;
 
+    private boolean searchWasConducted;
+
     public void init() {
         if(categoryLiveData == null) {
             mFirebaseHelper = new FirebaseHelper(this);
@@ -62,6 +64,8 @@ public class ListViewViewModel extends ViewModel {
 
             recyclerViewLiveData = new MutableLiveData<>();
             notifyRecyclerDataHasChanged();
+
+            searchWasConducted = false;
         }
     }
 
@@ -82,6 +86,9 @@ public class ListViewViewModel extends ViewModel {
             into = null;
             notifyRecyclerDataHasChanged();
         }
+
+        //even though user chosen the same category, he want's all the data to be loaded
+        if(searchWasConducted) notifyRecyclerDataHasChanged();
     }
 
     public LiveData<String> getCategoryLiveData() {
@@ -137,4 +144,19 @@ public class ListViewViewModel extends ViewModel {
     public void waitForAddingImage(String tipNum) {
         mFirebaseHelper.waitForAddingImage(tipNum);
     }
+
+    //implementation of search tip list in searchView
+    public void search(String query) {
+        query = query.toLowerCase();
+        mFirebaseHelper.searchAndSetListToViewModel(query);
+        searchWasConducted = true;
+    }
+
+    public boolean getSearchWasConducted() {
+        if(searchWasConducted) {
+            searchWasConducted = false;
+            return true;
+        } else return false;
+    }
+
 }

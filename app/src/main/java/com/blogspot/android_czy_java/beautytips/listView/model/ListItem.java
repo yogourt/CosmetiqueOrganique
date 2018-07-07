@@ -11,6 +11,7 @@ public class ListItem {
     public String authorId;
     public long favNum;
     public boolean inFav;
+    public int matches;
     
     public ListItem() {}
 
@@ -75,6 +76,14 @@ public class ListItem {
 
     public void setInFav(boolean inFav) {
         this.inFav = inFav;
+    }
+
+    public void setMatches(int matches) {
+        this.matches = matches;
+    }
+
+    public int getMatches() {
+        return  matches;
     }
 
 }

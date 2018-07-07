@@ -359,18 +359,24 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     }
 
     private void prepareSearchView() {
+
+        //on close set visibility to invisible
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 viewModel.setIsSearchVisible(false);
+                //on close search view, load all the data from chosen category
+                if(viewModel.getSearchWasConducted()) viewModel.notifyRecyclerDataHasChanged();
                 return true;
             }
         });
 
+        //when the user submit search, pass it to viewModel
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Timber.d(query);
+                mSearchView.clearFocus();
+                viewModel.search(query);
                 return true;
             }
 
@@ -461,8 +467,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         if (requestCode == RC_NEW_TIP_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
             viewModel.waitForAddingImage(data.getStringExtra(KEY_TIP_NUMBER));
             SnackbarHelper.showNewTipVisibleSoon(mRecyclerView);
-        } else if (resultCode == RESULT_CANCELED) {
-            SnackbarHelper.showAddingTipError(mRecyclerView);
         }
     }
 
