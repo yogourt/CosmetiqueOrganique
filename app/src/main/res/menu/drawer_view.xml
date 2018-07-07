@@ -41,4 +41,10 @@
                 android:icon="@drawable/ic_shape"/>
         </group>
 
+    <group>
+        <item
+            android:id="@+id/nav_about_app"
+            android:title="@string/nav_about_app"
+            android:icon="@drawable/ic_info" />
+    </group>
 </menu>

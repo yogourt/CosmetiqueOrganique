@@ -19,6 +19,7 @@
     <string name="nav_hair">Hair</string>
     <string name="nav_face">Face</string>
     <string name="nav_body">Body</string>
+    <string name="nav_about_app">About</string>
     <string name="nav_categories">Categories</string>
     <string name="label_anonymous">Anonymous</string>
     <string name="description_user_image">User photo</string>
