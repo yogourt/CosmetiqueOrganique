@@ -135,7 +135,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
 
             //save tip image
             final StorageReference imageReference = FirebaseStorage.getInstance()
-                    .getReference().child("-" + tipNumber);
+                    .getReference().child(tipNumber);
             imageReference.putFile(Uri.parse(imagePath))
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override

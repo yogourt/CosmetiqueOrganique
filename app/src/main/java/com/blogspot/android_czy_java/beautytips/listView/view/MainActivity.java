@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private void prepareRecyclerView(List<ListItem> recyclerViewList) {
 
         //add adapter
-        mAdapter = new ListViewAdapter(this, recyclerViewList, this, viewModel);
+        mAdapter = new ListViewAdapter(this, recyclerViewList, this);
 
         mRecyclerView.setAdapter(mAdapter);
 
