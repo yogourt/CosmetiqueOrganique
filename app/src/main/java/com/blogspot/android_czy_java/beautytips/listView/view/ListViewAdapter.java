@@ -2,10 +2,9 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.Service;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.view.DetailActivity;
-import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.bumptech.glide.Glide;
@@ -34,11 +32,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RC_DETAIL_ACTIVITY;
 
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHolder> {
+
+    public static final int CONST_HEIGHT = 1920;
+    public static final int CONST_HEIGHT_LAND = 1080;
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_IMAGE = "image";
@@ -46,21 +46,19 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_FAV_NUM = "favourites_number";
 
-    public static final int[] itemHeights = {630, 600, 670, 650};
+    public static final int[] itemHeightsInDp = {630, 600, 670, 650};
 
     private Context mContext;
     private int lastPosition;
     private PositionListener mPositionListener;
-    private ListViewViewModel viewModel;
     private List<ListItem> list;
 
     ListViewAdapter(Context context, List<ListItem> list, PositionListener
-                    positionListener, ListViewViewModel viewModel) {
+                    positionListener) {
         mContext = context;
         this.list = list;
         mPositionListener = positionListener;
         lastPosition = -1;
-        this.viewModel = viewModel;
     }
 
     /*
@@ -86,7 +84,18 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 
         final ListItem item = list.get(position);
         ViewGroup.LayoutParams params = holder.mCardView.getLayoutParams();
-        params.height = itemHeights[position % 4];
+
+        //here item height in pixels is calculated from height in dp
+        int itemHeight;
+        int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
+        if(mContext.getResources().getConfiguration()
+                .orientation == Configuration.ORIENTATION_PORTRAIT) {
+            itemHeight = itemHeightsInDp[position % 4] * screenHeight/CONST_HEIGHT;
+        } else {
+            itemHeight = itemHeightsInDp[position % 4] * screenHeight/CONST_HEIGHT_LAND;
+        }
+
+        params.height = itemHeight;
         holder.mCardView.setLayoutParams(params);
 
         ViewCompat.setTransitionName(holder.mImage, item.getImage());
