@@ -435,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         if (requestCode == RC_NEW_TIP_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
             viewModel.waitForAddingImage(data.getStringExtra(KEY_TIP_NUMBER));
+            viewModel.setCategory(CATEGORY_ALL);
             SnackbarHelper.showNewTipVisibleSoon(mRecyclerView);
         }
     }

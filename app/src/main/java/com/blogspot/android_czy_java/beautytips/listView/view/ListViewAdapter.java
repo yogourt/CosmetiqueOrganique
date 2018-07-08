@@ -25,18 +25,10 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.view.DetailActivity;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -45,7 +37,6 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RC_DETAIL_ACTIVITY;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_YOUR_TIPS;
 
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHolder> {
 
@@ -101,8 +92,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         ViewCompat.setTransitionName(holder.mImage, item.getImage());
 
         Glide.with(mContext).
-                setDefaultRequestOptions(new RequestOptions().centerCrop()
-                        .placeholder(R.drawable.placeholder)).
+                setDefaultRequestOptions(new RequestOptions().dontTransform()).
                 load(item.getImage()).
                 into(holder.mImage);
 
@@ -200,9 +190,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 
             detailActivityIntent.putExtras(bundle);
 
-            Pair<View, String> imagePair = new Pair<>((View)mImage, mImage.getTransitionName());
+            Pair<View, String> imagePair = new Pair<>((View)this.mImage, mImage.getTransitionName());
             Pair<View, String> scrimPair = new Pair<>(mScrim, mScrim.getTransitionName());
-            // Pair<View, String> titlePair = new Pair<>((View)mTitle, mTitle.getTransitionName());
             Bundle animation = ActivityOptions.makeSceneTransitionAnimation((Activity)context,
                     imagePair, scrimPair).toBundle();
             ((Activity) context).startActivityForResult(detailActivityIntent, RC_DETAIL_ACTIVITY, animation);
