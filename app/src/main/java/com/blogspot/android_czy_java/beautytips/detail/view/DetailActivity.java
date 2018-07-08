@@ -38,10 +38,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
@@ -260,7 +258,7 @@ public class DetailActivity extends AppCompatActivity implements
         mImageView.setTransitionName(mImage);
 
         Glide.with(this).
-                setDefaultRequestOptions(RequestOptions.centerCropTransform()).
+                setDefaultRequestOptions(new RequestOptions().dontTransform()).
                 load(mImage).
                 listener(new RequestListener<Drawable>() {
                     @Override

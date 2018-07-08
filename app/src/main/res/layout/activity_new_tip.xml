@@ -68,7 +68,7 @@
             android:layout_marginEnd="@dimen/desc_margin"
             android:layout_marginStart="@dimen/desc_margin"
             android:hint="@string/hint_desc"
-            android:paddingBottom="@dimen/desc_padding"
+            android:paddingBottom="@dimen/new_tip_desc_bottom_padding"
             android:paddingTop="@dimen/new_tip_desc_top_padding"
             android:paddingEnd="@dimen/new_tip_desc_padding"
             android:paddingStart="@dimen/new_tip_desc_padding"
