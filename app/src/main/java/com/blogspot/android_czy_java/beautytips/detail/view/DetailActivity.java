@@ -204,7 +204,7 @@ public class DetailActivity extends AppCompatActivity implements
         }
         String ingredient4 = (String) dataSnapshot.child("ingredient4").getValue();
         if (!TextUtils.isEmpty(ingredient4)) {
-            mIngredient4.setVisibility(View.GONE);
+            mIngredient4.setVisibility(View.VISIBLE);
             mIngredient4.setText(ingredient4);
         }
 
