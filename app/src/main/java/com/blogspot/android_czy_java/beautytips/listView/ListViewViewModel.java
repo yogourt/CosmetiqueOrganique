@@ -25,6 +25,8 @@ public class ListViewViewModel extends ViewModel {
     public static final String ORDER_POPULAR = "popular";
     public static final String ORDER_NEW = "new";
 
+    public static final String SUBCATEGORY_ALL = "all";
+
     /*
      Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
      to check selected item (it's rose), categoryLiveData is used when creating firebase query
@@ -45,7 +47,10 @@ public class ListViewViewModel extends ViewModel {
 
     private boolean searchWasConducted;
 
-    private MutableLiveData<String> orderLiveData;
+    private String listOrder;
+
+    private String subcategory;
+
     public void init() {
         if(categoryLiveData == null) {
             mFirebaseHelper = new FirebaseHelper(this);
@@ -71,8 +76,8 @@ public class ListViewViewModel extends ViewModel {
 
             searchWasConducted = false;
 
-            orderLiveData = new MutableLiveData<>();
-            orderLiveData.setValue(ORDER_NEW);
+            listOrder = ORDER_NEW;
+            subcategory = SUBCATEGORY_ALL;
         }
     }
 
@@ -85,12 +90,12 @@ public class ListViewViewModel extends ViewModel {
     }
 
     public void setCategory(String category) {
-        Timber.d("setCategory: " + category);
         boolean categoryIsTheSame = categoryLiveData.getValue().equals(category);
 
         this.categoryLiveData.setValue(category);
         if(!categoryIsTheSame) {
             into = null;
+            setSubcategory(SUBCATEGORY_ALL);
             notifyRecyclerDataHasChanged();
         }
 
@@ -170,16 +175,24 @@ public class ListViewViewModel extends ViewModel {
         } else return false;
     }
 
-    public LiveData<String> getOrderLiveData() {
-        return orderLiveData;
-    }
-
     public void setOrder(String order) {
-        orderLiveData.setValue(order);
+        listOrder = order;
         notifyRecyclerDataHasChanged();
     }
 
     public String getOrder() {
-        return orderLiveData.getValue();
+        return listOrder;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        subcategory = subcategory.toLowerCase();
+        if(!this.subcategory.equals(subcategory)) {
+            this.subcategory = subcategory;
+            notifyRecyclerDataHasChanged();
+        }
     }
 }

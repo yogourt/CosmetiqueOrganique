@@ -8,6 +8,7 @@ public class ListItem {
     public String title;
     public String tipId;
     public String category;
+    public String subcategory;
     public String authorId;
     public long favNum;
     public boolean inFav;
@@ -52,6 +53,14 @@ public class ListItem {
 
     public void setCategory(String mCategory) {
         this.category = mCategory;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
     }
 
     public String getAuthorId() {

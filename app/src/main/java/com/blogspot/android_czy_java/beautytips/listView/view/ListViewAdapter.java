@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.adroitandroid.chipcloud.Chip;
 import com.adroitandroid.chipcloud.ChipCloud;
 import com.adroitandroid.chipcloud.ChipListener;
 import com.blogspot.android_czy_java.beautytips.R;
@@ -37,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.ORDER_NEW;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.ORDER_POPULAR;
@@ -268,7 +270,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (category.equals(CATEGORY_HAIR) || category.equals(CATEGORY_BODY)
                     || category.equals(CATEGORY_FACE) || category.equals(CATEGORY_INGREDIENTS)) {
                 mChipCloud.setVisibility(View.VISIBLE);
-                String[] chipLabels;
+                final String[] chipLabels;
                 switch (category) {
                     case CATEGORY_HAIR:
                         chipLabels = mContext.getResources()
@@ -293,9 +295,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .selectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
                         .deselectedColor(mContext.getResources().getColor(R.color.bluegray700))
                         .deselectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
-                        .selectTransitionMS(400)
-                        .deselectTransitionMS(250)
-                        .mode(ChipCloud.Mode.SINGLE)
+                        .mode(ChipCloud.Mode.REQUIRED)
                         .labels(chipLabels)
                         .allCaps(false)
                         .gravity(ChipCloud.Gravity.CENTER)
@@ -307,18 +307,23 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .chipListener(new ChipListener() {
                             @Override
                             public void chipSelected(int index) {
-                                //...
+                                viewModel.setSubcategory(chipLabels[index]);
                             }
 
                             @Override
                             public void chipDeselected(int index) {
-                                //...
                             }
                         })
                         .build();
 
 
-                mChipCloud.setSelectedChip(0);
+                //select appropriate chip
+                for(int i = 0; i < chipLabels.length; i++) {
+                    if(chipLabels[i].toLowerCase().equals(viewModel.getSubcategory())){
+                        mChipCloud.setSelectedChip(i);
+                        break;
+                    }
+                }
             }
 
             //set appropriate order chosen
