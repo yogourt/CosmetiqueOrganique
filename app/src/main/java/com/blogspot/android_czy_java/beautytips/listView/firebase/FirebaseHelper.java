@@ -27,6 +27,7 @@ import java.util.List;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.ORDER_POPULAR;
+import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.SUBCATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_FAVOURITES;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
@@ -58,6 +59,15 @@ public class FirebaseHelper {
                             final List<ListItem> list = new ArrayList<>();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 ListItem item = snapshot.getValue(ListItem.class);
+
+                                //check subcategory and if it's not the chosen, continue loop
+                                if(!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
+                                && !item.getSubcategory().equals(viewModel.getSubcategory())) {
+                                    Timber.d("item discarded");
+                                    continue;
+                                }
+
+                                Timber.d("item accepted");
                                 String author = String.valueOf(snapshot.child("author").getValue());
                                 String id = snapshot.getKey();
                                 if (item != null) {
