@@ -27,8 +27,10 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         if (position == 0) {
             outRect.top = mSpace*2;
         }
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE && position == 1) {
+
+        //this is not needed when there is a header that takes full width
+        /*if(orientation == Configuration.ORIENTATION_LANDSCAPE && position == 1) {
             outRect.top = mSpace*2;
-        }
+        }*/
     }
 }

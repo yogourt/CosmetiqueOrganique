@@ -22,6 +22,9 @@ public class ListViewViewModel extends ViewModel {
     public static final String USER_STATE_ANONYMOUS = "anonymous";
     public static final String USER_STATE_NULL = "null";
 
+    public static final String ORDER_POPULAR = "popular";
+    public static final String ORDER_NEW = "new";
+
     /*
      Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
      to check selected item (it's rose), categoryLiveData is used when creating firebase query
@@ -42,6 +45,7 @@ public class ListViewViewModel extends ViewModel {
 
     private boolean searchWasConducted;
 
+    private MutableLiveData<String> orderLiveData;
     public void init() {
         if(categoryLiveData == null) {
             mFirebaseHelper = new FirebaseHelper(this);
@@ -66,6 +70,9 @@ public class ListViewViewModel extends ViewModel {
             notifyRecyclerDataHasChanged();
 
             searchWasConducted = false;
+
+            orderLiveData = new MutableLiveData<>();
+            orderLiveData.setValue(ORDER_NEW);
         }
     }
 
@@ -87,7 +94,7 @@ public class ListViewViewModel extends ViewModel {
             notifyRecyclerDataHasChanged();
         }
 
-        //even though user chosen the same category, he want's all the data to be loaded
+        //even though user chosen the same category, he wants all the data to be loaded
         if(searchWasConducted) notifyRecyclerDataHasChanged();
     }
 
@@ -137,6 +144,9 @@ public class ListViewViewModel extends ViewModel {
         notifyRecyclerDataHasChanged();
     }
 
+    /*
+      Method called whenever the list data has to be loaded again. All the logic is in mFirebaseHelper
+     */
     public void notifyRecyclerDataHasChanged() {
         mFirebaseHelper.setItemListToViewModel();
     }
@@ -160,4 +170,16 @@ public class ListViewViewModel extends ViewModel {
         } else return false;
     }
 
+    public LiveData<String> getOrderLiveData() {
+        return orderLiveData;
+    }
+
+    public void setOrder(String order) {
+        orderLiveData.setValue(order);
+        notifyRecyclerDataHasChanged();
+    }
+
+    public String getOrder() {
+        return orderLiveData.getValue();
+    }
 }

@@ -18,6 +18,9 @@
     <dimen name="dialog_credits_text_size">12sp</dimen>
     <dimen name="dialog_width">270dp</dimen>
     <dimen name="error_margin_start">8dp</dimen>
+    <dimen name="chip_vert_margin">8dp</dimen>
+    <dimen name="chip_horiz_spacing">16dp</dimen>
+    <dimen name="chip_text_size">14sp</dimen>
 
 
     <!-- detail screen dimens -->

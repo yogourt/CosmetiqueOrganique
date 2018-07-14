@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     public static final int RC_PHOTO_PICKER = 100;
     public static final int RC_WELCOME_ACTIVITY = 200;
-    public static final int RC_DETAIL_ACTIVITY = 300;
     public static final int RC_NEW_TIP_ACTIVITY = 400;
 
     public static final int RESULT_DATA_CHANGE = 10;
@@ -86,11 +85,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @BindView(R.id.nav_view)
-    NavigationView mNavigationView;
-
     @BindView(R.id.search_view)
     SearchView mSearchView;
+
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
 
     FirebaseLoginHelper mLoginHelper;
 
@@ -158,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             public void onChanged(@Nullable Boolean isSearchVisible) {
                 if (isSearchVisible != null) {
                     if (isSearchVisible) mSearchView.setVisibility(View.VISIBLE);
-                    else mSearchView.setVisibility(View.INVISIBLE);
+                    else mSearchView.setVisibility(View.GONE);
                 }
             }
         });
@@ -169,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 prepareRecyclerView(list);
             }
         });
+
 
     }
 
@@ -272,7 +272,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     private void prepareRecyclerView(List<ListItem> recyclerViewList) {
 
         //add adapter
-        mAdapter = new ListViewAdapter(this, recyclerViewList, this);
+        mAdapter = new ListViewAdapter(this, recyclerViewList, this,
+                viewModel);
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -367,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             return true;
         }
         if (item.getItemId() == R.id.menu_search) {
-            if (mSearchView.getVisibility() == View.INVISIBLE) {
+            if (mSearchView.getVisibility() == View.GONE) {
                 mSearchView.setIconified(false);
                 viewModel.setIsSearchVisible(true);
             }
@@ -427,10 +428,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 mLoginHelper.saveUserPhoto(photoUri);
                 isPhotoSaving = true;
             }
-        }
-
-        if (requestCode == RC_DETAIL_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
-            viewModel.notifyRecyclerDataHasChanged();
         }
 
         if (requestCode == RC_NEW_TIP_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {

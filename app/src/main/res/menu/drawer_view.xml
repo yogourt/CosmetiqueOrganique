@@ -39,7 +39,12 @@
                 android:id="@+id/nav_body"
                 android:title="@string/nav_body"
                 android:icon="@drawable/ic_shape"/>
+            <item
+                android:id="@+id/nav_ingredients"
+                android:title="@string/nav_ingredients"
+                android:icon="@drawable/ic_spices"/>
         </group>
+
 
     <group>
         <item
