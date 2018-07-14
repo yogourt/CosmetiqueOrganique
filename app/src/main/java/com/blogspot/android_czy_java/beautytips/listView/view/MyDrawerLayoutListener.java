@@ -35,6 +35,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     public static final String CATEGORY_BODY = "body";
     public static final String CATEGORY_YOUR_TIPS = "your_tips";
     public static final String CATEGORY_FAVOURITES = "favourites";
+    public static final String CATEGORY_INGREDIENTS = "ingredients";
 
     public static final int NAV_POSITION_YOUR_TIPS = 0;
     public static final int NAV_POSITION_FAVOURITES = 1;
@@ -43,7 +44,8 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     public static final int NAV_POSITION_HAIR = 5;
     public static final int NAV_POSITION_FACE = 6;
     public static final int NAV_POSITION_BODY = 7;
-    public static final int NAV_POSITION_ABOUT_APP = 8;
+    public static final int NAV_POSITION_INGREDIENTS = 8;
+    public static final int NAV_POSITION_ABOUT_APP = 9;
 
     public static final String TAG_INFO_DIALOG = "about_this_app_dialog";
 
@@ -175,6 +177,10 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                 case R.id.nav_body:
                     viewModel.setNavigationPosition(NAV_POSITION_BODY);
                     viewModel.setCategory(CATEGORY_BODY);
+                    return;
+                case R.id.nav_ingredients:
+                    viewModel.setNavigationPosition(NAV_POSITION_INGREDIENTS);
+                    viewModel.setCategory(CATEGORY_INGREDIENTS);
                     return;
                 case R.id.nav_about_app:
                     AppInfoDialog dialog = new AppInfoDialog();

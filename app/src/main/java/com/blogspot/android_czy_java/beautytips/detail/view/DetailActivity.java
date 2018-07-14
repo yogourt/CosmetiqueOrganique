@@ -60,8 +60,6 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivit
 public class DetailActivity extends AppCompatActivity implements
         DetailFirebaseHelper.DetailViewInterface {
 
-    public static final String KEY_FAV_NUM_HAS_CHANGED = "fav_num_has_changed";
-
     @BindView(R.id.image)
     ImageView mImageView;
 
@@ -126,9 +124,6 @@ public class DetailActivity extends AppCompatActivity implements
 
     private Handler adHandler;
 
-    private boolean mFavNumHasChanged;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,7 +147,6 @@ public class DetailActivity extends AppCompatActivity implements
             if(savedInstanceState == null) mFavNum = bundle.getLong(KEY_FAV_NUM) * -1;
             else {
                 mFavNum = savedInstanceState.getLong(KEY_FAV_NUM);
-                mFavNumHasChanged = savedInstanceState.getBoolean(KEY_FAV_NUM_HAS_CHANGED);
             }
 
             mFirebaseHelper = new DetailFirebaseHelper(this, mId);
@@ -175,7 +169,6 @@ public class DetailActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(KEY_FAV_NUM, mFavNum);
-        outState.putBoolean(KEY_FAV_NUM_HAS_CHANGED, mFavNumHasChanged);
     }
 
     @Override
@@ -361,13 +354,7 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(mFavNumHasChanged) setResult(RESULT_DATA_CHANGE);
         finishAfterTransition();
-        //overrideExitTransition();
-    }
-
-    private void overrideExitTransition() {
-        overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
     }
 
     public void changeFavouriteState(View view) {
@@ -392,8 +379,6 @@ public class DetailActivity extends AppCompatActivity implements
             mFirebaseHelper.removeTipFromFavourites(mFavNum);
             prepareFavNum();
         }
-
-        mFavNumHasChanged = true;
     }
 
     @Override

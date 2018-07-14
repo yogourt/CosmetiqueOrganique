@@ -26,8 +26,10 @@ import java.util.List;
 
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.ORDER_POPULAR;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_FAVOURITES;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_YOUR_TIPS;
 
 
@@ -44,23 +46,43 @@ public class FirebaseHelper {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final List<ListItem> list = new ArrayList<>();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            ListItem item = snapshot.getValue(ListItem.class);
-                            String author = String.valueOf(snapshot.child("author").getValue());
-                            String id = snapshot.getKey();
-                            if (item != null) {
-                                item.setId(id);
-                                if (!author.equals("null")) item.setAuthorId(author);
 
-                                if (!FirebaseLoginHelper.isUserNull() && !FirebaseLoginHelper.isUserAnonymous()
-                                        && snapshot.child(FirebaseLoginHelper.getUserId()).getValue() != null) {
-                                    item.setInFav(true);
-                                }
-                                list.add(item);
-                            }
+                        /*
+                          if user wants to see ingredients, the helper function is called, because
+                          the logic to get data from db is different
+                         */
+                        if(viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+                            prepareIngredientList(dataSnapshot);
                         }
-                        viewModel.setRecyclerViewList(list);
+                        else {
+                            final List<ListItem> list = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                ListItem item = snapshot.getValue(ListItem.class);
+                                String author = String.valueOf(snapshot.child("author").getValue());
+                                String id = snapshot.getKey();
+                                if (item != null) {
+                                    item.setId(id);
+                                    if (!author.equals("null")) item.setAuthorId(author);
+
+                                    if (!FirebaseLoginHelper.isUserNull() && !FirebaseLoginHelper.isUserAnonymous()
+                                            && snapshot.child(FirebaseLoginHelper.getUserId()).getValue() != null) {
+                                        item.setInFav(true);
+                                    }
+                                    list.add(item);
+                                }
+                            }
+
+                            //sort the list if the order should be popular
+                            if(viewModel.getOrder().equals(ORDER_POPULAR)) {
+                                Collections.sort(list, new Comparator<ListItem>() {
+                                    @Override
+                                    public int compare(ListItem o1, ListItem o2) {
+                                        return (int) (o1.getFavNum() - o2.getFavNum());
+                                    }
+                                });
+                            }
+                            viewModel.setRecyclerViewList(list);
+                        }
                     }
 
                     @Override
@@ -129,6 +151,14 @@ public class FirebaseHelper {
                 });
     }
 
+    private void prepareIngredientList(DataSnapshot dataSnapshot) {
+        final List<ListItem> list = new ArrayList<>();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+        }
+        viewModel.setRecyclerViewList(list);
+    }
+
     /*
         Helper method to create query that is used in two methods above
      */
@@ -156,6 +186,12 @@ public class FirebaseHelper {
                         .getReference()
                         .child("tipList")
                         .orderByChild(user.getUid()).equalTo(true);
+        }
+
+        if(category.equals(CATEGORY_INGREDIENTS)) {
+            return FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child("ingredients");
         }
 
         return FirebaseDatabase.getInstance().
