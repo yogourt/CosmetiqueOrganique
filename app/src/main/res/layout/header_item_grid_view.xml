@@ -8,41 +8,57 @@
         android:id="@+id/chip_cloud"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/chip_vert_margin"
         android:layout_marginBottom="@dimen/chip_vert_margin"
-        android:visibility="gone"/>
+        android:layout_marginTop="@dimen/chip_vert_margin"
+        android:visibility="gone" />
 
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/switch_popular"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/switch_popular"
+                android:textColor="@color/pink200"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/switch_new"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/switch_new"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/switch_popular"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textColor="@color/pink200"
-            android:gravity="center"
-            android:text="@string/switch_popular"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/switch_new"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/switch_new"
-            android:textStyle="bold"/>
-    </LinearLayout>
+            android:id="@+id/searching_text_view"
+            style="@style/NormalTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/search_padding_start"
+            android:paddingBottom="@dimen/search_padding_bottom"
+            android:layout_gravity="bottom"
+            android:visibility="invisible"
+            android:textColor="@color/white"/>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/bluegray700" />
-
 
 
 </LinearLayout>

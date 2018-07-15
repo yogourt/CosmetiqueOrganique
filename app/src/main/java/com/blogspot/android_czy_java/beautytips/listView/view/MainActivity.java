@@ -1,13 +1,12 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.app.DialogFragment;
+import android.app.SearchManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -17,12 +16,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
@@ -43,7 +42,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
@@ -85,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @BindView(R.id.search_view)
     SearchView mSearchView;
 
     @BindView(R.id.nav_view)
@@ -135,8 +132,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         mLoginHelper = new FirebaseLoginHelper(this, viewModel);
 
-        prepareActionBar();
-        prepareSearchView();
 
         //it has to be added here to avoid adding it multiple times. It doesn't have to be done on category change,
         //this is why it's not part of prepareNavigationDrawer()
@@ -147,20 +142,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             public void onChanged(@Nullable String category) {
                 Timber.d("category changed");
                 prepareNavigationDrawer();
+                prepareActionBar();
             }
         });
 
         viewModel.getUserStateLiveData().observe(this, createUserStateObserver());
 
-        viewModel.getSearchLiveData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean isSearchVisible) {
-                if (isSearchVisible != null) {
-                    if (isSearchVisible) mSearchView.setVisibility(View.VISIBLE);
-                    else mSearchView.setVisibility(View.GONE);
-                }
-            }
-        });
 
         viewModel.getRecyclerViewLiveData().observe(this, new Observer<List<ListItem>>() {
             @Override
@@ -175,7 +162,20 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+
+        SearchManager searchManager = (SearchManager) MainActivity.
+                this.getSystemService(Context.SEARCH_SERVICE);
+
+        if (searchItem != null) {
+            mSearchView = (SearchView) searchItem.getActionView();
+        }
+        if (mSearchView != null && searchManager != null) {
+            mSearchView.setSearchableInfo(searchManager.
+                    getSearchableInfo(MainActivity.this.getComponentName()));
+            prepareSearchView();
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -333,16 +333,17 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     private void prepareSearchView() {
 
-        //on close set visibility to invisible
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                viewModel.setIsSearchVisible(false);
                 //on close search view, load all the data from chosen category
-                if(viewModel.getSearchWasConducted()) viewModel.notifyRecyclerDataHasChanged();
-                return true;
+                mSearchView.clearFocus();
+                if (viewModel.getSearchWasConducted()) viewModel.resetSearch();
+
+                return false;
             }
         });
+
 
         //when the user submit search, pass it to viewModel
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -359,6 +360,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             }
 
         });
+
+        if(viewModel.getSearchWasConducted()) {
+            Timber.d("restore query");
+            mSearchView.setIconified(false);
+            mSearchView.setQuery(viewModel.getQuery(), true);
+        }
     }
 
     @Override
@@ -367,15 +374,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
-        if (item.getItemId() == R.id.menu_search) {
-            if (mSearchView.getVisibility() == View.GONE) {
-                mSearchView.setIconified(false);
-                viewModel.setIsSearchVisible(true);
-            }
-            //when user clicks icon second time, the search view disappears
-            else viewModel.setIsSearchVisible(false);
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -62,7 +62,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int VIEW_TYPE_HEADER = 0;
     public static final int VIEW_TYPE_ITEM = 1;
 
-    public static final int[] itemHeightsInDp = {630, 600, 670, 650};
+    public static final int[] itemHeightsInDp = {630, 670, 600, 650};
 
     private Context mContext;
     private int lastPosition;
@@ -262,9 +262,21 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.switch_new)
         TextView mSwitchNew;
 
+        @BindView(R.id.searching_text_view)
+        TextView mSearchingTv;
         HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            //if there was a search, do show in header just some text
+            if(viewModel.getSearchWasConducted()) {
+                mSwitchPopular.setVisibility(View.INVISIBLE);
+                mSwitchNew.setVisibility(View.INVISIBLE);
+                mSearchingTv.setVisibility(View.VISIBLE);
+                mSearchingTv.setText(mContext.getResources().
+                        getString(R.string.searching_text,viewModel.getQuery()));
+                return;
+            }
 
             String category = viewModel.getCategory();
             if (category.equals(CATEGORY_HAIR) || category.equals(CATEGORY_BODY)
@@ -293,7 +305,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .chipCloud(mChipCloud)
                         .selectedColor(mContext.getResources().getColor(R.color.pink200))
                         .selectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
-                        .deselectedColor(mContext.getResources().getColor(R.color.bluegray700))
+                        .deselectedColor(mContext.getResources().getColor(R.color.bluegray700_semi))
                         .deselectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
                         .mode(ChipCloud.Mode.REQUIRED)
                         .labels(chipLabels)
