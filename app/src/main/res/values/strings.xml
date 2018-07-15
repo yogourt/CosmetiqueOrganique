@@ -6,6 +6,7 @@
     <string name="description_tip_image">%1$s image</string>
     <string name="switch_popular">POPULAR</string>
     <string name="switch_new">NEW</string>
+    <string name="searching_text">Searching for %1$s ...</string>
 
     <!-- transition names for shared element transition -->
     <string name="image_transition_name">image</string>

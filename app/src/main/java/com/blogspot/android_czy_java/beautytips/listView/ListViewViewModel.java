@@ -39,8 +39,6 @@ public class ListViewViewModel extends ViewModel {
 
     private int[] into;
 
-    private MutableLiveData<Boolean> searchLiveData;
-
     private MutableLiveData<List<ListItem>> recyclerViewLiveData;
 
     private FirebaseHelper mFirebaseHelper;
@@ -50,6 +48,8 @@ public class ListViewViewModel extends ViewModel {
     private String listOrder;
 
     private String subcategory;
+
+    private String query;
 
     public void init() {
         if(categoryLiveData == null) {
@@ -67,10 +67,6 @@ public class ListViewViewModel extends ViewModel {
             else if(FirebaseLoginHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
             else userStateLiveData.setValue(USER_STATE_LOGGED_IN);
 
-            //set search visibility value
-            searchLiveData = new MutableLiveData<>();
-            searchLiveData.setValue(false);
-
             recyclerViewLiveData = new MutableLiveData<>();
             notifyRecyclerDataHasChanged();
 
@@ -78,6 +74,7 @@ public class ListViewViewModel extends ViewModel {
 
             listOrder = ORDER_NEW;
             subcategory = SUBCATEGORY_ALL;
+            query = "";
         }
     }
 
@@ -100,7 +97,9 @@ public class ListViewViewModel extends ViewModel {
         }
 
         //even though user chosen the same category, he wants all the data to be loaded
-        if(searchWasConducted) notifyRecyclerDataHasChanged();
+        if(searchWasConducted) {
+            resetSearch();
+        }
     }
 
     public LiveData<String> getCategoryLiveData() {
@@ -125,14 +124,6 @@ public class ListViewViewModel extends ViewModel {
 
     public void setInto(int[] into) {
         this.into = into;
-    }
-
-    public void setIsSearchVisible(boolean isSearchVisible) {
-        searchLiveData.setValue(isSearchVisible);
-    }
-
-    public LiveData<Boolean> getSearchLiveData() {
-        return searchLiveData;
     }
 
     public LiveData<List<ListItem>> getRecyclerViewLiveData() {
@@ -164,20 +155,23 @@ public class ListViewViewModel extends ViewModel {
     public void search(String query) {
         if(query == null) return;
         query = query.toLowerCase();
-        mFirebaseHelper.searchAndSetListToViewModel(query);
+        this.query = query;
+        subcategory = SUBCATEGORY_ALL;
         searchWasConducted = true;
+        mFirebaseHelper.searchAndSetListToViewModel(query);
     }
 
     public boolean getSearchWasConducted() {
-        if(searchWasConducted) {
-            searchWasConducted = false;
-            return true;
-        } else return false;
+        return searchWasConducted;
     }
 
+    public void resetSearch() {
+        searchWasConducted = false;
+        notifyRecyclerDataHasChanged();
+    }
     public void setOrder(String order) {
         listOrder = order;
-        notifyRecyclerDataHasChanged();
+            notifyRecyclerDataHasChanged();
     }
 
     public String getOrder() {
@@ -195,4 +189,8 @@ public class ListViewViewModel extends ViewModel {
             notifyRecyclerDataHasChanged();
         }
     }
-}
+
+    public String getQuery() {
+        return query;
+    }
+ }

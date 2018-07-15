@@ -87,7 +87,6 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
     public void onDrawerClosed(@NonNull View drawerView) {
         Timber.d("onDrawerClosed, itemId=" + itemId);
         activity.removeDrawerListenerFromDrawerLayout();
-        viewModel.setIsSearchVisible(false);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
