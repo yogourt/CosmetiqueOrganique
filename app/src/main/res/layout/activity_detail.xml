@@ -27,6 +27,7 @@
                 layout="@layout/layout_ingredients" />
 
             <LinearLayout
+                android:id="@+id/properties_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fav_margin_top"
@@ -93,13 +94,7 @@
         app:layout_anchor="@id/layout_ingredients"
         app:layout_anchorGravity="bottom|end" />
 
-    <com.google.android.gms.ads.AdView android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android" />
+    <include
+        layout="@layout/layout_ad_banner" />
 
 </android.support.design.widget.CoordinatorLayout>

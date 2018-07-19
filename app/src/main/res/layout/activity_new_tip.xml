@@ -107,12 +107,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginStart="@dimen/spinner_button_ext_margin"
             android:layout_marginEnd="@dimen/spinner_button_ext_margin"
             android:layout_marginBottom="@dimen/desc_margin"
             android:layout_marginTop="@dimen/spinner_top_margin"
             android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
             <com.farbod.labelledspinner.LabelledSpinner
                 android:id="@+id/category_spinner"
@@ -123,14 +128,23 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
 
+                <com.farbod.labelledspinner.LabelledSpinner
+                    android:id="@+id/subcategory_spinner"
+                    app:labelText="@string/subcategory_spinner_label"
+                    app:widgetColor="@color/white_title_tint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
             <Button
-                android:layout_width="0dp"
+                android:layout_width="@dimen/button_width"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="@dimen/spinner_button_int_margin"
                 android:backgroundTint="@color/pink200"
                 android:text="@string/button_label"
-                android:onClick="addTip"/>
+                android:onClick="addTip"
+                android:layout_gravity="end"/>
         </LinearLayout>
 
         <TextView

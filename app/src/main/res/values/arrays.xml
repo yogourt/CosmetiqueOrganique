@@ -35,7 +35,9 @@
     <string-array name="ingredients_chip_labels">
         <item>All</item>
         <item>Essential oils</item>
+        <item>Oils</item>
         <item>Butters</item>
+        <item>Vitamins</item>
         <item>Others</item>
     </string-array>
 </resources>

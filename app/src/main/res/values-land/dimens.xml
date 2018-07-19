@@ -14,6 +14,7 @@
     <dimen name="desc_padding">32dp</dimen>
     <dimen name="author_padding_start">48dp</dimen>
     <dimen name="search_padding_start">48dp</dimen>
+    <dimen name="button_width">230dp</dimen>
 
     <dimen name="dialog_width">300dp</dimen>
 </resources>

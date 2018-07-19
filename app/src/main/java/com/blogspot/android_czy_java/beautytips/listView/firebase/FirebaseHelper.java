@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.listView.firebase;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
@@ -55,6 +56,8 @@ public class FirebaseHelper {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 TipListItem item = snapshot.getValue(TipListItem.class);
 
+                                if (item != null) {
+
                                 //check subcategory and if it's not the chosen, continue loop
                                 if(!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
                                 && !item.getSubcategory().equals(viewModel.getSubcategory())) {
@@ -62,10 +65,14 @@ public class FirebaseHelper {
                                     continue;
                                 }
 
+                                //if image is not already added to this tip, do not show it
+                                if(TextUtils.isEmpty(item.getImage())) {
+                                    continue;
+                                }
+
                                 Timber.d("item accepted");
                                 String author = String.valueOf(snapshot.child("author").getValue());
                                 String id = snapshot.getKey();
-                                if (item != null) {
                                     item.setId(id);
                                     if (!author.equals("null")) item.setAuthorId(author);
 

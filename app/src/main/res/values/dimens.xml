@@ -58,7 +58,7 @@
     <dimen name="title_bottom_margin">32dp</dimen>
     <dimen name="title_horiz_margin">16dp</dimen>
     <dimen name="title_horiz_padding">8dp</dimen>
-    <dimen name="spinner_width">200dp</dimen>
+    <dimen name="button_width">150dp</dimen>
     <dimen name="spinner_top_margin">16dp</dimen>
     <dimen name="spinner_button_int_margin">16dp</dimen>
     <dimen name="spinner_button_ext_margin">24dp</dimen>
