@@ -19,18 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.adroitandroid.chipcloud.Chip;
 import com.adroitandroid.chipcloud.ChipCloud;
 import com.adroitandroid.chipcloud.ChipListener;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.view.DetailActivity;
+import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -38,7 +40,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.ORDER_NEW;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.ORDER_POPULAR;
@@ -147,25 +148,28 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.mImage.setContentDescription(mContext.getResources()
                     .getString(R.string.description_tip_image, item.getTitle()));
 
-            //set visibility of cross
-            if (item.getAuthorId() != null && !FirebaseLoginHelper.isUserNull()
-                    && item.getAuthorId().equals(FirebaseLoginHelper.getUserId())) {
-                holder.mDeleteTipIcon.setVisibility(View.VISIBLE);
-                holder.mDeleteTipIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (holder.mImage.getDrawable() != null) {
-                            mPositionListener.onClickDeleteTip(item.getId());
-                        } else {
-                            SnackbarHelper.showWaitForImageLoad(holder.itemView);
+            if(!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+                TipListItem tipItem = (TipListItem) item;
+                //set visibility of cross
+                if (tipItem.getAuthorId() != null && !FirebaseLoginHelper.isUserNull()
+                        && tipItem.getAuthorId().equals(FirebaseLoginHelper.getUserId())) {
+                    holder.mDeleteTipIcon.setVisibility(View.VISIBLE);
+                    holder.mDeleteTipIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (holder.mImage.getDrawable() != null) {
+                                mPositionListener.onClickDeleteTip(item.getId());
+                            } else {
+                                SnackbarHelper.showWaitForImageLoad(holder.itemView);
+                            }
                         }
-                    }
-                });
-            } else holder.mDeleteTipIcon.setVisibility(View.INVISIBLE);
+                    });
+                } else holder.mDeleteTipIcon.setVisibility(View.INVISIBLE);
 
-            //set visibility of heart
-            if (item.inFav) holder.mHeartIcon.setVisibility(View.VISIBLE);
-            else holder.mHeartIcon.setVisibility(View.INVISIBLE);
+                //set visibility of heart
+                if (tipItem.inFav) holder.mHeartIcon.setVisibility(View.VISIBLE);
+                else holder.mHeartIcon.setVisibility(View.INVISIBLE);
+            }
 
             setAnimation(holder.itemView, position);
         }
@@ -229,25 +233,38 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return;
             }
 
-            Context context = view.getContext();
-            Intent detailActivityIntent = new Intent(context, DetailActivity.class);
-
-            ListItem item = list.get(getAdapterPosition() - 1);
+            //common part for tip and ingredient
             Bundle bundle = new Bundle();
+            ListItem item = list.get(getAdapterPosition() - 1);
             bundle.putString(KEY_TITLE, item.getTitle());
             bundle.putString(KEY_IMAGE, item.getImage());
             bundle.putString(KEY_ID, item.getId());
-            bundle.putLong(KEY_FAV_NUM, item.getFavNum());
-            if (!TextUtils.isEmpty(item.getAuthorId()))
-                bundle.putString(KEY_AUTHOR, item.getAuthorId());
-
-            detailActivityIntent.putExtras(bundle);
 
             Pair<View, String> imagePair = new Pair<>((View) this.mImage, mImage.getTransitionName());
             Pair<View, String> scrimPair = new Pair<>(mScrim, mScrim.getTransitionName());
-            Bundle animation = ActivityOptions.makeSceneTransitionAnimation((Activity) context,
+            Bundle animation = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
                     imagePair, scrimPair).toBundle();
-            context.startActivity(detailActivityIntent, animation);
+
+            //open ingredient activity
+            if(viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+                Intent ingredientActivityIntent = new Intent(mContext, IngredientActivity.class);
+
+                ingredientActivityIntent.putExtras(bundle);
+                mContext.startActivity(ingredientActivityIntent, animation);
+            }
+
+            //open detail activity
+            else {
+                Intent detailActivityIntent = new Intent(mContext, DetailActivity.class);
+
+                bundle.putLong(KEY_FAV_NUM, ((TipListItem)item).getFavNum());
+                if (!TextUtils.isEmpty(((TipListItem)item).getAuthorId()))
+                    bundle.putString(KEY_AUTHOR, ((TipListItem)item).getAuthorId());
+
+                detailActivityIntent.putExtras(bundle);
+
+                mContext.startActivity(detailActivityIntent, animation);
+            }
         }
     }
 
@@ -264,6 +281,10 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @BindView(R.id.searching_text_view)
         TextView mSearchingTv;
+
+        @BindView(R.id.switch_layout)
+        FrameLayout mSwitchLayout;
+
         HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -279,6 +300,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             String category = viewModel.getCategory();
+
+            if(category.equals(CATEGORY_INGREDIENTS)) mSwitchLayout.setVisibility(View.GONE);
             if (category.equals(CATEGORY_HAIR) || category.equals(CATEGORY_BODY)
                     || category.equals(CATEGORY_FACE) || category.equals(CATEGORY_INGREDIENTS)) {
                 mChipCloud.setVisibility(View.VISIBLE);

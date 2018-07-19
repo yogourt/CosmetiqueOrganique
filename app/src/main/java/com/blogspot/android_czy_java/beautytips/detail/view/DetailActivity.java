@@ -57,14 +57,8 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAda
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_TITLE;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RESULT_DATA_CHANGE;
 
-public class DetailActivity extends AppCompatActivity implements
+public class DetailActivity extends BaseItemActivity implements
         DetailFirebaseHelper.DetailViewInterface {
-
-    @BindView(R.id.image)
-    ImageView mImageView;
-
-    @BindView(R.id.collapsing_toolbar_layout)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
@@ -74,9 +68,6 @@ public class DetailActivity extends AppCompatActivity implements
 
     @BindView(R.id.layout_ingredients)
     View mLayoutIngredients;
-
-    @BindView(R.id.app_bar)
-    Toolbar mToolbar;
 
     @BindView(R.id.description_text_view)
     TextView mDescTextView;
@@ -102,27 +93,16 @@ public class DetailActivity extends AppCompatActivity implements
     @BindView(R.id.nickname_text_view)
     TextView mAuthorTv;
 
-    @BindView(R.id.adView)
-    AdView mAdView;
-
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout mAppBarLayout;
-
     @BindView(R.id.fav_text_view)
     TextView mFavTv;
 
     @BindView(R.id.source_text_view)
     TextView mSourceTv;
 
-    private String mTitle;
-    private String mImage;
     private String mAuthorId;
-    private String mId;
     private long mFavNum;
 
     private DetailFirebaseHelper mFirebaseHelper;
-
-    private Handler adHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,14 +111,9 @@ public class DetailActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
-        supportPostponeEnterTransition();
-
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-            mTitle = bundle.getString(KEY_TITLE);
-            mImage = bundle.getString(KEY_IMAGE);
             if(bundle.containsKey(KEY_AUTHOR)) mAuthorId = bundle.getString(KEY_AUTHOR);
-            mId = bundle.getString(KEY_ID);
 
             //get the fav num from bundle (it comes from db) when the activity opens for the first
             //time, and if it's orientation change get it from saved instance state, as it may
@@ -151,12 +126,9 @@ public class DetailActivity extends AppCompatActivity implements
 
             mFirebaseHelper = new DetailFirebaseHelper(this, mId);
 
-            loadImage();
             mFirebaseHelper.getFirebaseDatabaseData();
-            prepareToolbar();
             prepareFab();
             prepareFavNum();
-            prepareAdView();
         }
         else {
             finish();
@@ -169,12 +141,6 @@ public class DetailActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(KEY_FAV_NUM, mFavNum);
-    }
-
-    @Override
-    protected void onDestroy() {
-        adHandler.removeCallbacksAndMessages(null);
-        super.onDestroy();
     }
 
     public void prepareContent(@NonNull DataSnapshot dataSnapshot) {
@@ -247,59 +213,6 @@ public class DetailActivity extends AppCompatActivity implements
                 .into(mAuthorPhoto);
     }
 
-    private void loadImage() {
-        mImageView.setTransitionName(mImage);
-
-        Glide.with(this).
-                setDefaultRequestOptions(new RequestOptions().dontTransform()).
-                load(mImage).
-                listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
-                                                Target<Drawable> target, boolean isFirstResource) {
-                        supportStartPostponedEnterTransition();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable>
-                            target, DataSource dataSource, boolean isFirstResource) {
-                        supportStartPostponedEnterTransition();
-                        return false;
-                    }
-                }).
-                into(mImageView);
-    }
-
-    private void prepareToolbar() {
-        mCollapsingToolbarLayout.setTitle(mTitle);
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ripple_back);
-        }
-
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Timber.d("orientation landscape");
-            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                        showAdView();
-                    } else hideAdView();
-                }
-            });
-        }
-        //add is always visible in portrait mode
-        else {
-            showAdView();
-            mAdView.setVisibility(View.VISIBLE);
-            Timber.d("showing ad view");
-        }
-
-    }
-
     /*
       I want FAB to be visible when ingredients layout is visible, and when user scrolls lower,
       it hides
@@ -322,19 +235,6 @@ public class DetailActivity extends AppCompatActivity implements
             mFirebaseHelper.setFabState();
         }
 
-    }
-
-    private void prepareAdView() {
-
-        adHandler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-                return false;
-            }
-        });
-        adHandler.sendEmptyMessageDelayed(0, 1000);
     }
 
     @Override
@@ -384,20 +284,6 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void setFabActive() {
         mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
-    }
-
-    private void showAdView() {
-        mAdView.animate()
-                .alpha(1f)
-                .setDuration(300)
-                .start();
-    }
-
-    private void hideAdView() {
-        mAdView.animate()
-                .alpha(0f)
-                .setDuration(300)
-                .start();
     }
 
 }

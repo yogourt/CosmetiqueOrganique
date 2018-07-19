@@ -130,7 +130,7 @@
         The number of tips will also significantly grow soon.</string>
     <string name="info_dialog_email">If you have any comments, you are welcome to share them via e-mail:
         jagoda.sylwester@gmail.com.</string>
-        <string name="info_dialog_rate">If you like this app, please share your rating on
+    <string name="info_dialog_rate">If you like this app, please share your rating on
         <a href="https://play.google.com/store/apps/details?id=com.blogspot.android_czy_java.beautytips">
             Google Play Store</a>.</string>
     <string name="info_dialog_credits"> Icons used in this app are made by authors from www.flaticon.com:
