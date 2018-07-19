@@ -237,26 +237,6 @@ public class DetailActivity extends BaseItemActivity implements
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        /*
-        here is call to onBackPressed() to provide proper exit animation (for some reason it
-        wasn't working without super.onBackPressed())
-        */
-        if(item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finishAfterTransition();
-    }
-
     public void changeFavouriteState(View view) {
         Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
         mFab.startAnimation(scaleAnim);

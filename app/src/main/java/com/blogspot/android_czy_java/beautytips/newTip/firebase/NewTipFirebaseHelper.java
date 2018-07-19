@@ -82,8 +82,8 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
     }
 
     public void addTip(final String title, final ArrayList<String> ingredients, final String description,
-                       final String category, final String imagePath, final String source,
-                       final String tipNumber) {
+                       final String category, final String subcategory, final String imagePath,
+                       final String source, final String tipNumber) {
 
 
                 /*
@@ -130,7 +130,7 @@ public class NewTipFirebaseHelper implements LifecycleObserver {
                     .getReference("tipList/" + tipNumber);
 
             //save title, category, author and tags
-            TipListItem listItem = new TipListItem(title, category, user.getUid(), tags);
+            TipListItem listItem = new TipListItem(title, category, subcategory, user.getUid(), tags);
             listReference.setValue(listItem);
 
             //save tip image

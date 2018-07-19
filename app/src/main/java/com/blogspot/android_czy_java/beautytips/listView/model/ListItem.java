@@ -8,6 +8,12 @@ public class ListItem {
 
     public ListItem(){}
 
+    public ListItem(String image, String title, String subcategory) {
+        this.image = image;
+        this.title = title;
+        this.subcategory = subcategory;
+    }
+
     public String getImage() {
         return image;
     }

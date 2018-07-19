@@ -38,7 +38,8 @@
         android:layout_height="@dimen/item_icon_size"
         android:layout_gravity="top|start"
         android:layout_margin="@dimen/item_icon_margin"
-        android:background="@drawable/ic_heart_stroked" />
+        android:background="@drawable/ic_heart_stroked"
+        android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/delete_tip_icon"

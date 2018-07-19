@@ -29,6 +29,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.farbod.labelledspinner.LabelledSpinner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,6 +95,9 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     @BindView(R.id.source_edit_text)
     EditText mSourceEt;
 
+    @BindView(R.id.subcategory_spinner)
+    LabelledSpinner mSubcategorySpinner;
+
     private NewTipFirebaseHelper mFirebaseHelper;
     private int category;
     private String imagePath;
@@ -100,6 +105,8 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     private ArrayList<String> ingredients;
     private String description;
     private String newTipNum;
+    List<String> subcategories;
+    private int subcategoryPosition;
 
     private int numGeneratingTries;
 
@@ -122,7 +129,7 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
 
         prepareToolbar();
         prepareAuthorDesc();
-        prepareSpinner();
+        prepareSpinners();
         prepareImageView();
 
         Timber.d("onCreate");
@@ -154,7 +161,7 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
         mFirebaseHelper.setAuthorDetails();
     }
 
-    private void prepareSpinner() {
+    private void prepareSpinners() {
         mCategorySpinner.setItemsArray(R.array.categories);
         mCategorySpinner.setSelection(category);
         mCategorySpinner.setOnItemChosenListener(new LabelledSpinner.OnItemChosenListener() {
@@ -162,10 +169,32 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
             public void onItemChosen(View labelledSpinner, AdapterView<?> adapterView,
                                      View itemView, int position, long id) {
                 category = position;
+                if(position == 0) subcategories = new ArrayList<>(Arrays.asList(getResources().
+                        getStringArray(R.array.hair_chip_labels)));
+                if(position == 1) subcategories = new ArrayList<>(Arrays.asList(getResources().
+                        getStringArray(R.array.face_chip_labels)));
+                if(position == 2) subcategories = new ArrayList<>(Arrays.asList(getResources().
+                        getStringArray(R.array.body_chip_labels)));
+                subcategories.remove(0);
+                mSubcategorySpinner.setItemsArray(subcategories);
+                mSubcategorySpinner.setSelection(subcategories.size()-1);
             }
 
             @Override
             public void onNothingChosen(View labelledSpinner, AdapterView<?> adapterView) {
+            }
+        });
+
+        mSubcategorySpinner.setOnItemChosenListener(new LabelledSpinner.OnItemChosenListener() {
+            @Override
+            public void onItemChosen(View labelledSpinner, AdapterView<?> adapterView, View itemView,
+                                     int position, long id) {
+                subcategoryPosition = position;
+            }
+
+            @Override
+            public void onNothingChosen(View labelledSpinner, AdapterView<?> adapterView) {
+
             }
         });
     }
@@ -306,6 +335,10 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
         return CATEGORY_HAIR;
     }
 
+    private String getSubcategory() {
+        return subcategories.get(subcategoryPosition).toLowerCase();
+    }
+
     public void setTipNumber(String tipNumber) {
         newTipNum = tipNumber;
     }
@@ -332,7 +365,7 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
                     setResult(RESULT_DATA_CHANGE, data);
                     String source = mSourceEt.getText().toString();
                     mFirebaseHelper.addTip(title, ingredients, description, getCategory(),
-                            imagePath, source, newTipNum);
+                            getSubcategory(), imagePath, source, newTipNum);
                     finishWithTransition();
                 } else {
                     if(numGeneratingTries > 10) {

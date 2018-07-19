@@ -66,6 +66,7 @@
     <string name="title_activity_new_tip">New tip</string>
     <string name="button_label">Add tip</string>
     <string name="spinner_label">Category</string>
+    <string name="subcategory_spinner_label">Subcategory</string>
     <string name="description_image">Tip image</string>
     <string name="new_tip_source_label">Source: </string>
     <string name="hint_source">It\'s optional, should be a web page</string>
