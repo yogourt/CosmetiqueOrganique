@@ -1,19 +1,14 @@
 package com.blogspot.android_czy_java.beautytips.listView.firebase;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.SnapshotParser;
+import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -58,7 +53,7 @@ public class FirebaseHelper {
                         else {
                             final List<ListItem> list = new ArrayList<>();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                ListItem item = snapshot.getValue(ListItem.class);
+                                TipListItem item = snapshot.getValue(TipListItem.class);
 
                                 //check subcategory and if it's not the chosen, continue loop
                                 if(!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
@@ -87,7 +82,8 @@ public class FirebaseHelper {
                                 Collections.sort(list, new Comparator<ListItem>() {
                                     @Override
                                     public int compare(ListItem o1, ListItem o2) {
-                                        return (int) (o1.getFavNum() - o2.getFavNum());
+                                        return (int) (((TipListItem)o1).getFavNum() -
+                                                ((TipListItem)o2).getFavNum());
                                     }
                                 });
                             }
@@ -112,7 +108,7 @@ public class FirebaseHelper {
                         String[] queryArray = query.split(" ");
                         Timber.d(queryArray[0]);
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            ListItem item = snapshot.getValue(ListItem.class);
+                            TipListItem item = snapshot.getValue(TipListItem.class);
 
                             //check if this item should appear in search
                             String[] tagArray = String.valueOf(snapshot
@@ -148,7 +144,8 @@ public class FirebaseHelper {
                         Collections.sort(list, new Comparator<ListItem>() {
                             @Override
                             public int compare(ListItem o1, ListItem o2) {
-                                return o2.getMatches() - o1.getMatches();
+                                return ((TipListItem)o2).getMatches() -
+                                        ((TipListItem)o1).getMatches();
                             }
                         });
                         viewModel.setRecyclerViewList(list);
@@ -164,7 +161,20 @@ public class FirebaseHelper {
     private void prepareIngredientList(DataSnapshot dataSnapshot) {
         final List<ListItem> list = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            ListItem item = snapshot.getValue(ListItem.class);
 
+            if(!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
+                    && !item.getSubcategory().equals(viewModel.getSubcategory())) {
+                //item discarded
+                continue;
+            }
+
+            //item accepted
+            String id = snapshot.getKey();
+            if (item != null) {
+                item.setId(id);
+            }
+            list.add(item);
         }
         viewModel.setRecyclerViewList(list);
     }
@@ -201,7 +211,7 @@ public class FirebaseHelper {
         if(category.equals(CATEGORY_INGREDIENTS)) {
             return FirebaseDatabase.getInstance()
                     .getReference()
-                    .child("ingredients");
+                    .child("ingredientList");
         }
 
         return FirebaseDatabase.getInstance().

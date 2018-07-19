@@ -29,6 +29,7 @@ import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissi
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;

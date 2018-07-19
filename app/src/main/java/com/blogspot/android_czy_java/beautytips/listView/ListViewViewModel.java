@@ -7,8 +7,8 @@ import android.arch.lifecycle.ViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
