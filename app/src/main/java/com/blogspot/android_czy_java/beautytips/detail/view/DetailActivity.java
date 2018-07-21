@@ -1,61 +1,42 @@
 package com.blogspot.android_czy_java.beautytips.detail.view;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.ingredient.view.IngredientActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-
-import java.time.Duration;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_AUTHOR;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_FAV_NUM;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_IMAGE;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_TITLE;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RESULT_DATA_CHANGE;
 
 public class DetailActivity extends BaseItemActivity implements
         DetailFirebaseHelper.DetailViewInterface {
@@ -193,6 +174,8 @@ public class DetailActivity extends BaseItemActivity implements
             mSourceTv.setText(Html.fromHtml(getResources().getString(R.string.source_label, source)));
             mSourceTv.setMovementMethod(LinkMovementMethod.getInstance());
         }
+
+        makeIngredientsClickable();
     }
 
     private void prepareFavNum() {
@@ -264,6 +247,55 @@ public class DetailActivity extends BaseItemActivity implements
     @Override
     public void setFabActive() {
         mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
+    }
+
+    private void makeIngredientsClickable() {
+        FirebaseDatabase.getInstance().getReference("ingredientList").
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ingredient: dataSnapshot.getChildren()) {
+                            String ingredientTitle = String.valueOf(
+                                    ingredient.child("title").getValue());
+
+                            if(mIngredient1.getText().toString().toLowerCase()
+                                    .equals(ingredientTitle.toLowerCase())) {
+                                makeIngredientClickable(mIngredient1, ingredient);
+                            } else if(mIngredient2.getText().toString().toLowerCase().
+                                    equals(ingredientTitle.toLowerCase())) {
+                                makeIngredientClickable(mIngredient2, ingredient);
+                            } else if(mIngredient3.getText().toString().toLowerCase().
+                                    equals(ingredientTitle.toLowerCase())) {
+                                makeIngredientClickable(mIngredient3, ingredient);
+                            }else if(mIngredient4.getText().toString().toLowerCase().
+                                    equals(ingredientTitle.toLowerCase())) {
+                                makeIngredientClickable(mIngredient4, ingredient);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    private void makeIngredientClickable(TextView ingredientView, final DataSnapshot ingredientData) {
+        ingredientView.setPaintFlags(ingredientView.getPaintFlags()|
+                Paint.UNDERLINE_TEXT_FLAG);
+        ingredientView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent ingredientActivityIntent = new Intent(DetailActivity.this,
+                        IngredientActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(KEY_TITLE, String.valueOf(ingredientData.child("title").getValue()));
+                bundle.putString(KEY_IMAGE, String.valueOf(ingredientData.child("image").getValue()));
+                bundle.putString(KEY_ID, ingredientData.getKey());
+                ingredientActivityIntent.putExtras(bundle);
+                startActivity(ingredientActivityIntent);
+            }
+        });
     }
 
 }

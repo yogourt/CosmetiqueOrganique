@@ -28,7 +28,7 @@ import com.adroitandroid.chipcloud.ChipListener;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.view.DetailActivity;
-import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
+import com.blogspot.android_czy_java.beautytips.ingredient.view.IngredientActivity;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;

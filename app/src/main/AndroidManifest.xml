@@ -63,7 +63,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ingredient.IngredientActivity"></activity>
+        <activity android:name=".ingredient.view.IngredientActivity"></activity>
     </application>
 
 </manifest>
