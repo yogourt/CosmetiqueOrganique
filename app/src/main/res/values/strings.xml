@@ -149,4 +149,8 @@
     <string name="widget_title">Today\'s tip</string>
     <string name="add_widget">Add widget</string>
     <string name="description_app_logo">Beauty Tips App logo</string>
+
+    <!-- ingredient activity strings -->
+    <string name="search_for_label">Search for %1$s in beauty tips!</string>
+
 </resources>

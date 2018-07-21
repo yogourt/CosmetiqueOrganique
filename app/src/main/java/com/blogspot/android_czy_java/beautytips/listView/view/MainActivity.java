@@ -52,9 +52,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
+import static com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity.KEY_QUERY;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_ANONYMOUS;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
 import static com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity.KEY_TIP_NUMBER;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN;
@@ -157,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             }
         });
 
-
     }
 
     @Override
@@ -176,6 +177,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     getSearchableInfo(MainActivity.this.getComponentName()));
             prepareSearchView();
         }
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -211,7 +214,10 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         //the first and the last screen user sees is all tips to provide proper and predictable
         // navigation
-        if (!viewModel.getCategory().equals(CATEGORY_ALL)) viewModel.setCategory(CATEGORY_ALL);
+        if (!viewModel.getCategory().equals(CATEGORY_ALL)) {
+            viewModel.setCategory(CATEGORY_ALL);
+            viewModel.setNavigationPosition(NAV_POSITION_ALL);
+        }
         else super.onBackPressed();
     }
 
@@ -367,6 +373,20 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             mSearchView.setIconified(false);
             mSearchView.setQuery(viewModel.getQuery(), true);
         }
+
+        //if this activity was opened from ingredient activity, make query for ingredient
+        if(getIntent().getAction() != null &&
+                getIntent().getAction().equals(Intent.ACTION_SEARCH)) {
+            String query = (getIntent().getStringExtra(KEY_QUERY));
+            mSearchView.setQuery(query, true);
+            mSearchView.setIconified(false);
+
+        }
+    }
+
+
+
+    private void searchFor(String query) {
     }
 
     @Override
@@ -446,7 +466,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     mRecyclerView);
         }
     }
-
 
    /*
        Here is the beginning of interfaces methods

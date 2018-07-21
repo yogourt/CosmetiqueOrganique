@@ -12,11 +12,27 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/properties_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/properties_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin">
+        </LinearLayout>
 
+        <TextView
+            android:id="@+id/searching_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/author_bottom_margin"
+            style="@style/IngredientTitleStyle"
+            android:textAlignment="center"
+            android:onClick="searchFor"/>
         </LinearLayout>
     </ScrollView>
 

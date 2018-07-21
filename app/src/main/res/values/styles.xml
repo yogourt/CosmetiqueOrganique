@@ -95,4 +95,9 @@
         <item name="android:textSize">@dimen/source_text_size</item>
         <item name="android:textColor">@color/bluegray300</item>
     </style>
+
+    <style name="IngredientTitleStyle" parent="NormalTextStyle">
+        <item name="android:textColor">@color/pink200</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
