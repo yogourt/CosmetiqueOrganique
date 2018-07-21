@@ -88,6 +88,8 @@
     <dimen name="info_dialog_padding">24dp</dimen>
     <dimen name="info_dialog_msg_bottom_padding">4dp</dimen>
 
+    <!--ingredient activity dimens -->
+    <dimen name="search_label_text_size">18sp</dimen>
     <!-- widget dimens -->
     <!--
 Refer to App Widget Documentation for margin information

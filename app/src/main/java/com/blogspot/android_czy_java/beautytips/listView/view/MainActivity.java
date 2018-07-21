@@ -52,7 +52,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
-import static com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity.KEY_QUERY;
+import static com.blogspot.android_czy_java.beautytips.ingredient.view.IngredientActivity.KEY_QUERY;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_ANONYMOUS;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
@@ -215,8 +215,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         //the first and the last screen user sees is all tips to provide proper and predictable
         // navigation
         if (!viewModel.getCategory().equals(CATEGORY_ALL)) {
-            viewModel.setCategory(CATEGORY_ALL);
             viewModel.setNavigationPosition(NAV_POSITION_ALL);
+            viewModel.setCategory(CATEGORY_ALL);
         }
         else super.onBackPressed();
     }
@@ -378,8 +378,9 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         if(getIntent().getAction() != null &&
                 getIntent().getAction().equals(Intent.ACTION_SEARCH)) {
             String query = (getIntent().getStringExtra(KEY_QUERY));
-            mSearchView.setQuery(query, true);
             mSearchView.setIconified(false);
+            mSearchView.setQuery(query, true);
+            getIntent().setAction(null);
 
         }
     }

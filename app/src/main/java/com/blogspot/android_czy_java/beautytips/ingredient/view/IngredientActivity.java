@@ -1,6 +1,7 @@
-package com.blogspot.android_czy_java.beautytips.ingredient;
+package com.blogspot.android_czy_java.beautytips.ingredient.view;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -35,6 +36,8 @@ public class IngredientActivity extends BaseItemActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
+
+        overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
         ButterKnife.bind(this);
 
         prepareContent();
@@ -42,7 +45,10 @@ public class IngredientActivity extends BaseItemActivity {
 
     private void prepareContent() {
 
+        //prepare search for label
         mSearchTv.setText(getResources().getString(R.string.search_for_label, mTitle));
+        mSearchTv.setPaintFlags(mSearchTv.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
+
         FirebaseDatabase.getInstance().getReference("ingredients/" + mId).
                 addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -74,5 +80,13 @@ public class IngredientActivity extends BaseItemActivity {
         listViewIntent.setAction(Intent.ACTION_SEARCH);
         listViewIntent.putExtra(KEY_QUERY, mTitle);
         startActivity(listViewIntent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
+
     }
 }
