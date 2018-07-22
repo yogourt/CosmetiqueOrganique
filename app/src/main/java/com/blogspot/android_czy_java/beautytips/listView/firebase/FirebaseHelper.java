@@ -48,31 +48,30 @@ public class FirebaseHelper {
                           if user wants to see ingredients, the helper function is called, because
                           the logic to get data from db is different
                          */
-                        if(viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+                        if (viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
                             prepareIngredientList(dataSnapshot);
-                        }
-                        else {
+                        } else {
                             final List<ListItem> list = new ArrayList<>();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 TipListItem item = snapshot.getValue(TipListItem.class);
 
                                 if (item != null) {
 
-                                //check subcategory and if it's not the chosen, continue loop
-                                if(!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
-                                && !item.getSubcategory().equals(viewModel.getSubcategory())) {
-                                    Timber.d("item discarded");
-                                    continue;
-                                }
+                                    //check subcategory and if it's not the chosen, continue loop
+                                    if (!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
+                                            && !item.getSubcategory().equals(viewModel.getSubcategory())) {
+                                        Timber.d("item discarded");
+                                        continue;
+                                    }
 
-                                //if image is not already added to this tip, do not show it
-                                if(TextUtils.isEmpty(item.getImage())) {
-                                    continue;
-                                }
+                                    //if image is not already added to this tip, do not show it
+                                    if (TextUtils.isEmpty(item.getImage())) {
+                                        continue;
+                                    }
 
-                                Timber.d("item accepted");
-                                String author = String.valueOf(snapshot.child("author").getValue());
-                                String id = snapshot.getKey();
+                                    Timber.d("item accepted");
+                                    String author = String.valueOf(snapshot.child("author").getValue());
+                                    String id = snapshot.getKey();
                                     item.setId(id);
                                     if (!author.equals("null")) item.setAuthorId(author);
 
@@ -85,12 +84,12 @@ public class FirebaseHelper {
                             }
 
                             //sort the list if the order should be popular
-                            if(viewModel.getOrder().equals(ORDER_POPULAR)) {
+                            if (viewModel.getOrder().equals(ORDER_POPULAR)) {
                                 Collections.sort(list, new Comparator<ListItem>() {
                                     @Override
                                     public int compare(ListItem o1, ListItem o2) {
-                                        return (int) (((TipListItem)o1).getFavNum() -
-                                                ((TipListItem)o2).getFavNum());
+                                        return (int) (((TipListItem) o1).getFavNum() -
+                                                ((TipListItem) o2).getFavNum());
                                     }
                                 });
                             }
@@ -113,37 +112,46 @@ public class FirebaseHelper {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         final List<ListItem> list = new ArrayList<>();
                         String[] queryArray = query.split(" ");
-                        Timber.d(queryArray[0]);
+
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            TipListItem item = snapshot.getValue(TipListItem.class);
+
+                            ListItem item = snapshot.getValue(ListItem.class);
 
                             //check if this item should appear in search
                             String[] tagArray = String.valueOf(snapshot
                                     .child("tags").getValue()).split(" ");
 
                             int matches = 0;
-                            for(String tag: tagArray) {
-                                for(String query: queryArray) {
-                                    if(tag.equals(query)) {
+                            for (String tag : tagArray) {
+                                for (String query : queryArray) {
+                                    if (tag.equals(query)) {
                                         matches++;
                                     }
                                 }
                             }
                             //if no tag appeared in search, do not add this item, else continue adding
-                            if(matches == 0) continue;
+                            if (matches < queryArray.length || item == null) continue;
 
-                            String author = String.valueOf(snapshot.child("author").getValue());
-                            String id = snapshot.getKey();
-                            if (item != null) {
+                            if(viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+                                item.setMatches(matches);
+                                String id = snapshot.getKey();
                                 item.setId(id);
-                                if (!author.equals("null")) item.setAuthorId(author);
+                                list.add(item);
+
+                            } else {
+                                TipListItem tipItem = snapshot.getValue(TipListItem.class);
+                                if (tipItem == null) continue;
+                                tipItem.setMatches(matches);
+                                String author = String.valueOf(snapshot.child("author").getValue());
+                                String id = snapshot.getKey();
+                                tipItem.setId(id);
+                                if (!author.equals("null")) tipItem.setAuthorId(author);
 
                                 if (!FirebaseLoginHelper.isUserNull() && !FirebaseLoginHelper.isUserAnonymous()
                                         && snapshot.child(FirebaseLoginHelper.getUserId()).getValue() != null) {
-                                    item.setInFav(true);
+                                    tipItem.setInFav(true);
                                 }
-                                item.setMatches(matches);
-                                list.add(item);
+                                list.add(tipItem);
                             }
                         }
 
@@ -151,8 +159,8 @@ public class FirebaseHelper {
                         Collections.sort(list, new Comparator<ListItem>() {
                             @Override
                             public int compare(ListItem o1, ListItem o2) {
-                                return ((TipListItem)o2).getMatches() -
-                                        ((TipListItem)o1).getMatches();
+                                return o2.getMatches() -
+                                        o1.getMatches();
                             }
                         });
                         viewModel.setRecyclerViewList(list);
@@ -170,7 +178,7 @@ public class FirebaseHelper {
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             ListItem item = snapshot.getValue(ListItem.class);
 
-            if(!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
+            if (!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
                     && !item.getSubcategory().equals(viewModel.getSubcategory())) {
                 //item discarded
                 continue;
@@ -215,7 +223,7 @@ public class FirebaseHelper {
                         .orderByChild(user.getUid()).equalTo(true);
         }
 
-        if(category.equals(CATEGORY_INGREDIENTS)) {
+        if (category.equals(CATEGORY_INGREDIENTS)) {
             return FirebaseDatabase.getInstance()
                     .getReference()
                     .child("ingredientList");

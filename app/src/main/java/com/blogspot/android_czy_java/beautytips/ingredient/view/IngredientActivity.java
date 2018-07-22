@@ -37,6 +37,7 @@ public class IngredientActivity extends BaseItemActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
 
+        if(getIntent().getAction() != null)
         overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
         ButterKnife.bind(this);
 
@@ -55,8 +56,25 @@ public class IngredientActivity extends BaseItemActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot propertySnapshot: dataSnapshot.getChildren()) {
                             String description = String.valueOf(propertySnapshot.getValue());
-                            String title = propertySnapshot.getKey();
-                            if(title.equals("1")) title = "Overview:";
+                            String key = propertySnapshot.getKey();
+
+                            String title = "";
+                            if(key != null) {
+                                switch (key) {
+                                    case "1":
+                                        title = "Overview:";
+                                        break;
+                                    case "2":
+                                        title = "For hair:";
+                                        break;
+                                    case "3":
+                                        title = "For face:";
+                                        break;
+                                    case "4":
+                                        title = "For body:";
+                                        break;
+                                }
+                            }
 
                             View propertyView = LayoutInflater.from(IngredientActivity.this).
                                     inflate(R.layout.layout_ingredient_properties,
@@ -85,8 +103,10 @@ public class IngredientActivity extends BaseItemActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
+        if(getIntent().getAction() != null) {
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
+        }
 
     }
 }
