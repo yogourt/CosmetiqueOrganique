@@ -293,6 +293,7 @@ public class DetailActivity extends BaseItemActivity implements
                 bundle.putString(KEY_IMAGE, String.valueOf(ingredientData.child("image").getValue()));
                 bundle.putString(KEY_ID, ingredientData.getKey());
                 ingredientActivityIntent.putExtras(bundle);
+                ingredientActivityIntent.setAction(Intent.ACTION_VIEW);
                 startActivity(ingredientActivityIntent);
             }
         });

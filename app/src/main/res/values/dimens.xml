@@ -47,7 +47,6 @@
     <dimen name="fav_padding_end">36dp</dimen>
     <dimen name="icon_padding">4dp</dimen>
     <dimen name="search_padding_start">16dp</dimen>
-    <dimen name="search_padding_bottom">16dp</dimen>
 
     <!-- new tip screen dimens -->
     <dimen name="desc_margin">16dp</dimen>

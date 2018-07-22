@@ -5,6 +5,7 @@ public class ListItem {
     public String title;
     public String subcategory;
     public String id;
+    public int matches;
 
     public ListItem(){}
 
@@ -38,13 +39,20 @@ public class ListItem {
         this.subcategory = subcategory;
     }
 
-
     public String getId() {
         return this.id;
     }
 
     public void setId(String mId) {
         this.id = mId;
+    }
+
+    public void setMatches(int matches) {
+        this.matches = matches;
+    }
+
+    public int getMatches() {
+        return  matches;
     }
 
 }
