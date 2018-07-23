@@ -17,11 +17,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.ingredient.view.IngredientActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -115,6 +117,7 @@ public class DetailActivity extends BaseItemActivity implements
             finish();
         }
 
+        AnalyticsUtils.logEventTipView(this, mTitle);
 
     }
 
