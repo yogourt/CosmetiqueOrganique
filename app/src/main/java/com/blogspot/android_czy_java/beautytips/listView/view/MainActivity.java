@@ -25,6 +25,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
@@ -43,6 +44,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.squareup.haha.perflib.Main;
 
 import java.util.List;
 
@@ -358,6 +361,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             public boolean onQueryTextSubmit(String query) {
                 mSearchView.clearFocus();
                 viewModel.search(query);
+
+                AnalyticsUtils.logEventSearch(MainActivity.this, query);
                 return true;
             }
 
