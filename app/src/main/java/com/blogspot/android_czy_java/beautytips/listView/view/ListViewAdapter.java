@@ -354,7 +354,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 //select appropriate chip
                 for(int i = 0; i < chipLabels.length; i++) {
-                    if(chipLabels[i].toLowerCase().equals(viewModel.getSubcategory())){
+                    if(chipLabels[i] != null &&
+                            chipLabels[i].toLowerCase().equals(viewModel.getSubcategory())){
                         mChipCloud.setSelectedChip(i);
                         break;
                     }
