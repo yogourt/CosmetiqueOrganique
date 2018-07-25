@@ -184,6 +184,7 @@ public class ListViewViewModel extends ViewModel {
     }
 
     public void setSubcategory(String subcategory) {
+        if(subcategory == null) return;
         subcategory = subcategory.toLowerCase();
         if(!this.subcategory.equals(subcategory)) {
             this.subcategory = subcategory;

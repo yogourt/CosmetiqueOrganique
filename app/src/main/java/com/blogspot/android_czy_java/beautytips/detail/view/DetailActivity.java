@@ -261,16 +261,22 @@ public class DetailActivity extends BaseItemActivity implements
                             String ingredientTitle = String.valueOf(
                                     ingredient.child("title").getValue());
 
-                            if(mIngredient1.getText().toString().toLowerCase()
+                            if(ingredientTitle == null) continue;
+
+                            if(mIngredient1.getText() != null &&
+                                    mIngredient1.getText().toString().toLowerCase()
                                     .equals(ingredientTitle.toLowerCase())) {
                                 makeIngredientClickable(mIngredient1, ingredient);
-                            } else if(mIngredient2.getText().toString().toLowerCase().
+                            } else if(mIngredient2.getText() != null &&
+                            mIngredient2.getText().toString().toLowerCase().
                                     equals(ingredientTitle.toLowerCase())) {
                                 makeIngredientClickable(mIngredient2, ingredient);
-                            } else if(mIngredient3.getText().toString().toLowerCase().
+                            } else if(mIngredient3.getText() != null &&
+                                    mIngredient3.getText().toString().toLowerCase().
                                     equals(ingredientTitle.toLowerCase())) {
                                 makeIngredientClickable(mIngredient3, ingredient);
-                            }else if(mIngredient4.getText().toString().toLowerCase().
+                            }else if(mIngredient4.getText() != null &&
+                                    mIngredient4.getText().toString().toLowerCase().
                                     equals(ingredientTitle.toLowerCase())) {
                                 makeIngredientClickable(mIngredient4, ingredient);
                             }
