@@ -80,7 +80,7 @@ public class FirebaseLoginHelper {
                 .setIsSmartLockEnabled(false)
                 .setAvailableProviders(providers)
                 .setTheme(R.style.LoginStyle)
-                .setLogo(R.drawable.logo_semi)
+                .setLogo(R.drawable.withoutback)
                 .build(), RC_SIGN_IN);
     }
 
@@ -121,6 +121,10 @@ public class FirebaseLoginHelper {
                 if (dataSnapshot.getValue() != null) {
                     String dbUserPhotoUrl = dataSnapshot.getValue().toString();
                     activity.setUserPhoto(dbUserPhotoUrl);
+                } else {
+                    if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+                    }
                 }
             }
 
