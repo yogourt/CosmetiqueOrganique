@@ -29,9 +29,9 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/logo_margin"
             android:contentDescription="@string/description_logo"
-            android:src="@drawable/logo" />
+            android:src="@drawable/withoutbacklight" />
 
         <TextView
             style="@style/ExpandedTitleStyle"
@@ -39,6 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="@string/welcome_title"
+            android:paddingStart="@dimen/welcome_padding"
+            android:paddingEnd="@dimen/welcome_padding"
             android:textAlignment="center"
             android:textColor="@color/pink200"
             android:textSize="@dimen/welcome_text_size" />
