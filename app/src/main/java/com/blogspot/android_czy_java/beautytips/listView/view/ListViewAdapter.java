@@ -148,7 +148,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.mImage.setContentDescription(mContext.getResources()
                     .getString(R.string.description_tip_image, item.getTitle()));
 
-            if(!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+            if (!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
                 TipListItem tipItem = (TipListItem) item;
                 //set visibility of cross
                 if (tipItem.getAuthorId() != null && !FirebaseLoginHelper.isUserNull()
@@ -197,6 +197,31 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    public void openTipWithId(String id) {
+
+        for(ListItem listItem: list) {
+            if (listItem.getId().equals(id)) {
+                Bundle bundle = createTipBundle((TipListItem) listItem);
+                Intent detailActivityIntent = new Intent(mContext, DetailActivity.class);
+                detailActivityIntent.putExtras(bundle);
+                mContext.startActivity(detailActivityIntent);
+            }
+        }
+    }
+
+    private Bundle createTipBundle(TipListItem tip) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_TITLE, tip.getTitle());
+        bundle.putString(KEY_IMAGE, tip.getImage());
+        bundle.putString(KEY_ID, tip.getId());
+        bundle.putLong(KEY_FAV_NUM, tip.getFavNum());
+        if (!TextUtils.isEmpty(tip.getAuthorId()))
+            bundle.putString(KEY_AUTHOR, tip.getAuthorId());
+
+        return bundle;
+    }
+
+
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -234,21 +259,22 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             //common part for tip and ingredient
-            Bundle bundle = new Bundle();
-            ListItem item = list.get(getAdapterPosition() - 1);
-            bundle.putString(KEY_TITLE, item.getTitle());
-            bundle.putString(KEY_IMAGE, item.getImage());
-            bundle.putString(KEY_ID, item.getId());
-
             Pair<View, String> imagePair = new Pair<>((View) this.mImage, mImage.getTransitionName());
             Pair<View, String> scrimPair = new Pair<>(mScrim, mScrim.getTransitionName());
             Bundle animation = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
                     imagePair, scrimPair).toBundle();
 
+            ListItem item = list.get(getAdapterPosition() - 1);
+
             //open ingredient activity
             if(viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
                 Intent ingredientActivityIntent = new Intent(mContext, IngredientActivity.class);
 
+
+                Bundle bundle = new Bundle();
+                bundle.putString(KEY_TITLE, item.getTitle());
+                bundle.putString(KEY_IMAGE, item.getImage());
+                bundle.putString(KEY_ID, item.getId());
                 ingredientActivityIntent.putExtras(bundle);
                 mContext.startActivity(ingredientActivityIntent, animation);
             }
@@ -256,11 +282,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //open detail activity
             else {
                 Intent detailActivityIntent = new Intent(mContext, DetailActivity.class);
-
-                bundle.putLong(KEY_FAV_NUM, ((TipListItem)item).getFavNum());
-                if (!TextUtils.isEmpty(((TipListItem)item).getAuthorId()))
-                    bundle.putString(KEY_AUTHOR, ((TipListItem)item).getAuthorId());
-
+                Bundle bundle = createTipBundle((TipListItem)item);
                 detailActivityIntent.putExtras(bundle);
 
                 mContext.startActivity(detailActivityIntent, animation);
