@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
 
             </intent-filter>
-            <intent-filter android:autoVerify="true">
+            <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -68,6 +68,10 @@
         </service>
 
         <activity android:name=".ingredient.view.IngredientActivity" />
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
 
     </application>
 

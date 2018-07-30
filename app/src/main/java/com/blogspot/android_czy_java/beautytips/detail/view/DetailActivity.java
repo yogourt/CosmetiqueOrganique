@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.Html;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -24,16 +25,26 @@ import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHe
 import com.blogspot.android_czy_java.beautytips.ingredient.view.IngredientActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareButton;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,8 +99,15 @@ public class DetailActivity extends BaseItemActivity implements
     @BindView(R.id.source_text_view)
     TextView mSourceTv;
 
+    @BindView(R.id.fb_share_button)
+    ShareButton fbShareButton;
+
+    @BindView(R.id.layout_share)
+    View mLayoutShare;
+
     private String mAuthorId;
     private long mFavNum;
+    private String description;
 
     private DetailFirebaseHelper mFirebaseHelper;
 
@@ -100,15 +118,19 @@ public class DetailActivity extends BaseItemActivity implements
 
         ButterKnife.bind(this);
 
+
+        if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_MEDIA_SHARED))
+            overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
+
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
-            if(bundle.containsKey(KEY_AUTHOR)) mAuthorId = bundle.getString(KEY_AUTHOR);
+        if (bundle != null) {
+            if (bundle.containsKey(KEY_AUTHOR)) mAuthorId = bundle.getString(KEY_AUTHOR);
 
             //get the fav num from bundle (it comes from db) when the activity opens for the first
             //time, and if it's orientation change get it from saved instance state, as it may
             //changed and not being already in db.
             //fav num is negative in db - it allows sorting in descending order of popularity
-            if(savedInstanceState == null) mFavNum = bundle.getLong(KEY_FAV_NUM) * -1;
+            if (savedInstanceState == null) mFavNum = bundle.getLong(KEY_FAV_NUM) * -1;
             else {
                 mFavNum = savedInstanceState.getLong(KEY_FAV_NUM);
             }
@@ -118,8 +140,7 @@ public class DetailActivity extends BaseItemActivity implements
             mFirebaseHelper.getFirebaseDatabaseData();
             prepareFab();
             prepareFavNum();
-        }
-        else {
+        } else {
             finish();
         }
 
@@ -133,8 +154,13 @@ public class DetailActivity extends BaseItemActivity implements
         outState.putLong(KEY_FAV_NUM, mFavNum);
     }
 
+
     public void prepareContent(@NonNull DataSnapshot dataSnapshot) {
-        String description = (String) dataSnapshot.child("description").getValue();
+        description = (String) dataSnapshot.child("description").getValue();
+
+        //start share button prep as soon as description is assigned
+        prepareShareButton();
+
         mDescTextView.setText(description);
         String ingredient1 = (String) dataSnapshot.child("ingredient1").getValue();
         if (!TextUtils.isEmpty(ingredient1)) {
@@ -162,14 +188,11 @@ public class DetailActivity extends BaseItemActivity implements
             mAuthorLayout.setVisibility(View.VISIBLE);
             mFirebaseHelper.getAuthorPhotoFromDb(mAuthorId);
             mFirebaseHelper.getNicknameFromDb(mAuthorId);
-        } else {
-            int padding = (int) getResources().getDimension(R.dimen.desc_padding);
-            int bottomPadding = (int) getResources().getDimension(
-                    R.dimen.author_bottom_margin);
-            int topPadding = (int) getResources().getDimension(
-                    R.dimen.desc_top_padding);
 
-            mDescTextView.setPadding(padding, topPadding, padding, bottomPadding);
+            int marginTop = (int) getResources().getDimension(R.dimen.share_margin_top_with_author);
+            int marginEnd = (int) getResources().getDimension(R.dimen.share_margin_end);
+            int marginBottom = (int) getResources().getDimension(R.dimen.share_margin_bottom);
+            mLayoutShare.setPadding(0, marginTop, marginEnd, marginBottom);
         }
 
 
@@ -189,12 +212,12 @@ public class DetailActivity extends BaseItemActivity implements
 
     private void prepareFavNum() {
         mFavTv.setText(getResources().getString(R.string.fav_label, String.valueOf(mFavNum)));
-        if(mFavNum != 0) {
+        if (mFavNum != 0) {
             mFavTv.setVisibility(View.VISIBLE);
         } else mFavTv.setVisibility(View.INVISIBLE);
     }
 
-    public  void setAuthor(String nickname) {
+    public void setAuthor(String nickname) {
         mAuthorTv.setText(nickname);
     }
 
@@ -214,7 +237,7 @@ public class DetailActivity extends BaseItemActivity implements
                 new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
                     public void onScrollChanged() {
-                        if (mScrollView.getScrollY() < mLayoutIngredients.getHeight()){
+                        if (mScrollView.getScrollY() < mLayoutIngredients.getHeight()) {
                             mFab.show();
                         } else {
                             mFab.hide();
@@ -222,7 +245,7 @@ public class DetailActivity extends BaseItemActivity implements
                     }
                 }
         );
-        if(!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
+        if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
                 !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             mFirebaseHelper.setFabState();
         }
@@ -233,14 +256,14 @@ public class DetailActivity extends BaseItemActivity implements
         Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
         mFab.startAnimation(scaleAnim);
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null ||
-                        FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null ||
+                FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             SnackbarHelper.showFeatureForLoggedInUsersOnly(
                     getResources().getString(R.string.feature_favourites), mScrollView);
             return;
         }
         int bluegray700 = getResources().getColor(R.color.bluegray700);
-        if(mFab.getImageTintList().getDefaultColor() == bluegray700) {
+        if (mFab.getImageTintList().getDefaultColor() == bluegray700) {
             setFabActive();
             mFavNum++;
             mFirebaseHelper.addTipToFavourites(mFavNum);
@@ -263,27 +286,27 @@ public class DetailActivity extends BaseItemActivity implements
                 addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot ingredient: dataSnapshot.getChildren()) {
+                        for (DataSnapshot ingredient : dataSnapshot.getChildren()) {
                             String ingredientTitle = String.valueOf(
                                     ingredient.child("title").getValue());
 
-                            if(ingredientTitle == null) continue;
+                            if (ingredientTitle == null) continue;
 
-                            if(mIngredient1.getText() != null &&
+                            if (mIngredient1.getText() != null &&
                                     mIngredient1.getText().toString().toLowerCase()
-                                    .equals(ingredientTitle.toLowerCase())) {
+                                            .equals(ingredientTitle.toLowerCase())) {
                                 makeIngredientClickable(mIngredient1, ingredient);
-                            } else if(mIngredient2.getText() != null &&
-                            mIngredient2.getText().toString().toLowerCase().
-                                    equals(ingredientTitle.toLowerCase())) {
+                            } else if (mIngredient2.getText() != null &&
+                                    mIngredient2.getText().toString().toLowerCase().
+                                            equals(ingredientTitle.toLowerCase())) {
                                 makeIngredientClickable(mIngredient2, ingredient);
-                            } else if(mIngredient3.getText() != null &&
+                            } else if (mIngredient3.getText() != null &&
                                     mIngredient3.getText().toString().toLowerCase().
-                                    equals(ingredientTitle.toLowerCase())) {
+                                            equals(ingredientTitle.toLowerCase())) {
                                 makeIngredientClickable(mIngredient3, ingredient);
-                            }else if(mIngredient4.getText() != null &&
+                            } else if (mIngredient4.getText() != null &&
                                     mIngredient4.getText().toString().toLowerCase().
-                                    equals(ingredientTitle.toLowerCase())) {
+                                            equals(ingredientTitle.toLowerCase())) {
                                 makeIngredientClickable(mIngredient4, ingredient);
                             }
                         }
@@ -296,7 +319,7 @@ public class DetailActivity extends BaseItemActivity implements
     }
 
     private void makeIngredientClickable(TextView ingredientView, final DataSnapshot ingredientData) {
-        ingredientView.setPaintFlags(ingredientView.getPaintFlags()|
+        ingredientView.setPaintFlags(ingredientView.getPaintFlags() |
                 Paint.UNDERLINE_TEXT_FLAG);
         ingredientView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -316,4 +339,61 @@ public class DetailActivity extends BaseItemActivity implements
 
     }
 
+    private void prepareShareButton() {
+
+        String shortDesc = description.substring(0, 200);
+        /*try {
+            shortDesc = URLEncoder.encode(description.substring(0, 200), "UTF-8");
+
+            Timber.d("encoded " + shortDesc);
+            //replace + with ' ' in short desc
+            shortDesc = shortDesc.replace("+", " ");
+            Timber.d("replaced " + shortDesc);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }*/
+
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://cosmetique.page.link/?apn=com.blogspot.android_czy_java." +
+                        "beautytips&link=https://cometique.com/" + mId + "&ofl=https://play.google." +
+                        "com/store/apps/details?id=com.blogspot.android_czy_java.beautytips&ipn=com." +
+                        "blogspot.android_czy_java.beautytips&link=https://cometique.com/-1&ofl=https://" +
+                        "play.google.com/store/apps/details?id=com.blogspot.android_czy_java.beautytips/"))
+                .setDynamicLinkDomain("cosmetique.page.link")
+                .setSocialMetaTagParameters(new DynamicLink.SocialMetaTagParameters.Builder().
+                        setTitle(mTitle).
+                        setImageUrl(Uri.parse(mImage)).
+                        setDescription(shortDesc).build())
+                .buildShortDynamicLink()
+                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+
+                            Timber.d(task.getResult().getPreviewLink().toString());
+                            ShareLinkContent content = new ShareLinkContent.Builder()
+                                    .setContentUrl(shortLink)
+                                    .build();
+                            fbShareButton.setShareContent(content);
+                        } else {
+                            // Error
+                            // ...
+                        }
+
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_MEDIA_SHARED)) {
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
+        }
+
+    }
 }

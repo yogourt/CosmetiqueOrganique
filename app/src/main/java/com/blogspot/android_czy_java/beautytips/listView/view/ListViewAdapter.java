@@ -204,6 +204,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Bundle bundle = createTipBundle((TipListItem) listItem);
                 Intent detailActivityIntent = new Intent(mContext, DetailActivity.class);
                 detailActivityIntent.putExtras(bundle);
+                detailActivityIntent.setAction(Intent.ACTION_MEDIA_SHARED);
                 mContext.startActivity(detailActivityIntent);
             }
         }
