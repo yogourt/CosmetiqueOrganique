@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -44,6 +45,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import java.util.List;
 
@@ -150,8 +155,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             }
         });
 
-        viewModel.getUserStateLiveData().observe(this, createUserStateObserver());
-
 
         viewModel.getRecyclerViewLiveData().observe(this, new Observer<List<ListItem>>() {
             @Override
@@ -159,6 +162,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 prepareRecyclerView(list);
             }
         });
+
+        viewModel.getUserStateLiveData().observe(this, createUserStateObserver());
 
     }
 
@@ -218,8 +223,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         if (!viewModel.getCategory().equals(CATEGORY_ALL)) {
             viewModel.setNavigationPosition(NAV_POSITION_ALL);
             viewModel.setCategory(CATEGORY_ALL);
-        }
-        else super.onBackPressed();
+        } else super.onBackPressed();
     }
 
     @NonNull
@@ -241,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                     photoIv.setOnClickListener(null);
                     photoIv.setImageDrawable(getResources().getDrawable(R.drawable.placeholder));
                     nicknameTv.setText(R.string.label_anonymous);
+                    handleDynamicLink();
                 }
                 //user just logged in
                 else {
@@ -261,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                             }
                         }
                     });
+                    handleDynamicLink();
                 }
             }
 
@@ -371,14 +377,14 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         });
 
-        if(viewModel.getSearchWasConducted()) {
+        if (viewModel.getSearchWasConducted()) {
             Timber.d("restore query");
             mSearchView.setIconified(false);
             mSearchView.setQuery(viewModel.getQuery(), true);
         }
 
         //if this activity was opened from ingredient activity, make query for ingredient
-        if(getIntent().getAction() != null &&
+        if (getIntent() != null && getIntent().getAction() != null &&
                 getIntent().getAction().equals(Intent.ACTION_SEARCH)) {
             String query = (getIntent().getStringExtra(KEY_QUERY));
             mSearchView.setIconified(false);
@@ -387,7 +393,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         }
     }
-
 
 
     private void searchFor(String query) {
@@ -557,5 +562,40 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public void onDialogSaveButtonClick(String nickname) {
         mLoginHelper.saveNickname(nickname);
         setNickname(nickname);
+    }
+
+
+    private void handleDynamicLink() {
+        if(getIntent() == null) return;
+
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                            Timber.d("deep link: " + deepLink);
+                            String link = deepLink.getQueryParameter("link");
+                            Uri linkUrl = Uri.parse(link);
+                            final String tipId = linkUrl.getLastPathSegment();
+
+                            setIntent(null);
+                            if(mAdapter != null) mAdapter.openTipWithId(tipId);
+                            else{
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(mAdapter != null) mAdapter.openTipWithId(tipId);
+                                    }
+                                }, 250);
+                            }
+                        }
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
     }
 }
