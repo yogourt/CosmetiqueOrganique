@@ -8,29 +8,37 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.lang.reflect.Type;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.utils.LoginProvidersHelper.saveProvidedPhoto;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
 public class FirebaseLoginHelper {
@@ -39,7 +47,9 @@ public class FirebaseLoginHelper {
     //list of authentication providers
     private static final List<AuthUI.IdpConfig> providers = Arrays.asList(
             new AuthUI.IdpConfig.EmailBuilder().build(),
-            new AuthUI.IdpConfig.GoogleBuilder().build());
+            new AuthUI.IdpConfig.GoogleBuilder().build(),
+            new AuthUI.IdpConfig.FacebookBuilder().setPermissions(Arrays.
+                    asList("public_profile")).build());
 
     private FirebaseAuth mAuth;
 
@@ -102,6 +112,29 @@ public class FirebaseLoginHelper {
                 viewModel.setCategory(CATEGORY_ALL);
                 viewModel.changeUserState(ListViewViewModel.USER_STATE_LOGGED_IN);
 
+                final Uri photoUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+                if(photoUrl!= null) {
+
+                    mUserPhotoReference = FirebaseDatabase.getInstance().getReference("userPhotos")
+                            .child(getUserId());
+
+                    //if user has no photo in db, take the photo from login provider else it would be
+                    //set in prepareNavDrawerHeader() method
+                    mUserPhotoReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(String.valueOf(dataSnapshot.getValue()).equals("null")) {
+                                String newPhotoUrl = saveProvidedPhoto(photoUrl);
+                                activity.setUserPhoto(newPhotoUrl);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+                }
+
                 //this listener has to be removed - to properly handled signing out (we don't want
                 //this method to be called then)
                 mAuth.removeAuthStateListener(this);
@@ -121,10 +154,7 @@ public class FirebaseLoginHelper {
                 if (dataSnapshot.getValue() != null) {
                     String dbUserPhotoUrl = dataSnapshot.getValue().toString();
                     activity.setUserPhoto(dbUserPhotoUrl);
-                } else {
-                    if(FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-                    }
                 }
             }
 
@@ -178,13 +208,14 @@ public class FirebaseLoginHelper {
     }
 
     public void saveUserPhoto(final Uri photoUri) {
+        Timber.d("saving photo");
         final StorageReference photoReference = FirebaseStorage.getInstance().getReference("userPhotos")
                 .child(getUserId());
         mSavingUserPhotoTask = photoReference.putFile(photoUri);
         mSavingUserPhotoTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                Timber.d("added to storage");
                 photoReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri storagePhotoUri) {
