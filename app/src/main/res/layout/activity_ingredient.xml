@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/author_bottom_margin"
+            android:layout_marginBottom="@dimen/share_margin_bottom"
             style="@style/IngredientTitleStyle"
             android:textAlignment="center"
             android:textSize="@dimen/search_label_text_size"

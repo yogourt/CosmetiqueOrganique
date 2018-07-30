@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/author_padding"
     android:paddingStart="@dimen/author_padding_start"
     android:paddingEnd="@dimen/author_padding"
-    android:layout_marginBottom="@dimen/author_bottom_margin">
+    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/author_photo"

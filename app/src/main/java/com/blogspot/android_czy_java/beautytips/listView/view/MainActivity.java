@@ -584,7 +584,13 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                             deepLink = pendingDynamicLinkData.getLink();
                             Timber.d("deep link: " + deepLink);
                             String link = deepLink.getQueryParameter("link");
-                            Uri linkUrl = Uri.parse(link);
+
+                            //this is done because sometimes deepLink contains all dynamic
+                            // link and sometimes not
+                            Uri linkUrl;
+                            if(link!=null)linkUrl = Uri.parse(link);
+                            else linkUrl = deepLink;
+
                             final String tipId = linkUrl.getLastPathSegment();
 
                             setIntent(null);

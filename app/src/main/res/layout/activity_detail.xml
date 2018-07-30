@@ -64,12 +64,19 @@
                 android:layout_height="wrap_content"
                 android:paddingEnd="@dimen/desc_padding"
                 android:paddingStart="@dimen/desc_padding"
+                android:paddingBottom="@dimen/desc_padding"
                 android:paddingTop="@dimen/desc_top_padding" />
+
 
             <include
                 android:id="@+id/layout_author"
                 layout="@layout/layout_author"
                 android:visibility="gone" />
+
+            <include
+                android:id="@+id/layout_share"
+                layout="@layout/layout_share" />
+
 
 
         </LinearLayout>
