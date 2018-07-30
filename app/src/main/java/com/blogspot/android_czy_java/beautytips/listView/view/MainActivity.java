@@ -266,7 +266,13 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                             }
                         }
                     });
-                    handleDynamicLink();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //if pick nickname dialog is not shown..
+                            if (mDialogFragment == null) handleDynamicLink();
+                        }
+                    }, 250);
                 }
             }
 
@@ -562,6 +568,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public void onDialogSaveButtonClick(String nickname) {
         mLoginHelper.saveNickname(nickname);
         setNickname(nickname);
+        handleDynamicLink();
     }
 
 
@@ -587,6 +594,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                                     @Override
                                     public void run() {
                                         if(mAdapter != null) mAdapter.openTipWithId(tipId);
+                                        Timber.d("open tip after delay");
                                     }
                                 }, 250);
                             }
