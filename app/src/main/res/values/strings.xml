@@ -150,4 +150,8 @@
     <!-- ingredient activity strings -->
     <string name="search_for_label">Search for %1$s in Cosmetique Organique!</string>
 
+    <!-- facebook login -->
+    <string name="facebook_application_id">1782748508439535</string>
+    <string name="facebook_login_protocol_scheme">fb1782748508439535</string>
+
 </resources>

@@ -558,5 +558,4 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         mLoginHelper.saveNickname(nickname);
         setNickname(nickname);
     }
-
 }
