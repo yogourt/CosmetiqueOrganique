@@ -63,7 +63,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int VIEW_TYPE_HEADER = 0;
     public static final int VIEW_TYPE_ITEM = 1;
 
-    public static final int[] itemHeightsInDp = {630, 670, 600, 650};
+    public static final int[] itemHeightsInDp = {630, 670, 640, 600, 670, 630, 640, 600};
 
     private Context mContext;
     private int lastPosition;
@@ -129,9 +129,9 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
             if (mContext.getResources().getConfiguration()
                     .orientation == Configuration.ORIENTATION_PORTRAIT) {
-                itemHeight = itemHeightsInDp[position % 4] * screenHeight / CONST_HEIGHT;
+                itemHeight = itemHeightsInDp[(position - 1) % 8] * screenHeight / CONST_HEIGHT;
             } else {
-                itemHeight = itemHeightsInDp[position % 4] * screenHeight / CONST_HEIGHT_LAND;
+                itemHeight = itemHeightsInDp[(position - 1) % 8] * screenHeight / CONST_HEIGHT_LAND;
             }
 
             params.height = itemHeight;
