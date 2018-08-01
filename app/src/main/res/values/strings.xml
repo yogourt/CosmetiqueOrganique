@@ -60,6 +60,7 @@
         sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
         laborum.</string>
 
+
     <!-- New tip screen strings -->
     <string name="hint_desc">Write recipe description here</string>
     <string name="hint_title">Recipe title</string>
@@ -133,7 +134,8 @@
         jagoda.sylwester@gmail.com.</string>
     <string name="info_dialog_rate">If you like this app, please share your rating on
         <a href="https://play.google.com/store/apps/details?id=com.blogspot.android_czy_java.beautytips">
-            Google Play Store</a>.</string>
+            Google Play Store</a> or on its
+        <a href="https://www.facebook.com/Cosmetique-Organique-292002408240734/">Facebook page</a>.</string>
     <string name="info_dialog_credits"> Icons used in this app are made by authors from www.flaticon.com:
         login, logout, kiss and woman
         (which is the app icon) icons by Freepik, heart icon by Google, hair icon

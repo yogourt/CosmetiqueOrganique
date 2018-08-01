@@ -573,7 +573,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
 
     private void handleDynamicLink() {
-        if(getIntent() == null) return;
+        if (getIntent() == null) return;
 
         FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
@@ -588,22 +588,21 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                             //this is done because sometimes deepLink contains all dynamic
                             // link and sometimes not
                             Uri linkUrl;
-                            if(link!=null)linkUrl = Uri.parse(link);
+                            if (link != null) linkUrl = Uri.parse(link);
                             else linkUrl = deepLink;
 
                             final String tipId = linkUrl.getLastPathSegment();
 
                             setIntent(null);
-                            if(mAdapter != null) mAdapter.openTipWithId(tipId);
-                            else{
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if(mAdapter != null) mAdapter.openTipWithId(tipId);
-                                        Timber.d("open tip after delay");
-                                    }
-                                }, 250);
-                            }
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (mAdapter != null) mAdapter.openTipWithId(tipId);
+                                    Timber.d("open tip after delay");
+                                }
+                            }, 180);
+
                         }
                     }
                 }).addOnFailureListener(this, new OnFailureListener() {

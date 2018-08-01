@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.Html;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -25,14 +24,10 @@ import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHe
 import com.blogspot.android_czy_java.beautytips.ingredient.view.IngredientActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.share.model.ShareContent;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,11 +35,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import com.kobakei.ratethisapp.RateThisApp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -118,6 +110,7 @@ public class DetailActivity extends BaseItemActivity implements
 
         ButterKnife.bind(this);
 
+        prepareRatingRequest();
 
         if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_MEDIA_SHARED))
             overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
@@ -146,6 +139,16 @@ public class DetailActivity extends BaseItemActivity implements
 
         AnalyticsUtils.logEventTipView(this, mTitle);
 
+    }
+
+    private void prepareRatingRequest() {
+        // Custom condition: 2 days and 3 launches
+        RateThisApp.Config config = new RateThisApp.Config(2, 3);
+        RateThisApp.init(config);
+        // Monitor launch times and interval from installation
+        RateThisApp.onCreate(this);
+        // If the condition is satisfied, "Rate this app" dialog will be shown
+        RateThisApp.showRateDialogIfNeeded(this, R.style.DialogStyle);
     }
 
     @Override

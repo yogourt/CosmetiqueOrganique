@@ -25,7 +25,7 @@ android {
         applicationId "com.blogspot.android_czy_java.beautytips"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 17
+        versionCode 20
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -90,6 +90,9 @@ dependencies {
 
     //Fb sharing
     implementation 'com.facebook.android:facebook-share:[4,35)'
+
+    //rating app
+    implementation 'io.github.kobakei:ratethisapp:1.2.0'
 }
 
 
