@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystorePropertiesFile = file("C:\\Users\\RunBoy\\Desktop\\Jagoda\\keystore.properties")
 
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()

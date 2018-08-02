@@ -7,72 +7,77 @@
     android:orientation="vertical">
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:id="@+id/title_and_message"
+        android:layout_width="@dimen/layout_width"
         android:layout_height="0dp"
+        android:paddingBottom="@dimen/welcome_padding"
         app:layout_constraintBottom_toTopOf="@id/positive_button"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="@dimen/welcome_padding">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:title="@string/app_name" />
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/logo_margin"
-            android:contentDescription="@string/description_logo"
-            android:src="@drawable/withoutbacklight" />
-
-        <TextView
-            style="@style/ExpandedTitleStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/welcome_title"
-            android:paddingStart="@dimen/welcome_padding"
-            android:paddingEnd="@dimen/welcome_padding"
-            android:textAlignment="center"
-            android:textColor="@color/pink200"
-            android:textSize="@dimen/welcome_text_size" />
+            android:orientation="vertical">
 
-        <TextView
-            style="@style/NormalTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/welcome_padding"
-            android:text="@string/welcome_message" />
-    </LinearLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:title="@string/app_name" />
+
+            <ImageView
+                android:layout_width="@dimen/logo_size"
+                android:layout_height="@dimen/logo_size"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/logo_margin"
+                android:contentDescription="@string/description_logo"
+                android:src="@drawable/withoutbacklight" />
+
+            <TextView
+                style="@style/ExpandedTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/welcome_top_padding"
+                android:paddingEnd="@dimen/welcome_padding"
+                android:paddingStart="@dimen/welcome_padding"
+                android:text="@string/welcome_title"
+                android:textAlignment="center"
+                android:textColor="@color/pink200"
+                android:textSize="@dimen/welcome_text_size" />
+
+            <TextView
+                style="@style/NormalTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/welcome_padding"
+                android:paddingStart="@dimen/welcome_padding"
+                android:paddingTop="@dimen/welcome_text_top_padding"
+                android:text="@string/welcome_message" />
+        </LinearLayout>
     </ScrollView>
 
     <TextView
         style="@style/RippleCircularButtonStyle"
-        android:layout_marginBottom="@dimen/welcome_button_padding"
+        android:layout_marginBottom="@dimen/welcome_button_bottom_padding"
         android:layout_marginStart="@dimen/welcome_button_padding"
         android:text="@string/welcome_neg_button_label"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/title_and_message"
         android:onClick="onNegativeButtonClicked"
         android:background="@drawable/ripple_button"/>
 
     <TextView
         android:id="@+id/positive_button"
         style="@style/RippleCircularButtonStyle"
-        android:layout_marginBottom="@dimen/welcome_button_padding"
+        android:layout_marginBottom="@dimen/welcome_button_bottom_padding"
         android:layout_marginEnd="@dimen/welcome_button_padding"
         android:text="@string/welcome_pos_button_label"
         android:textColor="@color/pink200"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/title_and_message"
         android:onClick="onLogInButtonClicked"
         android:background="@drawable/ripple_button"/>
 
