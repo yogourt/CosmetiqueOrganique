@@ -17,4 +17,7 @@
     <dimen name="button_width">230dp</dimen>
 
     <dimen name="dialog_width">300dp</dimen>
+
+    <!-- welcome activity -->
+    <dimen name="layout_width">400dp</dimen>
 </resources>
