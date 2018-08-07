@@ -19,11 +19,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
+
+import static com.blogspot.android_czy_java.beautytips.listView.view.BaseMainActivity.KEY_QUERY;
 
 public class IngredientActivity extends BaseItemActivity {
-
-    public static final String KEY_QUERY = "query";
 
     @BindView(R.id.properties_layout)
     LinearLayout mPropertiesLayout;
