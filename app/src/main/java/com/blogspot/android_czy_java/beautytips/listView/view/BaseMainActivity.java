@@ -31,7 +31,8 @@ import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissi
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
+import com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter;
+import com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
@@ -58,33 +59,32 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
-import static com.blogspot.android_czy_java.beautytips.ingredient.view.IngredientActivity.KEY_QUERY;
+import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PHOTO_PICKER;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_ANONYMOUS;
 import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.RC_NEW_TIP_ACTIVITY;
 import static com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity.KEY_TIP_NUMBER;
+import static com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity.RESULT_DATA_CHANGE;
+import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RC_WELCOME_ACTIVITY;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN_ANONYMOUSLY;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_TERMINATE;
 
-public class MainActivity extends AppCompatActivity implements ListViewAdapter.PositionListener,
-        MyDrawerLayoutListener.DrawerCreationInterface, FirebaseLoginHelper.MainViewInterface,
-        NicknamePickerDialog.NicknamePickerDialogListener {
+public abstract class BaseMainActivity extends AppCompatActivity
+        implements FirebaseLoginHelper.MainViewInterface,
+        NicknamePickerDialog.NicknamePickerDialogListener,
+        MyDrawerLayoutListener.DrawerCreationInterface {
 
-    public static final int RC_PHOTO_PICKER = 100;
-    public static final int RC_WELCOME_ACTIVITY = 200;
-    public static final int RC_NEW_TIP_ACTIVITY = 400;
 
-    public static final int RESULT_DATA_CHANGE = 10;
+
+    public static final String KEY_QUERY = "query";
 
     public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
     public static final String TAG_DELETE_TIP_DIALOG = "delete_tip_dialog";
 
-
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -99,19 +99,17 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
     FirebaseLoginHelper mLoginHelper;
 
-    private View mHeaderLayout;
-    private CircleImageView photoIv;
+    View mHeaderLayout;
+    CircleImageView photoIv;
     TextView nicknameTv;
 
-    private StaggeredGridLayoutManager mLayoutManager;
-    private ListViewAdapter mAdapter;
-    private MyDrawerLayoutListener mDrawerListener;
+    MyDrawerLayoutListener mDrawerListener;
 
-    private boolean isPhotoSaving;
+    boolean isPhotoSaving;
 
     private DialogFragment mDialogFragment;
 
-    private ListViewViewModel viewModel;
+    ListViewViewModel viewModel;
 
 
     @Override
@@ -155,14 +153,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             }
         });
 
-
-        viewModel.getRecyclerViewLiveData().observe(this, new Observer<List<ListItem>>() {
-            @Override
-            public void onChanged(@Nullable List<ListItem> list) {
-                prepareRecyclerView(list);
-            }
-        });
-
         viewModel.getUserStateLiveData().observe(this, createUserStateObserver());
 
     }
@@ -172,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search);
 
-        SearchManager searchManager = (SearchManager) MainActivity.
+        SearchManager searchManager = (SearchManager) BaseMainActivity.
                 this.getSystemService(Context.SEARCH_SERVICE);
 
         if (searchItem != null) {
@@ -180,25 +170,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
         if (mSearchView != null && searchManager != null) {
             mSearchView.setSearchableInfo(searchManager.
-                    getSearchableInfo(MainActivity.this.getComponentName()));
+                    getSearchableInfo(BaseMainActivity.this.getComponentName()));
             prepareSearchView();
         }
 
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        //layout manager might not have been already initialized, as it's initialized when data is
-        //fetched in FirebaseHelper and this is done in background
-        if (mRecyclerView.getLayoutManager() != null) {
-            viewModel.setInto(new int[2]);
-            ((StaggeredGridLayoutManager) mRecyclerView.getLayoutManager())
-                    .findFirstVisibleItemPositions(viewModel.getInto());
-        }
     }
 
     @Override
@@ -234,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 Timber.d("onChanged() user state observer's method, new state: " + userState);
                 MenuItem logOutItem = mNavigationView.getMenu().getItem(NAV_POSITION_LOG_OUT);
                 if (userState.equals(USER_STATE_NULL)) {
-                    Intent welcomeActivityIntent = new Intent(MainActivity.this,
+                    Intent welcomeActivityIntent = new Intent(BaseMainActivity.this,
                             WelcomeActivity.class);
                     startActivityForResult(welcomeActivityIntent, RC_WELCOME_ACTIVITY);
                 }
@@ -258,11 +235,11 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                         @Override
                         public void onClick(View view) {
                             if (ExternalStoragePermissionHelper
-                                    .isPermissionGranted(MainActivity.this)) {
-                                ExternalStoragePermissionHelper.showPhotoPicker(MainActivity.this);
+                                    .isPermissionGranted(BaseMainActivity.this)) {
+                                ExternalStoragePermissionHelper.showPhotoPicker(BaseMainActivity.this);
                             } else {
                                 ExternalStoragePermissionHelper.askForPermission(
-                                        MainActivity.this);
+                                        BaseMainActivity.this);
                             }
                         }
                     });
@@ -287,25 +264,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
-    }
-
-    private void prepareRecyclerView(List<ListItem> recyclerViewList) {
-
-        //add adapter
-        mAdapter = new ListViewAdapter(this, recyclerViewList, this,
-                viewModel);
-
-        mRecyclerView.setAdapter(mAdapter);
-
-        int orientation = getResources().getConfiguration().orientation;
-        //add layout manager
-        mLayoutManager = RecyclerViewHelper.createLayoutManager(orientation);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        //item decoration is added to make spaces between items in recycler view
-        if (mRecyclerView.getItemDecorationCount() == 0)
-            mRecyclerView.addItemDecoration(new SpacesItemDecoration((
-                    (int) getResources().getDimension(R.dimen.list_padding)), orientation));
     }
 
     /*
@@ -341,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                         recreate(), this is why DrawerListener is added and inside it selection of item
                         is handled.
                          */
-                        mDrawerListener = new MyDrawerLayoutListener(MainActivity.this, viewModel,
+                        mDrawerListener = new MyDrawerLayoutListener(BaseMainActivity.this, viewModel,
                                 item.getItemId());
                         mDrawerLayout.addDrawerListener(mDrawerListener);
 
@@ -351,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         );
     }
 
-    private void prepareSearchView() {
+    void prepareSearchView() {
 
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
@@ -372,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
                 mSearchView.clearFocus();
                 viewModel.search(query);
 
-                AnalyticsUtils.logEventSearch(MainActivity.this, query);
+                AnalyticsUtils.logEventSearch(BaseMainActivity.this, query);
                 return true;
             }
 
@@ -400,9 +358,6 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         }
     }
 
-
-    private void searchFor(String query) {
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -449,12 +404,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
             Uri photoUri = data.getData();
             if (photoUri != null) {
                 if (!NetworkConnectionHelper.isInternetConnection(this)) {
-                    SnackbarHelper.showUnableToAddImage(mRecyclerView);
+                    SnackbarHelper.showUnableToAddImage(mDrawerLayout);
                 } else {
                     Glide.with(this)
                             .load(R.drawable.placeholder)
                             .into(photoIv);
-                    SnackbarHelper.showAddImageMayTakeSomeTime(mRecyclerView);
+                    SnackbarHelper.showAddImageMayTakeSomeTime(mDrawerLayout);
                 }
                 if (isPhotoSaving) {
                     mLoginHelper.stopPreviousUserPhotoSaving();
@@ -467,7 +422,7 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
         if (requestCode == RC_NEW_TIP_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
             viewModel.waitForAddingImage(data.getStringExtra(KEY_TIP_NUMBER));
             viewModel.setCategory(CATEGORY_ALL);
-            SnackbarHelper.showNewTipVisibleSoon(mRecyclerView);
+            SnackbarHelper.showNewTipVisibleSoon(mDrawerLayout);
         }
     }
 
@@ -478,25 +433,15 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
 
         if (requestCode == RC_PERMISSION_EXT_STORAGE) {
             ExternalStoragePermissionHelper.answerForPermissionResult(this, grantResults,
-                    mRecyclerView);
+                    mDrawerLayout);
         }
     }
+
+
 
    /*
        Here is the beginning of interfaces methods
      */
-
-
-    /*
-         Implementation of ListViewAdapter.PositionListener
-     */
-    @Override
-    public void onClickDeleteTip(String tipId) {
-        mDialogFragment = new DeleteTipDialog();
-        ((DeleteTipDialog) mDialogFragment).setTipId(tipId);
-        ((DeleteTipDialog) mDialogFragment).setViewModel(viewModel);
-        mDialogFragment.show(getFragmentManager(), TAG_DELETE_TIP_DIALOG);
-    }
 
 
 
@@ -521,8 +466,8 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     }
 
     @Override
-    public RecyclerView getRecyclerView() {
-        return mRecyclerView;
+    public DrawerLayout getDrawerLayout() {
+        return mDrawerLayout;
     }
 
     @Override
@@ -568,47 +513,12 @@ public class MainActivity extends AppCompatActivity implements ListViewAdapter.P
     public void onDialogSaveButtonClick(String nickname) {
         mLoginHelper.saveNickname(nickname);
         setNickname(nickname);
-        handleDynamicLink();
     }
 
+    /*
+        End of interfaces
+     */
 
-    private void handleDynamicLink() {
-        if (getIntent() == null) return;
 
-        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        Uri deepLink = null;
-                        if (pendingDynamicLinkData != null) {
-                            deepLink = pendingDynamicLinkData.getLink();
-                            Timber.d("deep link: " + deepLink);
-                            String link = deepLink.getQueryParameter("link");
-
-                            //this is done because sometimes deepLink contains all dynamic
-                            // link and sometimes not
-                            Uri linkUrl;
-                            if (link != null) linkUrl = Uri.parse(link);
-                            else linkUrl = deepLink;
-
-                            final String tipId = linkUrl.getLastPathSegment();
-
-                            setIntent(null);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (mAdapter != null) mAdapter.openTipWithId(tipId);
-                                    Timber.d("open tip after delay");
-                                }
-                            }, 180);
-
-                        }
-                    }
-                }).addOnFailureListener(this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
-        });
-    }
+    public abstract void handleDynamicLink();
 }
