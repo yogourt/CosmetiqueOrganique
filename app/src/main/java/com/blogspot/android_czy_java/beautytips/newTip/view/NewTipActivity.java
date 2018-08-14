@@ -38,10 +38,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RESULT_DATA_CHANGE;
 
 public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseHelper.NewTipViewInterface,
         ConfirmationDialog.ConfirmationDialogListener {
+
+
+    public static final int RESULT_DATA_CHANGE = 10;
 
     private static final int RC_PHOTO_PICKER = 100;
     public static final String TAG_CONF_DIALOG = "confirmation_dialog";

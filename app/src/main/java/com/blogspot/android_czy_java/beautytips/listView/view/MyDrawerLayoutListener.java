@@ -3,31 +3,28 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.ArrayMap;
 import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.AppInfoDialog;
 import com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RC_NEW_TIP_ACTIVITY;
 
 
 public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
+
+
+    public static final int RC_NEW_TIP_ACTIVITY = 400;
 
     public static final String CATEGORY_ALL = "all";
     public static final String CATEGORY_HAIR = "hair";
@@ -62,7 +59,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
         this.viewModel = viewModel;
     }
 
-    interface DrawerCreationInterface {
+    public interface DrawerCreationInterface {
 
         void logOut();
 
@@ -70,7 +67,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
         void signInAnonymousUser();
 
-        RecyclerView getRecyclerView();
+        DrawerLayout getDrawerLayout();
 
         Context getContext();
     }
@@ -101,7 +98,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                         SnackbarHelper.showFeatureForLoggedInUsersOnly(
                                 activity.getContext().getResources()
                                         .getString(R.string.feature_your_tips),
-                                activity.getRecyclerView());
+                                activity.getDrawerLayout());
                     }
                     return;
 
@@ -112,7 +109,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                     } else {
                         SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getContext()
                                         .getResources().getString(R.string.feature_favourites),
-                                activity.getRecyclerView());
+                                activity.getDrawerLayout());
                     }
                     return;
 
@@ -126,12 +123,12 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                                     intent, RC_NEW_TIP_ACTIVITY);
                         } else {
                             SnackbarHelper.showUnableToAddTip(
-                                    activity.getRecyclerView());
+                                    activity.getDrawerLayout());
                         }
                     } else {
                         SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getContext()
                                         .getResources().getString(R.string.feature_new_tip),
-                                activity.getRecyclerView());
+                                activity.getDrawerLayout());
                     }
                     return;
 
@@ -145,7 +142,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                             activity.signInAnonymousUser();
                         } else {
                             SnackbarHelper.showUnableToLogIn(
-                                    activity.getRecyclerView());
+                                    activity.getDrawerLayout());
                         }
                     }
                     //this part is logging out
@@ -155,7 +152,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                             activity.logOut();
                         } else {
                             SnackbarHelper.showUnableToLogOut(
-                                    activity.getRecyclerView());
+                                    activity.getDrawerLayout());
                         }
                     }
                     return;

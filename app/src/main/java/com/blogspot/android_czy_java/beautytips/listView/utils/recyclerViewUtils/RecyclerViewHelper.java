@@ -5,22 +5,12 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 
 public class RecyclerViewHelper {
 
-    public static final int NUM_COLUMNS_LAND = 2;
-    public static final int NUM_COLUMNS_PORT = 1;
-
-
-
-    public static StaggeredGridLayoutManager createLayoutManager(int orientation) {
+    public static StaggeredGridLayoutManager createLayoutManager(int columnNum) {
 
         StaggeredGridLayoutManager layoutManager;
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            layoutManager = new StaggeredGridLayoutManager(NUM_COLUMNS_LAND,
+            layoutManager = new StaggeredGridLayoutManager(columnNum,
                     StaggeredGridLayoutManager.VERTICAL);
-        }
-        else {
-            layoutManager = new StaggeredGridLayoutManager(NUM_COLUMNS_PORT,
-                    StaggeredGridLayoutManager.VERTICAL);
-        };
+
 
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 
