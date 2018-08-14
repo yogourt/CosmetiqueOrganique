@@ -122,8 +122,13 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        viewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
-        viewModel.init();
+        if(getResources().getBoolean(R.bool.is_tablet) ) {
+            viewModel = ViewModelProviders.of(this).get(TabletListViewViewModel.class);
+            ((TabletListViewViewModel)viewModel).init();
+        } else {
+            viewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
+            viewModel.init();
+        }
 
         if (savedInstanceState != null) {
             Timber.d("activity is recreating");

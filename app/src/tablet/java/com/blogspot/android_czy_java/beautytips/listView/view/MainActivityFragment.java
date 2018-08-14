@@ -36,7 +36,7 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
     private StaggeredGridLayoutManager mLayoutManager;
     private ListViewAdapter mAdapter;
 
-    private ListViewViewModel viewModel;
+    private TabletListViewViewModel viewModel;
 
     public MainActivityFragment() {
         // Required empty public constructor
@@ -45,7 +45,7 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(ListViewViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(TabletListViewViewModel.class);
     }
 
     @Override

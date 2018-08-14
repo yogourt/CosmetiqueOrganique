@@ -16,9 +16,8 @@ public class DetailFirebaseHelper {
     private DetailViewInterface activity;
     private String tipId;
 
-    public DetailFirebaseHelper(DetailViewInterface activity, String tipId) {
+    public DetailFirebaseHelper(DetailViewInterface activity) {
         this.activity = activity;
-        this.tipId = tipId;
     }
 
     public interface DetailViewInterface {
@@ -32,7 +31,9 @@ public class DetailFirebaseHelper {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public void getFirebaseDatabaseData() {
+    public void getFirebaseDatabaseData(String tipId) {
+
+        this.tipId = tipId;
         FirebaseDatabase.getInstance().getReference("tips/" + tipId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
