@@ -4,4 +4,5 @@
     <!-- welcome activity -->
     <dimen name="layout_width">500dp</dimen>
     <dimen name="welcome_button_bottom_padding">64dp</dimen>
+
 </resources>

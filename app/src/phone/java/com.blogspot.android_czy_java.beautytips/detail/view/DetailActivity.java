@@ -128,9 +128,9 @@ public class DetailActivity extends BaseItemActivity implements
                 mFavNum = savedInstanceState.getLong(KEY_FAV_NUM);
             }
 
-            mFirebaseHelper = new DetailFirebaseHelper(this, mId);
+            mFirebaseHelper = new DetailFirebaseHelper(this);
 
-            mFirebaseHelper.getFirebaseDatabaseData();
+            mFirebaseHelper.getFirebaseDatabaseData(mId);
             prepareFab();
             prepareFavNum();
         } else {

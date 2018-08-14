@@ -8,11 +8,9 @@ import android.view.View;
 
 public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
     private final int mSpace;
-    private int orientation;
 
-    public SpacesItemDecoration(int space, int orientation) {
+    public SpacesItemDecoration(int space) {
         this.mSpace = space;
-        this.orientation = orientation;
     }
 
     @Override

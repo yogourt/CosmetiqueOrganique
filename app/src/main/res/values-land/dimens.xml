@@ -20,4 +20,5 @@
 
     <!-- welcome activity -->
     <dimen name="layout_width">400dp</dimen>
+
 </resources>
