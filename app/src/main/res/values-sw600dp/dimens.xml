@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <dimen name="normal_text_size">18sp</dimen>
+
+
+    <!-- welcome activity -->
+    <dimen name="layout_width">420dp</dimen>
+    <dimen name="welcome_button_bottom_padding">92dp</dimen>
+    <dimen name="welcome_top_padding">48dp</dimen>
+    <dimen name="welcome_text_top_padding">32dp</dimen>
+    <dimen name="logo_margin">64dp</dimen>
+    <dimen name="welcome_text_size">32sp</dimen>
+</resources>

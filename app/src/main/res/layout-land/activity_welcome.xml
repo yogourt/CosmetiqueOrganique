@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -15,27 +16,30 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="@dimen/logo_size"
+        android:layout_height="@dimen/logo_size"
         android:layout_gravity="center"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/description_logo"
         android:src="@drawable/withoutbacklight"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/title_and_message"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.39" />
 
     <ScrollView
         android:id="@+id/title_and_message"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/layout_width"
         android:layout_height="0dp"
         android:paddingBottom="@dimen/welcome_padding"
-        android:paddingTop="@dimen/welcome_padding"
+        android:paddingTop="@dimen/welcome_top_padding"
         app:layout_constraintBottom_toTopOf="@+id/positive_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/logo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/logo"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintVertical_bias="0.0">
 
@@ -58,14 +62,16 @@
                 style="@style/NormalTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/welcome_padding"
+                android:paddingTop="@dimen/welcome_text_top_padding"
+                android:paddingStart="@dimen/welcome_padding"
+                android:paddingEnd="@dimen/welcome_padding"
                 android:text="@string/welcome_message" />
         </LinearLayout>
     </ScrollView>
 
     <TextView
         style="@style/RippleCircularButtonStyle"
-        android:layout_marginBottom="@dimen/welcome_button_padding"
+        android:layout_marginBottom="@dimen/welcome_button_bottom_padding"
         android:layout_marginStart="@dimen/welcome_button_padding"
         android:background="@drawable/ripple_button"
         android:onClick="onNegativeButtonClicked"
@@ -76,12 +82,12 @@
     <TextView
         android:id="@+id/positive_button"
         style="@style/RippleCircularButtonStyle"
-        android:layout_marginBottom="@dimen/welcome_button_padding"
-        android:layout_marginEnd="@dimen/welcome_button_end_padding"
+        android:layout_marginBottom="@dimen/welcome_button_bottom_padding"
+        android:layout_marginEnd="@dimen/welcome_button_padding"
         android:background="@drawable/ripple_button"
         android:onClick="onLogInButtonClicked"
         android:text="@string/welcome_pos_button_label"
         android:textColor="@color/pink200"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/title_and_message" />
 </android.support.constraint.ConstraintLayout>
