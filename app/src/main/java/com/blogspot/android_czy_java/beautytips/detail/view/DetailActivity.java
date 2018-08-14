@@ -143,7 +143,7 @@ public class DetailActivity extends BaseItemActivity implements
 
     private void prepareRatingRequest() {
         // Custom condition: 2 days and 3 launches
-        RateThisApp.Config config = new RateThisApp.Config(2, 3);
+        RateThisApp.Config config = new RateThisApp.Config(3, 10);
         RateThisApp.init(config);
         // Monitor launch times and interval from installation
         RateThisApp.onCreate(this);
@@ -344,19 +344,6 @@ public class DetailActivity extends BaseItemActivity implements
 
     private void prepareShareButton() {
 
-        String shortDesc = description.substring(0, 200);
-        /*try {
-            shortDesc = URLEncoder.encode(description.substring(0, 200), "UTF-8");
-
-            Timber.d("encoded " + shortDesc);
-            //replace + with ' ' in short desc
-            shortDesc = shortDesc.replace("+", " ");
-            Timber.d("replaced " + shortDesc);
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
-
         FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse("https://cosmetique.page.link/?apn=com.blogspot.android_czy_java." +
                         "beautytips&link=https://cometique.com/" + mId + "&ofl=https://play.google." +
@@ -367,7 +354,7 @@ public class DetailActivity extends BaseItemActivity implements
                 .setSocialMetaTagParameters(new DynamicLink.SocialMetaTagParameters.Builder().
                         setTitle(mTitle).
                         setImageUrl(Uri.parse(mImage)).
-                        setDescription(shortDesc).build())
+                        setDescription(description).build())
                 .buildShortDynamicLink()
                 .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
                     @Override

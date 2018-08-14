@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystorePropertiesFile = file("C:\\Users\\Jagoda\\Desktop\\keystore.properties")
 
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()
@@ -25,7 +25,7 @@ android {
         applicationId "com.blogspot.android_czy_java.beautytips"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 20
+        versionCode 21
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
