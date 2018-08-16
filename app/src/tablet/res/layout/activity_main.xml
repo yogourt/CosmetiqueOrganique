@@ -35,9 +35,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3"/>
 
-            <fragment
+            <FrameLayout
                 android:name="com.blogspot.android_czy_java.beautytips.listView.view.DetailActivityFragment"
-                android:id="@+id/fragment_detail"
+                android:id="@+id/fragment_detail_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"/>

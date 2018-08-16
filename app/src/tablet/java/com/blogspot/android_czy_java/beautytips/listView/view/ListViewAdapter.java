@@ -73,6 +73,9 @@ public class ListViewAdapter extends BaseListViewAdapter {
             if(!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
                 TipListItem item = (TipListItem) list.get(getAdapterPosition() - 1);
                 ((TabletListViewViewModel) viewModel).setChosenTip(item);
+            } else {
+                ListItem item = list.get(getAdapterPosition() - 1);
+                ((TabletListViewViewModel) viewModel).setChosenIngredient(item);
             }
         }
     }

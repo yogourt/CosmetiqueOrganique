@@ -18,7 +18,7 @@
 
        <fragment
            android:id="@+id/fragment_detail_image"
-           android:name="com.blogspot.android_czy_java.beautytips.listView.view.DetailImageFragment"
+           android:name="com.blogspot.android_czy_java.beautytips.listView.view.ImageFragment"
            android:layout_width="match_parent"
            android:layout_height="wrap_content" />
 
@@ -33,7 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fab_margin"
         android:contentDescription="@string/description_fab"
-        android:onClick="changeFavouriteState"
         android:src="@drawable/ic_heart"
         android:tint="@color/bluegray700"
         app:layout_anchor="@id/layout_ingredients"

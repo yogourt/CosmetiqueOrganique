@@ -24,4 +24,6 @@
     <dimen name="detail_frag_margin">64dp</dimen>
     <dimen name="image_height">300dp</dimen>
     <dimen name="fav_padding_end">64dp</dimen>
+    <dimen name="title_bottom_padding">32dp</dimen>
+    <dimen name="title_start_padding">48dp</dimen>
 </resources>
