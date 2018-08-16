@@ -16,4 +16,14 @@
         android:background="@drawable/scrim"
         android:transitionName="@string/scrim_transition_name" />
 
+    <TextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        style="@style/ExpandedTitleStyle"
+        android:paddingBottom="@dimen/title_bottom_padding"
+        android:paddingStart="@dimen/title_start_padding"
+        android:paddingEnd="@dimen/title_start_padding"/>
+
 </FrameLayout>

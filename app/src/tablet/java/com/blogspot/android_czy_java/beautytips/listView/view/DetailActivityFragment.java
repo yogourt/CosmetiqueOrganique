@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,29 +19,40 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import javax.sql.DataSource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 
 /**
@@ -100,6 +112,8 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
 
     private DetailFirebaseHelper mFirebaseHelper;
 
+    private ViewTreeObserver.OnScrollChangedListener scrollListener;
+
     public DetailActivityFragment() {
         // Required empty public constructor
     }
@@ -134,15 +148,69 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
                     DetailActivityFragment.this.item = item;
                     mFirebaseHelper.getFirebaseDatabaseData(item.getId());
                     prepareFavNum();
+                    prepareFab();
                 }
             }
         });
     }
 
+    @Override
+    public void onDestroyView() {
+
+        mScrollView.getViewTreeObserver().removeOnScrollChangedListener(scrollListener);
+        super.onDestroyView();
+    }
+
     private void prepareFab() {
+
+        scrollListener = new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (mScrollView.getScrollY() < mLayoutIngredients.getHeight() +
+                        getResources().getDimension(R.dimen.image_height)) {
+                    mFab.show();
+                } else {
+                    mFab.hide();
+                }
+            }
+        };
+        mScrollView.getViewTreeObserver().addOnScrollChangedListener(scrollListener);
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeFavouriteState();
+            }
+        });
         if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
                 !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             mFirebaseHelper.setFabState();
+        }
+    }
+
+    public void changeFavouriteState() {
+        Animation scaleAnim = AnimationUtils.loadAnimation(getContext(), R.anim.scale);
+        mFab.startAnimation(scaleAnim);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null ||
+                FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+            SnackbarHelper.showFeatureForLoggedInUsersOnly(
+                    getResources().getString(R.string.feature_favourites), mScrollView);
+            return;
+        }
+        int bluegray700 = getResources().getColor(R.color.bluegray700);
+        if (mFab.getImageTintList().getDefaultColor() == bluegray700) {
+            setFabActive();
+            //here favNum is distracted, because favNum is negative
+            item.favNum--;
+            //but here it has to be positive, because that's the implementation in DetailFirebaseHelper
+            mFirebaseHelper.addTipToFavourites(item.favNum * (-1));
+            prepareFavNum();
+        } else {
+            mFab.setImageTintList(ColorStateList.valueOf(bluegray700));
+            item.favNum++;
+            mFirebaseHelper.removeTipFromFavourites(item.favNum * (-1));
+            prepareFavNum();
         }
     }
 
@@ -157,10 +225,13 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
 
     @Override
     public void prepareContent(DataSnapshot dataSnapshot) {
+
+
+        if(getActivity() == null) return;
         description = (String) dataSnapshot.child("description").getValue();
 
         //start share button prep as soon as description is assigned
-        //prepareShareButton();
+        prepareShareButton();
 
         mDescTextView.setText(description);
         String ingredient1 = (String) dataSnapshot.child("ingredient1").getValue();
@@ -290,6 +361,40 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
         });
     }
 
+    private void prepareShareButton() {
+
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://cosmetique.page.link/?apn=com.blogspot.android_czy_java." +
+                        "beautytips&link=https://cometique.com/" + item.getId() + "&ofl=https://play.google." +
+                        "com/store/apps/details?id=com.blogspot.android_czy_java.beautytips&ipn=com." +
+                        "blogspot.android_czy_java.beautytips&link=https://cometique.com/-1&ofl=https://" +
+                        "play.google.com/store/apps/details?id=com.blogspot.android_czy_java.beautytips/"))
+                .setDynamicLinkDomain("cosmetique.page.link")
+                .setSocialMetaTagParameters(new DynamicLink.SocialMetaTagParameters.Builder().
+                        setTitle(item.getTitle()).
+                        setImageUrl(Uri.parse(item.getImage())).
+                        setDescription(description).build())
+                .buildShortDynamicLink()
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+
+                            Timber.d(task.getResult().getPreviewLink().toString());
+                            ShareLinkContent content = new ShareLinkContent.Builder()
+                                    .setContentUrl(shortLink)
+                                    .build();
+                            fbShareButton.setShareContent(content);
+                        } else {
+                            // Error
+                            // ...
+                        }
+
+                    }
+                });
+    }
 }
 
 

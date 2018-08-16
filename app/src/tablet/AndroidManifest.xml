@@ -4,6 +4,7 @@
     <application>
 
         <activity
+            android:screenOrientation="sensorLandscape"
             android:name=".listView.view.MainActivity"
             android:configChanges="locale">
             <intent-filter>
