@@ -3,10 +3,8 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -31,9 +28,7 @@ import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,8 +41,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
-
-import javax.sql.DataSource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -136,7 +129,7 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
                 container, false);
         ButterKnife.bind(this, view);
         return view;
-}
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -144,11 +137,12 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
         viewModel.getChosenTipLiveData().observe(getActivity(), new Observer<TipListItem>() {
             @Override
             public void onChanged(@Nullable TipListItem item) {
-                if(item != null) {
+                if (item != null) {
                     DetailActivityFragment.this.item = item;
                     mFirebaseHelper.getFirebaseDatabaseData(item.getId());
                     prepareFavNum();
                     prepareFab();
+
                 }
             }
         });
@@ -157,11 +151,15 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
     @Override
     public void onDestroyView() {
 
+        Timber.d("on destroy view");
         mScrollView.getViewTreeObserver().removeOnScrollChangedListener(scrollListener);
         super.onDestroyView();
     }
 
     private void prepareFab() {
+
+        if (scrollListener != null) mScrollView.getViewTreeObserver().
+                removeOnScrollChangedListener(scrollListener);
 
         scrollListener = new ViewTreeObserver.OnScrollChangedListener() {
             @Override
@@ -227,7 +225,7 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
     public void prepareContent(DataSnapshot dataSnapshot) {
 
 
-        if(getActivity() == null) return;
+        if (getActivity() == null) return;
         description = (String) dataSnapshot.child("description").getValue();
 
         //start share button prep as soon as description is assigned
@@ -279,12 +277,13 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
         }
 
 
-        mScrollView.smoothScrollTo(0,0);
-        mScrollView.scrollTo(0,0);
+        mScrollView.smoothScrollTo(0, 0);
+        mScrollView.scrollTo(0, 0);
         //makeIngredientsClickable();
     }
 
     private void prepareFavNum() {
+
         //fav num in the db is negative
         mFavTv.setText(getResources().getString(R.string.fav_label,
                 String.valueOf(item.favNum * -1)));
