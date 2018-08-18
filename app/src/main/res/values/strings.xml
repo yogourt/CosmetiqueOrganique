@@ -79,7 +79,7 @@
     <!-- confirmation dialog in new tip screen -->
     <string name="conf_dialog_title">Are you sure?</string>
     <string name="conf_dialog_message">Are you sure your recipe description is complete? </string>
-    <string name="conf_dialog_pos_button">Add tip</string>
+    <string name="conf_dialog_pos_button">Add recipe</string>
     <string name="conf_dialog_neg_button">Review</string>
 
     <!-- log in/log out strings -->
