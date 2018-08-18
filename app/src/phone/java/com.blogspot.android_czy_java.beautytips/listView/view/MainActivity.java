@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.app.DialogFragment;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.RecyclerViewHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
@@ -51,6 +53,11 @@ public class MainActivity extends BaseMainActivity implements ListViewAdapter.Po
         });
 
 
+    }
+
+    void initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
+        viewModel.init();
     }
 
     private void prepareRecyclerView(List<ListItem> recyclerViewList) {

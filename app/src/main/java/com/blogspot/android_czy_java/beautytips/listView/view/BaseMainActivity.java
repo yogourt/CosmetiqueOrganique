@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -51,6 +52,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 import butterknife.BindView;
@@ -122,13 +124,8 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        if(getResources().getBoolean(R.bool.is_tablet) ) {
-            viewModel = ViewModelProviders.of(this).get(TabletListViewViewModel.class);
-            ((TabletListViewViewModel)viewModel).init();
-        } else {
-            viewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
-            viewModel.init();
-        }
+        //init view model differently on tablet and on phone
+        initViewModel();
 
         if (savedInstanceState != null) {
             Timber.d("activity is recreating");
@@ -161,6 +158,8 @@ public abstract class BaseMainActivity extends AppCompatActivity
         viewModel.getUserStateLiveData().observe(this, createUserStateObserver());
 
     }
+
+    abstract void initViewModel();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

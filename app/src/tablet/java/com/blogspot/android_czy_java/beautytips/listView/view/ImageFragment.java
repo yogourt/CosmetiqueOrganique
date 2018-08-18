@@ -4,6 +4,7 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -66,7 +67,7 @@ public class ImageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+        if (!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
             viewModel.getChosenTipLiveData().observe(getActivity(), new Observer<TipListItem>() {
                 @Override
                 public void onChanged(@Nullable TipListItem tipListItem) {
@@ -91,15 +92,16 @@ public class ImageFragment extends Fragment {
         mTitle.setText(item.getTitle());
     }
 
+
     private void loadImage() {
 
-        mImageView.setContentDescription(getResources()
-                .getString(R.string.description_tip_image, item.getTitle()));
-
-        Glide.with(this).
+        Glide.with(ImageFragment.this).
                 setDefaultRequestOptions(new RequestOptions().dontTransform()).
                 load(item.getImage()).
                 into(mImageView);
+
+        mImageView.setContentDescription(getResources()
+                .getString(R.string.description_tip_image, item.getTitle()));
     }
 
 }
