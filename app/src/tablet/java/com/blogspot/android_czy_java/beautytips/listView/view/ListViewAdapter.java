@@ -20,6 +20,7 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLay
 
 public class ListViewAdapter extends BaseListViewAdapter {
 
+
     public ListViewAdapter(Context context, List<ListItem> list,
                            PositionListener positionListener, TabletListViewViewModel viewModel,
                            boolean smallList) {
@@ -49,7 +50,6 @@ public class ListViewAdapter extends BaseListViewAdapter {
         }
     }
 
-
     //this method is used when dynamic link is passed
     @Override
     public void openTipWithId(String id) {
@@ -68,6 +68,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
         @Override
         public void onClick(View view) {
 
+            if(!((TabletListViewViewModel)viewModel).getAreListItemsClickable()) return;
             //this will happen via ViewModel. In the DetailActivityFragment the chosen tip's description
             //will be opened
             if(!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
