@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -46,6 +48,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
+
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
 
 
 /**
@@ -134,18 +140,13 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel.getChosenTipLiveData().observe(getActivity(), new Observer<TipListItem>() {
-            @Override
-            public void onChanged(@Nullable TipListItem item) {
-                if (item != null) {
-                    DetailActivityFragment.this.item = item;
-                    mFirebaseHelper.getFirebaseDatabaseData(item.getId());
-                    prepareFavNum();
-                    prepareFab();
+        item = viewModel.getChosenTip();
 
-                }
-            }
-        });
+        mFirebaseHelper.getFirebaseDatabaseData(item.getId());
+        prepareFab();
+        prepareFavNum();
+
+
     }
 
     @Override
@@ -182,6 +183,7 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
         });
         if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
                 !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+            setFabInactive();
             mFirebaseHelper.setFabState();
         }
     }
@@ -205,11 +207,16 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
             mFirebaseHelper.addTipToFavourites(item.favNum * (-1));
             prepareFavNum();
         } else {
-            mFab.setImageTintList(ColorStateList.valueOf(bluegray700));
+            setFabInactive();
             item.favNum++;
             mFirebaseHelper.removeTipFromFavourites(item.favNum * (-1));
             prepareFavNum();
+
         }
+    }
+
+    private void setFabInactive() {
+        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.bluegray700)));
     }
 
     /*
@@ -218,6 +225,7 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
 
     @Override
     public void setFabActive() {
+        if(isDetached()) return;
         mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
     }
 
@@ -264,7 +272,7 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
             int marginBottom = (int) getResources().getDimension(R.dimen.share_margin_bottom);
             mLayoutShare.setPadding(0, marginTop, marginEnd, marginBottom);
         } else {
-            mAuthorLayout.setVisibility(View.INVISIBLE);
+            mAuthorLayout.setVisibility(View.GONE);
         }
 
 
@@ -279,7 +287,7 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
 
         mScrollView.smoothScrollTo(0, 0);
         mScrollView.scrollTo(0, 0);
-        //makeIngredientsClickable();
+        makeIngredientsClickable();
     }
 
     private void prepareFavNum() {
@@ -354,8 +362,18 @@ public class DetailActivityFragment extends Fragment implements DetailFirebaseHe
         ingredientView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: open ingredient fragment but when user will press back, come back to this
-                //recipe
+
+                final ListItem ingredientItem = ingredientData.getValue(ListItem.class);
+                String id = ingredientData.getKey();
+                if (ingredientItem != null) {
+                    ingredientItem.setId(id);
+                }
+
+                viewModel.setIsShowingIngredientFromRecipe(true);
+                viewModel.setChosenIngredient(ingredientItem);
+                viewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_INGREDIENT);
+
+
             }
         });
     }

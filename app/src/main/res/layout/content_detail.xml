@@ -48,8 +48,8 @@
             style="@style/NormalTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/desc_padding"
-            android:paddingStart="@dimen/desc_padding"
+            android:layout_marginStart="@dimen/desc_padding"
+            android:layout_marginEnd="@dimen/desc_padding"
             android:paddingBottom="@dimen/desc_padding"
             android:paddingTop="@dimen/desc_top_padding" />
 

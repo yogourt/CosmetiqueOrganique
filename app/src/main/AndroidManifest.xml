@@ -30,6 +30,13 @@
         </service>
         <activity android:name=".welcome.WelcomeActivity" />
 
+        <activity
+            android:name=".newTip.view.NewTipActivity"
+            android:label="@string/title_activity_new_tip"
+            android:launchMode="singleTop"
+            android:theme="@style/ActivityDialogTheme"
+            android:parentActivityName=".listView.view.MainActivity" />
+
         <provider android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true"/>

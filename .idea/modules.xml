@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\RunBoy\Desktop\Jagoda\CosmetiqueOrganique\BeautyTips.iml" filepath="C:\Users\RunBoy\Desktop\Jagoda\CosmetiqueOrganique\BeautyTips.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BeautyTips.iml" filepath="$PROJECT_DIR$/BeautyTips.iml" />
+      <module fileurl="file://C:/Users/RunBoy/Desktop/Jagoda/CosmetiqueOrganique/BeautyTips.iml" filepath="C:/Users/RunBoy/Desktop/Jagoda/CosmetiqueOrganique/BeautyTips.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/CosmetiqueOrganique.iml" filepath="$PROJECT_DIR$/.idea/CosmetiqueOrganique.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

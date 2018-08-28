@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
 
 /**
@@ -67,20 +68,11 @@ public class ImageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
-            viewModel.getChosenTipLiveData().observe(getActivity(), new Observer<TipListItem>() {
-                @Override
-                public void onChanged(@Nullable TipListItem tipListItem) {
-                    prepareContent(tipListItem);
-                }
-            });
+        if (viewModel.getCurrentDetailFragment().equals(TAG_FRAGMENT_DETAIL)) {
+            prepareContent(viewModel.getChosenTip());
+
         } else {
-            viewModel.getChosenIngredientLiveData().observe(getActivity(), new Observer<ListItem>() {
-                @Override
-                public void onChanged(@Nullable ListItem listItem) {
-                    prepareContent(listItem);
-                }
-            });
+            prepareContent(viewModel.getChosenIngredient());
         }
     }
 
@@ -96,7 +88,6 @@ public class ImageFragment extends Fragment {
     private void loadImage() {
 
         Glide.with(ImageFragment.this).
-                setDefaultRequestOptions(new RequestOptions().dontTransform()).
                 load(item.getImage()).
                 into(mImageView);
 

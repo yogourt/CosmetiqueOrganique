@@ -62,8 +62,8 @@ public class ListViewViewModel extends ViewModel {
             //set value of userStateLiveData. This will be observed in Main Activity to prepare
             // navigation drawer header.
             userStateLiveData = new MutableLiveData<>();
-            if(FirebaseLoginHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
-            else if(FirebaseLoginHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
+            if(FirebaseHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
+            else if(FirebaseHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
             else userStateLiveData.setValue(USER_STATE_LOGGED_IN);
 
             recyclerViewLiveData = new MutableLiveData<>();

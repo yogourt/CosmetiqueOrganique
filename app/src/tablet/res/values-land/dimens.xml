@@ -5,4 +5,18 @@
     <dimen name="layout_width">500dp</dimen>
     <dimen name="welcome_button_bottom_padding">64dp</dimen>
 
+    <!-- detail fragment dimens -->
+    <dimen name="desc_padding">48dp</dimen>
+
+    <!-- new tip dimens -->
+    <dimen name="max_screen_width">800dp</dimen>
+    <dimen name="title_horiz_margin">48dp</dimen>
+    <dimen name="desc_margin">48dp</dimen>
+    <dimen name="new_tip_source_start_margin">54dp</dimen>
+    <dimen name="author_padding_start">64dp</dimen>
+
+    <dimen name="spinner_button_ext_margin">64dp</dimen>
+
+    <!-- main screen dimens -->
+    <dimen name="dialog_width">450dp</dimen>
 </resources>

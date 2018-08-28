@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,13 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
-import com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter;
 
 import java.util.List;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_OPENING;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
 
 
@@ -26,9 +28,9 @@ public class ListViewAdapter extends BaseListViewAdapter {
                            boolean smallList) {
         super(context, list, positionListener, viewModel);
 
-        if(smallList) {
-            for(int i = 0; i < itemHeightsInDp.length; i++) {
-                itemHeightsInDp[i] = itemHeightsInDp[i]/2;
+        if (smallList) {
+            for (int i = 0; i < itemHeightsInDp.length; i++) {
+                itemHeightsInDp[i] = itemHeightsInDp[i] / 2;
             }
         }
     }
@@ -68,15 +70,29 @@ public class ListViewAdapter extends BaseListViewAdapter {
         @Override
         public void onClick(View view) {
 
-            if(!((TabletListViewViewModel)viewModel).getAreListItemsClickable()) return;
+            final TabletListViewViewModel tabletViewModel = (TabletListViewViewModel) viewModel;
+
             //this will happen via ViewModel. In the DetailActivityFragment the chosen tip's description
             //will be opened
-            if(!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+
+            //if the recipe was chosen
+            if (!tabletViewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+
+
                 TipListItem item = (TipListItem) list.get(getAdapterPosition() - 1);
-                ((TabletListViewViewModel) viewModel).setChosenTip(item);
-            } else {
+                tabletViewModel.setChosenTip(item);
+                tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+
+
+            }
+            //if the ingredient was chosen
+            else {
+
+
                 ListItem item = list.get(getAdapterPosition() - 1);
-                ((TabletListViewViewModel) viewModel).setChosenIngredient(item);
+                (tabletViewModel).setChosenIngredient(item);
+                tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_INGREDIENT);
+
             }
         }
     }

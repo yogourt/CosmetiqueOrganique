@@ -10,6 +10,7 @@
     <dimen name="header_horiz_padding">16dp</dimen>
     <dimen name="username_text_size">22sp</dimen>
     <dimen name="photo_size">72dp</dimen>
+    <dimen name="items_text_size">14sp</dimen>
 
     <!-- list view dimens -->
     <dimen name="list_padding">4dp</dimen>
@@ -54,6 +55,7 @@
     <dimen name="share_margin_bottom">88dp</dimen>
 
     <!-- new tip screen dimens -->
+    <dimen name="max_screen_width">@dimen/match_parent</dimen>
     <dimen name="desc_margin">16dp</dimen>
     <dimen name="new_tip_desc_padding">8dp</dimen>
     <dimen name="new_tip_desc_bottom_padding">16dp</dimen>
@@ -100,14 +102,8 @@
 
     <!--ingredient activity dimens -->
     <dimen name="search_label_text_size">18sp</dimen>
-    <!-- widget dimens -->
-    <!--
-Refer to App Widget Documentation for margin information
-http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
-    -->
-    <dimen name="widget_margin">8dp</dimen>
-    <dimen name="widget_desc_padding">8dp</dimen>
-    <dimen name="widget_iv_padding">8dp</dimen>
-    <dimen name="widget_iv_margin">2dp</dimen>
-    <dimen name="widget_iv_dimen">60dp</dimen>
+    <dimen name="ingredient_screen_top_margin">@dimen/activity_vertical_margin</dimen>
+
+    <dimen name="add_margin_end">0dp</dimen>
+
 </resources>

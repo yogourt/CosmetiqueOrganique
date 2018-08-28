@@ -26,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -60,7 +62,7 @@ public class IngredientActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_ingredient_activity, container,
+        View view = inflater.inflate(R.layout.fragment_ingredient_activity, container,
                 false);
 
         ButterKnife.bind(this, view);
@@ -70,22 +72,16 @@ public class IngredientActivityFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel.getChosenIngredientLiveData().observe(getActivity(), new Observer<ListItem>() {
-            @Override
-            public void onChanged(@Nullable ListItem item) {
-                if (item != null) {
-                    IngredientActivityFragment.this.item = item;
-                    prepareContent();
-                }
-            }
-        });
+
+        item = viewModel.getChosenIngredient();
+        prepareContent();
     }
 
     private void prepareContent() {
 
         //prepare search for label
         mSearchTv.setText(getResources().getString(R.string.search_for_label, item.getTitle()));
-        mSearchTv.setPaintFlags(mSearchTv.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        mSearchTv.setPaintFlags(mSearchTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mSearchTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,12 +96,12 @@ public class IngredientActivityFragment extends Fragment {
 
                         mPropertiesLayout.removeAllViews();
 
-                        for(DataSnapshot propertySnapshot: dataSnapshot.getChildren()) {
+                        for (DataSnapshot propertySnapshot : dataSnapshot.getChildren()) {
                             String description = String.valueOf(propertySnapshot.getValue());
                             String key = propertySnapshot.getKey();
 
                             String title = "";
-                            if(key != null) {
+                            if (key != null) {
                                 switch (key) {
                                     case "1":
                                         title = "Overview:";
@@ -126,9 +122,9 @@ public class IngredientActivityFragment extends Fragment {
                                     this.getContext()).
                                     inflate(R.layout.layout_ingredient_properties,
                                             mPropertiesLayout, false);
-                            ((TextView)propertyView.findViewById(R.id.title_text_view)).
+                            ((TextView) propertyView.findViewById(R.id.title_text_view)).
                                     setText(title);
-                            ((TextView)propertyView.findViewById(R.id.desc_text_view)).
+                            ((TextView) propertyView.findViewById(R.id.desc_text_view)).
                                     setText(description);
                             mPropertiesLayout.addView(propertyView);
                         }
@@ -141,6 +137,12 @@ public class IngredientActivityFragment extends Fragment {
     }
 
     public void searchFor() {
+
+        viewModel.search(item.title);
+        viewModel.setCategory(CATEGORY_ALL);
+
+        //mSearchView.setIconified(false);
+        //mSearchView.setQuery(query, true);
         //TODO: search for it in main activity fragment
     }
 

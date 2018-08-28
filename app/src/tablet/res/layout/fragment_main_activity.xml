@@ -7,7 +7,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingEnd="@dimen/list_padding"
-        android:paddingStart="@dimen/list_padding" />
+        android:paddingStart="@dimen/list_start_padding"
+        android:paddingEnd="@dimen/list_end_padding" />
 
 </FrameLayout>

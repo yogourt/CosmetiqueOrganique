@@ -118,6 +118,15 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_tip);
+
+        //on tablet this activity is a dialog - set appropriate width
+        if(getResources().getBoolean(R.bool.is_tablet)) {
+            getWindow().setLayout(getResources().getDisplayMetrics().widthPixels * 2 / 3,
+                    getResources().getDisplayMetrics().heightPixels);
+            this.setFinishOnTouchOutside(false);
+        }
+
+
         ButterKnife.bind(this);
 
         overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
@@ -396,4 +405,5 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
         snackbar.getView().setBackgroundColor(getResources().getColor(R.color.bluegray900));
         snackbar.show();
     }
+
 }

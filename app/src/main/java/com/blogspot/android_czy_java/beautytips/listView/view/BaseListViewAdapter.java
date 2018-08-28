@@ -21,6 +21,7 @@ import com.adroitandroid.chipcloud.ChipListener;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
@@ -130,7 +131,7 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
             if (!viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
                 TipListItem tipItem = (TipListItem) item;
                 //set visibility of cross
-                if (tipItem.getAuthorId() != null && !FirebaseLoginHelper.isUserNull()
+                if (tipItem.getAuthorId() != null && !FirebaseHelper.isUserNull()
                         && tipItem.getAuthorId().equals(FirebaseLoginHelper.getUserId())) {
                     holder.mDeleteTipIcon.setVisibility(View.VISIBLE);
                     holder.mDeleteTipIcon.setOnClickListener(new View.OnClickListener() {

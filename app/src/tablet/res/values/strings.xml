@@ -2,4 +2,12 @@
 <resources>
 
     <string name="ad_size">FULL_BANNER</string>
+
+    <string name="opening_title">Welcome! What are you looking for?</string>
+    <string name="opening_footer_label">Stay connected!</string>
+    <string name="label_add_new">Add new beauty recipe!</string>
+    <string name="label_favourites">Favourite recipes</string>
+    <string name="label_hair">Something for hair,</string>
+    <string name="label_face">for face,</string>
+    <string name="label_body">for body?</string>
 </resources>
