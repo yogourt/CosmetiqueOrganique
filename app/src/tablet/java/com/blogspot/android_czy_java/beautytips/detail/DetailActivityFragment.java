@@ -1,16 +1,25 @@
-package com.blogspot.android_czy_java.beautytips.detail.view;
+package com.blogspot.android_czy_java.beautytips.detail;
 
+
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -21,7 +30,10 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
-import com.blogspot.android_czy_java.beautytips.ingredient.view.IngredientActivity;
+import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
+import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
+import com.blogspot.android_czy_java.beautytips.listView.view.TabletListViewViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.share.model.ShareLinkContent;
@@ -36,25 +48,30 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
-import com.kobakei.ratethisapp.RateThisApp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_AUTHOR;
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_FAV_NUM;
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ID;
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_IMAGE;
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_TITLE;
+import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
 
-public class DetailActivity extends BaseItemActivity implements
-        DetailFirebaseHelper.DetailViewInterface {
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class DetailActivityFragment extends Fragment
+        implements DetailFirebaseHelper.DetailViewInterface {
+
+
+    @Nullable
     @BindView(R.id.fab)
     FloatingActionButton mFab;
 
+    @Nullable
     @BindView(R.id.detail_scroll_view)
     ScrollView mScrollView;
 
@@ -97,68 +114,152 @@ public class DetailActivity extends BaseItemActivity implements
     @BindView(R.id.layout_share)
     View mLayoutShare;
 
-    private String mAuthorId;
-    private long mFavNum;
     private String description;
+    private TabletListViewViewModel viewModel;
+    private TipListItem item;
 
     private DetailFirebaseHelper mFirebaseHelper;
 
+    private ViewTreeObserver.OnScrollChangedListener scrollListener;
+
+    private boolean isPortrait;
+
+    public DetailActivityFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
 
-        ButterKnife.bind(this);
+        isPortrait = getResources().getConfiguration()
+                .orientation == Configuration.ORIENTATION_PORTRAIT;
 
-        prepareRatingRequest();
+        if (!isPortrait)
+            viewModel = ViewModelProviders.of(getActivity()).get(TabletListViewViewModel.class);
 
-        if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_MEDIA_SHARED))
-            overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
+        mFirebaseHelper = new DetailFirebaseHelper(this);
+    }
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            if (bundle.containsKey(KEY_AUTHOR)) mAuthorId = bundle.getString(KEY_AUTHOR);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 
-            //get the fav num from bundle (it comes from db) when the activity opens for the first
-            //time, and if it's orientation change get it from saved instance state, as it may
-            //changed and not being already in db.
-            //fav num is negative in db - it allows sorting in descending order of popularity
-            if (savedInstanceState == null) mFavNum = bundle.getLong(KEY_FAV_NUM) * -1;
-            else {
-                mFavNum = savedInstanceState.getLong(KEY_FAV_NUM);
+        View view = inflater.inflate(R.layout.fragment_detail_activity,
+                container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (isPortrait) {
+            if (getActivity() != null) {
+                item = (TipListItem) getActivity().getIntent().getExtras().getSerializable(KEY_ITEM);
             }
-
-            mFirebaseHelper = new DetailFirebaseHelper(this);
-
-            mFirebaseHelper.getFirebaseDatabaseData(mId);
-            prepareFab();
-            prepareFavNum();
         } else {
-            finish();
+            item = viewModel.getChosenTip();
+            prepareFab();
         }
 
-        AnalyticsUtils.logEventTipView(this, mTitle);
+        if (item == null) return;
+        mFirebaseHelper.getFirebaseDatabaseData(item.getId());
+        prepareFavNum();
 
-    }
 
-    private void prepareRatingRequest() {
-        // Custom condition: 2 days and 3 launches
-        RateThisApp.Config config = new RateThisApp.Config(2, 3);
-        RateThisApp.init(config);
-        // Monitor launch times and interval from installation
-        RateThisApp.onCreate(this);
-        // If the condition is satisfied, "Rate this app" dialog will be shown
-        RateThisApp.showRateDialogIfNeeded(this, R.style.DialogStyle);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putLong(KEY_FAV_NUM, mFavNum);
+    public void onDestroyView() {
+
+        Timber.d("on destroy view");
+
+        if(mScrollView != null)
+        mScrollView.getViewTreeObserver().removeOnScrollChangedListener(scrollListener);
+        super.onDestroyView();
     }
 
+    private void prepareFab() {
 
-    public void prepareContent(@NonNull DataSnapshot dataSnapshot) {
+        if (scrollListener != null) mScrollView.getViewTreeObserver().
+                removeOnScrollChangedListener(scrollListener);
+
+        scrollListener = new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (mScrollView.getScrollY() < mLayoutIngredients.getHeight() +
+                        getResources().getDimension(R.dimen.image_height)) {
+                    mFab.show();
+                } else {
+                    mFab.hide();
+                }
+            }
+        };
+        mScrollView.getViewTreeObserver().addOnScrollChangedListener(scrollListener);
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeFavouriteState();
+            }
+        });
+        if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
+                !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+            setFabInactive();
+            mFirebaseHelper.setFabState();
+        }
+    }
+
+    public void changeFavouriteState() {
+        Animation scaleAnim = AnimationUtils.loadAnimation(getContext(), R.anim.scale);
+        mFab.startAnimation(scaleAnim);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null ||
+                FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+            SnackbarHelper.showFeatureForLoggedInUsersOnly(
+                    getResources().getString(R.string.feature_favourites), mScrollView);
+            return;
+        }
+        int bluegray700 = getResources().getColor(R.color.bluegray700);
+        if (mFab.getImageTintList().getDefaultColor() == bluegray700) {
+            setFabActive();
+            //here favNum is distracted, because favNum is negative
+            item.favNum--;
+            //but here it has to be positive, because that's the implementation in DetailFirebaseHelper
+            mFirebaseHelper.addTipToFavourites(item.favNum * (-1));
+            prepareFavNum();
+        } else {
+            setFabInactive();
+            item.favNum++;
+            mFirebaseHelper.removeTipFromFavourites(item.favNum * (-1));
+            prepareFavNum();
+
+        }
+    }
+
+    private void setFabInactive() {
+        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.bluegray700)));
+    }
+
+    /*
+        DetailFirebaseHelper.DetailViewInterface implementation
+     */
+
+    @Override
+    public void setFabActive() {
+        if (getContext() == null) return;
+        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
+        AnalyticsUtils.logEventNewLike(getContext());
+    }
+
+    @Override
+    public void prepareContent(DataSnapshot dataSnapshot) {
+
+
+        if (getActivity() == null) return;
         description = (String) dataSnapshot.child("description").getValue();
 
         //start share button prep as soon as description is assigned
@@ -187,20 +288,19 @@ public class DetailActivity extends BaseItemActivity implements
         }
 
 
-        if (!TextUtils.isEmpty(mAuthorId)) {
+        if (!TextUtils.isEmpty(item.getAuthorId())) {
             mAuthorLayout.setVisibility(View.VISIBLE);
-            mFirebaseHelper.getAuthorPhotoFromDb(mAuthorId);
-            mFirebaseHelper.getNicknameFromDb(mAuthorId);
+            mFirebaseHelper.getAuthorPhotoFromDb(item.getAuthorId());
+            mFirebaseHelper.getNicknameFromDb(item.getAuthorId());
 
             int marginTop = (int) getResources().getDimension(R.dimen.share_margin_top_with_author);
             int marginEnd = (int) getResources().getDimension(R.dimen.share_margin_end);
             int marginBottom = (int) getResources().getDimension(R.dimen.share_margin_bottom);
             mLayoutShare.setPadding(0, marginTop, marginEnd, marginBottom);
+        } else {
+            mAuthorLayout.setVisibility(View.GONE);
         }
 
-
-        mImageView.setContentDescription(getResources()
-                .getString(R.string.description_tip_image, mTitle));
 
         //set source if it's in database
         if (dataSnapshot.child("source").getValue() != null) {
@@ -210,80 +310,42 @@ public class DetailActivity extends BaseItemActivity implements
             mSourceTv.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
+
+        if(mScrollView != null) {
+            mScrollView.smoothScrollTo(0, 0);
+            mScrollView.scrollTo(0, 0);
+        }
         makeIngredientsClickable();
     }
 
     private void prepareFavNum() {
-        mFavTv.setText(getResources().getString(R.string.fav_label, String.valueOf(mFavNum)));
-        if (mFavNum != 0) {
+
+        //fav num in the db is negative
+        mFavTv.setText(getResources().getString(R.string.fav_label,
+                String.valueOf(item.favNum * -1)));
+        if (item.favNum != 0) {
             mFavTv.setVisibility(View.VISIBLE);
         } else mFavTv.setVisibility(View.INVISIBLE);
     }
 
-    public void setAuthor(String nickname) {
-        mAuthorTv.setText(nickname);
+    @Override
+    public void setAuthor(String username) {
+        mAuthorTv.setText(username);
     }
 
+    @Override
     public void setAuthorPhoto(String photoUrl) {
         Glide.with(this)
-                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
+                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700_semi))
                 .load(photoUrl)
                 .into(mAuthorPhoto);
     }
 
+
     /*
-      I want FAB to be visible when ingredients layout is visible, and when user scrolls lower,
-      it hides
+        end of interface
+
      */
-    private void prepareFab() {
-        mScrollView.getViewTreeObserver().addOnScrollChangedListener(
-                new ViewTreeObserver.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged() {
-                        if (mScrollView.getScrollY() < mLayoutIngredients.getHeight()) {
-                            mFab.show();
-                        } else {
-                            mFab.hide();
-                        }
-                    }
-                }
-        );
-        if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
-                !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
-            mFirebaseHelper.setFabState();
-        }
-
-    }
-
-    public void changeFavouriteState(View view) {
-        Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
-        mFab.startAnimation(scaleAnim);
-
-        if (FirebaseAuth.getInstance().getCurrentUser() == null ||
-                FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
-            SnackbarHelper.showFeatureForLoggedInUsersOnly(
-                    getResources().getString(R.string.feature_favourites), mScrollView);
-            return;
-        }
-        int bluegray700 = getResources().getColor(R.color.bluegray700);
-        if (mFab.getImageTintList().getDefaultColor() == bluegray700) {
-            setFabActive();
-            mFavNum++;
-            mFirebaseHelper.addTipToFavourites(mFavNum);
-            prepareFavNum();
-            AnalyticsUtils.logEventNewLike(this);
-        } else {
-            mFab.setImageTintList(ColorStateList.valueOf(bluegray700));
-            mFavNum--;
-            mFirebaseHelper.removeTipFromFavourites(mFavNum);
-            prepareFavNum();
-        }
-    }
-
-    @Override
-    public void setFabActive() {
-        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
-    }
 
     private void makeIngredientsClickable() {
         FirebaseDatabase.getInstance().getReference("ingredientList").
@@ -328,36 +390,46 @@ public class DetailActivity extends BaseItemActivity implements
         ingredientView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent ingredientActivityIntent = new Intent(DetailActivity.this,
-                        IngredientActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(KEY_TITLE, String.valueOf(ingredientData.child("title").getValue()));
-                bundle.putString(KEY_IMAGE, String.valueOf(ingredientData.child("image").getValue()));
-                bundle.putString(KEY_ID, ingredientData.getKey());
-                ingredientActivityIntent.putExtras(bundle);
-                ingredientActivityIntent.setAction(Intent.ACTION_VIEW);
-                startActivity(ingredientActivityIntent);
+
+                final ListItem ingredientItem = ingredientData.getValue(ListItem.class);
+                String id = ingredientData.getKey();
+                if (ingredientItem != null) {
+                    ingredientItem.setId(id);
+                }
+
+                if(isPortrait) {
+                    Intent ingredientActivityIntent = new Intent(getContext(),
+                            IngredientActivity.class);
+                    ingredientActivityIntent.putExtra(KEY_ITEM, ingredientItem);
+                    ingredientActivityIntent.setAction(Intent.ACTION_VIEW);
+                    startActivity(ingredientActivityIntent);
+
+                } else {
+                    viewModel.setIsShowingIngredientFromRecipe(true);
+                    viewModel.setChosenIngredient(ingredientItem);
+                    viewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_INGREDIENT);
+                }
+
+
             }
         });
-
-
     }
 
     private void prepareShareButton() {
 
         FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse("https://cosmetique.page.link/?apn=com.blogspot.android_czy_java." +
-                        "beautytips&link=https://cometique.com/" + mId + "&ofl=https://play.google." +
+                        "beautytips&link=https://cometique.com/" + item.getId() + "&ofl=https://play.google." +
                         "com/store/apps/details?id=com.blogspot.android_czy_java.beautytips&ipn=com." +
                         "blogspot.android_czy_java.beautytips&link=https://cometique.com/-1&ofl=https://" +
                         "play.google.com/store/apps/details?id=com.blogspot.android_czy_java.beautytips/"))
                 .setDynamicLinkDomain("cosmetique.page.link")
                 .setSocialMetaTagParameters(new DynamicLink.SocialMetaTagParameters.Builder().
-                        setTitle(mTitle).
-                        setImageUrl(Uri.parse(mImage)).
+                        setTitle(item.getTitle()).
+                        setImageUrl(Uri.parse(item.getImage())).
                         setDescription(description).build())
                 .buildShortDynamicLink()
-                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<ShortDynamicLink>() {
                     @Override
                     public void onComplete(@NonNull Task<ShortDynamicLink> task) {
                         if (task.isSuccessful()) {
@@ -377,14 +449,6 @@ public class DetailActivity extends BaseItemActivity implements
                     }
                 });
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_MEDIA_SHARED)) {
-            finish();
-            overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
-        }
-
-    }
 }
+
+

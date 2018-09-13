@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
@@ -36,6 +37,9 @@ public class ImageFragment extends Fragment {
 
     @BindView(R.id.title_text_view)
     TextView mTitle;
+
+    @BindView(R.id.icon_back)
+    ImageView mIconBack;
 
     private TabletListViewViewModel viewModel;
 
@@ -82,6 +86,18 @@ public class ImageFragment extends Fragment {
         }
         loadImage();
         mTitle.setText(item.getTitle());
+
+        if(viewModel.getIsShowingIngredientFromRecipe()) {
+            Timber.d("showing ingredient from recipe");
+            mIconBack.setVisibility(View.VISIBLE);
+            mIconBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+                    viewModel.setIsShowingIngredientFromRecipe(false);
+                }
+            });
+        }
     }
 
 

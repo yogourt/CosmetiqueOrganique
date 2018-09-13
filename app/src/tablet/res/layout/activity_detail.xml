@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <ScrollView android:id="@+id/detail_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+   <fragment
+       android:layout_height="wrap_content"
+       android:layout_width="match_parent"
+       android:name="com.blogspot.android_czy_java.beautytips.detail.DetailActivityFragment"
+       android:id="@+id/fragment_detail"/>
+
+
+    </ScrollView>
+
+    <include
+        layout="@layout/layout_collapsing_toolbar" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:contentDescription="@string/description_fab"
+        android:onClick="changeFavouriteState"
+        android:src="@drawable/ic_heart"
+        android:tint="@color/bluegray700"
+        app:layout_anchor="@id/layout_ingredients"
+        app:layout_anchorGravity="bottom|end" />
+
+    <include
+        layout="@layout/layout_ad_banner" />
+
+</android.support.design.widget.CoordinatorLayout>

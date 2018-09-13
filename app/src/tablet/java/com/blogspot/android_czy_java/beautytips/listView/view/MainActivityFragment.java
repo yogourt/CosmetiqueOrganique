@@ -1,8 +1,10 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
 
+import android.app.DialogFragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,11 +19,14 @@ import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.RecyclerViewHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.blogspot.android_czy_java.beautytips.listView.view.BaseMainActivity.TAG_DELETE_TIP_DIALOG;
 
 
 /**
@@ -77,8 +82,13 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
     private void prepareRecyclerView(List<ListItem> recyclerViewList) {
 
         //add adapter
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
         mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
-                viewModel, true);
+                    viewModel, 2);
+        } else mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
+                viewModel, 1.5f);
+
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -100,6 +110,10 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
     @Override
     public void onClickDeleteTip(String tipId) {
+            DialogFragment mDialogFragment = new DeleteTipDialog();
+            ((DeleteTipDialog) mDialogFragment).setTipId(tipId);
+            ((DeleteTipDialog) mDialogFragment).setViewModel(viewModel);
+            mDialogFragment.show(getActivity().getFragmentManager(), TAG_DELETE_TIP_DIALOG);
 
     }
 }

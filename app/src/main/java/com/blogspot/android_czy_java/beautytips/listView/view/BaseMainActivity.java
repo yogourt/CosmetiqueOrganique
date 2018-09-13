@@ -3,11 +3,10 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,9 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,32 +25,19 @@ import android.widget.TextView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
+import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter;
-import com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
+import com.blogspot.android_czy_java.beautytips.listView.utils.LanguageHelper;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
-import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
-import com.blogspot.android_czy_java.beautytips.listView.utils.LanguageHelper;
-import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.RecyclerViewHelper;
-import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
 import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
 import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-
-import java.lang.annotation.Target;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -494,6 +477,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
     @Override
     public void setUserPhoto(String imageUri) {
 
+        if(!isDestroyed())
         Glide.with(this)
                 .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
                 .load(imageUri)

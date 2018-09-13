@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="ad_size">FULL_BANNER</string>
+    <string name="ad_size">SMART_BANNER</string>
 
     <string name="opening_title">Welcome! What are you looking for?</string>
     <string name="opening_footer_label">Stay connected!</string>
@@ -10,4 +10,6 @@
     <string name="label_hair">Something for hair,</string>
     <string name="label_face">for face,</string>
     <string name="label_body">for body?</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -1,7 +1,7 @@
-<FrameLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/image"
@@ -9,6 +9,17 @@
         android:layout_height="@dimen/image_height"
         android:scaleType="centerCrop"
         app:layout_collapseMode="parallax" />
+
+    <ImageView
+        android:id="@+id/icon_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/ingredient_back_padding"
+        android:layout_margin="@dimen/ingredient_back_margin"
+        android:src="@drawable/ripple_back"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
@@ -18,12 +29,12 @@
 
     <TextView
         android:id="@+id/title_text_view"
+        style="@style/ExpandedTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        style="@style/ExpandedTitleStyle"
         android:paddingBottom="@dimen/title_bottom_padding"
-        android:paddingStart="@dimen/title_start_padding"
-        android:paddingEnd="@dimen/title_start_padding"/>
+        android:paddingEnd="@dimen/title_start_padding"
+        android:paddingStart="@dimen/title_start_padding" />
 
 </FrameLayout>

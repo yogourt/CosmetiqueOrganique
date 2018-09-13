@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.newTip.view;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -121,9 +122,13 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
 
         //on tablet this activity is a dialog - set appropriate width
         if(getResources().getBoolean(R.bool.is_tablet)) {
-            getWindow().setLayout(getResources().getDisplayMetrics().widthPixels * 2 / 3,
-                    getResources().getDisplayMetrics().heightPixels);
-            this.setFinishOnTouchOutside(false);
+            int width;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                width = getResources().getDisplayMetrics().widthPixels * 2 / 3;
+                getWindow().setLayout(width,
+                        getResources().getDisplayMetrics().heightPixels);
+                this.setFinishOnTouchOutside(false);
+            }
         }
 
 

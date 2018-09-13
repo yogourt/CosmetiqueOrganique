@@ -9,12 +9,7 @@
         <item name="android:colorBackground">@color/bluegray900</item>
     </style>
 
-    <style name="ActivityDialogTheme" parent="Theme.AppCompat.DialogWhenLarge">
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowExitAnimation">@anim/top_to_bottom</item>
-        <item name="android:activityCloseExitAnimation">@anim/top_to_bottom</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:colorAccent">@color/pink200</item>
+    <style name="ActivityDialogTheme" parent="AppTheme">
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -108,6 +103,7 @@
     <style name="IngredientTitleStyle" parent="NormalTextStyle">
         <item name="android:textColor">@color/pink200</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/ingredient_header_text_size</item>
     </style>
 
     <style name="AppTheme.Drawer" >

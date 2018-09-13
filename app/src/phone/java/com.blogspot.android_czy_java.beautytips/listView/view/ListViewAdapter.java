@@ -99,12 +99,6 @@ public class ListViewAdapter extends BaseListViewAdapter {
                 return;
             }
 
-            //common part for tip and ingredient
-            Pair<View, String> imagePair = new Pair<>((View) this.mImage, mImage.getTransitionName());
-            Pair<View, String> scrimPair = new Pair<>(mScrim, mScrim.getTransitionName());
-            Bundle animation = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
-                    imagePair, scrimPair).toBundle();
-
             ListItem item = list.get(getAdapterPosition() - 1);
 
             //open ingredient activity
@@ -117,7 +111,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
                 bundle.putString(KEY_IMAGE, item.getImage());
                 bundle.putString(KEY_ID, item.getId());
                 ingredientActivityIntent.putExtras(bundle);
-                mContext.startActivity(ingredientActivityIntent, animation);
+                mContext.startActivity(ingredientActivityIntent, createSharedElementTransition());
             }
 
             //open detail activity
@@ -126,7 +120,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
                 Bundle bundle = createTipBundle((TipListItem)item);
                 detailActivityIntent.putExtras(bundle);
 
-                mContext.startActivity(detailActivityIntent, animation);
+                mContext.startActivity(detailActivityIntent, createSharedElementTransition());
             }
         }
     }

@@ -26,8 +26,10 @@ public class TabletListViewViewModel extends ListViewViewModel {
     public void init() {
         super.init();
 
-        currentDetailFragmentLiveData = new MutableLiveData<>();
-        currentDetailFragmentLiveData.setValue(TAG_FRAGMENT_OPENING);
+        if(currentDetailFragmentLiveData == null) {
+            currentDetailFragmentLiveData = new MutableLiveData<>();
+            currentDetailFragmentLiveData.setValue(TAG_FRAGMENT_OPENING);
+        }
     }
 
     public void setChosenTip(TipListItem item) {

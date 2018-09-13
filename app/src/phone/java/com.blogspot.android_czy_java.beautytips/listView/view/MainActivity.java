@@ -44,6 +44,7 @@ public class MainActivity extends BaseMainActivity implements ListViewAdapter.Po
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(get)
 
         viewModel.getRecyclerViewLiveData().observe(this, new Observer<List<ListItem>>() {
             @Override

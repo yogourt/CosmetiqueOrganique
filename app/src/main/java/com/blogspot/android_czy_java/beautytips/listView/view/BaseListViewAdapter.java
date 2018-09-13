@@ -1,13 +1,17 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -49,8 +53,8 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
     public static final String KEY_TITLE = "title";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_ID = "id";
+    public static final String KEY_FAV_NUM = "fav_num";
     public static final String KEY_AUTHOR = "author";
-    public static final String KEY_FAV_NUM = "favourites_number";
 
     public static final int VIEW_TYPE_HEADER = 0;
     public static final int VIEW_TYPE_ITEM = 1;
@@ -202,6 +206,13 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
         BaseItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public Bundle createSharedElementTransition() {
+            Pair<View, String> imagePair = new Pair<>((View) mImage, mImage.getTransitionName());
+            Pair<View, String> scrimPair = new Pair<>(mScrim, mScrim.getTransitionName());
+            return ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
+                    imagePair, scrimPair).toBundle();
         }
 
     }

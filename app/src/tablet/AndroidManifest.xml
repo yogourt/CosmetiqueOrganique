@@ -1,20 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.blogspot.android_czy_java.beautytips">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
         <activity
-            android:screenOrientation="sensorLandscape"
             android:name=".listView.view.MainActivity"
             android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -27,11 +27,14 @@
                     android:host="cosmetique.com"
                     android:scheme="https" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".detail.DetailActivity" />
 
+        <activity android:name=".ingredient.IngredientActivity"/>
     </application>
 
 </manifest>

@@ -4,6 +4,8 @@
 
     <dimen name="normal_text_size">20sp</dimen>
     <dimen name="activity_vertical_margin">48dp</dimen>
+    <dimen name="activity_horizontal_margin">48dp</dimen>
+    <dimen name="button_padding">2dp</dimen>
 
     <!--navigation drawer dimens -->
     <dimen name="items_text_size">16sp</dimen>
@@ -24,33 +26,41 @@
     <!-- recipes list dimens -->
     <dimen name="list_padding">8dp</dimen>
     <dimen name="list_start_padding">40dp</dimen>
-    <dimen name="list_end_padding">64dp</dimen>
+    <dimen name="list_end_padding">40dp</dimen>
     <dimen name="chip_text_size">18sp</dimen>
     <dimen name="chip_horiz_spacing">24dp</dimen>
     <dimen name="title_text_size">32sp</dimen>
     <dimen name="chip_vert_margin">16dp</dimen>
 
     <!-- detail screen dimens -->
-    <dimen name="image_height">300dp</dimen>
+    <dimen name="image_height">350dp</dimen>
     <dimen name="fav_padding_end">64dp</dimen>
     <dimen name="title_bottom_padding">32dp</dimen>
-    <dimen name="title_start_padding">48dp</dimen>
+    <dimen name="title_start_padding">64dp</dimen>
     <dimen name="exp_title_text_size">34sp</dimen>
-    <dimen name="ingredients_bottom_padding">32dp</dimen>
-    <dimen name="ingredients_top_padding">24dp</dimen>
+    <dimen name="ingredients_bottom_padding">26dp</dimen>
+    <dimen name="ingredients_top_padding">18dp</dimen>
+    <dimen name="ingredients_inner_padding">8dp</dimen>
     <dimen name="ingredients_text_size">20sp</dimen>
-    <dimen name="ingredients_inner_padding">16dp</dimen>
     <dimen name="fav_margin_top">40dp</dimen>
+    <dimen name="ingredient_padding">2dp</dimen>
+    <dimen name="desc_padding">48dp</dimen>
+    <dimen name="desc_end_padding">80dp</dimen>
+    <dimen name="fab_margin">48dp</dimen>
 
     <!--ingredient screen dimens -->
     <dimen name="search_label_text_size">24sp</dimen>
+    <dimen name="search_label_padding">4dp</dimen>
     <dimen name="ingredient_screen_top_margin">16dp</dimen>
+    <dimen name="ingredient_back_padding">8dp</dimen>
+    <dimen name="ingredient_back_margin">24dp</dimen>
+    <dimen name="ingredient_header_text_size">22sp</dimen>
 
     <!--opening screen dimens -->
     <dimen name="footer_padding">24dp</dimen>
 
 
-    <dimen name="add_margin_end">20dp</dimen>
+    <dimen name="add_margin_end">0dp</dimen>
 
 
     <!-- new tip dimens -->

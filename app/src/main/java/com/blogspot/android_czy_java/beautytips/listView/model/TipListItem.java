@@ -2,8 +2,13 @@ package com.blogspot.android_czy_java.beautytips.listView.model;
 
 import android.support.annotation.Keep;
 
+import java.io.Serializable;
+
 @Keep
-public class TipListItem extends ListItem{
+public class TipListItem extends ListItem implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
     public String category;
     public String authorId;
     public long favNum;
@@ -16,6 +21,15 @@ public class TipListItem extends ListItem{
         this.title = title;
         this.category = category;
         this.favNum = favNum;
+    }
+
+    public TipListItem(String image, String title, String subcategory, String id, int matches,
+                       String category, String authorId, long favNum, boolean inFav) {
+        super(image, title, subcategory, id, matches);
+        this.category = category;
+        this.authorId = authorId;
+        this.favNum = favNum;
+        this.inFav = inFav;
     }
 
 
