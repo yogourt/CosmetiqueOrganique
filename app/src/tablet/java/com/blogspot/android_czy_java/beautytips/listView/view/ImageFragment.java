@@ -83,8 +83,8 @@ public class ImageFragment extends Fragment {
     private void prepareContent(@Nullable ListItem tipListItem) {
         if (tipListItem != null) {
             item = tipListItem;
+            loadImage();
         }
-        loadImage();
         mTitle.setText(item.getTitle());
 
         if(viewModel.getIsShowingIngredientFromRecipe()) {

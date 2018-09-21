@@ -1,7 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.detail;
 
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -9,7 +8,6 @@ import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -54,18 +52,17 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM;
+import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DetailActivityFragment extends Fragment
-        implements DetailFirebaseHelper.DetailViewInterface {
-
+        implements DetailFirebaseHelper.DetailViewInterface, DetailActivity.DetailFragmentInterface {
 
     @Nullable
     @BindView(R.id.fab)
@@ -162,14 +159,27 @@ public class DetailActivityFragment extends Fragment
             }
         } else {
             item = viewModel.getChosenTip();
-            prepareFab();
+            if(item != null) prepareFab();
         }
 
         if (item == null) return;
         mFirebaseHelper.getFirebaseDatabaseData(item.getId());
+        Timber.d("item id: " + item.getId());
         prepareFavNum();
 
 
+    }
+
+    @Override
+    public void onPause() {
+
+        if(getActivity() != null) {
+            Timber.d("set intent");
+            getActivity().setIntent(createDataIntent());
+            if(getActivity().getIntent() != null) Timber.d("intent set");
+        }
+
+        super.onPause();
     }
 
     @Override
@@ -177,8 +187,8 @@ public class DetailActivityFragment extends Fragment
 
         Timber.d("on destroy view");
 
-        if(mScrollView != null)
-        mScrollView.getViewTreeObserver().removeOnScrollChangedListener(scrollListener);
+        if (mScrollView != null)
+            mScrollView.getViewTreeObserver().removeOnScrollChangedListener(scrollListener);
         super.onDestroyView();
     }
 
@@ -190,7 +200,7 @@ public class DetailActivityFragment extends Fragment
         scrollListener = new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                if (mScrollView.getScrollY() < mLayoutIngredients.getHeight() +
+                if (mScrollView.getScrollY() < getIngredientLayoutHeight() +
                         getResources().getDimension(R.dimen.image_height)) {
                     mFab.show();
                 } else {
@@ -209,9 +219,10 @@ public class DetailActivityFragment extends Fragment
         if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
                 !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             setFabInactive();
-            mFirebaseHelper.setFabState();
+            getFabState();
         }
     }
+
 
     public void changeFavouriteState() {
         Animation scaleAnim = AnimationUtils.loadAnimation(getContext(), R.anim.scale);
@@ -226,33 +237,86 @@ public class DetailActivityFragment extends Fragment
         int bluegray700 = getResources().getColor(R.color.bluegray700);
         if (mFab.getImageTintList().getDefaultColor() == bluegray700) {
             setFabActive();
-            //here favNum is distracted, because favNum is negative
-            item.favNum--;
-            //but here it has to be positive, because that's the implementation in DetailFirebaseHelper
-            mFirebaseHelper.addTipToFavourites(item.favNum * (-1));
-            prepareFavNum();
+            addFav();
+
         } else {
             setFabInactive();
-            item.favNum++;
-            mFirebaseHelper.removeTipFromFavourites(item.favNum * (-1));
-            prepareFavNum();
+            removeFav();
 
         }
+    }
+
+    public void setFabActive() {
+        if (getContext() == null) return;
+        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
+        AnalyticsUtils.logEventNewLike(getContext());
     }
 
     private void setFabInactive() {
         mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.bluegray700)));
     }
 
+
+    /*
+        DetailActivity.DetailFragmentInterface implementation
+     */
+
+    @Override
+    public void getFabState() {
+        mFirebaseHelper.setFabState(item.getId());
+    }
+
+    @Override
+    public int getIngredientLayoutHeight() {
+        return mLayoutIngredients.getHeight();
+    }
+
+    @Override
+    public void removeFav() {
+        item.favNum++;
+        mFirebaseHelper.removeTipFromFavourites(item.favNum * (-1));
+        prepareFavNum();
+    }
+
+    @Override
+    public void addFav() {
+        //here favNum is distracted, because favNum is negative
+        item.favNum--;
+        //but here it has to be positive, because that's the implementation in DetailFirebaseHelper
+        mFirebaseHelper.addTipToFavourites(item.favNum * (-1));
+        prepareFavNum();
+    }
+
+    @Override
+    public Intent createDataIntent() {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+
+        if(item != null) {
+            bundle.putLong(KEY_FAV_NUM, item.getFavNum());
+            bundle.putString(KEY_ID, item.getId());
+        }
+        intent.putExtras(bundle);
+        return intent;
+    }
+
+
+
     /*
         DetailFirebaseHelper.DetailViewInterface implementation
      */
 
     @Override
-    public void setFabActive() {
-        if (getContext() == null) return;
-        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
-        AnalyticsUtils.logEventNewLike(getContext());
+    public void setFabActiveFromFirebaseHelper() {
+        Timber.d("setFabActiveFromFbHelper");
+        //if it's portrait, pass this data to activity (it handles FAB)
+        if (isPortrait) {
+            ((DetailActivity)getActivity()).setFabActive();
+        }
+        //else FAB is handled in this fragment
+        else {
+            setFabActive();
+        }
     }
 
     @Override
@@ -311,7 +375,7 @@ public class DetailActivityFragment extends Fragment
         }
 
 
-        if(mScrollView != null) {
+        if (mScrollView != null) {
             mScrollView.smoothScrollTo(0, 0);
             mScrollView.scrollTo(0, 0);
         }
@@ -397,7 +461,7 @@ public class DetailActivityFragment extends Fragment
                     ingredientItem.setId(id);
                 }
 
-                if(isPortrait) {
+                if (isPortrait) {
                     Intent ingredientActivityIntent = new Intent(getContext(),
                             IngredientActivity.class);
                     ingredientActivityIntent.putExtra(KEY_ITEM, ingredientItem);
@@ -449,6 +513,7 @@ public class DetailActivityFragment extends Fragment
                     }
                 });
     }
+
 }
 
 

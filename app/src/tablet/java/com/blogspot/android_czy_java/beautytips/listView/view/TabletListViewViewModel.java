@@ -15,12 +15,14 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLay
 
 public class TabletListViewViewModel extends ListViewViewModel {
 
-    private TipListItem chosenTip;
+    private MutableLiveData<TipListItem> chosenTip;
     private ListItem chosenIngredient;
 
     private boolean isShowingIngredientFromRecipe;
 
     private MutableLiveData<String> currentDetailFragmentLiveData;
+
+    private MutableLiveData<Boolean> tipChangeIndicator;
 
     @Override
     public void init() {
@@ -29,15 +31,21 @@ public class TabletListViewViewModel extends ListViewViewModel {
         if(currentDetailFragmentLiveData == null) {
             currentDetailFragmentLiveData = new MutableLiveData<>();
             currentDetailFragmentLiveData.setValue(TAG_FRAGMENT_OPENING);
+            chosenTip = new MutableLiveData<>();
+            tipChangeIndicator = new MutableLiveData<>();
         }
     }
 
     public void setChosenTip(TipListItem item) {
-        chosenTip = item;
+        chosenTip.setValue(item);
     }
 
     public TipListItem getChosenTip() {
-        return chosenTip;
+        return chosenTip.getValue();
+    }
+
+    public LiveData<TipListItem> getChosenTipLiveData() {
+        return  chosenTip;
     }
 
     public void setChosenIngredient(ListItem item) {
@@ -67,4 +75,13 @@ public class TabletListViewViewModel extends ListViewViewModel {
     public boolean getIsShowingIngredientFromRecipe() {
         return isShowingIngredientFromRecipe;
     }
+
+    public void notifyTipChange() {
+        tipChangeIndicator.setValue(true);
+    }
+
+    public LiveData<Boolean> getTipChangeIndicator() {
+        return tipChangeIndicator;
+    }
+
 }

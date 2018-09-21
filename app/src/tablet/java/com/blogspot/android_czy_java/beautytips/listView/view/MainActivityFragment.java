@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.RecyclerViewHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
@@ -25,8 +27,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM;
+import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseMainActivity.TAG_DELETE_TIP_DIALOG;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
 
 
 /**
@@ -70,6 +76,7 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         //register this observer after layout is inflated
         viewModel.getRecyclerViewLiveData().observe(this, new Observer<List<ListItem>>() {
             @Override
@@ -77,14 +84,37 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
                 prepareRecyclerView(list);
             }
         });
+
+
+        //this is done to pass changed fav num from detail fragment so it's updated in tip list
+            viewModel.getTipChangeIndicator().observe(this, new Observer<Boolean>() {
+
+                @Override
+                public void onChanged(@Nullable Boolean aBoolean) {
+                    if (getActivity() != null) {
+                        Timber.d("activity not null");
+                        if (getActivity().getIntent() != null) {
+                            Bundle bundle = getActivity().getIntent().getExtras();
+                            String id = bundle.getString(KEY_ID);
+                            Long favNum = bundle.getLong(KEY_FAV_NUM, 0);
+
+                            Timber.d("favNum: " + favNum);
+
+                            if (!TextUtils.isEmpty(id)) {
+                                if (mAdapter != null) mAdapter.setFavNum(id, favNum);
+                            }
+                        }
+                    }
+                }
+            });
     }
 
     private void prepareRecyclerView(List<ListItem> recyclerViewList) {
 
         //add adapter
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
                     viewModel, 2);
         } else mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
                 viewModel, 1.5f);
@@ -101,7 +131,14 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
         if (mRecyclerView.getItemDecorationCount() == 0)
             mRecyclerView.addItemDecoration(new SpacesItemDecoration(
                     (int) getResources().getDimension(R.dimen.list_padding)));
+
     }
+
+
+    public void setTipIdFromDynamicLink(String tipId) {
+        if (mAdapter != null) mAdapter.openTipWithId(tipId);
+    }
+
 
 
     /*
@@ -110,10 +147,10 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
     @Override
     public void onClickDeleteTip(String tipId) {
-            DialogFragment mDialogFragment = new DeleteTipDialog();
-            ((DeleteTipDialog) mDialogFragment).setTipId(tipId);
-            ((DeleteTipDialog) mDialogFragment).setViewModel(viewModel);
-            mDialogFragment.show(getActivity().getFragmentManager(), TAG_DELETE_TIP_DIALOG);
+        DialogFragment mDialogFragment = new DeleteTipDialog();
+        ((DeleteTipDialog) mDialogFragment).setTipId(tipId);
+        ((DeleteTipDialog) mDialogFragment).setViewModel(viewModel);
+        mDialogFragment.show(getActivity().getFragmentManager(), TAG_DELETE_TIP_DIALOG);
 
     }
 }

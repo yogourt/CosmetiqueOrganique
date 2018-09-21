@@ -1,11 +1,12 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,18 +18,20 @@ import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
 
-import java.io.Serializable;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_OPENING;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
 
 
 public class ListViewAdapter extends BaseListViewAdapter {
 
     public static final String KEY_ITEM = "item";
+
+    public static final int REQUEST_CODE_DETAIL_ACTIVITY = 50;
 
 
     public ListViewAdapter(Context context, List<ListItem> list,
@@ -62,7 +65,24 @@ public class ListViewAdapter extends BaseListViewAdapter {
     //this method is used when dynamic link is passed
     @Override
     public void openTipWithId(String id) {
+        for (ListItem listItem : list) {
+            if (listItem.getId().equals(id)) {
+                openDetailScreen((TipListItem) listItem, null);
+            }
+        }
+    }
 
+    public void setFavNum(String id, long favNum) {
+
+        Timber.d("setFavNum: " + favNum);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId().equals(id)) {
+                TipListItem item = ((TipListItem) list.get(i));
+                item.setFavNum(favNum);
+                list.set(i, item);
+            }
+
+        }
     }
 
     public class ItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
@@ -83,31 +103,8 @@ public class ListViewAdapter extends BaseListViewAdapter {
             //this will happen via ViewModel. In the DetailActivityFragment the chosen tip's description
             //will be opened
 
-            //if the recipe was chosen
-            if (!tabletViewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
-
-                TipListItem item = (TipListItem) list.get(getAdapterPosition() - 1);
-
-                //if the configuration is portrait, start detail activity
-                if (mContext.getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_PORTRAIT) {
-
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(KEY_ITEM, item);
-                    Intent detailActivityIntent = new Intent(mContext, DetailActivity.class);
-                    detailActivityIntent.putExtras(bundle);
-                    mContext.startActivity(detailActivityIntent, createSharedElementTransition());
-                }
-
-                if (tabletViewModel.getChosenTip() != null &&
-                        tabletViewModel.getChosenTip().equals(item)) return;
-                tabletViewModel.setChosenTip(item);
-                tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
-
-
-            }
             //if the ingredient was chosen
-            else {
+            if (tabletViewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
 
                 ListItem item = list.get(getAdapterPosition() - 1);
 
@@ -122,15 +119,54 @@ public class ListViewAdapter extends BaseListViewAdapter {
                     mContext.startActivity(ingredientActivityIntent, createSharedElementTransition());
                 }
 
+
                 if (tabletViewModel.getIsShowingIngredientFromRecipe())
                     tabletViewModel.setIsShowingIngredientFromRecipe(false);
 
                 if (tabletViewModel.getChosenIngredient() != null &&
                         tabletViewModel.getChosenIngredient().equals(item)) return;
-                (tabletViewModel).setChosenIngredient(item);
+                tabletViewModel.setChosenIngredient(item);
                 tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_INGREDIENT);
+
+
+            }
+            //if the tip was chosen
+            else {
+                TipListItem item = (TipListItem) list.get(getAdapterPosition() - 1);
+                Timber.d("chosen tip: " + String.valueOf(getAdapterPosition() - 1));
+                openDetailScreen(item, createSharedElementTransition());
 
             }
         }
     }
+
+    private void openDetailScreen(TipListItem item, @Nullable Bundle sharedElementTransition) {
+
+
+        TabletListViewViewModel tabletViewModel = (TabletListViewViewModel) viewModel;
+        tabletViewModel.notifyTipChange();
+
+        //if the configuration is portrait, start detail activity
+        if (mContext.getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT) {
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(KEY_ITEM, item);
+            Intent detailActivityIntent = new Intent(mContext, DetailActivity.class);
+            detailActivityIntent.putExtras(bundle);
+            if (sharedElementTransition != null)
+                ((Activity)mContext).startActivityForResult(detailActivityIntent,
+                        REQUEST_CODE_DETAIL_ACTIVITY, sharedElementTransition);
+            else ((Activity)mContext).startActivityForResult(detailActivityIntent,
+                    REQUEST_CODE_DETAIL_ACTIVITY);
+        }
+
+        if (tabletViewModel.getChosenTip() != null &&
+                tabletViewModel.getChosenTip().equals(item)) return;
+        tabletViewModel.setChosenTip(item);
+        tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+
+    }
+
+
 }

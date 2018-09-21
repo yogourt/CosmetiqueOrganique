@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.blogspot.android_czy_java.beautytips">
 
-    <supports-screens android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="false"
-        android:xlargeScreens="false" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
@@ -41,6 +36,7 @@
             android:launchMode="singleTop"
             android:theme="@style/ActivityDialogTheme"
             android:parentActivityName=".listView.view.MainActivity" />
+        <activity android:name=".detail.DetailActivity" />
 
         <provider android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"
             android:name="com.facebook.FacebookContentProvider"
