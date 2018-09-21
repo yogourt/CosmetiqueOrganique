@@ -16,6 +16,8 @@ import butterknife.ButterKnife;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    public static final int RC_WELCOME_ACTIVITY = 200;
+
     public static final int RESULT_LOG_IN = 100;
     public static final int RESULT_LOG_IN_ANONYMOUSLY = 200;
     public static final int RESULT_TERMINATE = 300;

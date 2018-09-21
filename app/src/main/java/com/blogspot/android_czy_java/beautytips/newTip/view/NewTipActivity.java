@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.newTip.view;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -38,10 +39,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RESULT_DATA_CHANGE;
 
 public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseHelper.NewTipViewInterface,
         ConfirmationDialog.ConfirmationDialogListener {
+
+
+    public static final int RESULT_DATA_CHANGE = 10;
 
     private static final int RC_PHOTO_PICKER = 100;
     public static final String TAG_CONF_DIALOG = "confirmation_dialog";
@@ -116,6 +119,19 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_tip);
+
+        //on tablet this activity is a dialog - set appropriate width
+        if(getResources().getBoolean(R.bool.is_tablet)) {
+            int width;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                width = getResources().getDisplayMetrics().widthPixels * 2 / 3;
+                getWindow().setLayout(width,
+                        getResources().getDisplayMetrics().heightPixels);
+                this.setFinishOnTouchOutside(false);
+            }
+        }
+
+
         ButterKnife.bind(this);
 
         overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);
@@ -394,4 +410,5 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
         snackbar.getView().setBackgroundColor(getResources().getColor(R.color.bluegray900));
         snackbar.show();
     }
+
 }

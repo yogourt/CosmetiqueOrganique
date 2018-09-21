@@ -9,11 +9,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.RC_PHOTO_PICKER;
 
 public class ExternalStoragePermissionHelper {
 
     public static final int RC_PERMISSION_EXT_STORAGE = 140;
+    public static final int RC_PHOTO_PICKER = 100;
 
     public static boolean isPermissionGranted(Context context) {
         int result = ContextCompat.checkSelfPermission(context,

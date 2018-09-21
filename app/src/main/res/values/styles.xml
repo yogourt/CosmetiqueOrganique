@@ -9,6 +9,9 @@
         <item name="android:colorBackground">@color/bluegray900</item>
     </style>
 
+    <style name="ActivityDialogTheme" parent="AppTheme">
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -100,5 +103,10 @@
     <style name="IngredientTitleStyle" parent="NormalTextStyle">
         <item name="android:textColor">@color/pink200</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/ingredient_header_text_size</item>
+    </style>
+
+    <style name="AppTheme.Drawer" >
+        <item name="android:textSize">@dimen/items_text_size</item>
     </style>
 </resources>

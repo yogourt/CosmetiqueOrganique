@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><style name="ActivityDialogTheme" parent="Theme.AppCompat.DialogWhenLarge">
+    <item name="windowNoTitle">true</item>
+    <item name="android:windowExitAnimation">@anim/top_to_bottom</item>
+    <item name="android:activityCloseExitAnimation">@anim/top_to_bottom</item>
+    <item name="android:textColorPrimary">@android:color/white</item>
+    <item name="android:colorAccent">@color/pink200</item>
+</style></resources>

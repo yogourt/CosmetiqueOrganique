@@ -30,6 +30,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/switch_popular"
+                android:textSize="@dimen/chip_text_size"
                 android:textColor="@color/pink200"
                 android:textStyle="bold" />
 
@@ -40,6 +41,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/switch_new"
+                android:textSize="@dimen/chip_text_size"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>

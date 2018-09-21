@@ -25,7 +25,7 @@ android {
         applicationId "com.blogspot.android_czy_java.beautytips"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 22
+        versionCode 10022
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -36,7 +36,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
+        debug {
+            applicationIdSuffix ".dev"
+        }
     }
+
+    flavorDimensions "general"
+    productFlavors {
+        phone {
+            dimension "general"
+            versionNameSuffix "-phone"
+        }
+        tablet {
+            dimension "general"
+            versionNameSuffix "-tablet"
+        }
+    }
+    sourceSets { phone { java.srcDirs = ['src/phone/java', 'src/java/phone'] } }
 }
 
 dependencies {

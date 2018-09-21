@@ -1,0 +1,68 @@
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/layout_ingredients"
+            layout="@layout/layout_ingredients" />
+
+        <LinearLayout
+            android:id="@+id/properties_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fav_margin_top"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fav_text_view"
+                style="@style/NormalTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/fav_padding_end"
+                android:paddingStart="@dimen/desc_padding"
+                android:layout_gravity="center_vertical"
+                android:drawableEnd="@drawable/ic_valentines_heart"
+                android:drawablePadding="@dimen/icon_padding"
+                android:textColor="@color/bluegray300" />
+
+            <TextView
+                android:id="@+id/source_text_view"
+                style="@style/NormalTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/source_label"
+                android:textColorLink="@color/bluegray300"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/description_text_view"
+            style="@style/NormalTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/desc_padding"
+            android:layout_marginEnd="@dimen/desc_end_padding"
+            android:paddingBottom="@dimen/desc_padding"
+            android:paddingTop="@dimen/desc_top_padding" />
+
+
+        <include
+            android:id="@+id/layout_author"
+            layout="@layout/layout_author"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/layout_share"
+            layout="@layout/layout_share" />
+
+
+
+    </LinearLayout>

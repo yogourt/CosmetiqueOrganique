@@ -1,6 +1,11 @@
 package com.blogspot.android_czy_java.beautytips.listView.model;
 
-public class ListItem {
+import java.io.Serializable;
+
+public class ListItem  implements Serializable {
+
+    private static final long serialVersionUID = 0L;
+
     public String image;
     public String title;
     public String subcategory;
@@ -13,6 +18,16 @@ public class ListItem {
         this.image = image;
         this.title = title;
         this.subcategory = subcategory;
+    }
+
+    public ListItem(String image, String title, String subcategory, String id, int matches) {
+        this.image = image;
+        this.title = title;
+        this.id = id;
+
+        //this is needed for serialization purposes
+        this.subcategory = subcategory;
+        this.matches = matches;
     }
 
     public String getImage() {

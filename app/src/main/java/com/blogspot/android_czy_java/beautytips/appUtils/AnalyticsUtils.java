@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.appUtils;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class AnalyticsUtils {
@@ -18,5 +19,9 @@ public class AnalyticsUtils {
         Bundle analyticsBundle = new Bundle();
         analyticsBundle.putString("tip_title", tipTitle);
         FirebaseAnalytics.getInstance(context).logEvent("tip_opened", analyticsBundle);
+    }
+
+    public static void logEventNewLike(Context context) {
+        FirebaseAnalytics.getInstance(context).logEvent("like_added", null);
     }
 }

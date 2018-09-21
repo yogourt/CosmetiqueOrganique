@@ -12,12 +12,15 @@
     <dimen name="fab_margin">64dp</dimen>
     <dimen name="exp_title_text_size">30sp</dimen>
     <dimen name="desc_padding">32dp</dimen>
+    <dimen name="desc_end_padding">@dimen/desc_padding</dimen>
     <dimen name="author_padding_start">48dp</dimen>
     <dimen name="search_padding_start">48dp</dimen>
     <dimen name="button_width">230dp</dimen>
+    <dimen name="image_height">300dp</dimen>
 
     <dimen name="dialog_width">300dp</dimen>
 
     <!-- welcome activity -->
     <dimen name="layout_width">400dp</dimen>
+
 </resources>

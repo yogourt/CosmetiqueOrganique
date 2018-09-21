@@ -11,29 +11,9 @@
         android:nestedScrollingEnabled="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/properties_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="@dimen/activity_vertical_margin">
-        </LinearLayout>
+       <include
+           layout="@layout/content_ingredient" />
 
-        <TextView
-            android:id="@+id/searching_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/share_margin_bottom"
-            style="@style/IngredientTitleStyle"
-            android:textAlignment="center"
-            android:textSize="@dimen/search_label_text_size"
-            android:onClick="searchFor"/>
-        </LinearLayout>
     </ScrollView>
 
     <include layout="@layout/layout_collapsing_toolbar" />

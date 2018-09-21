@@ -16,13 +16,12 @@ public class DetailFirebaseHelper {
     private DetailViewInterface activity;
     private String tipId;
 
-    public DetailFirebaseHelper(DetailViewInterface activity, String tipId) {
+    public DetailFirebaseHelper(DetailViewInterface activity) {
         this.activity = activity;
-        this.tipId = tipId;
     }
 
     public interface DetailViewInterface {
-        void setFabActive();
+        void setFabActiveFromFirebaseHelper();
         void prepareContent(DataSnapshot dataSnapshot);
         void setAuthor(String username);
         void setAuthorPhoto(String photoUrl);
@@ -32,7 +31,9 @@ public class DetailFirebaseHelper {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public void getFirebaseDatabaseData() {
+    public void getFirebaseDatabaseData(String tipId) {
+
+        this.tipId = tipId;
         FirebaseDatabase.getInstance().getReference("tips/" + tipId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -65,7 +66,7 @@ public class DetailFirebaseHelper {
                 .setValue(favNum * -1);
     }
 
-    public void setFabState() {
+    public void setFabState(String tipId) {
         FirebaseDatabase.getInstance().getReference("tipList/" + tipId)
                 .child(getUserId())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -73,7 +74,7 @@ public class DetailFirebaseHelper {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Timber.d("userId = " + getUserId());
                         String value = String.valueOf(dataSnapshot.getValue());
-                        if(!value.equals("null")) activity.setFabActive();
+                        if(!value.equals("null")) activity.setFabActiveFromFirebaseHelper();
                     }
 
                     @Override

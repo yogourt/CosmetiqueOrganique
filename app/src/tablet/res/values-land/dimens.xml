@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- welcome activity -->
+    <dimen name="layout_width">500dp</dimen>
+    <dimen name="welcome_button_bottom_padding">64dp</dimen>
+
+    <!-- detail fragment dimens -->
+    <dimen name="desc_padding">48dp</dimen>
+    <dimen name="desc_end_padding">@dimen/desc_padding</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="ingredients_bottom_padding">30dp</dimen>
+    <dimen name="ingredients_top_padding">22dp</dimen>
+    <dimen name="ingredients_inner_padding">12dp</dimen>
+    <dimen name="title_start_padding">48dp</dimen>
+
+    <!-- new tip dimens -->
+    <dimen name="title_horiz_margin">48dp</dimen>
+    <dimen name="desc_margin">48dp</dimen>
+    <dimen name="new_tip_source_start_margin">54dp</dimen>
+    <dimen name="author_padding_start">64dp</dimen>
+
+    <dimen name="spinner_button_ext_margin">64dp</dimen>
+
+    <!-- main screen dimens -->
+    <dimen name="dialog_width">450dp</dimen>
+    <dimen name="list_end_padding">64dp</dimen>
+
+
+    <dimen name="add_margin_end">20dp</dimen>
+</resources>

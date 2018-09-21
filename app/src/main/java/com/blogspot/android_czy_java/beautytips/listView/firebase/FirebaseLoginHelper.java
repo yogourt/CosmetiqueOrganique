@@ -235,12 +235,4 @@ public class FirebaseLoginHelper {
         activity.setIsPhotoSaving(false);
     }
 
-    public static boolean isUserNull() {
-        return FirebaseAuth.getInstance().getCurrentUser() == null;
-    }
-
-    public static boolean isUserAnonymous() {
-        return FirebaseAuth.getInstance().getCurrentUser().isAnonymous();
-    }
-
 }

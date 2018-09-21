@@ -75,7 +75,7 @@ public class FirebaseHelper {
                                     item.setId(id);
                                     if (!author.equals("null")) item.setAuthorId(author);
 
-                                    if (!FirebaseLoginHelper.isUserNull() && !FirebaseLoginHelper.isUserAnonymous()
+                                    if (!isUserNull() && !isUserAnonymous()
                                             && snapshot.child(FirebaseLoginHelper.getUserId()).getValue() != null) {
                                         item.setInFav(true);
                                     }
@@ -147,7 +147,7 @@ public class FirebaseHelper {
                                 tipItem.setId(id);
                                 if (!author.equals("null")) tipItem.setAuthorId(author);
 
-                                if (!FirebaseLoginHelper.isUserNull() && !FirebaseLoginHelper.isUserAnonymous()
+                                if (!isUserNull() && !isUserAnonymous()
                                         && snapshot.child(FirebaseLoginHelper.getUserId()).getValue() != null) {
                                     tipItem.setInFav(true);
                                 }
@@ -263,5 +263,14 @@ public class FirebaseHelper {
                         Timber.d(databaseError.getMessage());
                     }
                 });
+    }
+
+    public static boolean isUserNull() {
+        return FirebaseAuth.getInstance().getCurrentUser() == null;
+    }
+
+
+    public static boolean isUserAnonymous() {
+        return FirebaseAuth.getInstance().getCurrentUser().isAnonymous();
     }
 }

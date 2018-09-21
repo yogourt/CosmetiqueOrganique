@@ -38,8 +38,6 @@ public class ListViewViewModel extends ViewModel {
 
     private MutableLiveData<String> userStateLiveData;
 
-    private int[] into;
-
     private MutableLiveData<List<ListItem>> recyclerViewLiveData;
 
     private FirebaseHelper mFirebaseHelper;
@@ -64,8 +62,8 @@ public class ListViewViewModel extends ViewModel {
             //set value of userStateLiveData. This will be observed in Main Activity to prepare
             // navigation drawer header.
             userStateLiveData = new MutableLiveData<>();
-            if(FirebaseLoginHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
-            else if(FirebaseLoginHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
+            if(FirebaseHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
+            else if(FirebaseHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
             else userStateLiveData.setValue(USER_STATE_LOGGED_IN);
 
             recyclerViewLiveData = new MutableLiveData<>();
@@ -92,7 +90,6 @@ public class ListViewViewModel extends ViewModel {
 
         this.categoryLiveData.setValue(category);
         if(!categoryIsTheSame) {
-            into = null;
             setSubcategory(SUBCATEGORY_ALL);
             notifyRecyclerDataHasChanged();
         }
@@ -117,14 +114,6 @@ public class ListViewViewModel extends ViewModel {
 
     public void changeUserState(String newState) {
         userStateLiveData.setValue(newState);
-    }
-
-    public int[] getInto() {
-        return into;
-    }
-
-    public void setInto(int[] into) {
-        this.into = into;
     }
 
     public LiveData<List<ListItem>> getRecyclerViewLiveData() {

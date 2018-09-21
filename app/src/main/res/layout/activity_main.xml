@@ -12,8 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.blogspot.android_czy_java.beautytips.listView.view.MainActivity">
+        android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,18 +22,12 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/ic_menu" />
 
-        <FrameLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingEnd="@dimen/list_padding"
-                android:paddingStart="@dimen/list_padding" />
-
-        </FrameLayout>
+            android:layout_height="match_parent"
+            android:paddingEnd="@dimen/list_padding"
+            android:paddingStart="@dimen/list_padding" />
 
     </LinearLayout>
 

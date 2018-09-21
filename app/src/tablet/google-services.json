@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "689797563562",
+    "firebase_url": "https://beautytips-28e20.firebaseio.com",
+    "project_id": "beautytips-28e20",
+    "storage_bucket": "beautytips-28e20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689797563562:android:186b829376a4a5ad",
+        "android_client_info": {
+          "package_name": "com.blogspot.android_czy_java.beautytips"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689797563562-eq4dfco49907ll1p85fmejog50l96koh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blogspot.android_czy_java.beautytips",
+            "certificate_hash": "01b9173ca88413af22707c5a28b8f7ef2f4d3c0e"
+          }
+        },
+        {
+          "client_id": "689797563562-m37h9grtq30m1qmm3lib2ult0avb3ttk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blogspot.android_czy_java.beautytips",
+            "certificate_hash": "a097a3c7f20695744e098083c4babfd787c1f336"
+          }
+        },
+        {
+          "client_id": "689797563562-t0kgeebf51keltuejc45201grtp80bq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTU7cf8Lcq-phlci8xlIzoAPqVT-S8lQE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689797563562-t0kgeebf51keltuejc45201grtp80bq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
