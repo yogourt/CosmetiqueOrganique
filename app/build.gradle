@@ -25,7 +25,6 @@ android {
         applicationId "com.blogspot.android_czy_java.beautytips"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 10022
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -46,10 +45,13 @@ android {
         phone {
             dimension "general"
             versionNameSuffix "-phone"
+            versionCode 22
         }
+
         tablet {
             dimension "general"
             versionNameSuffix "-tablet"
+            versionCode 10023
         }
     }
     sourceSets { phone { java.srcDirs = ['src/phone/java', 'src/java/phone'] } }

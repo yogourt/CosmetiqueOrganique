@@ -8,11 +8,13 @@
     <!-- detail fragment dimens -->
     <dimen name="desc_padding">48dp</dimen>
     <dimen name="desc_end_padding">@dimen/desc_padding</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_margin">32dp</dimen>
     <dimen name="ingredients_bottom_padding">30dp</dimen>
     <dimen name="ingredients_top_padding">22dp</dimen>
     <dimen name="ingredients_inner_padding">12dp</dimen>
     <dimen name="title_start_padding">48dp</dimen>
+    <dimen name="share_margin_end">32dp</dimen>
+    <dimen name="share_margin_top">32dp</dimen>
 
     <!-- new tip dimens -->
     <dimen name="title_horiz_margin">48dp</dimen>
