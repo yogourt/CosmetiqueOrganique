@@ -68,6 +68,10 @@ public class SnackbarHelper {
         snackbarWithOk(R.string.message_new_tip_soon, snackbarView);
     }
 
+    public static void showUnableToAddComment(View snackbarView) {
+        snackbarWithOk(R.string.message_add_comment_no_internet, snackbarView);
+    }
+
     private static void snackbarWithOk(int message, View snackbarView) {
         Snackbar snackbar = Snackbar.make(snackbarView, message,
                 Snackbar.LENGTH_LONG).setAction(R.string.label_action_ok,

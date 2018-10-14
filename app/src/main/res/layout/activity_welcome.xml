@@ -76,9 +76,9 @@
     <TextView
         android:id="@+id/positive_button"
         style="@style/RippleCircularButtonStyle"
+        android:background="@drawable/ripple_button"
         android:layout_marginBottom="@dimen/welcome_button_bottom_padding"
         android:layout_marginEnd="@dimen/welcome_button_padding"
-        android:background="@drawable/ripple_button"
         android:onClick="onLogInButtonClicked"
         android:text="@string/welcome_pos_button_label"
         android:textColor="@color/pink200"

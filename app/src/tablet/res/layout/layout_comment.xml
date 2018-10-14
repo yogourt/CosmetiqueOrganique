@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bluegray800">
+
+    <TextView
+        android:id="@+id/comment_author_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/UsernameStyle"
+        android:layout_marginBottom="@dimen/activity_margin"
+        android:layout_marginTop="@dimen/activity_margin"/>
+
+    <TextView
+        android:id="@+id/comment_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/NormalTextStyle"
+        android:layout_marginBottom="@dimen/activity_margin"
+        android:layout_marginStart="@dimen/desc_padding"
+        android:layout_marginEnd="@dimen/desc_padding"/>
+</LinearLayout>

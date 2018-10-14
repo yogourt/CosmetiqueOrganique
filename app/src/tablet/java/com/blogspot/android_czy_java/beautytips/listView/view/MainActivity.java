@@ -54,7 +54,8 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
                 get(TabletListViewViewModel.class);
 
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getResources().getBoolean(R.bool.is_tablet) &&
+                getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
             fragmentManager = getSupportFragmentManager();
 

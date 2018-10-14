@@ -1,15 +1,148 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Cosmetique Organique</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
+    <!-- strings for listView screen -->
+    <string name="description_tip_image">%1$s image</string>
+    <string name="switch_popular">POPULAR</string>
+    <string name="switch_new">NEW</string>
+    <string name="searching_text">Searching for %1$s ...</string>
+
+    <!-- transition names for shared element transition -->
+    <string name="image_transition_name">image</string>
+    <string name="scrim_transition_name">scrim</string>
+
+    <!-- names for navigation drawer items -->
+    <string name="nav_your_tips">Your recipes</string>
+    <string name="nav_favourites">Favourites</string>
+    <string name="nav_add_new">Add new</string>
+    <string name="nav_log_out">Log out</string>
+    <string name="nav_log_in">Log in</string>
+    <string name="nav_all">All</string>
+    <string name="nav_hair">Hair</string>
+    <string name="nav_face">Face</string>
+    <string name="nav_body">Body</string>
+    <string name="nav_ingredients">Ingredients</string>
+    <string name="nav_about_app">About</string>
+    <string name="nav_categories">Categories</string>
+    <string name="label_anonymous">Anonymous</string>
+    <string name="description_user_image">User photo</string>
+
+    <!-- strings for detail screen -->
+    <string name="ingredient_label"> Ingredient</string>
+    <string name="source_label">&lt;a href=\"%1$s\">Source&lt;/a></string>
+    <string name="description_fab">Add to favourites button</string>
+    <string name="fav_label">%1$s</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5993828134151976/3917748262</string>
+    <string name="banner_ad_test_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="ad_size">SMART_BANNER</string>
+    <string name="add_mob_app_id">ca-app-pub-5993828134151976~2879998761</string>
+    <string name ="label_comments" formatted="true">Comments (%1$s)</string>
+    <string name="add_comment_label">Comment</string>
+    <string name="comment_hint">Write what you think&#8230;</string>
+    <string name="comment_dialog_msg">Is your comment ready? \n\nKeep in mind it will take time before
+        it will be visible (about one day). Sorry for the delay, but this is to make content the highest! </string>
+    <string name="comment_dialog_title">Are you sure?</string>
+    <string name="no_comment_label">There are no comments yet. Be the first one to comment!</string>
+    <string name="comment_dialog_positive_button">Add comment</string>
+    <string name="comment_dialog_negative_button">Review</string>
 
-    <string name="opening_title">Welcome! What are you looking for?</string>
-    <string name="opening_footer_label">Stay connected!</string>
-    <string name="label_add_new">Add new beauty recipe!</string>
-    <string name="label_favourites">Favourite recipes</string>
-    <string name="label_hair">Something for hair,</string>
-    <string name="label_face">for face,</string>
-    <string name="label_body">for body?</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="action_settings">Settings</string>
+
+    <!-- New tip screen strings -->
+    <string name="hint_desc">Write recipe description here</string>
+    <string name="hint_title">Recipe title</string>
+    <string name="title_activity_new_tip">New recipe</string>
+    <string name="button_label">Add recipe</string>
+    <string name="spinner_label">Category</string>
+    <string name="subcategory_spinner_label">Subcategory</string>
+    <string name="description_image">Recipe image</string>
+    <string name="new_tip_source_label">Source: </string>
+    <string name="hint_source">It\'s optional, should be a web page</string>
+    <string name="conf_message">*After the recipe is saved, you cannot modify it, but you can always delete it.
+    Please, review if it contains all the needful information and details.
+    \nAdding recipe means that you agree the owner of this app can modify it in order to improve it
+    or delete it if it\'s not relevant with the app\'s content.\n</string>
+
+    <!-- confirmation dialog in new tip screen -->
+    <string name="conf_dialog_title">Are you sure?</string>
+    <string name="conf_dialog_message">Are you sure your recipe description is complete? </string>
+    <string name="conf_dialog_pos_button">Add recipe</string>
+    <string name="conf_dialog_neg_button">Review</string>
+
+    <!-- log in/log out strings -->
+    <string name="fui_name_hint" translation_description="Hint for nickname field">Nickname</string>
+    <string name="dialog_button_positive_label">Save</string>
+    <string name="dialog_nickname_title">Choose your nickname</string>
+    <string name="dialog_nickname_message">\nPlease check if this is the nickname you would like to use:</string>
+    <string name="dialog_no_nickname_error_message">Field cannot be empty.</string>
+
+    <!-- snackbar strings -->
+    <string name="message_log_out_no_internet">Unable to log out without internet connection.</string>
+    <string name="message_log_in_no_internet">Unable to log in without internet connection.</string>
+    <string name="label_action_ok">OK</string>
+    <string name="message_add_tip_no_internet">Adding new recipe is impossible without internet
+        connection.</string>
+    <string name="message_add_photo_no_internet">Adding photo won\'t work without internet
+        connection.</string>
+    <string name="message_add_photo_is_long">Loading photo may take some time.</string>
+    <string name="message_cannot_be_empty">Fill in %1$s.</string>
+    <string name="element_title">recipe title</string>
+    <string name="element_ingredient_list">ingredient list</string>
+    <string name="element_description">recipe description</string>
+    <string name="message_image_cannot_be_empty">Choose recipe image by clicking on title background.</string>
+    <string name="message_add_tip_error">An error occurred while adding your recipe. Please, try again.</string>
+    <string name="feature_new_tip">Creating a new recipe</string>
+    <string name="feature_favourites">List of favourite recipes</string>
+    <string name="feature_your_tips">List of your own recipes</string>
+    <string name="feature_add_comments">Adding comments</string>
+    <string name="message_feature_for_logged_in_only">%1$s is the feature for logged in users only.</string>
+    <string name="message_log_in_anonymously_no_internet">Unable to load app data without internet connection.</string>
+    <string name="message_ext_storage_denied">Without storage permission you cannot add photo.</string>
+    <string name="message_wait_for_loading_image">Please wait for image loading.</string>
+    <string name="message_new_tip_soon">Your recipe will be visible in a while. Please, be patient.</string>
+    <string name="message_add_tip_error_try_again">An error occurred while adding your recipe. </string>
+    <string name="label_action_try_again">Try again</string>
+    <string name="message_add_comment_no_internet">Unable to add comment without internet connection.</string>
+
+    <!-- welcome screen -->
+    <string name="welcome_title">Welcome in Cosmetique Organique!</string>
+    <string name="welcome_message">Would you like to log in to get access to all the features like
+    creating a list of favourites or adding your own recipes for cosmetics?
+    \n\nYou can always change your mind - the login button is located in the side menu.\n</string>
+    <string name="welcome_pos_button_label">Log in</string>
+    <string name="welcome_neg_button_label">Not now</string>
+    <string name="description_logo">App logo</string>
+
+    <!-- info dialog -->
+    <string name="info_dialog_title">About this app</string>
+    <string name="info_dialog_hello"> Hello! Thank you for using my app. I hope you are having fun.</string>
+
+    <string name="info_dialog_improv">It is still intensively developed so you may notice some new features over time.
+        The number of recipes will also significantly grow soon.</string>
+    <string name="info_dialog_email">If you have any comments, you are welcome to share them via e-mail:
+        jagoda.sylwester@gmail.com.</string>
+    <string name="info_dialog_rate">If you like this app, please share your rating on
+        <a href="https://play.google.com/store/apps/details?id=com.blogspot.android_czy_java.beautytips">
+            Google Play Store</a> or on its
+        <a href="https://www.facebook.com/Cosmetique-Organique-292002408240734/">Facebook page</a>.</string>
+    <string name="info_dialog_credits"> Icons used in this app are made by authors from www.flaticon.com:
+        login, logout, kiss and woman
+        (which is the app icon) icons by Freepik, heart icon by Google, hair icon
+        by Smashicons, body icon by fjstudio. Background patterns are designed by anastock from www.Freepik.com. </string>
+    <string name="info_dialog_positive_button">Close</string>
+
+    <!-- delete tip dialog -->
+    <string name="delete_dialog_title">Delete this recipe</string>
+    <string name="delete_dialog_message">Are you sure you want to delete this recipe?</string>
+    <string name="delete_dialog_pos_button">Delete</string>
+    <string name="delete_dialog_neg_button">Cancel</string>
+
+
+    <!-- ingredient activity strings -->
+    <string name="search_for_label">Search for %1$s in Cosmetique Organique!</string>
+
+    <!-- facebook login -->
+    <string name="facebook_application_id">1782748508439535</string>
+    <string name="facebook_login_protocol_scheme">fb1782748508439535</string>
+
 </resources>

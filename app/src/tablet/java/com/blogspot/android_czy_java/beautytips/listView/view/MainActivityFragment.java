@@ -113,17 +113,30 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
         //add adapter
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
-                    viewModel, 2);
-        } else mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
-                viewModel, 1.5f);
+        float itemDivider;
+
+        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+        int orientation = getResources().getConfiguration().orientation;
+
+        if(!isTablet) {
+            itemDivider = 1;
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            itemDivider = 2;
+        } else itemDivider = 1.5f;
+
+        mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
+                viewModel, itemDivider);
 
 
         mRecyclerView.setAdapter(mAdapter);
 
+        int columnNum;
+
+        if(!isTablet && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            columnNum = 2;
+        } else columnNum = 1;
+
         //add layout manager
-        int columnNum = 1;
         mLayoutManager = RecyclerViewHelper.createLayoutManager(columnNum);
         mRecyclerView.setLayoutManager(mLayoutManager);
 

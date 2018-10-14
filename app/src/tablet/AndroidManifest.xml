@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.blogspot.android_czy_java.beautytips">
+    package="com.blogspot.android_czy_java.beautytips"
+    android:installLocation="preferExternal">
 
     <supports-screens android:smallScreens="false"
         android:normalScreens="false"
@@ -36,7 +37,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".detail.DetailActivity" />
+        <activity android:name=".detail.DetailActivity"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".ingredient.IngredientActivity"/>
     </application>

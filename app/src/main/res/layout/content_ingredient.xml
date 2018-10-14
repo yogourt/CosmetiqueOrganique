@@ -23,7 +23,7 @@
         android:layout_marginBottom="@dimen/share_margin_bottom"
         android:padding="@dimen/search_label_padding"
         style="@style/IngredientTitleStyle"
-        android:textAlignment="center"
         android:textSize="@dimen/search_label_text_size"
+        android:textAlignment="center"
         android:onClick="searchFor"/>
 </LinearLayout>

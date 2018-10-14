@@ -1,89 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="match_parent">-1px</dimen>
+    <dimen name="normal_text_size">16sp</dimen>
 
-    <dimen name="normal_text_size">20sp</dimen>
-    <dimen name="activity_vertical_margin">48dp</dimen>
-    <dimen name="activity_horizontal_margin">48dp</dimen>
-    <dimen name="button_padding">2dp</dimen>
+    <!-- navigation drawer dimens -->
+    <dimen name="header_top_padding">48dp</dimen>
+    <dimen name="header_bottom_padding">24dp</dimen>
+    <dimen name="header_horiz_padding">16dp</dimen>
+    <dimen name="username_text_size">22sp</dimen>
+    <dimen name="photo_size">72dp</dimen>
 
-    <!--navigation drawer dimens -->
-    <dimen name="items_text_size">16sp</dimen>
-    <dimen name="username_text_size">30sp</dimen>
-    <dimen name="header_top_padding">60dp</dimen>
-    <dimen name="header_bottom_padding">40dp</dimen>
-    <dimen name="photo_size">90dp</dimen>
+    <!-- list view dimens -->
+    <dimen name="list_start_padding">0dp</dimen>
+    <dimen name="list_end_padding">0dp</dimen>
+    <dimen name="list_padding">4dp</dimen>
+    <dimen name="title_text_size">24sp</dimen>
+    <dimen name="title_start_padding">16dp</dimen>
+    <dimen name="title_bottom_padding">16dp</dimen>
+    <dimen name="dialog_padding">16dp</dimen>
+    <dimen name="dialog_msg_text_size">16sp</dimen>
+    <dimen name="dialog_credits_text_size">12sp</dimen>
+    <dimen name="dialog_width">270dp</dimen>
+    <dimen name="error_margin_start">8dp</dimen>
+    <dimen name="chip_vert_margin">8dp</dimen>
+    <dimen name="chip_horiz_spacing">16dp</dimen>
+    <dimen name="chip_text_size">14sp</dimen>
 
-
-    <!-- welcome activity -->
-    <dimen name="layout_width">420dp</dimen>
-    <dimen name="welcome_button_bottom_padding">92dp</dimen>
-    <dimen name="welcome_top_padding">48dp</dimen>
-    <dimen name="welcome_text_top_padding">32dp</dimen>
-    <dimen name="logo_margin">64dp</dimen>
-    <dimen name="welcome_text_size">32sp</dimen>
-
-    <!-- recipes list dimens -->
-    <dimen name="list_padding">8dp</dimen>
-    <dimen name="list_start_padding">40dp</dimen>
-    <dimen name="list_end_padding">40dp</dimen>
-    <dimen name="chip_text_size">18sp</dimen>
-    <dimen name="chip_horiz_spacing">24dp</dimen>
-    <dimen name="title_text_size">32sp</dimen>
-    <dimen name="chip_vert_margin">16dp</dimen>
 
     <!-- detail screen dimens -->
-    <dimen name="image_height">350dp</dimen>
-    <dimen name="fav_padding_end">64dp</dimen>
-    <dimen name="title_bottom_padding">32dp</dimen>
-    <dimen name="title_start_padding">64dp</dimen>
-    <dimen name="exp_title_text_size">34sp</dimen>
-    <dimen name="ingredients_bottom_padding">26dp</dimen>
-    <dimen name="ingredients_top_padding">18dp</dimen>
-    <dimen name="ingredients_inner_padding">8dp</dimen>
-    <dimen name="ingredients_text_size">20sp</dimen>
-    <dimen name="fav_margin_top">40dp</dimen>
-    <dimen name="ingredient_padding">2dp</dimen>
-    <dimen name="desc_padding">48dp</dimen>
-    <dimen name="desc_end_padding">80dp</dimen>
-    <dimen name="fab_margin">48dp</dimen>
-    <dimen name="share_margin_end">48dp</dimen>
-    <dimen name="share_margin_top">48dp</dimen>
-
-    <!--ingredient screen dimens -->
-    <dimen name="search_label_text_size">24sp</dimen>
-    <dimen name="search_label_padding">4dp</dimen>
-    <dimen name="ingredient_screen_top_margin">16dp</dimen>
-    <dimen name="ingredient_back_padding">8dp</dimen>
-    <dimen name="ingredient_back_margin">24dp</dimen>
-    <dimen name="ingredient_header_text_size">22sp</dimen>
-
-    <!--opening screen dimens -->
-    <dimen name="footer_padding">24dp</dimen>
-
-
+    <dimen name="ingredients_bottom_padding">32dp</dimen>
+    <dimen name="ingredients_top_padding">16dp</dimen>
+    <dimen name="ingredients_inner_padding">4dp</dimen>
+    <dimen name="ingredients_text_size">16sp</dimen>
+    <dimen name="photo_size_detail">64dp</dimen>
+    <dimen name="photo_margin">16dp</dimen>
+    <dimen name="photo_vert_margin">8dp</dimen>
+    <dimen name="author_padding">32dp</dimen>
+    <dimen name="author_padding_start">@dimen/author_padding</dimen>
+    <dimen name="desc_padding">16dp</dimen>
+    <dimen name="desc_end_padding">16dp</dimen>
+    <dimen name="desc_top_padding">32dp</dimen>
+    <dimen name="app_bar_layout_height">192dp</dimen>
+    <dimen name="image_height">0dp</dimen>
+    <dimen name="fab_margin">32dp</dimen>
+    <dimen name="exp_title_text_size">@dimen/title_text_size</dimen>
+    <dimen name="fav_margin_top">16dp</dimen>
+    <dimen name="fav_margin_start">16dp</dimen>
+    <dimen name="source_margin">16dp</dimen>
+    <dimen name="source_top_padding">8dp</dimen>
+    <dimen name="fav_padding_end">36dp</dimen>
+    <dimen name="icon_padding">4dp</dimen>
+    <dimen name="search_padding_start">16dp</dimen>
+    <dimen name="share_margin_end">32dp</dimen>
+    <dimen name="share_margin_top">64dp</dimen>
+    <dimen name="share_margin_top_with_author">16dp</dimen>
+    <dimen name="share_margin_bottom">88dp</dimen>
     <dimen name="add_margin_end">0dp</dimen>
+    <dimen name="ingredient_padding">2dp</dimen>
+    <dimen name="search_label_text_size">20sp</dimen>
 
 
-    <!-- new tip dimens -->
-    <dimen name="app_bar_layout_height">@dimen/image_height</dimen>
-    <dimen name="title_horiz_margin">64dp</dimen>
-    <dimen name="desc_margin">64dp</dimen>
-    <dimen name="new_tip_source_start_margin">72dp</dimen>
-    <dimen name="title_bottom_margin">40dp</dimen>
-    <dimen name="new_tip_desc_top_padding">64dp</dimen>
-    <dimen name="source_top_margin">40dp</dimen>
-    <dimen name="source_text_size">16sp</dimen>
-    <dimen name="author_padding_start">64dp</dimen>
-    <dimen name="spinner_top_margin">32dp</dimen>
+    <!-- new tip screen dimens -->
+    <dimen name="desc_margin">16dp</dimen>
+    <dimen name="new_tip_desc_padding">8dp</dimen>
+    <dimen name="new_tip_desc_bottom_padding">16dp</dimen>
+    <dimen name="new_tip_desc_top_padding">32dp</dimen>
+    <dimen name="ingredient_width">120dp</dimen>
+    <dimen name="title_bottom_margin">32dp</dimen>
+    <dimen name="title_horiz_margin">16dp</dimen>
+    <dimen name="title_horiz_padding">8dp</dimen>
+    <dimen name="button_width">150dp</dimen>
+    <dimen name="spinner_top_margin">16dp</dimen>
+    <dimen name="spinner_button_int_margin">16dp</dimen>
+    <dimen name="spinner_button_ext_margin">24dp</dimen>
+    <dimen name="ingredients_new_bottom_padding">32dp</dimen>
+    <dimen name="new_tip_source_start_margin">24dp</dimen>
+    <dimen name="source_top_margin">32dp</dimen>
+    <dimen name="source_text_size">14sp</dimen>
 
-    <dimen name="spinner_button_ext_margin">64dp</dimen>
-    <dimen name="author_padding">48dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_margin">16dp</dimen>
 
-    <!-- main screen dimens -->
-    <dimen name="dialog_width">450dp</dimen>
-    <dimen name="dialog_msg_text_size">18dp</dimen>
-    <dimen name="dialog_credits_text_size">14dp</dimen>
-    <dimen name="info_dialog_padding">32dp</dimen>
+    <!-- welcome screen dimens -->
+    <dimen name="layout_width">0dp</dimen>
+    <dimen name="welcome_text_size">28sp</dimen>
+    <dimen name="welcome_button_text_size">@dimen/normal_text_size</dimen>
+    <dimen name="welcome_padding">16dp</dimen>
+    <dimen name="welcome_top_padding">16dp</dimen>
+    <dimen name="welcome_text_top_padding">16dp</dimen>
+    <dimen name="welcome_button_padding">32dp</dimen>
+    <dimen name="welcome_button_bottom_padding">32dp</dimen>
+    <dimen name="welcome_button_end_padding">48dp</dimen>
+    <dimen name="inner_button_padding">8dp</dimen>
+    <dimen name="logo_margin">32dp</dimen>
+    <dimen name="logo_size">150dp</dimen>
 
+
+    <!-- list of own tips dimens -->
+    <dimen name="item_icon_size">28dp</dimen>
+    <dimen name="item_icon_margin">8dp</dimen>
+
+    <!-- info dialog dimens -->
+    <dimen name="info_dialog_padding">24dp</dimen>
+    <dimen name="info_dialog_msg_bottom_padding">4dp</dimen>
+
+    <!--ingredient activity dimens -->
+    <dimen name="search_label_padding">16dp</dimen>
+    <dimen name="ingredient_screen_top_margin">16dp</dimen>
+    <dimen name="ingredient_header_text_size">18sp</dimen>
+    <!-- widget dimens -->
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_desc_padding">8dp</dimen>
+    <dimen name="widget_iv_padding">8dp</dimen>
+    <dimen name="widget_iv_margin">2dp</dimen>
+    <dimen name="widget_iv_dimen">60dp</dimen>
 </resources>

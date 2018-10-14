@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/activity_margin">
+
+    <ListView
+        android:id="@+id/comments_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="100"
+        android:layout_margin="@dimen/activity_margin"
+        />
+
+        <EditText
+            android:id="@+id/new_comment_edit_text"
+            style="@style/NormalTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:background="@drawable/new_comment_backgorund"
+            android:gravity="bottom"
+            android:hint="@string/comment_hint"
+            android:imeOptions="actionSend"
+            android:inputType="textAutoComplete|textMultiLine|textShortMessage"
+            android:padding="@dimen/activity_margin"
+            android:textColorHint="@color/white" />
+
+
+        <TextView
+            android:id="@+id/button_add"
+            style="@style/IngredientTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/ripple_button_comment"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/add_comment_label"
+            android:textAlignment="viewEnd"
+            android:layout_marginBottom="@dimen/activity_margin"
+            android:layout_marginEnd="@dimen/activity_margin"
+            android:padding="@dimen/button_padding"/>
+
+</LinearLayout>

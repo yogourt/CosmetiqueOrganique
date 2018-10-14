@@ -1,34 +1,58 @@
 package com.blogspot.android_czy_java.beautytips.detail;
 
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.content.res.XmlResourceParser;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GestureDetectorCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.ArrayMap;
+import android.view.Display;
+import android.view.DragEvent;
+import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
+import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
+import com.blogspot.android_czy_java.beautytips.detail.dialogs.NewCommentDialog;
 import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.detail.model.Comment;
 import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.listView.view.TabletListViewViewModel;
@@ -47,11 +71,18 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM;
@@ -63,6 +94,11 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivit
  */
 public class DetailActivityFragment extends Fragment
         implements DetailFirebaseHelper.DetailViewInterface, DetailActivity.DetailFragmentInterface {
+
+    public static String KEY_COMMENT_AUTHOR = "comment_author";
+    public static String KEY_COMMENT = "comment";
+
+    public static String TAG_NEW_COMMENT_DIALOG = "new_comment_dialog";
 
     @Nullable
     @BindView(R.id.fab)
@@ -111,6 +147,9 @@ public class DetailActivityFragment extends Fragment
     @BindView(R.id.layout_share)
     View mLayoutShare;
 
+    @BindView(R.id.comments_button)
+    TextView mCommentsButton;
+
     private String description;
     private TabletListViewViewModel viewModel;
     private TipListItem item;
@@ -120,6 +159,9 @@ public class DetailActivityFragment extends Fragment
     private ViewTreeObserver.OnScrollChangedListener scrollListener;
 
     private boolean isPortrait;
+    private boolean isTablet;
+
+    private ArrayList<ArrayMap<String, String>> comments;
 
     public DetailActivityFragment() {
         // Required empty public constructor
@@ -132,10 +174,14 @@ public class DetailActivityFragment extends Fragment
         isPortrait = getResources().getConfiguration()
                 .orientation == Configuration.ORIENTATION_PORTRAIT;
 
-        if (!isPortrait)
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
+
+        if (isTablet && !isPortrait)
             viewModel = ViewModelProviders.of(getActivity()).get(TabletListViewViewModel.class);
 
         mFirebaseHelper = new DetailFirebaseHelper(this);
+
+        comments = new ArrayList<>();
     }
 
     @Override
@@ -153,13 +199,13 @@ public class DetailActivityFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (isPortrait) {
+        if (!isTablet || isPortrait) {
             if (getActivity() != null) {
                 item = (TipListItem) getActivity().getIntent().getExtras().getSerializable(KEY_ITEM);
             }
         } else {
             item = viewModel.getChosenTip();
-            if(item != null) prepareFab();
+            if (item != null) prepareFab();
         }
 
         if (item == null) return;
@@ -173,10 +219,10 @@ public class DetailActivityFragment extends Fragment
     @Override
     public void onPause() {
 
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             Timber.d("set intent");
             getActivity().setIntent(createDataIntent());
-            if(getActivity().getIntent() != null) Timber.d("intent set");
+            if (getActivity().getIntent() != null) Timber.d("intent set");
         }
 
         super.onPause();
@@ -292,7 +338,7 @@ public class DetailActivityFragment extends Fragment
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
 
-        if(item != null) {
+        if (item != null) {
             bundle.putLong(KEY_FAV_NUM, item.getFavNum());
             bundle.putString(KEY_ID, item.getId());
         }
@@ -310,8 +356,8 @@ public class DetailActivityFragment extends Fragment
     public void setFabActiveFromFirebaseHelper() {
         Timber.d("setFabActiveFromFbHelper");
         //if it's portrait, pass this data to activity (it handles FAB)
-        if (isPortrait) {
-            ((DetailActivity)getActivity()).setFabActive();
+        if (isPortrait || !isTablet) {
+            ((DetailActivity) getActivity()).setFabActive();
         }
         //else FAB is handled in this fragment
         else {
@@ -328,6 +374,7 @@ public class DetailActivityFragment extends Fragment
 
         //start share button prep as soon as description is assigned
         prepareShareButton();
+
 
         mDescTextView.setText(description);
         String ingredient1 = (String) dataSnapshot.child("ingredient1").getValue();
@@ -380,7 +427,33 @@ public class DetailActivityFragment extends Fragment
             mScrollView.scrollTo(0, 0);
         }
         makeIngredientsClickable();
+
+
+        if (dataSnapshot.child("commentsNum").getValue() == null) {
+            prepareCommentsButton("0");
+            ArrayMap<String, String> commentMap = new ArrayMap<>();
+            commentMap.put(KEY_COMMENT_AUTHOR, " ");
+            commentMap.put(KEY_COMMENT, getString(R.string.no_comment_label));
+            comments.add(commentMap);
+
+
+        } else {
+            prepareCommentsButton(dataSnapshot.child("commentsNum").getValue().toString());
+
+            for (DataSnapshot snapshot : dataSnapshot.child("comments").getChildren()) {
+
+                Comment comment = snapshot.getValue(Comment.class);
+                if (comment == null || !comment.getVisible()) continue;
+                Timber.d("comment: " + comment.toString());
+
+                ArrayMap<String, String> commentMap = new ArrayMap<>();
+                commentMap.put(KEY_COMMENT_AUTHOR, comment.getAuthorNickname());
+                commentMap.put(KEY_COMMENT, comment.getComment());
+                comments.add(commentMap);
+            }
+        }
     }
+
 
     private void prepareFavNum() {
 
@@ -481,37 +554,87 @@ public class DetailActivityFragment extends Fragment
 
     private void prepareShareButton() {
 
-        FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://cosmetique.page.link/?apn=com.blogspot.android_czy_java." +
-                        "beautytips&link=https://cometique.com/" + item.getId() + "&ofl=https://play.google." +
-                        "com/store/apps/details?id=com.blogspot.android_czy_java.beautytips&ipn=com." +
-                        "blogspot.android_czy_java.beautytips&link=https://cometique.com/-1&ofl=https://" +
-                        "play.google.com/store/apps/details?id=com.blogspot.android_czy_java.beautytips/"))
-                .setDynamicLinkDomain("cosmetique.page.link")
-                .setSocialMetaTagParameters(new DynamicLink.SocialMetaTagParameters.Builder().
-                        setTitle(item.getTitle()).
-                        setImageUrl(Uri.parse(item.getImage())).
-                        setDescription(description).build())
-                .buildShortDynamicLink()
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<ShortDynamicLink>() {
+
+    }
+
+    private void prepareCommentsButton(final String commentsNum) {
+
+        mCommentsButton.setText(String.format(getResources().getString(R.string.label_comments),
+                commentsNum));
+        mCommentsButton.setPaintFlags(mCommentsButton.getPaintFlags() |
+                Paint.UNDERLINE_TEXT_FLAG);
+
+        mCommentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+
+                LayoutInflater inflater = getLayoutInflater();
+                final View commentsView = inflater.inflate(R.layout.layout_popup_comments,
+                        null, false);
+
+
+                final ListView commentsList = commentsView.findViewById(R.id.comments_list_view);
+                final EditText newCommentEt = commentsView.findViewById(R.id.new_comment_edit_text);
+                TextView commentButtonTv = commentsView.findViewById(R.id.button_add);
+
+                String[] from = {KEY_COMMENT_AUTHOR, KEY_COMMENT};
+                int[] to = {R.id.comment_author_tv, R.id.comment_tv};
+
+                ListAdapter adapter = new SimpleAdapter(getContext(), comments,
+                        R.layout.layout_comment, from, to);
+                commentsList.setAdapter(adapter);
+
+                final int width = getResources().getDisplayMetrics().widthPixels;
+
+                final PopupWindow commentsWindow = new PopupWindow(commentsView,
+                        width, WRAP_CONTENT, true);
+
+                commentsWindow.setBackgroundDrawable(getResources().
+                        getDrawable(R.drawable.comments_backgorund));
+
+                commentsWindow.setElevation(10);
+
+                commentsWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+                commentsWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
+
+                commentsWindow.setAnimationStyle(R.style.PopupWindowAnimation);
+
+                commentsWindow.setBackgroundDrawable(getResources().
+                        getDrawable(R.drawable.comments_backgorund));
+
+
+                commentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM, 0, 0);
+
+                commentButtonTv.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-                        if (task.isSuccessful()) {
-                            // Short link created
-                            Uri shortLink = task.getResult().getShortLink();
+                    public void onClick(View view) {
 
-                            Timber.d(task.getResult().getPreviewLink().toString());
-                            ShareLinkContent content = new ShareLinkContent.Builder()
-                                    .setContentUrl(shortLink)
-                                    .build();
-                            fbShareButton.setShareContent(content);
+                        Context context = getContext();
+                        if (context != null && !NetworkConnectionHelper.isInternetConnection(context)) {
+                            SnackbarHelper.showUnableToAddComment(commentsView);
+                        } else if (FirebaseHelper.isUserAnonymous()) {
+                            SnackbarHelper.showFeatureForLoggedInUsersOnly(
+                                    getString(R.string.feature_add_comments), commentsView);
                         } else {
-                            // Error
-                            // ...
-                        }
+                            FragmentManager manager = getFragmentManager();
+                            if (manager != null) {
+                                NewCommentDialog commentDialog = new NewCommentDialog();
+                                commentDialog.setComment(
+                                        newCommentEt.getText().toString(), item.getId());
 
+                                commentDialog.show(manager, TAG_NEW_COMMENT_DIALOG);
+                            }
+
+                        }
                     }
+
                 });
+
+
+            }
+        });
+
+
     }
 
 }

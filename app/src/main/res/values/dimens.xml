@@ -37,8 +37,9 @@
     <dimen name="author_padding">32dp</dimen>
     <dimen name="author_padding_start">@dimen/author_padding</dimen>
     <dimen name="desc_padding">16dp</dimen>
+    <dimen name="desc_end_padding">16dp</dimen>
     <dimen name="desc_top_padding">32dp</dimen>
-    <dimen name="app_bar_layout_height">192dp</dimen>
+    <dimen name="image_height">192dp</dimen>
     <dimen name="fab_margin">32dp</dimen>
     <dimen name="exp_title_text_size">@dimen/title_text_size</dimen>
     <dimen name="fav_margin_top">16dp</dimen>
@@ -52,6 +53,9 @@
     <dimen name="share_margin_top">64dp</dimen>
     <dimen name="share_margin_top_with_author">16dp</dimen>
     <dimen name="share_margin_bottom">88dp</dimen>
+    <dimen name="add_margin_end">0dp</dimen>
+    <dimen name="ingredient_padding">2dp</dimen>
+    <dimen name="button_padding">2dp</dimen>
 
     <!-- new tip screen dimens -->
     <dimen name="desc_margin">16dp</dimen>
@@ -99,7 +103,9 @@
     <dimen name="info_dialog_msg_bottom_padding">4dp</dimen>
 
     <!--ingredient activity dimens -->
-    <dimen name="search_label_text_size">18sp</dimen>
+    <dimen name="search_label_padding">16dp</dimen>
+    <dimen name="ingredient_screen_top_margin">16dp</dimen>
+    <dimen name="ingredient_header_text_size">18sp</dimen>
     <!-- widget dimens -->
     <!--
 Refer to App Widget Documentation for margin information

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.Drawer" >
+        <item name="android:textSize">@dimen/items_text_size</item>
+    </style>
+</resources>

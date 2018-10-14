@@ -158,6 +158,11 @@ public class DetailActivity extends BaseItemActivity implements
     }
 
 
+    @Override
+    public void setFabActiveFromFirebaseHelper() {
+        setFabActive();
+    }
+
     public void prepareContent(@NonNull DataSnapshot dataSnapshot) {
         description = (String) dataSnapshot.child("description").getValue();
 
@@ -250,7 +255,7 @@ public class DetailActivity extends BaseItemActivity implements
         );
         if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
                 !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
-            mFirebaseHelper.setFabState();
+            mFirebaseHelper.setFabState(mId);
         }
 
     }
@@ -280,7 +285,6 @@ public class DetailActivity extends BaseItemActivity implements
         }
     }
 
-    @Override
     public void setFabActive() {
         mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.pink200)));
     }

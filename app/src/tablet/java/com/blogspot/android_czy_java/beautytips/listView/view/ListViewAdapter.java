@@ -147,7 +147,8 @@ public class ListViewAdapter extends BaseListViewAdapter {
         tabletViewModel.notifyTipChange();
 
         //if the configuration is portrait, start detail activity
-        if (mContext.getResources().getConfiguration().orientation ==
+        if (!mContext.getResources().getBoolean(R.bool.is_tablet) ||
+                mContext.getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_PORTRAIT) {
 
             Bundle bundle = new Bundle();
@@ -161,6 +162,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
                     REQUEST_CODE_DETAIL_ACTIVITY);
         }
 
+        //else show recipe in detail fragment
         if (tabletViewModel.getChosenTip() != null &&
                 tabletViewModel.getChosenTip().equals(item)) return;
         tabletViewModel.setChosenTip(item);

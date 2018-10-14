@@ -205,7 +205,8 @@ public abstract class BaseItemActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                && adHandler != null)
             adHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }

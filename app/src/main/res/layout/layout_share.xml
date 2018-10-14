@@ -3,14 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:gravity="end"
     android:paddingTop="@dimen/share_margin_top"
     android:paddingEnd="@dimen/share_margin_end"
     android:paddingBottom="@dimen/share_margin_bottom">
 
+    <TextView
+        android:id="@+id/comments_button"
+        android:layout_width="0dp"
+        android:layout_weight="100"
+        android:paddingStart="@dimen/share_margin_end"
+        android:layout_height="wrap_content"
+        android:text="@string/label_comments"
+        style="@style/IngredientTitleStyle"
+        android:textSize="@dimen/search_label_text_size"/>
+
     <com.facebook.share.widget.ShareButton
         android:id="@+id/fb_share_button"
         android:layout_width="wrap_content"
+        android:textAlignment="viewEnd"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"/>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/bluegray700_semi"
+    android:radius="100dp">
+
+    <item android:drawable="@drawable/button_background_comment" />
+
+</ripple>

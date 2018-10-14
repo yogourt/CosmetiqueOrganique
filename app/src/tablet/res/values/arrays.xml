@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>Hair</item>
+        <item>Face</item>
+        <item>Body</item>
+    </string-array>
+    <string-array name="hair_chip_labels">
+        <item>All</item>
+        <item>Masks</item>
+        <item>Shampoos</item>
+        <item>Oils</item>
+        <item>Styling</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="body_chip_labels">
+        <item>All</item>
+        <item>Lotions</item>
+        <item>Scrubs</item>
+        <item>Bath salts</item>
+        <item>Shower gels</item>
+        <item>For hands</item>
+        <item>For feet</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="face_chip_labels">
+        <item>All</item>
+        <item>Creams</item>
+        <item>Masks</item>
+        <item>Scrubs</item>
+        <item>Tonics</item>
+        <item>For lips</item>
+        <item>For eyes</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="ingredients_chip_labels">
+        <item>All</item>
+        <item>Essential oils</item>
+        <item>Oils</item>
+        <item>Butters</item>
+        <item>Vitamins</item>
+        <item>Others</item>
+    </string-array>
+</resources>

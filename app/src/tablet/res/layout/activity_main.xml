@@ -31,8 +31,7 @@
                 android:name="com.blogspot.android_czy_java.beautytips.listView.view.MainActivityFragment"
                 android:id="@+id/fragment_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+                android:layout_height="match_parent"/>
 
             <fragment
                 android:layout_width="wrap_content"
