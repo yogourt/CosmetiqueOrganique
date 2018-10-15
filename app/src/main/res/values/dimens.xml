@@ -12,6 +12,8 @@
     <dimen name="photo_size">72dp</dimen>
 
     <!-- list view dimens -->
+    <dimen name="list_start_padding">0dp</dimen>
+    <dimen name="list_end_padding">0dp</dimen>
     <dimen name="list_padding">4dp</dimen>
     <dimen name="title_text_size">24sp</dimen>
     <dimen name="title_start_padding">16dp</dimen>
@@ -39,7 +41,8 @@
     <dimen name="desc_padding">16dp</dimen>
     <dimen name="desc_end_padding">16dp</dimen>
     <dimen name="desc_top_padding">32dp</dimen>
-    <dimen name="image_height">192dp</dimen>
+    <dimen name="app_bar_layout_height">192dp</dimen>
+    <dimen name="image_height">0dp</dimen>
     <dimen name="fab_margin">32dp</dimen>
     <dimen name="exp_title_text_size">@dimen/title_text_size</dimen>
     <dimen name="fav_margin_top">16dp</dimen>
@@ -55,7 +58,10 @@
     <dimen name="share_margin_bottom">88dp</dimen>
     <dimen name="add_margin_end">0dp</dimen>
     <dimen name="ingredient_padding">2dp</dimen>
+    <dimen name="search_label_text_size">20sp</dimen>
+    <dimen name="share_button_size">36dp</dimen>
     <dimen name="button_padding">2dp</dimen>
+
 
     <!-- new tip screen dimens -->
     <dimen name="desc_margin">16dp</dimen>
@@ -78,6 +84,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_margin">16dp</dimen>
 
     <!-- welcome screen dimens -->
     <dimen name="layout_width">0dp</dimen>

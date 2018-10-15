@@ -13,8 +13,11 @@
         android:nestedScrollingEnabled="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-   <include
-       layout="@layout/content_detail" />
+   <fragment
+       android:layout_height="wrap_content"
+       android:layout_width="match_parent"
+       android:name="com.blogspot.android_czy_java.beautytips.detail.DetailActivityFragment"
+       android:id="@+id/fragment_detail"/>
 
 
     </ScrollView>

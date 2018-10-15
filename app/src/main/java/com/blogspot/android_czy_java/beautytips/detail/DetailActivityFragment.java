@@ -1,16 +1,12 @@
 package com.blogspot.android_czy_java.beautytips.detail;
 
 
-import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.content.res.XmlResourceParser;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,25 +14,21 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GestureDetectorCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.ArrayMap;
-import android.view.Display;
-import android.view.DragEvent;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -58,22 +50,14 @@ import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.listView.view.TabletListViewViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,17 +65,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
-import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class DetailActivityFragment extends Fragment
         implements DetailFirebaseHelper.DetailViewInterface, DetailActivity.DetailFragmentInterface {
 
@@ -141,14 +119,17 @@ public class DetailActivityFragment extends Fragment
     @BindView(R.id.source_text_view)
     TextView mSourceTv;
 
-    @BindView(R.id.fb_share_button)
-    ShareButton fbShareButton;
+    @BindView(R.id.share_button)
+    ImageView mShareButton;
 
     @BindView(R.id.layout_share)
     View mLayoutShare;
 
     @BindView(R.id.comments_button)
     TextView mCommentsButton;
+
+    @BindView(R.id.detail_linear_layout)
+    LinearLayout mDetailLayout;
 
     private String description;
     private TabletListViewViewModel viewModel;
@@ -162,6 +143,8 @@ public class DetailActivityFragment extends Fragment
     private boolean isTablet;
 
     private ArrayList<ArrayMap<String, String>> comments;
+
+    private PopupWindow mCommentsWindow;
 
     public DetailActivityFragment() {
         // Required empty public constructor
@@ -554,7 +537,21 @@ public class DetailActivityFragment extends Fragment
 
     private void prepareShareButton() {
 
+        mShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shareDataIntent = new Intent(Intent.ACTION_SEND);
+                shareDataIntent.setType("text/plain");
+                shareDataIntent.putExtra(Intent.EXTRA_SUBJECT, item.getTitle());
+                String sharedText = getString(R.string.share_recipe_intro) + item.getTitle() +
+                        "\n\n" + description + "\n\n"
+                        + getString(R.string.share_recipe_final);
+                shareDataIntent.putExtra(Intent.EXTRA_TEXT, sharedText);
 
+                startActivity(Intent.createChooser(shareDataIntent,
+                        getString(R.string.share_via_label)));
+            }
+        });
     }
 
     private void prepareCommentsButton(final String commentsNum) {
@@ -570,7 +567,7 @@ public class DetailActivityFragment extends Fragment
 
                 LayoutInflater inflater = getLayoutInflater();
                 final View commentsView = inflater.inflate(R.layout.layout_popup_comments,
-                        null, false);
+                        mDetailLayout, false);
 
 
                 final ListView commentsList = commentsView.findViewById(R.id.comments_list_view);
@@ -584,26 +581,23 @@ public class DetailActivityFragment extends Fragment
                         R.layout.layout_comment, from, to);
                 commentsList.setAdapter(adapter);
 
-                final int width = getResources().getDisplayMetrics().widthPixels;
+                int width = getResources().getDisplayMetrics().widthPixels;
 
-                final PopupWindow commentsWindow = new PopupWindow(commentsView,
+                mCommentsWindow = new PopupWindow(commentsView,
                         width, WRAP_CONTENT, true);
 
-                commentsWindow.setBackgroundDrawable(getResources().
+                mCommentsWindow.setBackgroundDrawable(getResources().
                         getDrawable(R.drawable.comments_backgorund));
 
-                commentsWindow.setElevation(10);
+                mCommentsWindow.setElevation(10);
 
-                commentsWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-                commentsWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
+                mCommentsWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
 
-                commentsWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-
-                commentsWindow.setBackgroundDrawable(getResources().
-                        getDrawable(R.drawable.comments_backgorund));
+                mCommentsWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
 
-                commentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM, 0, 0);
+
+                mCommentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM, 0, 0);
 
                 commentButtonTv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -637,6 +631,10 @@ public class DetailActivityFragment extends Fragment
 
     }
 
+    @Override
+    public void closeCommentsWindow() {
+        mCommentsWindow.dismiss();
+    }
 }
 
 

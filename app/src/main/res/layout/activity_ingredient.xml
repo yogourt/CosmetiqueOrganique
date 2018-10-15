@@ -11,13 +11,17 @@
         android:nestedScrollingEnabled="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-       <include
-           layout="@layout/content_ingredient" />
+        <fragment
+            android:id="@+id/fragment_ingredient"
+            class="com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivityFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </ScrollView>
 
     <include layout="@layout/layout_collapsing_toolbar" />
 
     <include layout="@layout/layout_ad_banner" />
+
 
 </android.support.design.widget.CoordinatorLayout>

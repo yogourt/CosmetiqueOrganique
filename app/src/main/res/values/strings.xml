@@ -37,7 +37,19 @@
     <string name="banner_ad_test_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="ad_size">SMART_BANNER</string>
     <string name="add_mob_app_id">ca-app-pub-5993828134151976~2879998761</string>
-    <string name ="label_comments">Comments</string>
+    <string name ="label_comments" formatted="true">Comments (%1$s)</string>
+    <string name="add_comment_label">Comment</string>
+    <string name="comment_hint">Write what you think&#8230;</string>
+    <string name="comment_dialog_msg">Is your comment ready? \n\nKeep in mind it will take time before
+        it will be visible (about one day). Sorry for the delay, but this is to make content the highest! </string>
+    <string name="comment_dialog_title">Are you sure?</string>
+    <string name="no_comment_label">There are no comments yet. Be the first one to comment!</string>
+    <string name="comment_dialog_positive_button">Add comment</string>
+    <string name="comment_dialog_negative_button">Review</string>
+    <string name="share_via_label">Share the recipe!</string>
+    <string name="share_recipe_intro">Check out the beauty recipe from Cosmetique Organique: </string>
+    <string name="share_recipe_final">This recipe comes from Cosmetique Organique App for Android.
+    Get it on Google Play Store today! http://bit.ly/2OsvwZs </string>
 
 
     <!-- New tip screen strings -->
@@ -86,6 +98,7 @@
     <string name="feature_new_tip">Creating a new recipe</string>
     <string name="feature_favourites">List of favourite recipes</string>
     <string name="feature_your_tips">List of your own recipes</string>
+    <string name="feature_add_comments">Adding comments</string>
     <string name="message_feature_for_logged_in_only">%1$s is the feature for logged in users only.</string>
     <string name="message_log_in_anonymously_no_internet">Unable to load app data without internet connection.</string>
     <string name="message_ext_storage_denied">Without storage permission you cannot add photo.</string>
@@ -93,6 +106,7 @@
     <string name="message_new_tip_soon">Your recipe will be visible in a while. Please, be patient.</string>
     <string name="message_add_tip_error_try_again">An error occurred while adding your recipe. </string>
     <string name="label_action_try_again">Try again</string>
+    <string name="message_add_comment_no_internet">Unable to add comment without internet connection.</string>
 
     <!-- welcome screen -->
     <string name="welcome_title">Welcome in Cosmetique Organique!</string>
@@ -134,5 +148,14 @@
     <!-- facebook login -->
     <string name="facebook_application_id">1782748508439535</string>
     <string name="facebook_login_protocol_scheme">fb1782748508439535</string>
+
+    <!-- opening screen (for tablet landscape orientation only) -->
+    <string name="opening_title">Welcome! What are you looking for?</string>
+    <string name="opening_footer_label">Stay connected!</string>
+    <string name="label_add_new">Add new beauty recipe!</string>
+    <string name="label_favourites">Favourite recipes</string>
+    <string name="label_hair">Something for hair,</string>
+    <string name="label_face">for face,</string>
+    <string name="label_body">for body?</string>
 
 </resources>

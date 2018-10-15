@@ -26,6 +26,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionName "1.2"
+        versionCode 22
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -40,21 +41,6 @@ android {
         }
     }
 
-    flavorDimensions "general"
-    productFlavors {
-        phone {
-            dimension "general"
-            versionNameSuffix "-phone"
-            versionCode 22
-        }
-
-        tablet {
-            dimension "general"
-            versionNameSuffix "-tablet"
-            versionCode 10023
-        }
-    }
-    sourceSets { phone { java.srcDirs = ['src/phone/java', 'src/java/phone'] } }
 }
 
 dependencies {
@@ -69,8 +55,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    // for support libraries
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.13'
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.0'
     //LeakCanary

@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.blogspot.android_czy_java.beautytips">
+    package="com.blogspot.android_czy_java.beautytips"
+    android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+        <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/withoutback" />
@@ -20,6 +23,37 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/pink300" />
 
+
+        <activity
+            android:name=".listView.view.MainActivity"
+            android:configChanges="locale">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="cosmetique.com"
+                    android:scheme="http" />
+                <data
+                    android:host="cosmetique.com"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".detail.DetailActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".ingredient.IngredientActivity"/>
 
         <service
             android:name=".sync.SyncJobService"
@@ -36,7 +70,6 @@
             android:launchMode="singleTop"
             android:theme="@style/ActivityDialogTheme"
             android:parentActivityName=".listView.view.MainActivity" />
-        <activity android:name=".detail.DetailActivity" />
 
         <provider android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"
             android:name="com.facebook.FacebookContentProvider"

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+
+    <!-- list view dimens -->
+    <dimen name="list_start_padding">4dp</dimen>
+    <dimen name="list_end_padding">4dp</dimen>
+
     <!-- new tip activity dimens -->
     <dimen name="desc_margin">32dp</dimen>
     <dimen name="title_horiz_margin">32dp</dimen>

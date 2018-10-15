@@ -2,7 +2,6 @@
 
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,12 +21,27 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/ic_menu" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingEnd="@dimen/list_padding"
-            android:paddingStart="@dimen/list_padding" />
+
+            <FrameLayout
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_width="match_parent">
+
+            <fragment
+                android:name="com.blogspot.android_czy_java.beautytips.listView.view.MainActivityFragment"
+                android:id="@+id/fragment_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <fragment
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:name="com.blogspot.android_czy_java.beautytips.listView.view.AdBannerFragment"
+                android:id="@+id/fragment_add" />
+
+        </FrameLayout>
+
 
     </LinearLayout>
 
@@ -39,6 +53,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_nav_drawer"
-        app:menu="@menu/drawer_view" />
+        app:menu="@menu/drawer_view"
+        android:theme="@style/AppTheme.Drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

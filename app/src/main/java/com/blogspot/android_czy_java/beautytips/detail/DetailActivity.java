@@ -13,12 +13,14 @@ import android.widget.ScrollView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
+import com.blogspot.android_czy_java.beautytips.detail.dialogs.NewCommentDialog;
 import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends BaseItemActivity {
+public class DetailActivity extends BaseItemActivity implements
+        NewCommentDialog.AddCommentListener {
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
@@ -30,7 +32,6 @@ public class DetailActivity extends BaseItemActivity {
 
     private ViewTreeObserver.OnScrollChangedListener scrollListener;
 
-
     public interface DetailFragmentInterface {
         void addFav();
 
@@ -41,6 +42,8 @@ public class DetailActivity extends BaseItemActivity {
         void getFabState();
 
         Intent createDataIntent();
+
+        void closeCommentsWindow();
     }
 
     @Override
@@ -129,5 +132,15 @@ public class DetailActivity extends BaseItemActivity {
         mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.bluegray700)));
     }
 
+
+
+    /*
+        NewCommentDialog.AddCommentListener method
+     */
+
+    @Override
+    public void closeCommentsWindow() {
+        detailFragment.closeCommentsWindow();
+    }
 }
 

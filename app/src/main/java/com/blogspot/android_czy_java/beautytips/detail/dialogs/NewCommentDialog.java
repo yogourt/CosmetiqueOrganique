@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.detail.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,11 +11,19 @@ import android.support.v4.app.DialogFragment;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.firebase.CommentsFirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
 
 public class NewCommentDialog extends DialogFragment {
 
     private String comment;
     private String recipeId;
+
+    private AddCommentListener mAddCommentListener;
+
+    public interface AddCommentListener {
+        void closeCommentsWindow();
+    }
+
 
     @NonNull
     @Override
@@ -30,6 +39,7 @@ public class NewCommentDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 CommentsFirebaseHelper.saveComment(recipeId, comment);
+                mAddCommentListener.closeCommentsWindow();
             }
         });
 
@@ -41,6 +51,18 @@ public class NewCommentDialog extends DialogFragment {
                 });
 
         return builder.create();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mAddCommentListener = (AddCommentListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement NicknamePickerDialog" +
+                    ".NicknamePickerDialogListener");
+        }
     }
 
     public void setComment(String comment, String recipeId) {
