@@ -543,7 +543,7 @@ public class DetailActivityFragment extends Fragment
                 Intent shareDataIntent = new Intent(Intent.ACTION_SEND);
                 shareDataIntent.setType("text/plain");
                 shareDataIntent.putExtra(Intent.EXTRA_SUBJECT, item.getTitle());
-                String sharedText = getString(R.string.share_recipe_intro) + item.getTitle() +
+                String sharedText = getString(R.string.share_recipe_intro) + "\n" + item.getTitle() +
                         "\n\n" + description + "\n\n"
                         + getString(R.string.share_recipe_final);
                 shareDataIntent.putExtra(Intent.EXTRA_TEXT, sharedText);
