@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="@dimen/list_start_padding"
-        android:paddingEnd="@dimen/list_end_padding" />
+        android:paddingEnd="@dimen/list_end_padding"
+        android:background="@color/bluegray900"/>
 
 </FrameLayout>

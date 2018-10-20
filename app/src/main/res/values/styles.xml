@@ -67,11 +67,13 @@
         <item name="colorPrimaryDark">@color/pink300</item>
         <item name="colorAccent">@color/bluegray50</item>
         <item name="colorControlHighlight">@color/pink300</item>
-        <item name="colorControlNormal">@color/bluegray700</item>
-        <item name="colorControlActivated">@color/bluegray700</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
         <item name="buttonStyle">@style/LoginButton</item>
-        <item name="android:textColor">@color/bluegray700</item>
-        <item name="android:windowBackground">@drawable/stars_background</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:windowBackground">@drawable/login_background</item>
     </style>
 
     <style name="LoginButton" parent="FirebaseUI.Button">

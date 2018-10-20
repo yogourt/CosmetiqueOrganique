@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/stripes_background"
+    android:background="@drawable/hearts_background"
     android:paddingBottom="@dimen/ingredients_new_bottom_padding"
     android:paddingTop="@dimen/ingredients_top_padding">
 
@@ -24,7 +24,6 @@
         style="@style/NewIngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
-        android:tint="@color/white_semi"
         app:layout_constraintBottom_toBottomOf="@+id/ingredient1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -35,7 +34,6 @@
         style="@style/NewIngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
-        android:tint="@color/white_semi"
         android:layout_marginTop="@dimen/ingredients_inner_padding"
         app:layout_constraintEnd_toStartOf="@+id/ingredient4"
         app:layout_constraintHorizontal_bias="0.5"
@@ -48,7 +46,6 @@
         style="@style/NewIngredientStyle"
         android:layout_width="@dimen/ingredient_width"
         android:layout_height="wrap_content"
-        android:tint="@color/white_semi"
         app:layout_constraintBottom_toBottomOf="@+id/ingredient3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

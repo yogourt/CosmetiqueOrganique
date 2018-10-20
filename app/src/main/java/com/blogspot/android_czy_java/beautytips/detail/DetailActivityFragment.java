@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.gesture.Gesture;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,14 +18,16 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.ArrayMap;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,7 +52,6 @@ import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.listView.view.TabletListViewViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.share.widget.ShareButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -71,7 +72,7 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAda
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
 
 public class DetailActivityFragment extends Fragment
-        implements DetailFirebaseHelper.DetailViewInterface, DetailActivity.DetailFragmentInterface {
+        implements DetailFirebaseHelper.DetailViewInterface, DetailActivity.DetailFragmentInterface{
 
     public static String KEY_COMMENT_AUTHOR = "comment_author";
     public static String KEY_COMMENT = "comment";
@@ -565,6 +566,8 @@ public class DetailActivityFragment extends Fragment
             @Override
             public void onClick(final View view) {
 
+                if(mCommentsWindow != null && mCommentsWindow.isShowing()) return;
+
                 LayoutInflater inflater = getLayoutInflater();
                 final View commentsView = inflater.inflate(R.layout.layout_popup_comments,
                         mDetailLayout, false);
@@ -596,8 +599,36 @@ public class DetailActivityFragment extends Fragment
                 mCommentsWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
 
-
                 mCommentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM, 0, 0);
+
+                final GestureDetector.SimpleOnGestureListener gestureListener =
+                        new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2,
+                                           float velocityX, float velocityY) {
+
+                        if(commentsList.getScrollY() == 0 && velocityY > 20
+                                && e2.getY() - e1.getY() > 200)
+                            mCommentsWindow.dismiss();
+
+
+                        return true;
+
+                    }
+                };
+
+                final GestureDetector gestureDetector =
+                        new GestureDetector(getContext(), gestureListener);
+
+                commentsList.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                        Timber.d("scrollY: " + commentsList.getFirstVisiblePosition() );
+                        if(commentsList.getFirstVisiblePosition() > 0) return true;
+                        return gestureDetector.onTouchEvent(motionEvent);
+                    }
+                });
 
                 commentButtonTv.setOnClickListener(new View.OnClickListener() {
                     @Override
