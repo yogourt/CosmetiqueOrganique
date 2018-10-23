@@ -2,4 +2,15 @@
 <resources>
     <dimen name="welcome_button_bottom_padding">200dp</dimen>
     <dimen name="welcome_top_padding">92dp</dimen>
+
+    <!-- main screen dimens -->
+    <dimen name="add_margin_end">20dp</dimen>
+    <dimen name="list_end_padding">64dp</dimen>
+    <dimen name="title_start_padding">48dp</dimen>
+
+    <!-- detail screen dimens -->
+    <dimen name="ingredients_bottom_padding">30dp</dimen>
+    <dimen name="ingredients_top_padding">22dp</dimen>
+    <dimen name="ingredients_inner_padding">12dp</dimen>
+    <dimen name="desc_top_padding">32dp</dimen>
 </resources>

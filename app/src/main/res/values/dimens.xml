@@ -32,7 +32,7 @@
     <dimen name="ingredients_bottom_padding">32dp</dimen>
     <dimen name="ingredients_top_padding">16dp</dimen>
     <dimen name="ingredients_inner_padding">4dp</dimen>
-    <dimen name="ingredients_text_size">16sp</dimen>
+    <dimen name="ingredients_text_size">@dimen/normal_text_size</dimen>
     <dimen name="photo_size_detail">64dp</dimen>
     <dimen name="photo_margin">16dp</dimen>
     <dimen name="photo_vert_margin">8dp</dimen>
@@ -123,4 +123,10 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_iv_padding">8dp</dimen>
     <dimen name="widget_iv_margin">2dp</dimen>
     <dimen name="widget_iv_dimen">60dp</dimen>
+
+    <!-- opening screen dimens -->
+    <dimen name="header_image_width">200dp</dimen>
+    <dimen name="header_image_height">150dp</dimen>
+    <dimen name="image_margin">8dp</dimen>
+
 </resources>

@@ -586,6 +586,9 @@ public class DetailActivityFragment extends Fragment
 
                 int width = getResources().getDisplayMetrics().widthPixels;
 
+                //on tablet lanscape, width should be half of the screen
+                if(isTablet && !isPortrait) width *= 0.5f;
+
                 mCommentsWindow = new PopupWindow(commentsView,
                         width, WRAP_CONTENT, true);
 
@@ -599,7 +602,7 @@ public class DetailActivityFragment extends Fragment
                 mCommentsWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
 
-                mCommentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM, 0, 0);
+                mCommentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM|Gravity.START, 0, 0);
 
                 final GestureDetector.SimpleOnGestureListener gestureListener =
                         new GestureDetector.SimpleOnGestureListener() {

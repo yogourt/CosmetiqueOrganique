@@ -5,6 +5,5 @@
     android:layout_gravity="center|bottom"
     ads:adSize="@string/ad_size"
     ads:adUnitId="@string/banner_ad_unit_id"
-    android:paddingEnd="@dimen/add_margin_end"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"/>

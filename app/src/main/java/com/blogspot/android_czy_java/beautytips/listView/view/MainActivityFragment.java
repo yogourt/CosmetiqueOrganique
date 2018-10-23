@@ -87,26 +87,26 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
 
         //this is done to pass changed fav num from detail fragment so it's updated in tip list
-            viewModel.getTipChangeIndicator().observe(this, new Observer<Boolean>() {
+        viewModel.getTipChangeIndicator().observe(this, new Observer<Boolean>() {
 
-                @Override
-                public void onChanged(@Nullable Boolean aBoolean) {
-                    if (getActivity() != null) {
-                        Timber.d("activity not null");
-                        if (getActivity().getIntent() != null) {
-                            Bundle bundle = getActivity().getIntent().getExtras();
-                            String id = bundle.getString(KEY_ID);
-                            Long favNum = bundle.getLong(KEY_FAV_NUM, 0);
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (getActivity() != null) {
+                    Timber.d("activity not null");
+                    if (getActivity().getIntent() != null) {
+                        Bundle bundle = getActivity().getIntent().getExtras();
+                        String id = bundle.getString(KEY_ID);
+                        Long favNum = bundle.getLong(KEY_FAV_NUM, 0);
 
-                            Timber.d("favNum: " + favNum);
+                        Timber.d("favNum: " + favNum);
 
-                            if (!TextUtils.isEmpty(id)) {
-                                if (mAdapter != null) mAdapter.setFavNum(id, favNum);
-                            }
+                        if (!TextUtils.isEmpty(id)) {
+                            if (mAdapter != null) mAdapter.setFavNum(id, favNum);
                         }
                     }
                 }
-            });
+            }
+        });
     }
 
     private void prepareRecyclerView(List<ListItem> recyclerViewList) {
@@ -118,11 +118,19 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
         boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
         int orientation = getResources().getConfiguration().orientation;
 
-        if(!isTablet) {
+        if (!isTablet) {
             itemDivider = 1;
-        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            itemDivider = 2;
-        } else itemDivider = 1.5f;
+        } else {
+            boolean isSmallTablet = getResources().getBoolean(R.bool.is_small_tablet);
+            //on tablet min720dp landscape
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                itemDivider = 2;
+            }
+            //on tablet min720dp portrait
+            else itemDivider = 1.5f;
+
+            if(isSmallTablet) itemDivider *= 0.8f;
+        }
 
         mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
                 viewModel, itemDivider);
@@ -132,7 +140,7 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
         int columnNum;
 
-        if(!isTablet && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (!isTablet && orientation == Configuration.ORIENTATION_LANDSCAPE) {
             columnNum = 2;
         } else columnNum = 1;
 

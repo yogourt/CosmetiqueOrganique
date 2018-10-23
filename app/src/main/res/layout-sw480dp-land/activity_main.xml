@@ -40,9 +40,10 @@
                 android:layout_height="match_parent"/>
 
             <fragment
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
+                android:layout_marginEnd="@dimen/add_margin_end"
                 android:name="com.blogspot.android_czy_java.beautytips.listView.view.AdBannerFragment"
                 android:id="@+id/fragment_add" />
 

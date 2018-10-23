@@ -1,0 +1,3 @@
+<resources>
+    <bool name="is_small_tablet">false</bool>
+</resources>

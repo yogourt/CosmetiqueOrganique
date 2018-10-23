@@ -6,15 +6,17 @@
     <dimen name="welcome_button_bottom_padding">64dp</dimen>
 
     <!-- detail fragment dimens -->
-    <dimen name="desc_padding">48dp</dimen>
+    <dimen name="desc_padding">32dp</dimen>
     <dimen name="desc_end_padding">@dimen/desc_padding</dimen>
+    <dimen name="desc_top_padding">28dp</dimen>
     <dimen name="fab_margin">32dp</dimen>
-    <dimen name="ingredients_bottom_padding">30dp</dimen>
-    <dimen name="ingredients_top_padding">22dp</dimen>
-    <dimen name="ingredients_inner_padding">12dp</dimen>
-    <dimen name="title_start_padding">48dp</dimen>
-    <dimen name="share_margin_end">32dp</dimen>
+    <dimen name="ingredients_bottom_padding">36dp</dimen>
+    <dimen name="ingredients_top_padding">18dp</dimen>
+    <dimen name="ingredients_inner_padding">8dp</dimen>
+    <dimen name="title_start_padding">24dp</dimen>
+    <dimen name="share_margin_end">36dp</dimen>
     <dimen name="share_margin_top">32dp</dimen>
+    <dimen name="share_margin_bottom">74dp</dimen>
 
     <!-- new tip dimens -->
     <dimen name="title_horiz_margin">48dp</dimen>
@@ -26,8 +28,9 @@
 
     <!-- main screen dimens -->
     <dimen name="dialog_width">450dp</dimen>
-    <dimen name="list_end_padding">64dp</dimen>
+    <dimen name="list_start_padding">20dp</dimen>
+    <dimen name="list_end_padding">44dp</dimen>
 
 
-    <dimen name="add_margin_end">20dp</dimen>
+    <dimen name="add_margin_end">12dp</dimen>
 </resources>
