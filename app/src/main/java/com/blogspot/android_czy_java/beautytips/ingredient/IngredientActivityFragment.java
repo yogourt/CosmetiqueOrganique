@@ -87,7 +87,10 @@ public class IngredientActivityFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+
+        if (!isTablet || isPortrait) {
             if (getActivity() != null) {
                 item = (ListItem) getActivity().getIntent().getExtras().getSerializable(KEY_ITEM);
             }

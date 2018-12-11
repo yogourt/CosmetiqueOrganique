@@ -13,7 +13,9 @@ import java.util.Calendar;
 
 import timber.log.Timber;
 
-public class CommentsFirebaseHelper {
+public class
+
+CommentsFirebaseHelper {
 
     public static void saveComment(final String recipeId, final String commentDesc) {
 

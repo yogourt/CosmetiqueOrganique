@@ -80,14 +80,15 @@ public class ImageFragment extends Fragment {
         }
     }
 
-    private void prepareContent(@Nullable ListItem tipListItem) {
-        if (tipListItem != null) {
-            item = tipListItem;
-            loadImage();
-        }
+    private void prepareContent(@Nullable ListItem listItem) {
+        if (listItem == null) return;
+
+        item = listItem;
+        loadImage();
+
         mTitle.setText(item.getTitle());
 
-        if(viewModel.getIsShowingIngredientFromRecipe()) {
+        if (viewModel.getIsShowingIngredientFromRecipe()) {
             Timber.d("showing ingredient from recipe");
             mIconBack.setVisibility(View.VISIBLE);
             mIconBack.setOnClickListener(new View.OnClickListener() {

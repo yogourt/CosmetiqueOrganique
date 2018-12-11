@@ -141,15 +141,7 @@ public class DetailActivity extends BaseItemActivity implements
 
     }
 
-    private void prepareRatingRequest() {
-        // Custom condition: 2 days and 3 launches
-        RateThisApp.Config config = new RateThisApp.Config(3, 10);
-        RateThisApp.init(config);
-        // Monitor launch times and interval from installation
-        RateThisApp.onCreate(this);
-        // If the condition is satisfied, "Rate this app" dialog will be shown
-        RateThisApp.showRateDialogIfNeeded(this, R.style.DialogStyle);
-    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

@@ -518,7 +518,7 @@ public class DetailActivityFragment extends Fragment
                     ingredientItem.setId(id);
                 }
 
-                if (isPortrait) {
+                if (!isTablet || isPortrait) {
                     Intent ingredientActivityIntent = new Intent(getContext(),
                             IngredientActivity.class);
                     ingredientActivityIntent.putExtra(KEY_ITEM, ingredientItem);

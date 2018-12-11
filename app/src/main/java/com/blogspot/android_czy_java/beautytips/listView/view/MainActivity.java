@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.kobakei.ratethisapp.RateThisApp;
 
 import timber.log.Timber;
 
@@ -77,6 +78,8 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
                                     .commit();
 
                             viewModel.setIsShowingIngredientFromRecipe(false);
+
+                            prepareRatingRequest();
                         }
 
                         fragmentManager.beginTransaction()
@@ -232,5 +235,16 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
         mSearchView.setQuery(query, true);
     }
 
+
+
+    private void prepareRatingRequest() {
+        // Custom condition: 2 days and 3 launches
+        RateThisApp.Config config = new RateThisApp.Config(3, 10);
+        RateThisApp.init(config);
+        // Monitor launch times and interval from installation
+        RateThisApp.onCreate(this);
+        // If the condition is satisfied, "Rate this app" dialog will be shown
+        RateThisApp.showRateDialogIfNeeded(this, R.style.DialogStyle);
+    }
 
 }
