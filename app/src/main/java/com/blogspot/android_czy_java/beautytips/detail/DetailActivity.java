@@ -43,7 +43,7 @@ public class DetailActivity extends BaseItemActivity implements
 
         Intent createDataIntent();
 
-        void closeCommentsWindow();
+        void reloadComments();
     }
 
     @Override
@@ -139,8 +139,8 @@ public class DetailActivity extends BaseItemActivity implements
      */
 
     @Override
-    public void closeCommentsWindow() {
-        detailFragment.closeCommentsWindow();
+    public void onNewCommentAdded() {
+        detailFragment.reloadComments();
     }
 }
 

@@ -17,6 +17,7 @@ import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
 
 import java.util.List;
 
@@ -142,9 +143,8 @@ public class ListViewAdapter extends BaseListViewAdapter {
 
     private void openDetailScreen(TipListItem item, @Nullable Bundle sharedElementTransition) {
 
-
         TabletListViewViewModel tabletViewModel = (TabletListViewViewModel) viewModel;
-        tabletViewModel.notifyTipChange();
+        //tabletViewModel.notifyTipChange();
 
         //if the configuration is portrait, start detail activity
         if (!mContext.getResources().getBoolean(R.bool.is_tablet) ||

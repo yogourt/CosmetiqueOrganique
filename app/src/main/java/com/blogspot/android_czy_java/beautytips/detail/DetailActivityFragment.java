@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.gesture.Gesture;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,7 +26,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,7 +47,7 @@ import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
-import com.blogspot.android_czy_java.beautytips.listView.view.TabletListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -165,7 +163,6 @@ public class DetailActivityFragment extends Fragment
 
         mFirebaseHelper = new DetailFirebaseHelper(this);
 
-        comments = new ArrayList<>();
     }
 
     @Override
@@ -352,6 +349,7 @@ public class DetailActivityFragment extends Fragment
     @Override
     public void prepareContent(DataSnapshot dataSnapshot) {
 
+        comments = new ArrayList<>();
 
         if (getActivity() == null) return;
         description = (String) dataSnapshot.child("description").getValue();
@@ -427,7 +425,7 @@ public class DetailActivityFragment extends Fragment
             for (DataSnapshot snapshot : dataSnapshot.child("comments").getChildren()) {
 
                 Comment comment = snapshot.getValue(Comment.class);
-                if (comment == null || !comment.getVisible()) continue;
+                if (comment == null) continue;
                 Timber.d("comment: " + comment.toString());
 
                 ArrayMap<String, String> commentMap = new ArrayMap<>();
@@ -544,9 +542,7 @@ public class DetailActivityFragment extends Fragment
                 Intent shareDataIntent = new Intent(Intent.ACTION_SEND);
                 shareDataIntent.setType("text/plain");
                 shareDataIntent.putExtra(Intent.EXTRA_SUBJECT, item.getTitle());
-                String sharedText = getString(R.string.share_recipe_intro) + "\n" + item.getTitle() +
-                        "\n\n" + description + "\n\n"
-                        + getString(R.string.share_recipe_final);
+                String sharedText = item.getTitle() + "\n\n" + description;
                 shareDataIntent.putExtra(Intent.EXTRA_TEXT, sharedText);
 
                 startActivity(Intent.createChooser(shareDataIntent,
@@ -586,7 +582,7 @@ public class DetailActivityFragment extends Fragment
 
                 int width = getResources().getDisplayMetrics().widthPixels;
 
-                //on tablet lanscape, width should be half of the screen
+                //on tablet landscape, width should be half of the screen
                 if(isTablet && !isPortrait) width *= 0.5f;
 
                 mCommentsWindow = new PopupWindow(commentsView,
@@ -648,7 +644,7 @@ public class DetailActivityFragment extends Fragment
                             if (manager != null) {
                                 NewCommentDialog commentDialog = new NewCommentDialog();
                                 commentDialog.setComment(
-                                        newCommentEt.getText().toString(), item.getId());
+                                        newCommentEt.getText().toString(), item.getId(), commentsNum);
 
                                 commentDialog.show(manager, TAG_NEW_COMMENT_DIALOG);
                             }
@@ -666,8 +662,10 @@ public class DetailActivityFragment extends Fragment
     }
 
     @Override
-    public void closeCommentsWindow() {
+    public void reloadComments() {
         mCommentsWindow.dismiss();
+        mFirebaseHelper.getFirebaseDatabaseData(item.getId());
+        //TODO: refactor it to load again comments and commentsNum only
     }
 }
 

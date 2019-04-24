@@ -3,11 +3,12 @@ package com.blogspot.android_czy_java.beautytips.listView.firebase;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,8 +23,8 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.ORDER_POPULAR;
-import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.SUBCATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel.ORDER_POPULAR;
+import static com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel.SUBCATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_FAVOURITES;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
@@ -60,7 +61,6 @@ public class FirebaseHelper {
                                     //check subcategory and if it's not the chosen, continue loop
                                     if (!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
                                             && !item.getSubcategory().equals(viewModel.getSubcategory())) {
-                                        Timber.d("item discarded");
                                         continue;
                                     }
 
@@ -69,7 +69,6 @@ public class FirebaseHelper {
                                         continue;
                                     }
 
-                                    Timber.d("item accepted");
                                     String author = String.valueOf(snapshot.child("author").getValue());
                                     String id = snapshot.getKey();
                                     item.setId(id);
@@ -80,6 +79,7 @@ public class FirebaseHelper {
                                         item.setInFav(true);
                                     }
                                     list.add(item);
+                                    viewModel.setRecyclerViewList(list);
                                 }
                             }
 

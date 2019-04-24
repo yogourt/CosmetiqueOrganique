@@ -16,12 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.RecyclerViewHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.notifications.NotificationService;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import timber.log.Timber;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseMainActivity.TAG_DELETE_TIP_DIALOG;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM;
 
 
 /**
@@ -109,9 +109,20 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
         });
     }
 
-    private void prepareRecyclerView(List<ListItem> recyclerViewList) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        //open tip from notification
+        if (getActivity() != null && getActivity().getIntent() != null) {
+            String tipId = getActivity().getIntent().getStringExtra(KEY_ITEM);
+            if (!TextUtils.isEmpty(tipId)) {
+                mAdapter.openTipWithId(tipId);
+                getActivity().setIntent(null);
+            }
+        }
+    }
 
-        //add adapter
+    private void prepareRecyclerView(List<ListItem> recyclerViewList) {
 
         float itemDivider;
 
@@ -129,7 +140,7 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
             //on tablet min720dp portrait
             else itemDivider = 1.5f;
 
-            if(isSmallTablet) itemDivider *= 0.8f;
+            if (isSmallTablet) itemDivider *= 0.8f;
         }
 
         mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
@@ -152,6 +163,7 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
         if (mRecyclerView.getItemDecorationCount() == 0)
             mRecyclerView.addItemDecoration(new SpacesItemDecoration(
                     (int) getResources().getDimension(R.dimen.list_padding)));
+
 
     }
 

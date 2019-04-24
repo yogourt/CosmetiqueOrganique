@@ -2,42 +2,42 @@ package com.blogspot.android_czy_java.beautytips.detail.model;
 
 public class Comment {
 
-    public String author;
-    public String authorId;
-    public String comment;
-    public Boolean visible;
+    public String a;
+    public String b;
+    public String c;
+    public boolean d;
 
     public Comment(){}
 
-    public Comment(String authorNickname, String authorId, String comment, Boolean visible) {
-        this.author = authorNickname;
-        this.authorId = authorId;
-        this.comment = comment;
-        this.visible = visible;
+    public Comment(String authorNickname, String authorId, String comment, boolean visible) {
+        this.a = authorNickname;
+        this.b = authorId;
+        this.c = comment;
+        this.d = visible;
     }
 
     public String getAuthorNickname() {
-        return author;
+        return a;
     }
 
     public void setAuthorNickname(String authorNickname) {
-        this.author = authorNickname;
+        this.a = authorNickname;
     }
 
     public String getComment() {
-        return comment;
+        return c;
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.c = comment;
     }
 
     public Boolean getVisible() {
-        return visible;
+        return d;
     }
 
     public void setVisible(Boolean visible) {
-        this.visible = visible;
+        this.d = visible;
     }
 
 

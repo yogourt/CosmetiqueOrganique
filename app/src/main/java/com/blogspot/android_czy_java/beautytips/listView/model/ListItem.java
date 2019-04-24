@@ -6,10 +6,10 @@ public class ListItem  implements Serializable {
 
     private static final long serialVersionUID = 0L;
 
+    public String id;
     public String image;
     public String title;
     public String subcategory;
-    public String id;
     public int matches;
 
     public ListItem(){}

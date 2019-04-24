@@ -1,43 +1,37 @@
 package com.blogspot.android_czy_java.beautytips.listView.firebase;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.lang.reflect.Type;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_ANONYMOUS;
+import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_LOGGED_IN;
 import static com.blogspot.android_czy_java.beautytips.listView.utils.LoginProvidersHelper.saveProvidedPhoto;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
@@ -110,10 +104,10 @@ public class FirebaseLoginHelper {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 viewModel.setCategory(CATEGORY_ALL);
-                viewModel.changeUserState(ListViewViewModel.USER_STATE_LOGGED_IN);
+                viewModel.changeUserState(USER_STATE_LOGGED_IN);
 
                 final Uri photoUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
-                if(photoUrl!= null) {
+                if (photoUrl != null) {
 
                     mUserPhotoReference = FirebaseDatabase.getInstance().getReference("userPhotos")
                             .child(getUserId());
@@ -123,7 +117,7 @@ public class FirebaseLoginHelper {
                     mUserPhotoReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(String.valueOf(dataSnapshot.getValue()).equals("null")) {
+                            if (String.valueOf(dataSnapshot.getValue()).equals("null")) {
                                 String newPhotoUrl = saveProvidedPhoto(photoUrl);
                                 activity.setUserPhoto(newPhotoUrl);
                             }
@@ -138,6 +132,17 @@ public class FirebaseLoginHelper {
                 //this listener has to be removed - to properly handled signing out (we don't want
                 //this method to be called then)
                 mAuth.removeAuthStateListener(this);
+
+                //pass user notification token to the server
+                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+                        new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                String token = task.getResult().getToken();
+                                FirebaseDatabase.getInstance().getReference("userTokens").
+                                        child(getUserId()).setValue(token);
+                            }
+                        });
             }
         });
 
@@ -170,7 +175,7 @@ public class FirebaseLoginHelper {
             @Override
             public void onSuccess(AuthResult authResult) {
                 Timber.d("signInAnonymously()");
-                viewModel.changeUserState(ListViewViewModel.USER_STATE_ANONYMOUS);
+                viewModel.changeUserState(USER_STATE_ANONYMOUS);
                 viewModel.setCategory(CATEGORY_ALL);
                 viewModel.notifyRecyclerDataHasChanged();
                 //cache all data for use without network
@@ -234,5 +239,6 @@ public class FirebaseLoginHelper {
             mSavingUserPhotoTask.cancel();
         activity.setIsPhotoSaving(false);
     }
+
 
 }

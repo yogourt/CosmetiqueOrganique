@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView;
+package com.blogspot.android_czy_java.beautytips.listView.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -8,20 +8,20 @@ import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
+import com.blogspot.android_czy_java.beautytips.listView.model.User;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
 import timber.log.Timber;
 
+import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_ANONYMOUS;
+import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_LOGGED_IN;
+import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
 
 public class ListViewViewModel extends ViewModel {
-
-    public static final String USER_STATE_LOGGED_IN = "logged_in";
-    public static final String USER_STATE_ANONYMOUS = "anonymous";
-    public static final String USER_STATE_NULL = "null";
 
     public static final String ORDER_POPULAR = "popular";
     public static final String ORDER_NEW = "new";
@@ -37,6 +37,7 @@ public class ListViewViewModel extends ViewModel {
     private MutableLiveData<String> categoryLiveData;
 
     private MutableLiveData<String> userStateLiveData;
+    private MutableLiveData<User> userLiveData;
 
     private MutableLiveData<List<ListItem>> recyclerViewLiveData;
 
@@ -122,6 +123,14 @@ public class ListViewViewModel extends ViewModel {
 
     public void setRecyclerViewList(List<ListItem> list) {
         recyclerViewLiveData.setValue(list);
+    }
+
+    public LiveData<User> getUserLiveData() {
+        return userLiveData;
+    }
+
+    public void setUserLiveData(User user) {
+        userLiveData.setValue(user);
     }
 
     public void deleteTipWithId(String id) {

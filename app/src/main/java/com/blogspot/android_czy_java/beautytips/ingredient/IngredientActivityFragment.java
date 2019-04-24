@@ -17,13 +17,11 @@ import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.view.TabletListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

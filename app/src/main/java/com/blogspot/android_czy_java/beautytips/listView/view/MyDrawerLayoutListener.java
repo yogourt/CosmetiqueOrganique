@@ -5,13 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
-import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.AppInfoDialog;
 import com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;

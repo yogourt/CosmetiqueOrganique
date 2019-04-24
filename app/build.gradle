@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 
@@ -99,7 +100,13 @@ dependencies {
 
     //rating app
     implementation 'io.github.kobakei:ratethisapp:1.2.0'
+
+    //kotlin std lib
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

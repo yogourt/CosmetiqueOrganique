@@ -40,9 +40,8 @@
     <string name ="label_comments" formatted="true">Comments (%1$s)</string>
     <string name="add_comment_label">Comment</string>
     <string name="comment_hint">Write what you think&#8230;</string>
-    <string name="comment_dialog_msg">Is your comment ready? \n\nKeep in mind it will take time before
-        it will be visible (about one day). Sorry for the delay, but this is to make content the highest! </string>
-    <string name="comment_dialog_title">Are you sure?</string>
+    <string name="comment_dialog_title">Is your comment ready? </string>
+    <string name="comment_dialog_msg">\n</string>
     <string name="no_comment_label">There are no comments yet. Be the first one to comment!</string>
     <string name="comment_dialog_positive_button">Add comment</string>
     <string name="comment_dialog_negative_button">Review</string>

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -27,10 +26,9 @@ import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
-import com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.LanguageHelper;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
 import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
 import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
@@ -46,8 +44,8 @@ import timber.log.Timber;
 
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PHOTO_PICKER;
-import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_ANONYMOUS;
-import static com.blogspot.android_czy_java.beautytips.listView.ListViewViewModel.USER_STATE_NULL;
+import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_ANONYMOUS;
+import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_NULL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
@@ -108,20 +106,11 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        //init view model differently on tablet and on phone
         initViewModel();
 
-        if (savedInstanceState != null) {
-            Timber.d("activity is recreating");
-        }
-        //initialize AdMobs only once in app lifetime
-        else {
-            Timber.d("ad mob is initialized");
+        if (savedInstanceState == null) {
             MobileAds.initialize(this, getResources().getString(R.string.add_mob_app_id));
         }
-
-        SyncScheduleHelper.initialize(this);
-
 
         mLoginHelper = new FirebaseLoginHelper(this, viewModel);
 
@@ -133,7 +122,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
         viewModel.getCategoryLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String category) {
-                Timber.d("category changed");
                 prepareNavigationDrawer();
                 prepareActionBar();
             }
@@ -161,8 +149,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
                     getSearchableInfo(BaseMainActivity.this.getComponentName()));
             prepareSearchView();
         }
-
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -196,7 +182,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
         return new Observer<String>() {
             @Override
             public void onChanged(@Nullable String userState) {
-                Timber.d("onChanged() user state observer's method, new state: " + userState);
                 MenuItem logOutItem = mNavigationView.getMenu().getItem(NAV_POSITION_LOG_OUT);
                 if (userState.equals(USER_STATE_NULL)) {
                     Intent welcomeActivityIntent = new Intent(BaseMainActivity.this,
@@ -210,7 +195,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
                     photoIv.setOnClickListener(null);
                     photoIv.setImageDrawable(getResources().getDrawable(R.drawable.placeholder));
                     nicknameTv.setText(R.string.label_anonymous);
-                    handleDynamicLink();
                 }
                 //user just logged in
                 else {
@@ -231,13 +215,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
                             }
                         }
                     });
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //if pick nickname dialog is not shown..
-                            if (mDialogFragment == null) handleDynamicLink();
-                        }
-                    }, 250);
+
                 }
             }
 
@@ -330,7 +308,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
         });
 
         if (viewModel.getSearchWasConducted()) {
-            Timber.d("restore query");
             mSearchView.setIconified(false);
             mSearchView.setQuery(viewModel.getQuery(), true);
         }
@@ -378,7 +355,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
                 mLoginHelper.signIn();
                 showPickNicknameDialog();
                 SyncScheduleHelper.immediateSync(this);
-                //reload data to show if user likes tip
+                //reload data
                 viewModel.notifyRecyclerDataHasChanged();
             } else {
                 //if response is null the user canceled sign in flow using back button, so we sign
@@ -508,6 +485,4 @@ public abstract class BaseMainActivity extends AppCompatActivity
         End of interfaces
      */
 
-
-    public abstract void handleDynamicLink();
 }

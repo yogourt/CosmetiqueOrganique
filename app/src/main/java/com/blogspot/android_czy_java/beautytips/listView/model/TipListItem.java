@@ -32,6 +32,12 @@ public class TipListItem extends ListItem implements Serializable{
         this.inFav = inFav;
     }
 
+    public TipListItem(String id, String authorId, String title, int favNum) {
+        this.id = id;
+        this.authorId = authorId;
+        this.title = title;
+        this.favNum = favNum;
+    }
 
     public String getCategory() {
         return category;
