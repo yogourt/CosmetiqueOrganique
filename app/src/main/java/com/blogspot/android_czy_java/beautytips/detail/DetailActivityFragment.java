@@ -624,8 +624,11 @@ public class DetailActivityFragment extends Fragment
                     public boolean onTouch(View view, MotionEvent motionEvent) {
 
                         Timber.d("scrollY: " + commentsList.getFirstVisiblePosition() );
-                        if(commentsList.getFirstVisiblePosition() > 0) return true;
-                        return gestureDetector.onTouchEvent(motionEvent);
+                        if(commentsList.getFirstVisiblePosition() > 0) {
+                            return commentsList.onTouchEvent(motionEvent);
+                        } else {
+                            return gestureDetector.onTouchEvent(motionEvent);
+                        }
                     }
                 });
 
