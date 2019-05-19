@@ -27,7 +27,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionName "1.2"
-        versionCode 10025
+        versionCode 10026
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

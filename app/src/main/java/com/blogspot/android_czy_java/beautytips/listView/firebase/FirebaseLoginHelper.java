@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -133,16 +132,6 @@ public class FirebaseLoginHelper {
                 //this method to be called then)
                 mAuth.removeAuthStateListener(this);
 
-                //pass user notification token to the server
-                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
-                        new OnCompleteListener<InstanceIdResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                String token = task.getResult().getToken();
-                                FirebaseDatabase.getInstance().getReference("userTokens").
-                                        child(getUserId()).setValue(token);
-                            }
-                        });
             }
         });
 
@@ -174,12 +163,9 @@ public class FirebaseLoginHelper {
         mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                Timber.d("signInAnonymously()");
                 viewModel.changeUserState(USER_STATE_ANONYMOUS);
                 viewModel.setCategory(CATEGORY_ALL);
                 viewModel.notifyRecyclerDataHasChanged();
-                //cache all data for use without network
-                SyncScheduleHelper.immediateSync(activity.getContext());
             }
         });
     }
@@ -213,19 +199,16 @@ public class FirebaseLoginHelper {
     }
 
     public void saveUserPhoto(final Uri photoUri) {
-        Timber.d("saving photo");
         final StorageReference photoReference = FirebaseStorage.getInstance().getReference("userPhotos")
                 .child(getUserId());
         mSavingUserPhotoTask = photoReference.putFile(photoUri);
         mSavingUserPhotoTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Timber.d("added to storage");
                 photoReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri storagePhotoUri) {
                         String storagePhotoString = storagePhotoUri.toString();
-                        Timber.d(storagePhotoString);
                         mUserPhotoReference.setValue(storagePhotoString);
                         activity.setUserPhoto(storagePhotoString);
                     }

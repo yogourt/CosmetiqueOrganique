@@ -30,7 +30,7 @@ import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewM
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.utils.LanguageHelper;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
-import com.blogspot.android_czy_java.beautytips.sync.SyncScheduleHelper;
+import com.blogspot.android_czy_java.beautytips.notifications.NotificationTokenHelper;
 import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -70,6 +70,8 @@ public abstract class BaseMainActivity extends AppCompatActivity
     public static final String TAG_DELETE_TIP_DIALOG = "delete_tip_dialog";
 
 
+    public static final String KEY_TOKEN_FLAG = "notification_token";
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -108,12 +110,11 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         initViewModel();
 
+        mLoginHelper = new FirebaseLoginHelper(this, viewModel);
+
         if (savedInstanceState == null) {
             MobileAds.initialize(this, getResources().getString(R.string.add_mob_app_id));
         }
-
-        mLoginHelper = new FirebaseLoginHelper(this, viewModel);
-
 
         //it has to be added here to avoid adding it multiple times. It doesn't have to be done on category change,
         //this is why it's not part of prepareNavigationDrawer()
@@ -196,7 +197,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
                     photoIv.setImageDrawable(getResources().getDrawable(R.drawable.placeholder));
                     nicknameTv.setText(R.string.label_anonymous);
                 }
-                //user just logged in
+                //user just logged in or logged in user opened the app
                 else {
                     logOutItem.setTitle(R.string.nav_log_out);
                     logOutItem.setIcon(R.drawable.ic_logout);
@@ -216,10 +217,19 @@ public abstract class BaseMainActivity extends AppCompatActivity
                         }
                     });
 
+                    if(!tokenWasSaved())
+                    NotificationTokenHelper.saveUserNotificationToken();
                 }
             }
 
         };
+    }
+
+    private boolean tokenWasSaved() {
+        boolean tokenWaSaved = getPreferences(MODE_PRIVATE).getBoolean(KEY_TOKEN_FLAG, false);
+
+        getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_TOKEN_FLAG, true).apply();
+        return tokenWaSaved;
     }
 
 
@@ -258,7 +268,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
                     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
                         mDrawerLayout.closeDrawers();
 
-                        Timber.d("on Navigation item selected");
 
                         /*
                         Here we need mDrawerListener to properly close NavigationDrawer when calling
@@ -354,7 +363,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 mLoginHelper.signIn();
                 showPickNicknameDialog();
-                SyncScheduleHelper.immediateSync(this);
                 //reload data
                 viewModel.notifyRecyclerDataHasChanged();
             } else {
