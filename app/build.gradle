@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
 
-def keystorePropertiesFile = file("C:\\Users\\Jagoda\\Desktop\\keystore.properties")
+def keystorePropertiesFile = file("D:\\Users\\Jagoda\\Desktop\\keystore.properties")
 
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()
