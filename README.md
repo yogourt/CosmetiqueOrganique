@@ -1,6 +1,6 @@
 # CosmetiqueOrganique
 
-This is an Android app developed by me during Udacidy Nanodegree Program for Android devs. 
+This is an Android app developed by me during Udacidy Nanodegree Program for Android Developers. 
 It's purpose is to serve users recipes for homemade cosmetics. Everyone can make them at home
 and you lifestyle will be a lot healthier! 
 
