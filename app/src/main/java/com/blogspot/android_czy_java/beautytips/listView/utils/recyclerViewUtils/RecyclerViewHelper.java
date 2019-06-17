@@ -1,7 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils;
 
-import android.content.res.Configuration;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 public class RecyclerViewHelper {
 

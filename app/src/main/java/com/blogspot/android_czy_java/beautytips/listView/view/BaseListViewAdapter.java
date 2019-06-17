@@ -6,11 +6,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +14,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.adroitandroid.chipcloud.ChipCloud;
 import com.adroitandroid.chipcloud.ChipListener;

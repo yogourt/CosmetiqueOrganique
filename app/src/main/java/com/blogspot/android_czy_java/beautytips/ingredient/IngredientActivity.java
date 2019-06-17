@@ -2,7 +2,6 @@
 package com.blogspot.android_czy_java.beautytips.ingredient;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.blogspot.android_czy_java.beautytips.R;

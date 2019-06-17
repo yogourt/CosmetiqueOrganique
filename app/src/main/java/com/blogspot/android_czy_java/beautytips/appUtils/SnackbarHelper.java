@@ -1,10 +1,10 @@
 package com.blogspot.android_czy_java.beautytips.appUtils;
 
 
-import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.google.android.material.snackbar.Snackbar;
 
 public class SnackbarHelper {
 

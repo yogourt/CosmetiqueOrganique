@@ -1,7 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.database.dao
 
 import androidx.room.*
-import com.blogspot.android_czy_java.beautytips.database.models.RecipeDetailModel
 import com.blogspot.android_czy_java.beautytips.database.models.RecipeModel
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -10,7 +9,7 @@ import io.reactivex.Single
 interface RecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipe(recipe: RecipeModel, recipeDetail: RecipeDetailModel): Single<RecipeModel>
+    fun insertRecipe(recipe: RecipeModel): Single<RecipeModel>
 
     @Query("DELETE FROM Recipes WHERE recipeId=:recipeId")
     fun deleteRecipe(recipeId: Long): Completable

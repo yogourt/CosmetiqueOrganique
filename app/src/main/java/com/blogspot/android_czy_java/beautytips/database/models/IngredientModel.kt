@@ -10,4 +10,9 @@ data class IngredientModel(
         val title: String,
         val image: String,
         val category: String,
-        val tags: String)
+        val tags: String,
+
+        val overview: String,
+        val forFace: String,
+        val forHair: String,
+        val forBody: String)

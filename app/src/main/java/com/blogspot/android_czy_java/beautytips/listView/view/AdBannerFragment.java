@@ -4,16 +4,16 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

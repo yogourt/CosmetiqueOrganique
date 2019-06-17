@@ -1,14 +1,12 @@
 package com.blogspot.android_czy_java.beautytips.newTip.firebase;
 
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.newTip.model.TipDetailsItem;
@@ -29,7 +27,7 @@ import java.util.ArrayList;
 
 import timber.log.Timber;
 
-public class NewTipFirebaseHelper implements LifecycleObserver {
+public class NewTipFirebaseHelper {
 
     private NewTipViewInterface activity;
 

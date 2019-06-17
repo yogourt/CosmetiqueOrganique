@@ -1,14 +1,15 @@
 package com.blogspot.android_czy_java.beautytips.listView.view;
 
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.widget.FrameLayout;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivityFragment;

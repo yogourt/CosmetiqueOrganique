@@ -4,12 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
@@ -28,6 +28,7 @@ import com.blogspot.android_czy_java.beautytips.newTip.view.dialog.ConfirmationD
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.farbod.labelledspinner.LabelledSpinner;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;

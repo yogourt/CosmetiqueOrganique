@@ -1,15 +1,12 @@
 package com.blogspot.android_czy_java.beautytips.listView.viewmodel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.User;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 

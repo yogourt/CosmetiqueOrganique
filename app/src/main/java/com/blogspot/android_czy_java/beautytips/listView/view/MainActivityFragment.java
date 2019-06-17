@@ -2,18 +2,19 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 
 
 import android.app.DialogFragment;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
@@ -21,7 +22,6 @@ import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.notifications.NotificationService;
 
 import java.util.List;
 

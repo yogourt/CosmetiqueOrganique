@@ -3,7 +3,6 @@ package com.blogspot.android_czy_java.beautytips.appUtils;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class AnalyticsUtils {

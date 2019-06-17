@@ -5,16 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.blogspot.android_czy_java.beautytips.database.dao.RecipeDao
-import com.blogspot.android_czy_java.beautytips.database.models.IngredientDetailModel
 import com.blogspot.android_czy_java.beautytips.database.models.IngredientModel
-import com.blogspot.android_czy_java.beautytips.database.models.RecipeDetailModel
 import com.blogspot.android_czy_java.beautytips.database.models.RecipeModel
 
 @Database(entities = arrayOf(
         RecipeModel::class,
-        RecipeDetailModel::class,
-        IngredientModel::class,
-        IngredientDetailModel::class),
+        IngredientModel::class),
         version = 1)
 abstract class AppDatabase: RoomDatabase() {
 

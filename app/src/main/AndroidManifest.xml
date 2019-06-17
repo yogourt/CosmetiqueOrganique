@@ -6,16 +6,16 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-        <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MyApplication"
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/AppTheme">
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -24,6 +24,9 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/pink300" />
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/add_mob_app_id"/>
 
         <activity
             android:name=".listView.view.MainActivity"
@@ -51,10 +54,11 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".detail.DetailActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".detail.DetailActivity"
+            android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".ingredient.IngredientActivity"/>
+        <activity android:name=".ingredient.IngredientActivity" />
 
         <service
             android:name=".sync.SyncJobService"
@@ -63,18 +67,20 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+
         <activity android:name=".welcome.WelcomeActivity" />
 
         <activity
             android:name=".newTip.view.NewTipActivity"
             android:label="@string/title_activity_new_tip"
             android:launchMode="singleTop"
-            android:theme="@style/ActivityDialogTheme"
-            android:parentActivityName=".listView.view.MainActivity" />
+            android:parentActivityName=".listView.view.MainActivity"
+            android:theme="@style/ActivityDialogTheme" />
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
+            android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"
+            android:exported="true" />
 
         <service android:name=".notifications.NotificationService">
             <intent-filter>
