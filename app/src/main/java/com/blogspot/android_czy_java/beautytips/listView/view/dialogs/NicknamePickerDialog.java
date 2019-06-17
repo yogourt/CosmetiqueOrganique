@@ -6,11 +6,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.google.firebase.auth.FirebaseAuth;

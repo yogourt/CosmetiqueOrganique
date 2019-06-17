@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.listView.model;
 
-import android.support.annotation.Keep;
+
+import androidx.annotation.Keep;
 
 import java.io.Serializable;
 

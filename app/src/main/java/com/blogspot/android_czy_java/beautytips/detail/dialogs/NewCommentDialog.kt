@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.detail.firebase.CommentsFirebaseHelper
@@ -40,13 +40,13 @@ class NewCommentDialog : DialogFragment() {
         return builder.create()
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         try {
             mAddCommentListener = context as AddCommentListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(context!!.toString() + " must implement NewCommentDialog." +
+            throw ClassCastException(context.toString() + " must implement NewCommentDialog." +
                     "AddCommentListener")
         }
 

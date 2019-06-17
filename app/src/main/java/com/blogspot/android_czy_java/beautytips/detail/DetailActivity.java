@@ -3,7 +3,6 @@ package com.blogspot.android_czy_java.beautytips.detail;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
@@ -14,6 +13,7 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.detail.dialogs.NewCommentDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
@@ -92,7 +92,7 @@ public class DetailActivity extends BaseItemActivity implements
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeFavouriteState();
+                changeFavouriteState(mFab);
             }
         });
         if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
@@ -102,7 +102,7 @@ public class DetailActivity extends BaseItemActivity implements
         }
     }
 
-    public void changeFavouriteState() {
+    public void changeFavouriteState(View view) {
         Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
         mFab.startAnimation(scaleAnim);
 

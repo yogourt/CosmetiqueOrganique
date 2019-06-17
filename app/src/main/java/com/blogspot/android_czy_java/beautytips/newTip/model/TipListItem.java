@@ -1,6 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.newTip.model;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 @Keep
 public class TipListItem {

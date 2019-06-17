@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 

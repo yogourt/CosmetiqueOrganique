@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.listView.model;
 
 import java.io.Serializable;
 
+//TODO: should this class be used to query DB?
 public class ListItem  implements Serializable {
 
     private static final long serialVersionUID = 0L;
