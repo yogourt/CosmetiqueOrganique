@@ -21,8 +21,6 @@ public class FirebaseToRoom
         firebaseDatabase.getReference("tipList")
                 .addListenerForSingleValueEvent(TipListValueEventListener())
 
-        firebaseDatabase.getReference("tips")
-                .addListenerForSingleValueEvent(TipsValueEventListener())
 
         firebaseDatabase.getReference("ingredientList")
                 .addListenerForSingleValueEvent(IngredientListValueEventListener())

@@ -50,7 +50,7 @@ exports.newCommentNotification = functions.database.ref('/tips/{tipId}/comments/
 	  	'New comment was added for the recipe with id ' + context.params.tipId;
 	  
 	  	try {
-	  		mailTransport.sendMail(mailOptions);
+	  		await mailTransport.sendMail(mailOptions);
 	  	} catch(error) {
 	  		console.error('There was an error while sending the email:', error);
 	  	}
