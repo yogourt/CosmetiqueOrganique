@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:paddingStart="@dimen/list_start_padding"
         android:paddingEnd="@dimen/list_end_padding"
-        android:background="@color/bluegrey900"/>
+        android:background="@color/bluegray900"/>
 
     <ProgressBar
         android:id="@+id/loading_indicator"
