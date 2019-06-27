@@ -9,6 +9,15 @@
         android:layout_height="match_parent"
         android:paddingStart="@dimen/list_start_padding"
         android:paddingEnd="@dimen/list_end_padding"
-        android:background="@color/bluegray900"/>
+        android:background="@color/bluegrey900"/>
+
+    <ProgressBar
+        android:id="@+id/loading_indicator"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        />
 
 </FrameLayout>
