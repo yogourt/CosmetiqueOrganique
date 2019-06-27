@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -44,6 +45,9 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.loading_indicator)
+    ProgressBar loadingIndicator;
+
     private StaggeredGridLayoutManager mLayoutManager;
     private ListViewAdapter mAdapter;
 
@@ -78,12 +82,7 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
 
         //register this observer after layout is inflated
-        viewModel.getRecyclerViewLiveData().observe(this, new Observer<List<ListItem>>() {
-            @Override
-            public void onChanged(@Nullable List<ListItem> list) {
-                prepareRecyclerView(list);
-            }
-        });
+        viewModel.getRecyclerViewLiveData().observe(this, this::prepareRecyclerView);
 
 
         //this is done to pass changed fav num from detail fragment so it's updated in tip list
@@ -123,6 +122,10 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
     }
 
     private void prepareRecyclerView(List<ListItem> recyclerViewList) {
+
+        if(loadingIndicator.getVisibility() == View.VISIBLE) {
+            loadingIndicator.setVisibility(View.INVISIBLE);
+        }
 
         float itemDivider;
 
