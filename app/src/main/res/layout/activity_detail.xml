@@ -34,7 +34,7 @@
         android:contentDescription="@string/description_fab"
         android:onClick="changeFavouriteState"
         android:src="@drawable/ic_heart"
-        android:tint="@color/bluegray700"
+        android:tint="@color/bluegrey700"
         app:layout_anchor="@id/layout_ingredients"
         app:layout_anchorGravity="bottom|end" />
 

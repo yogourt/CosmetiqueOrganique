@@ -262,7 +262,7 @@ public class DetailActivityFragment extends Fragment
                     getResources().getString(R.string.feature_favourites), mScrollView);
             return;
         }
-        int bluegray700 = getResources().getColor(R.color.bluegray700);
+        int bluegray700 = getResources().getColor(R.color.bluegrey700);
         if (mFab.getImageTintList().getDefaultColor() == bluegray700) {
             setFabActive();
             addFav();
@@ -281,7 +281,7 @@ public class DetailActivityFragment extends Fragment
     }
 
     private void setFabInactive() {
-        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.bluegray700)));
+        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.bluegrey700)));
     }
 
 
@@ -456,7 +456,7 @@ public class DetailActivityFragment extends Fragment
     @Override
     public void setAuthorPhoto(String photoUrl) {
         Glide.with(this)
-                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700_semi))
+                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegrey700_semi))
                 .load(photoUrl)
                 .into(mAuthorPhoto);
     }

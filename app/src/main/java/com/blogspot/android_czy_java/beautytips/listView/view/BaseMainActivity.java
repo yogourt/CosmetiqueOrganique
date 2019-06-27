@@ -461,7 +461,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         if(!isDestroyed())
         Glide.with(this)
-                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
+                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegrey700))
                 .load(imageUri)
                 .into(photoIv);
     }

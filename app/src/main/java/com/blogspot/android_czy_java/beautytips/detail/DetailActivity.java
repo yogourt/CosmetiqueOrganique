@@ -112,7 +112,7 @@ public class DetailActivity extends BaseItemActivity implements
                     getResources().getString(R.string.feature_favourites), mScrollView);
             return;
         }
-        int bluegray700 = getResources().getColor(R.color.bluegray700);
+        int bluegray700 = getResources().getColor(R.color.bluegrey700);
         if (mFab.getImageTintList().getDefaultColor() == bluegray700) {
             setFabActive();
             detailFragment.addFav();
@@ -129,7 +129,7 @@ public class DetailActivity extends BaseItemActivity implements
     }
 
     private void setFabInactive() {
-        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.bluegray700)));
+        mFab.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.bluegrey700)));
     }
 
 

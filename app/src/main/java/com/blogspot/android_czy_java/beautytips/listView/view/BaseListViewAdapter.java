@@ -278,7 +278,7 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
                             .chipCloud(mChipCloud)
                             .selectedColor(mContext.getResources().getColor(R.color.pink200))
                             .selectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
-                            .deselectedColor(mContext.getResources().getColor(R.color.bluegray700_semi))
+                            .deselectedColor(mContext.getResources().getColor(R.color.bluegrey700_semi))
                             .deselectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
                             .mode(ChipCloud.Mode.REQUIRED)
                             .labels(chipLabels)

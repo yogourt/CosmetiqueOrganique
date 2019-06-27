@@ -1,11 +1,11 @@
 package com.blogspot.android_czy_java.beautytips.database.repository
 
+import android.content.Context
 import com.blogspot.android_czy_java.beautytips.database.exceptions.UserIsNullException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.FirebaseDatabase
 
-public class FirebaseToRoom
+public class FirebaseToRoom(private val appContext: Context)
 {
 
     //this method will be called only once, when app is launched for the first time and there is no data
@@ -19,7 +19,7 @@ public class FirebaseToRoom
             throw UserIsNullException()
 
         firebaseDatabase.getReference("tipList")
-                .addListenerForSingleValueEvent(TipListValueEventListener())
+                .addListenerForSingleValueEvent(TipListValueEventListener(appContext))
 
 
         firebaseDatabase.getReference("ingredientList")

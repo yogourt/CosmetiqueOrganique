@@ -408,7 +408,7 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
                     }
                 })
                 .setActionTextColor(getResources().getColor(R.color.pink200));
-        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.bluegray900));
+        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.bluegrey900));
         snackbar.show();
     }
 

@@ -8,13 +8,13 @@ import androidx.room.Relation
 @Entity(tableName="Recipes")
 data class RecipeModel(
         @PrimaryKey
-        val recipeId: Long,
-        val title: String,
-        val image: String,
-        val authorId: String,
-        val category: String,
-        val subcategory: String,
-        val favNum: Long,
+        var recipeId: Long,
+        var title: String,
+        var image: String,
+        var authorId: String,
+        var category: String,
+        var subcategory: String,
+        var favNum: Long,
         @Embedded
-        val details: RecipeDetailModel
+        var details: RecipeDetailModel
 )
