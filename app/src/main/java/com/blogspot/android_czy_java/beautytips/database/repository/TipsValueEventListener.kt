@@ -1,11 +1,13 @@
 package com.blogspot.android_czy_java.beautytips.database.repository
 
 import android.content.Context
+import androidx.collection.LongSparseArray
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentListConverter
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
 import com.blogspot.android_czy_java.beautytips.database.detail.DetailConverter
 import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeConverter
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.google.firebase.database.DataSnapshot
 
@@ -18,15 +20,16 @@ class TipsValueEventListener(private val appContext: Context,
         Runnable {
 
             val comments = ArrayList<CommentModel>()
-            val tipDetailsMap: HashMap<String, RecipeDetailModel> = HashMap()
+            val tipDetailsMap = LongSparseArray<RecipeDetailModel>()
 
             for (item in tipsDataSnapshot.children) {
 
-                val recipeId = item.key ?: continue
+                val id = item.key ?: continue
+                val recipeId = id.toLong()
 
-                comments.addAll(CommentListConverter(item, recipeId.toLong()).getComments())
+                comments.addAll(CommentListConverter(item, recipeId).getComments())
 
-                tipDetailsMap[recipeId] = DetailConverter(item).getDetails()
+                tipDetailsMap.append(recipeId, DetailConverter(item).getDetails())
 
             }
 
@@ -34,41 +37,11 @@ class TipsValueEventListener(private val appContext: Context,
 
             for (item in tipListDataSnapshot.children) {
 
-                val recipeId = item.key ?: continue
-                val title = item.child("title").value.toString()
-                val image = item.child("image").value.toString()
-                val authorId = item.child("authorId").value
-                val category = item.child("category").value.toString()
-                val subcategory = item.child("subcategory").value.toString()
-                val favNum = item.child("favNum").value.toString()
-                val tags = item.child("tags").value.toString()
+                val recipeToInsert = RecipeConverter(item).getRecipe() ?: continue
+                val recipeId = recipeToInsert.recipeId
+
                 val details = tipDetailsMap[recipeId] ?: continue
-
-                var recipeToInsert: RecipeModel
-
-                if(authorId != null) {
-                    recipeToInsert = RecipeModel(
-                            recipeId.toLong(),
-                            title,
-                            image,
-                            authorId.toString(),
-                            category,
-                            subcategory,
-                            favNum.toLong(),
-                            tags,
-                            details)
-                } else {
-                    recipeToInsert = RecipeModel(
-                            recipeId.toLong(),
-                            title,
-                            image,
-                            null,
-                            category,
-                            subcategory,
-                            favNum.toLong(),
-                            tags,
-                            details)
-                }
+                recipeToInsert.details = details
 
                 AppDatabase.getInstance(appContext).recipeDao().insertRecipe(recipeToInsert)
             }

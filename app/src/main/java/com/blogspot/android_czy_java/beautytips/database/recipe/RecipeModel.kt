@@ -15,7 +15,8 @@ data class RecipeModel(
         var category: String,
         var subcategory: String,
         var favNum: Long,
-        var tags: String,
+        var tags: String
+) {
         @Embedded
-        var details: RecipeDetailModel
-)
+        lateinit var details: RecipeDetailModel
+}
