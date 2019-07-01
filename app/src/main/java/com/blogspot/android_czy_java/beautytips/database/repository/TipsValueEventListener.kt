@@ -4,6 +4,7 @@ import android.content.Context
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentListConverter
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
+import com.blogspot.android_czy_java.beautytips.database.detail.DetailConverter
 import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailModel
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.google.firebase.database.DataSnapshot
@@ -25,7 +26,7 @@ class TipsValueEventListener(private val appContext: Context,
 
                 comments.addAll(CommentListConverter(item, recipeId.toLong()).getComments())
 
-                tipDetailsMap[recipeId] = getDetailsForRecipe(item)
+                tipDetailsMap[recipeId] = DetailConverter(item).getDetails()
 
             }
 
@@ -75,17 +76,4 @@ class TipsValueEventListener(private val appContext: Context,
         }.run()
 
     }
-
-    private fun getDetailsForRecipe(item: DataSnapshot): RecipeDetailModel {
-        val description = item.child("message").value.toString()
-        val source = item.child("source").value
-        val ingredients = item.child("ingredients").value.toString()
-
-        if(source == null) {
-            return RecipeDetailModel(description = description, ingredients = ingredients)
-        } else {
-            return RecipeDetailModel(description, source.toString(), ingredients)
-        }
-    }
-
 }
