@@ -102,7 +102,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
 
             final TabletListViewViewModel tabletViewModel = (TabletListViewViewModel) viewModel;
 
-            //this will happen via ViewModel. In the DetailActivityFragment the chosen tip's description
+            //this will happen via ViewModel. In the DetailActivityFragment the chosen tip's message
             //will be opened
 
             //if the ingredient was chosen

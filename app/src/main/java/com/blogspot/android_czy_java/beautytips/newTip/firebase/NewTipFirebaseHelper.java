@@ -94,7 +94,7 @@ public class NewTipFirebaseHelper {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
 
-            //save details: description, ingredients
+            //save details: message, ingredients
             TipDetailsItem details;
             if (ingredients.size() < 2) {
                 details = new TipDetailsItem(description, ingredients.get(0));

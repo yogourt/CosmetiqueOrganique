@@ -1,20 +1,21 @@
-package com.blogspot.android_czy_java.beautytips.database.models
+package com.blogspot.android_czy_java.beautytips.database.recipe
 
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
+import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailModel
 
 @Entity(tableName="Recipes")
 data class RecipeModel(
         @PrimaryKey
         var recipeId: Long,
         var title: String,
-        var image: String,
-        var authorId: String,
+        var imageUrl: String,
+        var authorId: String?,
         var category: String,
         var subcategory: String,
         var favNum: Long,
+        var tags: String,
         @Embedded
         var details: RecipeDetailModel
 )

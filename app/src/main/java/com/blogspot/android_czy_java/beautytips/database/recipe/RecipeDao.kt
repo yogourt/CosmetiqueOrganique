@@ -1,11 +1,8 @@
-package com.blogspot.android_czy_java.beautytips.database.dao
+package com.blogspot.android_czy_java.beautytips.database.recipe
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.blogspot.android_czy_java.beautytips.database.models.RecipeModel
-import com.blogspot.android_czy_java.beautytips.database.models.mapped.RecipeMappedModel
 import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface RecipeDao {

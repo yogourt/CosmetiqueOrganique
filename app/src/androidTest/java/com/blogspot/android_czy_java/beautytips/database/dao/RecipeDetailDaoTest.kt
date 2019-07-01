@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
-import com.blogspot.android_czy_java.beautytips.database.models.RecipeDetailModel
-import com.blogspot.android_czy_java.beautytips.database.models.RecipeModel
+import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
+import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailDao
 import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Before
@@ -19,8 +20,11 @@ import org.junit.runners.JUnit4
 class RecipeDetailDaoTest {
 
     private val testedRecipeId = -1L
-    private val exampleDescription = "example description"
+    private val exampleDescription = "example message"
     private val exampleTwoIngredients = "ingredientOne, ingredient Two"
+    private val exampleSource = "www.xyz.com"
+
+    private lateinit var testedRecipe: RecipeModel
 
     lateinit var db: AppDatabase
     lateinit var SUT: RecipeDetailDao
@@ -30,6 +34,20 @@ class RecipeDetailDaoTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
         SUT = db.recipeDetailDao()
+
+        testedRecipe = RecipeModel(testedRecipeId,
+                "",
+                "",
+                "",
+                "",
+                "",
+                0,
+                "",
+                RecipeDetailModel(description = exampleDescription,
+                        source = exampleSource,
+                        ingredients = exampleTwoIngredients
+                )
+        )
     }
 
     @After
@@ -53,14 +71,7 @@ class RecipeDetailDaoTest {
     fun getDescriptionCalled_recipeFound_returnsValidDescription() {
 
         //given
-        db.recipeDao().insertRecipe(RecipeModel(testedRecipeId,
-                "",
-                "",
-                "",
-                "",
-                "",
-                0,
-                RecipeDetailModel(description = exampleDescription, ingredients = "")))
+        db.recipeDao().insertRecipe(testedRecipe)
 
         //when
         val result = SUT.getDescription(testedRecipeId)
@@ -84,14 +95,7 @@ class RecipeDetailDaoTest {
     @Test
     fun getIngredients_forRecipeWithTwoIngredients_returnsIngredientString() {
         //given
-        db.recipeDao().insertRecipe(RecipeModel(testedRecipeId,
-                "",
-                "",
-                "",
-                "",
-                "",
-                0,
-                RecipeDetailModel(description = exampleDescription, ingredients = exampleTwoIngredients)))
+        db.recipeDao().insertRecipe(testedRecipe)
 
         //when
         val result = SUT.getIngredients(testedRecipeId)
@@ -100,7 +104,18 @@ class RecipeDetailDaoTest {
         assertThat(result, equalTo(exampleTwoIngredients))
     }
 
+    @Test
+    fun whenSourceExistsInDb_getSource_returnsSource() {
 
+        //given
+        db.recipeDao().insertRecipe(testedRecipe)
+
+        //when
+        val result = SUT.getSource(testedRecipeId)
+
+        //then
+        assertThat(result, equalTo(exampleSource))
+    }
 
 
 }

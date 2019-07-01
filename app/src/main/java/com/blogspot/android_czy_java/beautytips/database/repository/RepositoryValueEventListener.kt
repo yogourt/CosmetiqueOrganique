@@ -2,7 +2,7 @@ package com.blogspot.android_czy_java.beautytips.database.repository
 
 import android.content.Context
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
-import com.blogspot.android_czy_java.beautytips.database.models.ErrorModel
+import com.blogspot.android_czy_java.beautytips.database.error.ErrorModel
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 

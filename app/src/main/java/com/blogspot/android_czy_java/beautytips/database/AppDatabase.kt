@@ -4,22 +4,24 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.blogspot.android_czy_java.beautytips.database.dao.ErrorDao
-import com.blogspot.android_czy_java.beautytips.database.dao.RecipeDao
-import com.blogspot.android_czy_java.beautytips.database.dao.RecipeDetailDao
-import com.blogspot.android_czy_java.beautytips.database.models.ErrorModel
-import com.blogspot.android_czy_java.beautytips.database.models.IngredientModel
-import com.blogspot.android_czy_java.beautytips.database.models.RecipeModel
+import com.blogspot.android_czy_java.beautytips.database.comment.CommentDao
+import com.blogspot.android_czy_java.beautytips.database.error.ErrorDao
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
+import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailDao
+import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
+import com.blogspot.android_czy_java.beautytips.database.error.ErrorModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 
 @Database(entities = arrayOf(
         RecipeModel::class,
-        IngredientModel::class,
+        CommentModel::class,
         ErrorModel::class),
         version = 1)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao
     abstract fun recipeDetailDao(): RecipeDetailDao
+    abstract fun commentDao(): CommentDao
     abstract fun errorDao(): ErrorDao
 
     companion object {

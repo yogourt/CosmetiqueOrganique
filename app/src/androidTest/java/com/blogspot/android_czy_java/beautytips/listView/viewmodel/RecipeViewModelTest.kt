@@ -1,7 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.listView.viewmodel
 
 import androidx.lifecycle.Observer
-import com.blogspot.android_czy_java.beautytips.database.models.mapped.RecipeMappedModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
 import com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.RecipeRepositoryInterface
 import org.junit.Before
 

@@ -1,10 +1,9 @@
-package com.blogspot.android_czy_java.beautytips.database.dao
+package com.blogspot.android_czy_java.beautytips.database.error
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import com.blogspot.android_czy_java.beautytips.database.models.ErrorModel
-import io.reactivex.Single
+import com.blogspot.android_czy_java.beautytips.database.error.ErrorModel
 
 @Dao
 interface ErrorDao {

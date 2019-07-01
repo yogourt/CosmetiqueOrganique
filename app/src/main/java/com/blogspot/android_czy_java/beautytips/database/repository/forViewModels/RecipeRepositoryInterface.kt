@@ -1,7 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.database.repository.forViewModels
 
 import androidx.lifecycle.LiveData
-import com.blogspot.android_czy_java.beautytips.database.models.mapped.RecipeMappedModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
 
 interface RecipeRepositoryInterface {
 

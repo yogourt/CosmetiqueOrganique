@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.database.models
+package com.blogspot.android_czy_java.beautytips.database.error
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

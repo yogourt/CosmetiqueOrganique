@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.database.dao
+package com.blogspot.android_czy_java.beautytips.database.detail
 
 import androidx.room.Dao
 import androidx.room.Query
@@ -11,6 +11,9 @@ interface RecipeDetailDao {
 
     @Query("SELECT Ingredients FROM Recipes WHERE recipeId = :recipeId")
     fun getIngredients(recipeId: Long): String
+
+    @Query("SELECT Source FROM Recipes WHERE recipeId = :recipeId")
+    fun getSource(recipeId: Long): String
 
 
 }

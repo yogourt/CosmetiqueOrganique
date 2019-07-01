@@ -6,8 +6,9 @@ import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
-import com.blogspot.android_czy_java.beautytips.database.models.RecipeDetailModel
-import com.blogspot.android_czy_java.beautytips.database.models.RecipeModel
+import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.After
 import org.junit.Before
@@ -66,6 +67,7 @@ class RecipeDaoTest {
                 "",
                 "",
                 0,
+                "",
                 RecipeDetailModel(description = "", ingredients = "")))
 
         //then

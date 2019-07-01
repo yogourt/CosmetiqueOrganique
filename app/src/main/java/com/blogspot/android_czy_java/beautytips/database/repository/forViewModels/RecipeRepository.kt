@@ -1,11 +1,9 @@
 package com.blogspot.android_czy_java.beautytips.database.repository.forViewModels
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
-import com.blogspot.android_czy_java.beautytips.database.dao.RecipeDao
-import com.blogspot.android_czy_java.beautytips.database.models.mapped.RecipeMappedModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
 
 class RecipeRepository(private val appContext: Context): RecipeRepositoryInterface {
 
