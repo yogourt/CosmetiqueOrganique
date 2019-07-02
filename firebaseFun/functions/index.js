@@ -50,7 +50,7 @@ exports.newCommentNotification = functions.database.ref('/tips/{tipId}/comments/
 	  	'New comment was added for the recipe with id ' + context.params.tipId;
 	  
 	  	try {
-	  		await mailTransport.sendMail(mailOptions);
+	  		mailTransport.sendMail(mailOptions);
 	  	} catch(error) {
 	  		console.error('There was an error while sending the email:', error);
 	  	}
@@ -148,6 +148,7 @@ function calculateCommentsNum(tipId) {
 
 exports.updateFavNumber = functions.database.ref('tipList/{tipId}')
 .onUpdate(async(change, context) => {
+
 	var childrenNum = change.after.numChildren();
 	childrenNum -=5;
 
@@ -164,4 +165,37 @@ exports.updateFavNumber = functions.database.ref('tipList/{tipId}')
 
 	return null;
 });
+
+
+function refactorIngredientList() {
+	admin.database().ref('/tips').on("value", function(snapshot) {
+
+		snapshot.forEach(function(item) {
+			var ingredient1 = item.child('ingredient1').val();
+			var ingredient2 = item.child('ingredient2').val();
+			var ingredient3 = item.child('ingredient3').val();
+			var ingredient4 = item.child('ingredient4').val();
+
+			var ingredients = ingredient1;
+
+			if(ingredient2 !== null) {
+				ingredients += ", " + ingredient2;
+			}
+
+			if(ingredient3 !== null) {
+				ingredients += ", " + ingredient3;
+			}
+
+			if(ingredient4 !== null) {
+				ingredients += ", " + ingredient4;
+			}
+
+			console.log("Item key " + item.key);
+			return admin.database().ref('/tips/' + item.key + '/ingredients').set(ingredients);
+		
+		});
+	});
+}
+
+
 

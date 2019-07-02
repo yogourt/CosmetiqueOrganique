@@ -26,7 +26,7 @@ public class ListViewViewModel extends ViewModel {
     public static final String SUBCATEGORY_ALL = "all";
 
     /*
-     Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
+     CategoryLabel and navigationPosition are used in Navigation Drawer: navigationPosition is used
      to check selected item (it's rose), categoryLiveData is used when creating firebase query
    */
     private int navigationPosition;

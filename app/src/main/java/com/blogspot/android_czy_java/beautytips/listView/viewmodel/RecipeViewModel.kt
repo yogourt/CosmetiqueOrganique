@@ -3,7 +3,7 @@ package com.blogspot.android_czy_java.beautytips.listView.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
-import com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.RecipeRepositoryInterface
+import com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.recipe.RecipeRepositoryInterface
 
 class RecipeViewModel(private val repository: RecipeRepositoryInterface):
         ViewModel() {
