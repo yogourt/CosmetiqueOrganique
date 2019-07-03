@@ -42,11 +42,12 @@ class RecipeDetailDaoTest {
                 "",
                 "",
                 0,
-                "",
-                RecipeDetailModel(description = exampleDescription,
-                        source = exampleSource,
-                        ingredients = exampleTwoIngredients
-                )
+                ""
+        )
+        testedRecipe.details = RecipeDetailModel(
+                description = exampleDescription,
+                source = exampleSource,
+                ingredients = exampleTwoIngredients
         )
     }
 

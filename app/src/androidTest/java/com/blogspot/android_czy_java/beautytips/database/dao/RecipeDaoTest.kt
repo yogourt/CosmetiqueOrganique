@@ -59,16 +59,18 @@ class RecipeDaoTest {
         //given
         SUT.getFavNum(testedRecipeId).observeForever(favNumObserver)
 
-        //when
-        db.recipeDao().insertRecipe(RecipeModel(testedRecipeId,
+        val recipe = RecipeModel(testedRecipeId,
                 "",
                 "",
                 "",
                 "",
                 "",
                 0,
-                "",
-                RecipeDetailModel(description = "", ingredients = "")))
+                "")
+        recipe.details = RecipeDetailModel(description = "", ingredients = "")
+
+        //when
+        db.recipeDao().insertRecipe(recipe)
 
         //then
         verify(favNumObserver).onChanged(0)

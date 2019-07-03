@@ -1,6 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.appUtils.categories.labels
 
-enum class SubcategoryLabel(private val label: String) {
+enum class SubcategoryLabel(val label: String) {
 
         SUBCATEGORY_ALL("All"),
         SUBCATEGORY_OTHERS("Others"),

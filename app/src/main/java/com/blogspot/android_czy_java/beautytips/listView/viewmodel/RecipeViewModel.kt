@@ -2,6 +2,8 @@ package com.blogspot.android_czy_java.beautytips.listView.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
+import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
 import com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.recipe.RecipeRepositoryInterface
 
@@ -11,7 +13,7 @@ class RecipeViewModel(private val repository: RecipeRepositoryInterface):
 
     val recipeLiveData: LiveData<List<RecipeMappedModel>> =  repository.recipeLiveData
 
-    var category: String = "all"
+    var category: CategoryInterface = CategoryAll.SUBCATEGORY_ALL
     set (newCategory) {
         repository.category = newCategory
         field = newCategory

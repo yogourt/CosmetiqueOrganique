@@ -4,21 +4,18 @@ import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.Categ
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.SubcategoryLabel
 
 
-interface CategoryAll {
+enum class CategoryAll(override val subcategory: SubcategoryLabel) : CategoryInterface {
+
+    SUBCATEGORY_ALL(SubcategoryLabel.SUBCATEGORY_ALL);
+
+    override fun getCategoryLabel() = CategoryLabel.CATEGORY_ALL.label
+
 
     companion object {
 
-        val subcategories = CategoryFace.Subcategory.values().map { it.label }
+        val subcategories = values().map { it.getSubcategoryLabel() }
 
-    }
-
-    enum class Subcategory(private val label: SubcategoryLabel): CategoryInterface {
-
-        SUBCATEGORY_ALL(SubcategoryLabel.SUBCATEGORY_ALL);
-
-        override fun getCategory() = CategoryLabel.CATEGORY_ALL
-
-        override fun getSubcategory() = label
     }
 
 }
+
