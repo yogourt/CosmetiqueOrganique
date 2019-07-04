@@ -11,20 +11,30 @@ class RecipeRepository(private val recipeDao: RecipeDao) : RecipeRepositoryInter
 
     override var category: CategoryInterface = CategoryAll.SUBCATEGORY_ALL
 
-
     override val recipeLiveData = MutableLiveData<List<RecipeMappedModel>>()
 
     override fun getByDate() {
 
         if(category == CategoryAll.SUBCATEGORY_ALL) {
-            recipeLiveData.value = recipeDao.getAllRecipes().value
+            recipeLiveData.value = recipeDao.getAllRecipes()
         } else if(category.isSubcategoryAll()) {
             recipeLiveData.value = recipeDao.getRecipesByCategory(category.getCategoryLabel())
+        } else {
+            recipeLiveData.value = recipeDao.getRecipesByCategoryAndSubcategory(
+                    category.getCategoryLabel(), category.getSubcategoryLabel())
         }
+
     }
 
     override fun getByPopularity() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if(category == CategoryAll.SUBCATEGORY_ALL) {
+            recipeLiveData.value = recipeDao.getAllRecipesOrderByPopularity()
+        } else if(category.isSubcategoryAll()) {
+            recipeLiveData.value = recipeDao.getRecipesByCategoryOrderByPopularity(category.getCategoryLabel())
+        } else {
+            recipeLiveData.value = recipeDao.getRecipesByCategoryAndSubcategoryOrderByPopularity(
+                    category.getCategoryLabel(), category.getSubcategoryLabel())
+        }
     }
 
 }
