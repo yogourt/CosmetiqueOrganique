@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class ErrorModel(
-        val message: String,
+       override val message: String,
         val code: Int
-) {
+): Throwable() {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }

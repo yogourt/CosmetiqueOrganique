@@ -9,13 +9,16 @@ import io.reactivex.Completable
 interface RecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipe(recipe: RecipeModel)
+    fun insertRecipes(recipes: List<RecipeModel>)
 
     @Query("DELETE FROM Recipes WHERE recipeId=:recipeId")
     fun deleteRecipe(recipeId: Long): Completable
 
     @Query("SELECT * FROM Recipes")
     fun getAllRecipes(): List<RecipeMappedModel>
+
+    @Query("SELECT recipeId FROM Recipes")
+    fun getAllRecipesIds(): List<Long>
 
     @Query("SELECT * FROM Recipes WHERE category=:category")
     fun getRecipesByCategory(category: String): List<RecipeMappedModel>

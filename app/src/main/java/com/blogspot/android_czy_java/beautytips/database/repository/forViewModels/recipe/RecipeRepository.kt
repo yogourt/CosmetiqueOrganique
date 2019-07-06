@@ -1,40 +1,85 @@
 package com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.recipe
 
-import androidx.lifecycle.MutableLiveData
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
+import com.blogspot.android_czy_java.beautytips.database.AppDatabase
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
+import com.blogspot.android_czy_java.beautytips.database.repository.FirebaseToRoom
+import io.reactivex.Single
+import io.reactivex.SingleEmitter
 
 
-class RecipeRepository(private val recipeDao: RecipeDao) : RecipeRepositoryInterface {
+class RecipeRepository(private val recipeDao: RecipeDao, private val database: AppDatabase) :
+        RecipeRepositoryInterface {
 
-    override var category: CategoryInterface = CategoryAll.SUBCATEGORY_ALL
+    override fun getByDate(category: CategoryInterface): Single<List<RecipeMappedModel>> {
 
-    override val recipeLiveData = MutableLiveData<List<RecipeMappedModel>>()
+        return Single.create { emitter ->
 
-    override fun getByDate() {
+            if (recipeDao.getAllRecipesIds().isEmpty()) {
 
-        if(category == CategoryAll.SUBCATEGORY_ALL) {
-            recipeLiveData.value = recipeDao.getAllRecipes()
-        } else if(category.isSubcategoryAll()) {
-            recipeLiveData.value = recipeDao.getRecipesByCategory(category.getCategoryLabel())
-        } else {
-            recipeLiveData.value = recipeDao.getRecipesByCategoryAndSubcategory(
-                    category.getCategoryLabel(), category.getSubcategoryLabel())
-        }
+                FirebaseToRoom(database).observeFirebaseAndSaveToRoom().subscribe({
+                    run {
+                        emitResultByDate(category, emitter)
+                    }
+                },
+                        { error ->
+                            emitter.onError(error)
+                        }
 
-    }
-
-    override fun getByPopularity() {
-        if(category == CategoryAll.SUBCATEGORY_ALL) {
-            recipeLiveData.value = recipeDao.getAllRecipesOrderByPopularity()
-        } else if(category.isSubcategoryAll()) {
-            recipeLiveData.value = recipeDao.getRecipesByCategoryOrderByPopularity(category.getCategoryLabel())
-        } else {
-            recipeLiveData.value = recipeDao.getRecipesByCategoryAndSubcategoryOrderByPopularity(
-                    category.getCategoryLabel(), category.getSubcategoryLabel())
+                )
+            } else {
+                emitResultByDate(category, emitter)
+            }
         }
     }
+
+    private fun emitResultByDate(category: CategoryInterface, emitter: SingleEmitter<List<RecipeMappedModel>>) {
+        when {
+            category == CategoryAll.SUBCATEGORY_ALL -> emitter.onSuccess(recipeDao.getAllRecipes())
+
+            category.isSubcategoryAll() -> emitter.onSuccess(
+                    recipeDao.getRecipesByCategory(category.getCategoryLabel()))
+
+            else -> emitter.onSuccess(recipeDao.getRecipesByCategoryAndSubcategory(
+                    category.getCategoryLabel(), category.getSubcategoryLabel()))
+        }
+    }
+
+    override fun getByPopularity(category: CategoryInterface): Single<List<RecipeMappedModel>> {
+
+        return Single.create { emitter ->
+
+            if (recipeDao.getAllRecipesIds().isEmpty()) {
+
+                FirebaseToRoom(database).observeFirebaseAndSaveToRoom().subscribe({
+                    run {
+                        emitResultByPopularity(category, emitter)
+                    }
+                },
+                        { error ->
+                            emitter.onError(error)
+                        }
+
+                )
+            } else {
+                emitResultByPopularity(category, emitter)
+            }
+        }
+    }
+
+    private fun emitResultByPopularity(category: CategoryInterface, emitter: SingleEmitter<List<RecipeMappedModel>>) {
+        when {
+            category == CategoryAll.SUBCATEGORY_ALL -> emitter.onSuccess(recipeDao.getAllRecipesOrderByPopularity())
+
+            category.isSubcategoryAll() -> emitter.onSuccess(
+                    recipeDao.getRecipesByCategoryOrderByPopularity(category.getCategoryLabel()))
+
+            else -> emitter.onSuccess(recipeDao.getRecipesByCategoryAndSubcategoryOrderByPopularity(
+                    category.getCategoryLabel(), category.getSubcategoryLabel()))
+        }
+    }
+
 
 }

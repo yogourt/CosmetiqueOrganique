@@ -1,6 +1,5 @@
 package com.blogspot.android_czy_java.beautytips.database.repository
 
-import android.content.Context
 import androidx.collection.LongSparseArray
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentListConverter
@@ -10,9 +9,11 @@ import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailMode
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeConverter
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.google.firebase.database.DataSnapshot
+import io.reactivex.SingleEmitter
 
-class TipsValueEventListener(private val appContext: Context,
-                             private val tipListDataSnapshot: DataSnapshot) : RepositoryValueEventListener(appContext) {
+class TipsValueEventListener(private val database: AppDatabase,
+                             private val tipListDataSnapshot: DataSnapshot,
+                             private val emitter: SingleEmitter<Boolean>) : RepositoryValueEventListener(emitter) {
 
 
     override fun onDataChange(tipsDataSnapshot: DataSnapshot) {
@@ -33,8 +34,9 @@ class TipsValueEventListener(private val appContext: Context,
 
             }
 
-            AppDatabase.getInstance(appContext).commentDao().insertComments(comments)
+            database.commentDao().insertComments(comments)
 
+            val recipes = ArrayList<RecipeModel>()
             for (item in tipListDataSnapshot.children) {
 
                 val recipeToInsert = RecipeConverter(item).getRecipe() ?: continue
@@ -43,8 +45,13 @@ class TipsValueEventListener(private val appContext: Context,
                 val details = tipDetailsMap[recipeId] ?: continue
                 recipeToInsert.details = details
 
-                AppDatabase.getInstance(appContext).recipeDao().insertRecipe(recipeToInsert)
+                recipes.add(recipeToInsert)
+
             }
+
+            database.recipeDao().insertRecipes(recipes)
+
+            emitter.onSuccess(true)
 
         }.run()
 
