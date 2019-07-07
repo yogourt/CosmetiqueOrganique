@@ -1,7 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.listView.viewmodel
 
 import androidx.lifecycle.Observer
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.recipe.RecipeRepositoryInterface
 import org.junit.Before
 
@@ -18,7 +18,7 @@ class RecipeViewModelTest {
     private lateinit var recipeRepository: RecipeRepositoryInterface
 
     @Mock
-    private lateinit var recipeObserver: Observer<List<RecipeMappedModel>>
+    private lateinit var recipeObserver: Observer<List<RecipeModel>>
 
 
     private lateinit var SUT: RecipeViewModel

@@ -20,7 +20,7 @@ class RecipeViewModel : ViewModel() {
 
     val recipeLiveData: MutableLiveData<RecipeUiModel> = MutableLiveData()
 
-            private val disposable = CompositeDisposable()
+    private val disposable = CompositeDisposable()
 
     var category: CategoryInterface = CategoryAll.SUBCATEGORY_ALL
         set(category) {
@@ -38,6 +38,9 @@ class RecipeViewModel : ViewModel() {
             }
         }
 
+    fun init() {
+        loadRecipes()
+    }
 
     private fun loadRecipes() {
         disposable.add(loadRecipesUseCase.execute(RecipeRequest(category, order)).doOnSubscribe {

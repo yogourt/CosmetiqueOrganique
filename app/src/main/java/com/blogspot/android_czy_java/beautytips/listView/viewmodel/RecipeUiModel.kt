@@ -1,12 +1,12 @@
 package com.blogspot.android_czy_java.beautytips.listView.viewmodel
 
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 
 sealed class RecipeUiModel {
 
     class RecipeLoading: RecipeUiModel()
 
-    data class RecipeSuccess(val recipes: List<RecipeMappedModel>): RecipeUiModel()
+    data class RecipeSuccess(val recipes: List<RecipeModel>): RecipeUiModel()
 
     data class RecipeLoadingError(val message: String): RecipeUiModel()
 

@@ -70,7 +70,7 @@ class RecipeDaoTest {
         recipe.details = RecipeDetailModel(description = "", ingredients = "")
 
         //when
-        db.recipeDao().insertRecipe(recipe)
+        db.recipeDao().insertRecipes(listOf(recipe))
 
         //then
         verify(favNumObserver).onChanged(0)

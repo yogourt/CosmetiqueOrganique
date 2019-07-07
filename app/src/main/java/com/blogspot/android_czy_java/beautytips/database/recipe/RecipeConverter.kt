@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.database.recipe
 
 import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
+import com.blogspot.android_czy_java.beautytips.userlists.UserList
 import com.google.firebase.database.DataSnapshot
 
 class RecipeConverter(private val recipeDataSnapshot: DataSnapshot) {
@@ -17,7 +18,7 @@ class RecipeConverter(private val recipeDataSnapshot: DataSnapshot) {
 
         val favNum = favNumDb?.toString()?.toLong() ?: 0L
 
-       return if (authorId != null) {
+        return if (authorId != null) {
             RecipeModel(
                     recipeId.toLong(),
                     title,
@@ -28,7 +29,7 @@ class RecipeConverter(private val recipeDataSnapshot: DataSnapshot) {
                     favNum,
                     tags)
         } else {
-           RecipeModel(
+            RecipeModel(
                     recipeId.toLong(),
                     title,
                     image,

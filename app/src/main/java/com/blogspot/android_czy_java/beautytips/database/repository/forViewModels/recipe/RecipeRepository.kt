@@ -2,18 +2,27 @@ package com.blogspot.android_czy_java.beautytips.database.repository.forViewMode
 
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
+import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeMappedModel
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.database.repository.FirebaseToRoom
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
 
 class RecipeRepository(private val recipeDao: RecipeDao, private val database: AppDatabase) :
-        RecipeRepositoryInterface {
+        RecipeRepositoryInterface<RecipeRequest> {
 
-    override fun getByDate(category: CategoryInterface): Single<List<RecipeMappedModel>> {
+    override fun getRecipes(request: RecipeRequest): Single<List<RecipeModel>> {
+        return when(request.order) {
+            Order.NEW -> getByDate(request.category)
+            Order.POPULARITY -> getByPopularity(request.category)
+        }
+    }
+
+    private fun getByDate(category: CategoryInterface): Single<List<RecipeModel>> {
 
         return Single.create { emitter ->
 
@@ -35,7 +44,7 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val database: A
         }
     }
 
-    private fun emitResultByDate(category: CategoryInterface, emitter: SingleEmitter<List<RecipeMappedModel>>) {
+    private fun emitResultByDate(category: CategoryInterface, emitter: SingleEmitter<List<RecipeModel>>) {
         when {
             category == CategoryAll.SUBCATEGORY_ALL -> emitter.onSuccess(recipeDao.getAllRecipes())
 
@@ -47,7 +56,7 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val database: A
         }
     }
 
-    override fun getByPopularity(category: CategoryInterface): Single<List<RecipeMappedModel>> {
+    private fun getByPopularity(category: CategoryInterface): Single<List<RecipeModel>> {
 
         return Single.create { emitter ->
 
@@ -69,7 +78,7 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val database: A
         }
     }
 
-    private fun emitResultByPopularity(category: CategoryInterface, emitter: SingleEmitter<List<RecipeMappedModel>>) {
+    private fun emitResultByPopularity(category: CategoryInterface, emitter: SingleEmitter<List<RecipeModel>>) {
         when {
             category == CategoryAll.SUBCATEGORY_ALL -> emitter.onSuccess(recipeDao.getAllRecipesOrderByPopularity())
 

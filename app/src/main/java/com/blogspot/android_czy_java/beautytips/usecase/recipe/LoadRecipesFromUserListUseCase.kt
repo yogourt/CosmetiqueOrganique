@@ -5,11 +5,10 @@ import com.blogspot.android_czy_java.beautytips.database.repository.forViewModel
 import com.blogspot.android_czy_java.beautytips.usecase.UseCaseInterface
 import io.reactivex.Single
 
-class LoadRecipesUseCase(private val recipeRepository: RecipeRepositoryInterface<RecipeRequest>):
-        UseCaseInterface<RecipeRequest, List<RecipeModel>> {
+class LoadRecipesFromUserListUseCase(private val repository: RecipeRepositoryInterface<UserListRecipeRequest>) :
+        UseCaseInterface<UserListRecipeRequest, List<RecipeModel>> {
 
-
-    override fun execute(request: RecipeRequest): Single<List<RecipeModel>> =
-             recipeRepository.getRecipes(request)
-
+    override fun execute(request: UserListRecipeRequest): Single<List<RecipeModel>> {
+        return repository.getRecipes(request)
+    }
 }
