@@ -102,6 +102,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
 
             final TabletListViewViewModel tabletViewModel = (TabletListViewViewModel) viewModel;
 
+            viewModel.detailScreenOpenTimesAfterPromptDialog++;
             //this will happen via ViewModel. In the DetailActivityFragment the chosen tip's description
             //will be opened
 
@@ -139,6 +140,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
                 openDetailScreen(item, createSharedElementTransition());
 
             }
+
         }
     }
 

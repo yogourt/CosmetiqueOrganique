@@ -14,16 +14,22 @@ import androidx.lifecycle.ViewModelProviders;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivityFragment;
 import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivityFragment;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPromptDialog;
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPromptDialogInterface;
 import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
+import com.google.android.gms.ads.AdRequest;
 import com.kobakei.ratethisapp.RateThisApp;
 
+
+import de.cketti.mailto.EmailIntentBuilder;
 
 import static android.content.Intent.ACTION_SEARCH;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
 public class MainActivity extends BaseMainActivity implements OpeningFragment.OpeningFragmentActivity,
-        IngredientActivityFragment.IngredientFragmentActivity {
+        IngredientActivityFragment.IngredientFragmentActivity,
+        SupportPromptDialogInterface {
 
 
     private FrameLayout mDetailContainer;
@@ -32,7 +38,11 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
     public static final String TAG_FRAGMENT_INGREDIENT = "fragment_ingredient";
     public static final String TAG_FRAGMENT_DETAIL = "fragment_detail";
 
+    public static final String KEY_FIRST_OPEN = "first open";
+    public static final String KEY_DETAIL_SCREEN_OPEN_TIMES = "detail screen open times";
+
     private FragmentManager fragmentManager;
+
 
 
     @Override
@@ -47,10 +57,10 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
                 get(TabletListViewViewModel.class);
 
 
+        fragmentManager = getSupportFragmentManager();
+
         if (getResources().getBoolean(R.bool.is_tablet) &&
                 getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-            fragmentManager = getSupportFragmentManager();
 
             mDetailContainer = findViewById(R.id.fragment_detail_container);
 
@@ -108,6 +118,23 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
             });
         }
         prepareRatingRequest();
+
+        getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_FIRST_OPEN, false).apply();
+    }
+
+    private boolean shouldDialogBeShown() {
+        return !getPreferences(MODE_PRIVATE).getBoolean(KEY_FIRST_OPEN, true) &&
+                viewModel.shouldSupportDialogBeShown();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(shouldDialogBeShown() && interstitialAd.isLoaded()) {
+            showSupportPromptDialog();
+            viewModel.detailScreenOpenTimesAfterPromptDialog = 0;
+        }
     }
 
     @Override
@@ -136,7 +163,7 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
         // to MainActivityFragment
         if (requestCode == REQUEST_CODE_DETAIL_ACTIVITY) {
             if (data != null)
-            setIntent(data);
+                setIntent(data);
 
         }
     }
@@ -175,7 +202,6 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
     }
 
 
-
     private void prepareRatingRequest() {
         // Custom condition: 3 days and 4 launches
         RateThisApp.Config config = new RateThisApp.Config(3, 4);
@@ -185,4 +211,24 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
         // If the condition is satisfied, "Rate this app" dialog will be shown
         RateThisApp.showRateDialogIfNeeded(this, R.style.DialogStyle);
     }
+
+    private void showSupportPromptDialog() {
+        new SupportPromptDialog().show(fragmentManager, SupportPromptDialog.DIALOG_TAG);
+    }
+
+
+    @Override
+    public void onWatchAddButtonClicked() {
+        interstitialAd.show();
+    }
+
+    @Override
+    public void onWriteButtonClicked() {
+        EmailIntentBuilder.from(this)
+                .to(getString(R.string.developer_mail))
+                .subject(getString(R.string.feedback_email_title))
+                .start();
+
+    }
+
 }

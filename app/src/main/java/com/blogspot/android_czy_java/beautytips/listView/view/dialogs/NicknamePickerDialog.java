@@ -38,7 +38,7 @@ public class NicknamePickerDialog extends DialogFragment {
 
         builder.setTitle(R.string.dialog_nickname_title);
         builder.setMessage(R.string.dialog_nickname_message);
-        builder.setIcon(R.drawable.ic_soap);
+        builder.setIcon(R.drawable.withoutback);
         builder.setPositiveButton(R.string.dialog_button_positive_label,
                 new DialogInterface.OnClickListener() {
             @Override

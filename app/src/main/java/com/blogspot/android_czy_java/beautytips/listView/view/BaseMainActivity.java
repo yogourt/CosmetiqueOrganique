@@ -35,6 +35,9 @@ import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.navigation.NavigationView;
 
@@ -97,6 +100,8 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
     ListViewViewModel viewModel;
 
+    InterstitialAd interstitialAd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +120,9 @@ public abstract class BaseMainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             MobileAds.initialize(this, getResources().getString(R.string.add_mob_app_id));
         }
+
+
+        prepareInterstitialAd();
 
         //it has to be added here to avoid adding it multiple times. It doesn't have to be done on category change,
         //this is why it's not part of prepareNavigationDrawer()
@@ -407,6 +415,19 @@ public abstract class BaseMainActivity extends AppCompatActivity
         }
     }
 
+    private void prepareInterstitialAd() {
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.support_unit_ad_id));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                interstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+
+        });
+    }
 
 
    /*
