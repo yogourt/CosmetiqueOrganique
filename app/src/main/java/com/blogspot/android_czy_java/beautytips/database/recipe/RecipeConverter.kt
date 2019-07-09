@@ -1,7 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.database.recipe
 
 import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
-import com.blogspot.android_czy_java.beautytips.userlists.UserList
 import com.google.firebase.database.DataSnapshot
 
 class RecipeConverter(private val recipeDataSnapshot: DataSnapshot) {

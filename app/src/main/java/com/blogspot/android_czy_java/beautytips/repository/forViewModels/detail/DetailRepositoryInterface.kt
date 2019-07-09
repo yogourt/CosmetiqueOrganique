@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.detail
+package com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail
 
 import android.net.Uri
 import androidx.lifecycle.LiveData

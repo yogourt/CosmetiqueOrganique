@@ -2,7 +2,7 @@ package com.blogspot.android_czy_java.beautytips.di.database
 
 import android.content.Context
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
-import com.blogspot.android_czy_java.beautytips.database.repository.FirebaseToRoom
+import com.blogspot.android_czy_java.beautytips.repository.FirebaseToRoom
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

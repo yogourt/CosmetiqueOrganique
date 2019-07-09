@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.database.repository.converters
+package com.blogspot.android_czy_java.beautytips.repository.converters
 
 import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentConverter

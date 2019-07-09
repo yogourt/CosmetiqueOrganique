@@ -1,8 +1,6 @@
-package com.blogspot.android_czy_java.beautytips.database.repository
+package com.blogspot.android_czy_java.beautytips.repository
 
-import android.content.Context
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Single
 

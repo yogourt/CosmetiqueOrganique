@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.database.repository
+package com.blogspot.android_czy_java.beautytips.repository
 
 import androidx.collection.LongSparseArray
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase

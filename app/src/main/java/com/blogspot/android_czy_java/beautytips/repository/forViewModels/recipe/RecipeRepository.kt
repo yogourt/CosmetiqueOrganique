@@ -1,12 +1,11 @@
-package com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.recipe
+package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
-import com.blogspot.android_czy_java.beautytips.database.AppDatabase
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.database.repository.FirebaseToRoom
+import com.blogspot.android_czy_java.beautytips.repository.FirebaseToRoom
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import io.reactivex.Single
 import io.reactivex.SingleEmitter

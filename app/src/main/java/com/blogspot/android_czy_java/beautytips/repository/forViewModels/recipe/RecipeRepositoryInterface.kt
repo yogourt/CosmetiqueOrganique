@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.database.repository.forViewModels.recipe
+package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import io.reactivex.Single
