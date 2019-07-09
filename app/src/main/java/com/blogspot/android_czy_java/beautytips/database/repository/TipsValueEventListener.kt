@@ -18,7 +18,7 @@ class TipsValueEventListener(private val database: AppDatabase,
 
     override fun onDataChange(tipsDataSnapshot: DataSnapshot) {
 
-        Runnable {
+        Thread(Runnable {
 
             val comments = ArrayList<CommentModel>()
             val tipDetailsMap = LongSparseArray<RecipeDetailModel>()
@@ -53,7 +53,7 @@ class TipsValueEventListener(private val database: AppDatabase,
 
             emitter.onSuccess(true)
 
-        }.run()
+        }).start()
 
     }
 }

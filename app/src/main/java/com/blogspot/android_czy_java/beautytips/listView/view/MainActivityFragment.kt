@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.listView.view
 
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.TextUtils
@@ -25,12 +26,15 @@ import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListVie
 
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.blogspot.android_czy_java.beautytips.di.recipe.RecipeModule_Bind
 import timber.log.Timber
 
 import com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM
 import com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID
 import com.blogspot.android_czy_java.beautytips.listView.view.BaseMainActivity.TAG_DELETE_TIP_DIALOG
 import com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
 
 /**
@@ -52,6 +56,7 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
 
     lateinit var viewModel: TabletListViewViewModel
 
+    @Inject
     lateinit var recipeViewModel: RecipeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +79,6 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         //register this observer after layout is inflated
         viewModel.recyclerViewLiveData.observe(this, Observer { this.prepareRecyclerView(it) })
 
@@ -96,11 +100,14 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
                 }
             }
         })
-        if (activity != null) {
-            recipeViewModel = ViewModelProviders.of(activity!!).get(RecipeViewModel::class.java)
-            recipeViewModel.recipeLiveData.observe(this, Observer { this.render(it) })
-            recipeViewModel.init()
-        }
+        recipeViewModel.recipeLiveData.observe(this, Observer { this.render(it) })
+        recipeViewModel.init()
+
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun onResume() {
@@ -173,7 +180,7 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
     private fun render(model: RecipeUiModel) {
         when (model) {
             is RecipeUiModel.RecipeSuccess -> {
-                for(recipe in model.recipes) {
+                for (recipe in model.recipes) {
                     Timber.d("This recipe is in local database: " + recipe.title)
                 }
             }

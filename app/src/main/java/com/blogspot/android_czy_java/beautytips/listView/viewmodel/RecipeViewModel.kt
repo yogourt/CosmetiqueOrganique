@@ -12,11 +12,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 
-class RecipeViewModel : ViewModel() {
+class RecipeViewModel(private val loadRecipesUseCase: LoadRecipesUseCase) : ViewModel() {
 
     private val defaultErrorMessage = "Sorry, an error occurred. "
-
-    private lateinit var loadRecipesUseCase: LoadRecipesUseCase
 
     val recipeLiveData: MutableLiveData<RecipeUiModel> = MutableLiveData()
 
@@ -43,11 +41,12 @@ class RecipeViewModel : ViewModel() {
     }
 
     private fun loadRecipes() {
-        disposable.add(loadRecipesUseCase.execute(RecipeRequest(category, order)).doOnSubscribe {
-            recipeLiveData.value = RecipeUiModel.RecipeLoading()
-        }
+        disposable.add(loadRecipesUseCase.execute(RecipeRequest(category, order))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    recipeLiveData.value = RecipeUiModel.RecipeLoading()
+                }.subscribe(
                         { recipes ->
                             recipeLiveData.value = RecipeUiModel.RecipeSuccess(recipes)
                         },

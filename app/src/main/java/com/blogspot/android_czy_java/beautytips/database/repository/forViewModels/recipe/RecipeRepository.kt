@@ -12,7 +12,7 @@ import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
 
-class RecipeRepository(private val recipeDao: RecipeDao, private val database: AppDatabase) :
+class RecipeRepository(private val recipeDao: RecipeDao, private val firebaseToRoom: FirebaseToRoom) :
         RecipeRepositoryInterface<RecipeRequest> {
 
     override fun getRecipes(request: RecipeRequest): Single<List<RecipeModel>> {
@@ -28,7 +28,7 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val database: A
 
             if (recipeDao.getAllRecipesIds().isEmpty()) {
 
-                FirebaseToRoom(database).observeFirebaseAndSaveToRoom().subscribe({
+                firebaseToRoom.observeFirebaseAndSaveToRoom().subscribe({
                     run {
                         emitResultByDate(category, emitter)
                     }
@@ -62,7 +62,7 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val database: A
 
             if (recipeDao.getAllRecipesIds().isEmpty()) {
 
-                FirebaseToRoom(database).observeFirebaseAndSaveToRoom().subscribe({
+                firebaseToRoom.observeFirebaseAndSaveToRoom().subscribe({
                     run {
                         emitResultByPopularity(category, emitter)
                     }

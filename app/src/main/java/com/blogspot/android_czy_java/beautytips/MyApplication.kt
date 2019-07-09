@@ -1,25 +1,29 @@
 package com.blogspot.android_czy_java.beautytips
 
+import android.app.Activity
 import android.app.Application
+import androidx.appcompat.app.AppCompatActivity
 
 import androidx.fragment.app.Fragment
 import com.blogspot.android_czy_java.beautytips.di.DaggerAppComponent
 
 import com.google.firebase.database.FirebaseDatabase
-import com.squareup.leakcanary.LeakCanary
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
 
 import javax.inject.Inject
 
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
 
-class MyApplication : Application(), HasSupportFragmentInjector {
+class MyApplication : Application(), HasSupportFragmentInjector, HasActivityInjector {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
+    @Inject
+    lateinit var activityInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
         super.onCreate()
@@ -49,5 +53,8 @@ class MyApplication : Application(), HasSupportFragmentInjector {
     }
 
     override fun supportFragmentInjector() = fragmentInjector
+
+    override fun activityInjector() = activityInjector
+
 
 }
