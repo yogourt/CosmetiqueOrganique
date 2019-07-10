@@ -16,23 +16,20 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.listView.model.ListItem
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.RecyclerViewHelper
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.RecipeUiModel
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.RecipeViewModel
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeUiModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletDetailViewModel
 
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.blogspot.android_czy_java.beautytips.di.recipe.RecipeModule_Bind
-import timber.log.Timber
+import com.blogspot.android_czy_java.beautytips.database.ItemModelInterface
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 
-import com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM
-import com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID
-import com.blogspot.android_czy_java.beautytips.listView.view.BaseMainActivity.TAG_DELETE_TIP_DIALOG
-import com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM
+import com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.KEY_ITEM
+import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog.TAG_DELETE_TIP_DIALOG
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -51,17 +48,17 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
 
     lateinit var mLayoutManager: StaggeredGridLayoutManager
 
-    var mAdapter: ListViewAdapter? = null
+    lateinit var mAdapter: BaseListViewAdapter<out ItemModelInterface>
 
 
-    lateinit var viewModel: TabletListViewViewModel
+    lateinit var viewModel: TabletDetailViewModel
 
     @Inject
     lateinit var recipeViewModel: RecipeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(TabletListViewViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(TabletDetailViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -79,11 +76,8 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        //register this observer after layout is inflated
-        viewModel.recyclerViewLiveData.observe(this, Observer { this.prepareRecyclerView(it) })
-
-
-        //this is done to pass changed fav num from detail fragment so it's updated in tip list
+        /*TODO: delete
+         this is done to pass changed fav num from detail fragment so it's updated in tip list
         viewModel.tipChangeIndicator.observe(this, Observer {
             if (activity != null) {
                 Timber.d("activity not null")
@@ -100,6 +94,9 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
                 }
             }
         })
+        */
+
+
         recipeViewModel.recipeLiveData.observe(this, Observer { this.render(it) })
         recipeViewModel.init()
 
@@ -122,7 +119,7 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
         }
     }
 
-    private fun prepareRecyclerView(recyclerViewList: List<ListItem>) {
+    private fun prepareRecyclerView(recyclerViewList: List<RecipeModel>) {
 
         if (loadingIndicator.visibility == View.VISIBLE) {
             loadingIndicator.visibility = View.INVISIBLE
@@ -146,7 +143,8 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
             if (isSmallTablet) itemDivider *= 0.8f
         }
 
-        mAdapter = ListViewAdapter(context, recyclerViewList, this,
+
+        mAdapter = RecipeListAdapter(context, recyclerViewList, this,
                 viewModel, itemDivider)
 
 
@@ -171,18 +169,10 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
 
     }
 
-
-    fun setTipIdFromDynamicLink(tipId: String) {
-        if (mAdapter != null) mAdapter!!.openTipWithId(tipId)
-    }
-
-
     private fun render(model: RecipeUiModel) {
         when (model) {
             is RecipeUiModel.RecipeSuccess -> {
-                for (recipe in model.recipes) {
-                    Timber.d("This recipe is in local database: " + recipe.title)
-                }
+                prepareRecyclerView(model.recipes)
             }
             is RecipeUiModel.RecipeLoading -> {
 
@@ -199,7 +189,7 @@ class MainActivityFragment : Fragment(), BaseListViewAdapter.PositionListener {
         Interface methods
      */
 
-    override fun onClickDeleteTip(tipId: String) {
+    override fun onClickDeleteTip(tipId: Long) {
         val mDialogFragment = DeleteTipDialog()
         mDialogFragment.setTipId(tipId)
         mDialogFragment.setViewModel(viewModel)

@@ -47,7 +47,7 @@ import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletDetailViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -67,7 +67,7 @@ import timber.log.Timber;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM;
 import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID;
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM;
+import static com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.KEY_ITEM;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
 
 public class DetailActivityFragment extends Fragment
@@ -132,7 +132,7 @@ public class DetailActivityFragment extends Fragment
     LinearLayout mDetailLayout;
 
     private String description;
-    private TabletListViewViewModel viewModel;
+    private TabletDetailViewModel viewModel;
     private TipListItem item;
 
     private DetailFirebaseHelper mFirebaseHelper;
@@ -160,7 +160,7 @@ public class DetailActivityFragment extends Fragment
         isTablet = getResources().getBoolean(R.bool.is_tablet);
 
         if (isTablet && !isPortrait)
-            viewModel = ViewModelProviders.of(getActivity()).get(TabletListViewViewModel.class);
+            viewModel = ViewModelProviders.of(getActivity()).get(TabletDetailViewModel.class);
 
         mFirebaseHelper = new DetailFirebaseHelper(this);
 

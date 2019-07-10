@@ -3,53 +3,26 @@ package com.blogspot.android_czy_java.beautytips.listView.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
-
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
+import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_OPENING;
 
-public class TabletListViewViewModel extends ListViewViewModel {
+public class TabletDetailViewModel extends ViewModel {
 
-    private MutableLiveData<TipListItem> chosenTip;
-    private ListItem chosenIngredient;
+    public long chosenItemId;
 
     private boolean isShowingIngredientFromRecipe;
 
     private MutableLiveData<String> currentDetailFragmentLiveData;
 
-    private MutableLiveData<Boolean> tipChangeIndicator;
 
-    @Override
     public void init() {
-        super.init();
-
-        if(currentDetailFragmentLiveData == null) {
+        if (currentDetailFragmentLiveData == null) {
             currentDetailFragmentLiveData = new MutableLiveData<>();
             currentDetailFragmentLiveData.setValue(TAG_FRAGMENT_OPENING);
-            chosenTip = new MutableLiveData<>();
-            tipChangeIndicator = new MutableLiveData<>();
         }
-    }
-
-    public void setChosenTip(TipListItem item) {
-        chosenTip.setValue(item);
-    }
-
-    public TipListItem getChosenTip() {
-        return chosenTip.getValue();
-    }
-
-    public LiveData<TipListItem> getChosenTipLiveData() {
-        return  chosenTip;
-    }
-
-    public void setChosenIngredient(ListItem item) {
-        chosenIngredient = item;
-    }
-
-    public ListItem getChosenIngredient() {
-        return chosenIngredient;
     }
 
     public LiveData<String> getCurrentDetailFragmentLiveData() {
@@ -72,12 +45,27 @@ public class TabletListViewViewModel extends ListViewViewModel {
         return isShowingIngredientFromRecipe;
     }
 
-    public void notifyTipChange() {
-        tipChangeIndicator.setValue(true);
+    public void onGoingBackFromIngredientToDetail() {
+        setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+        isShowingIngredientFromRecipe = false;
     }
 
-    public LiveData<Boolean> getTipChangeIndicator() {
-        return tipChangeIndicator;
+    public void onRecipeClick(Long recipeId) {
+        if (!(chosenItemId == recipeId)) {
+            chosenItemId = recipeId;
+            setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+        }
+    }
+
+    public void onIngredientClick(Long ingredientId) {
+        if (getIsShowingIngredientFromRecipe()) {
+            setIsShowingIngredientFromRecipe(false);
+        }
+
+        if (!(chosenItemId == ingredientId)) {
+            chosenItemId = ingredientId;
+            setCurrentDetailFragmentLiveData(TAG_FRAGMENT_INGREDIENT);
+        }
     }
 
 }

@@ -1,12 +1,17 @@
 package com.blogspot.android_czy_java.beautytips.listView.viewmodel
 
 import androidx.lifecycle.Observer
+import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryHair
+import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.RecipeRepositoryInterface
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 import org.junit.Before
 
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
@@ -15,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class RecipeViewModelTest {
 
     @Mock
-    private lateinit var recipeRepository: RecipeRepositoryInterface
+    private lateinit var loadRecipesUseCase: LoadRecipesUseCase
 
     @Mock
     private lateinit var recipeObserver: Observer<List<RecipeModel>>
@@ -25,31 +30,31 @@ class RecipeViewModelTest {
 
     @Before
     fun setUp() {
-        SUT = RecipeViewModel(recipeRepository)
+        SUT = RecipeViewModel(loadRecipesUseCase)
     }
 
     @Test
-    fun getRecipesByDate_callsGetByDateFromRepository() {
+    fun orderChangeToPopularity_callsExecuteOnLoadRecipesUseCase() {
 
         //given
 
         //when
-        SUT.getRecipesByDate()
+        SUT.order = Order.POPULARITY
 
         //then
-        verify(recipeRepository).getByDate()
+        verify(loadRecipesUseCase).execute(RecipeRequest(any(), Order.POPULARITY))
     }
 
     @Test
-    fun getRecipesByPopularity_callsGetByPopularityFromRepository() {
+    fun categoryChangeToHair_callsExecuteOnLoadRecipesUseCase() {
 
         //given
 
         //when
-        SUT.getRecipesByPopularity()
+        SUT.category = CategoryHair.SUBCATEGORY_ALL
 
         //then
-        verify(recipeRepository).getByPopularity()
+        verify(loadRecipesUseCase).execute(RecipeRequest(CategoryHair.SUBCATEGORY_ALL, any()))
     }
 
 }

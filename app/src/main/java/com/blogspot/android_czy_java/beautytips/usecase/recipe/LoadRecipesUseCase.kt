@@ -5,7 +5,7 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.
 import com.blogspot.android_czy_java.beautytips.usecase.UseCaseInterface
 import io.reactivex.Single
 
-class LoadRecipesUseCase(private val recipeRepository: RecipeRepositoryInterface<RecipeRequest>):
+open class LoadRecipesUseCase(private val recipeRepository: RecipeRepositoryInterface<RecipeRequest>):
         UseCaseInterface<RecipeRequest, List<RecipeModel>> {
 
 

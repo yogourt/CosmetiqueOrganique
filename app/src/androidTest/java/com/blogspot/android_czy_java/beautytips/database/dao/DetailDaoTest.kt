@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
 import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailModel
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailDao
+import com.blogspot.android_czy_java.beautytips.database.detail.DetailDao
 import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Before
@@ -17,7 +17,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class RecipeDetailDaoTest {
+class DetailDaoTest {
 
     private val testedRecipeId = -1L
     private val exampleDescription = "example message"
@@ -27,7 +27,7 @@ class RecipeDetailDaoTest {
     private lateinit var testedRecipe: RecipeModel
 
     lateinit var db: AppDatabase
-    lateinit var SUT: RecipeDetailDao
+    lateinit var SUT: DetailDao
 
     @Before
     fun setUp() {
@@ -118,5 +118,19 @@ class RecipeDetailDaoTest {
         assertThat(result, equalTo(exampleSource))
     }
 
+    @Test
+    fun whenSourceNotInDb_getSource_returnsNull() {
+
+
+        //given
+        testedRecipe.details.source = null
+        db.recipeDao().insertRecipe(testedRecipe)
+
+        //when
+        val result = SUT.getSource(testedRecipeId)
+
+        //then
+        assertThat(result, `is`(nullValue()))
+    }
 
 }

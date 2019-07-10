@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletDetailViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM;
+import static com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.KEY_ITEM;
 
 
 public class IngredientActivityFragment extends Fragment {
@@ -38,7 +38,7 @@ public class IngredientActivityFragment extends Fragment {
     @BindView(R.id.searching_text_view)
     TextView mSearchTv;
 
-    private TabletListViewViewModel viewModel;
+    private TabletDetailViewModel viewModel;
     private ListItem item;
 
     private IngredientFragmentActivity activity;
@@ -56,7 +56,7 @@ public class IngredientActivityFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(TabletListViewViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(TabletDetailViewModel.class);
 
     }
 

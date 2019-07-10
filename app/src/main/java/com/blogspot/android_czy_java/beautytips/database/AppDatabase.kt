@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentDao
 import com.blogspot.android_czy_java.beautytips.database.error.ErrorDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
-import com.blogspot.android_czy_java.beautytips.database.detail.RecipeDetailDao
+import com.blogspot.android_czy_java.beautytips.database.detail.DetailDao
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
 import com.blogspot.android_czy_java.beautytips.database.error.ErrorModel
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
@@ -26,7 +26,7 @@ import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao
-    abstract fun recipeDetailDao(): RecipeDetailDao
+    abstract fun recipeDetailDao(): DetailDao
     abstract fun commentDao(): CommentDao
     abstract fun errorDao(): ErrorDao
     abstract fun userDao(): UserDao

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.recipe.RecipeUseCaseModule
 import com.blogspot.android_czy_java.beautytips.listView.view.MainActivityFragment
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.RecipeViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
 import dagger.Module
 import dagger.Provides
@@ -30,7 +30,7 @@ abstract class RecipeModule {
         @Provides
         @IntoMap
         @ViewModelKey(RecipeViewModel::class)
-        fun provideListNotesViewModel(loadRecipesUseCase: LoadRecipesUseCase): ViewModel =
+        fun provideRecipeViewModel(loadRecipesUseCase: LoadRecipesUseCase): ViewModel =
                 RecipeViewModel(loadRecipesUseCase)
     }
 

@@ -24,6 +24,9 @@ import timber.log.Timber;
 
 public class NicknamePickerDialog extends DialogFragment {
 
+
+    public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
+
     public interface NicknamePickerDialogListener {
         void onDialogSaveButtonClick(String nickname);
     }

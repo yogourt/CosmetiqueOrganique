@@ -10,6 +10,9 @@ interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipes(recipes: List<RecipeModel>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRecipe(recipe: RecipeModel)
+
     @Query("DELETE FROM Recipes WHERE recipeId=:recipeId")
     fun deleteRecipe(recipeId: Long): Completable
 

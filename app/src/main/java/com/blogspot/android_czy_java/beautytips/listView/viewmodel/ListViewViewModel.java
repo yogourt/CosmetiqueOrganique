@@ -130,7 +130,7 @@ public class ListViewViewModel extends ViewModel {
         userLiveData.setValue(user);
     }
 
-    public void deleteTipWithId(String id) {
+    public void deleteTipWithId(Long id) {
         mFirebaseHelper.deleteTipWithId(id);
         //requery database, because data has changed
         notifyRecyclerDataHasChanged();

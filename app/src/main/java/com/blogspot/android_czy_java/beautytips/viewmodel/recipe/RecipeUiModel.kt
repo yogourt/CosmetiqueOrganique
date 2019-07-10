@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.viewmodel
+package com.blogspot.android_czy_java.beautytips.viewmodel.recipe
 
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 
