@@ -157,4 +157,21 @@
     <string name="label_face">for face,</string>
     <string name="label_body">for body?</string>
 
+
+    <!-- dialog support prompt strings -->
+    <string name="dialog_support_prompt_title">Are you willing to help?</string>
+    <string name="dialog_support_prompt_text">I am a single developer who would love to make this app grow!
+        You can help me by watching a short ad.
+        Please do and see this app changing in front of you!</string>
+
+    <string name="dialog_support_prompt_second_text">Also, if you have any ideas for app\'s features, write to me!</string>
+
+    <string name="dialog_support_prompt_button_watch_add">Watch ad</string>
+    <string name="dialog_support_prompt_button_write">Write</string>
+    <string name="dialog_support_prompt_close">Close</string>
+
+    <string name="developer_mail">jagoda.sylwester@gmail.com</string>
+    <string name="feedback_email_title">Feedback for Cosmetique Organique</string>
+    <string name="support_unit_ad_id">ca-app-pub-5993828134151976/1635349488</string>
+
 </resources>

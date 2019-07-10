@@ -28,7 +28,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionName "1.2"
-        versionCode 10026
+        versionCode 10031
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -69,14 +69,22 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     //Firebase
-    implementation 'com.google.firebase:firebase-database:17.0.0'
-    implementation 'com.google.firebase:firebase-storage:17.0.0'
-    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-database:18.0.0'
+    implementation 'com.google.firebase:firebase-storage:18.0.0'
+    implementation 'com.google.firebase:firebase-auth:18.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.35.0'
     implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
     implementation 'com.firebaseui:firebase-ui-database:4.0.1'
-    implementation 'com.google.firebase:firebase-ads:17.2.1'
+    implementation 'com.google.firebase:firebase-ads:18.0.0'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'com.google.firebase:firebase-messaging:19.0.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.google.firebase:firebase-invites:17.0.0'
+
+
+    implementation 'com.google.android.gms:play-services-ads:18.0.0'
+    implementation 'com.google.android.gms:play-services-measurement:17.0.0'
+    implementation 'com.google.android.gms:play-services-measurement-sdk:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:18.0.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.firebase:firebase-invites:17.0.0'
@@ -119,6 +127,7 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 
+    implementation 'de.cketti.mailto:email-intent-builder:1.0.0'
 
     //RxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.10"

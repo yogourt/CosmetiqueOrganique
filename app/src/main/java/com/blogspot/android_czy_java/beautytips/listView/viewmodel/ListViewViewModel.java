@@ -25,6 +25,8 @@ public class ListViewViewModel extends ViewModel {
 
     public static final String SUBCATEGORY_ALL = "all";
 
+    public int detailScreenOpenTimesAfterPromptDialog = 0;
+
     /*
      CategoryLabel and navigationPosition are used in Navigation Drawer: navigationPosition is used
      to check selected item (it's rose), categoryLiveData is used when creating firebase query
@@ -189,5 +191,9 @@ public class ListViewViewModel extends ViewModel {
 
     public String getQuery() {
         return query;
+    }
+
+    public boolean shouldSupportDialogBeShown() {
+        return detailScreenOpenTimesAfterPromptDialog > 2;
     }
  }
