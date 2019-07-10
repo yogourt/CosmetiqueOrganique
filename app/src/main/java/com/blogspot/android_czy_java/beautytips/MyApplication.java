@@ -21,7 +21,7 @@ public class MyApplication extends Application {
 
         Timber.plant(new Timber.DebugTree());
 
-        FirebaseDatabase.getInstance().getReference().keepSynced(true);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
 }
