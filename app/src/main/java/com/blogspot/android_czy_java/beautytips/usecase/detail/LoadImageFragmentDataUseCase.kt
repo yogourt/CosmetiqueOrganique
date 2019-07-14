@@ -3,8 +3,7 @@ package com.blogspot.android_czy_java.beautytips.usecase.detail
 import com.blogspot.android_czy_java.beautytips.repository.exception.DataNotFoundException
 import com.blogspot.android_czy_java.beautytips.repository.DetailRepositoryInterface
 import com.blogspot.android_czy_java.beautytips.usecase.UseCaseInterface
-import com.blogspot.android_czy_java.beautytips.viewmodel.common.ImageFragmentData
-import com.blogspot.android_czy_java.beautytips.viewmodel.common.ImageFragmentUiModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.ImageFragmentData
 import io.reactivex.Single
 
 class LoadImageFragmentDataUseCase(private val detailRepositoryInterface: DetailRepositoryInterface) :

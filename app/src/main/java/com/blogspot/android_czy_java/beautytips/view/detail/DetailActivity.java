@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 
 public class DetailActivity extends BaseItemActivity {
 
@@ -47,6 +48,7 @@ public class DetailActivity extends BaseItemActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 

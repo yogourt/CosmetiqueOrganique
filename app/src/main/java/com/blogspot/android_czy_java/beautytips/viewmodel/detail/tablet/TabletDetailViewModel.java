@@ -1,13 +1,13 @@
-package com.blogspot.android_czy_java.beautytips.listView.viewmodel;
+package com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet;
 
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_OPENING;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity.TAG_FRAGMENT_OPENING;
 
 public class TabletDetailViewModel extends ViewModel {
 
