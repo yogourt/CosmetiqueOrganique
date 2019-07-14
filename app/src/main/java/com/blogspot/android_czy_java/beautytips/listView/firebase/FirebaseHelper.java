@@ -236,10 +236,10 @@ public class FirebaseHelper {
     }
 
 
-    public void deleteTipWithId(String id) {
+    public void deleteTipWithId(Long id) {
         FirebaseDatabase.getInstance().getReference().child("tipList/" + id).removeValue();
         FirebaseDatabase.getInstance().getReference().child("tips/" + id).removeValue();
-        FirebaseStorage.getInstance().getReference(id).delete();
+        FirebaseStorage.getInstance().getReference(id.toString()).delete();
 
         //refresh data in recycler view
         setItemListToViewModel();

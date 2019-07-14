@@ -30,7 +30,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import butterknife.BindView;
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.KEY_ITEM;
+import static com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.KEY_ITEM;
 
 public abstract class BaseItemActivity extends AppCompatActivity {
 

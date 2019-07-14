@@ -11,7 +11,9 @@ import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewM
 
 public class DeleteTipDialog extends DialogFragment {
 
-    private String mTipId;
+    public static final String TAG_DELETE_TIP_DIALOG = "delete_tip_dialog";
+
+    private Long mTipId;
 
     private ListViewViewModel viewModel;
     @Override
@@ -34,7 +36,7 @@ public class DeleteTipDialog extends DialogFragment {
         return builder.create();
     }
 
-    public void setTipId(String tipId) {
+    public void setTipId(Long tipId) {
         mTipId = tipId;
     }
 

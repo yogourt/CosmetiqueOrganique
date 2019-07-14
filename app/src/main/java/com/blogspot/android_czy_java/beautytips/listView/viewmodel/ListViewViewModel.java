@@ -28,7 +28,7 @@ public class ListViewViewModel extends ViewModel {
     public int detailScreenOpenTimesAfterPromptDialog = 0;
 
     /*
-     Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
+     CategoryLabel and navigationPosition are used in Navigation Drawer: navigationPosition is used
      to check selected item (it's rose), categoryLiveData is used when creating firebase query
    */
     private int navigationPosition;
@@ -132,7 +132,7 @@ public class ListViewViewModel extends ViewModel {
         userLiveData.setValue(user);
     }
 
-    public void deleteTipWithId(String id) {
+    public void deleteTipWithId(Long id) {
         mFirebaseHelper.deleteTipWithId(id);
         //requery database, because data has changed
         notifyRecyclerDataHasChanged();

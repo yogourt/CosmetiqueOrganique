@@ -82,7 +82,7 @@ public class SnackbarHelper {
                 })
                 .setActionTextColor(snackbarView.getResources().getColor(R.color.pink200));
         snackbar.getView().setBackgroundColor(snackbarView.
-                getResources().getColor(R.color.bluegray900));
+                getResources().getColor(R.color.bluegrey900));
         snackbar.show();
     }
 
@@ -96,7 +96,7 @@ public class SnackbarHelper {
                 })
                 .setActionTextColor(snackbarView.getResources().getColor(R.color.pink200));
         snackbar.getView().setBackgroundColor(snackbarView.
-                getResources().getColor(R.color.bluegray900));
+                getResources().getColor(R.color.bluegrey900));
         snackbar.show();
     }
 
@@ -104,7 +104,7 @@ public class SnackbarHelper {
         Snackbar snackbar = Snackbar.make(snackbarView, message,
                 Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(snackbarView.
-                getResources().getColor(R.color.bluegray900));
+                getResources().getColor(R.color.bluegrey900));
         snackbar.show();
     }
 
@@ -112,7 +112,7 @@ public class SnackbarHelper {
         Snackbar snackbar = Snackbar.make(snackbarView, message,
                 Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(snackbarView.
-                getResources().getColor(R.color.bluegray900));
+                getResources().getColor(R.color.bluegrey900));
         snackbar.show();
     }
 }

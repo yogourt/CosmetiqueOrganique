@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:background="@color/bluegray800">
+        android:background="@color/bluegrey800">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -130,7 +130,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bluegray700"
+        android:background="@color/bluegrey700"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/footer_padding"

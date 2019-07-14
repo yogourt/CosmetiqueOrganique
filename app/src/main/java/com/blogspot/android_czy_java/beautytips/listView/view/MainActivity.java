@@ -18,13 +18,14 @@ import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPro
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPromptDialogInterface;
 import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
 import com.google.android.gms.ads.AdRequest;
+import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletDetailViewModel;
 import com.kobakei.ratethisapp.RateThisApp;
 
 
 import de.cketti.mailto.EmailIntentBuilder;
 
 import static android.content.Intent.ACTION_SEARCH;
-import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
+import static com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
 public class MainActivity extends BaseMainActivity implements OpeningFragment.OpeningFragmentActivity,
@@ -44,7 +45,6 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
     private FragmentManager fragmentManager;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +53,8 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
 
-        final TabletListViewViewModel viewModel = ViewModelProviders.of(this).
-                get(TabletListViewViewModel.class);
+        final TabletDetailViewModel viewModel = ViewModelProviders.of(this).
+                get(TabletDetailViewModel.class);
 
 
         fragmentManager = getSupportFragmentManager();
@@ -142,7 +142,7 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
 
         //when ingredient is launched by click on detail screen ingredients list, on back pressed
         //come back to this detail screen
-        TabletListViewViewModel tabletViewModel = (TabletListViewViewModel) viewModel;
+        TabletDetailViewModel tabletViewModel = (TabletDetailViewModel) viewModel;
         if (tabletViewModel.getIsShowingIngredientFromRecipe()) {
             tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
             tabletViewModel.setIsShowingIngredientFromRecipe(false);
@@ -170,8 +170,8 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
 
     @Override
     void initViewModel() {
-        viewModel = ViewModelProviders.of(this).get(TabletListViewViewModel.class);
-        ((TabletListViewViewModel) viewModel).init();
+        viewModel = ViewModelProviders.of(this).get(TabletDetailViewModel.class);
+        ((TabletDetailViewModel) viewModel).init();
     }
 
     /*
@@ -200,6 +200,7 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
         mSearchView.setIconified(false);
         mSearchView.setQuery(query, true);
     }
+
 
 
     private void prepareRatingRequest() {

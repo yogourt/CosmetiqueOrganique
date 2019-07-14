@@ -53,6 +53,7 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLay
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.RC_NEW_TIP_ACTIVITY;
+import static com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog.TAG_NICKNAME_DIALOG;
 import static com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity.KEY_TIP_NUMBER;
 import static com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity.RESULT_DATA_CHANGE;
 import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RC_WELCOME_ACTIVITY;
@@ -68,10 +69,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
 
     public static final String KEY_QUERY = "query";
-
-    public static final String TAG_NICKNAME_DIALOG = "nickname_picker_dialog";
-    public static final String TAG_DELETE_TIP_DIALOG = "delete_tip_dialog";
-
 
     public static final String KEY_TOKEN_FLAG = "notification_token";
 
@@ -482,7 +479,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         if(!isDestroyed())
         Glide.with(this)
-                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700))
+                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegrey700))
                 .load(imageUri)
                 .into(photoIv);
     }

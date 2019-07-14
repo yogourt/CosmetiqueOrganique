@@ -32,7 +32,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:contentDescription="@string/description_fab"
         android:src="@drawable/ic_heart"
-        android:tint="@color/bluegray700"
+        android:tint="@color/bluegrey700"
         app:layout_anchor="@id/layout_ingredients"
         app:layout_anchorGravity="bottom|end" />
 

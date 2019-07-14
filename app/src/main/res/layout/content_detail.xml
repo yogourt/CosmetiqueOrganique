@@ -29,7 +29,7 @@
                 android:layout_gravity="center_vertical"
                 android:drawableEnd="@drawable/ic_valentines_heart"
                 android:drawablePadding="@dimen/icon_padding"
-                android:textColor="@color/bluegray300" />
+                android:textColor="@color/bluegrey300" />
 
             <TextView
                 android:id="@+id/source_text_view"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/source_label"
-                android:textColorLink="@color/bluegray300"
+                android:textColorLink="@color/bluegrey300"
                 android:visibility="invisible"/>
 
         </LinearLayout>

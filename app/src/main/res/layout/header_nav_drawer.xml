@@ -16,7 +16,7 @@
         android:layout_height="@dimen/photo_size"
         android:layout_marginEnd="@dimen/photo_margin"
         android:contentDescription="@string/description_user_image"
-        android:src="@color/bluegray700"/>
+        android:src="@color/bluegrey700"/>
 
     <TextView
         android:id="@+id/nav_nickname"

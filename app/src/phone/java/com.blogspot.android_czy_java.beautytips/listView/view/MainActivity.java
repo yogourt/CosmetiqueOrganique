@@ -86,7 +86,7 @@ public class MainActivity extends BaseMainActivity implements ListViewAdapter.Po
 
 
     /*
-         Implementation of ListViewAdapter.PositionListener
+         Implementation of RecipeListAdapter.PositionListener
      */
     @Override
     public void onClickDeleteTip(String tipId) {
