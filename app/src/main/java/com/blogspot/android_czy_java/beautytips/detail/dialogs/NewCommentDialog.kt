@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.detail.dialogs
+package com.blogspot.android_czy_java.beautytips.view.detail.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.detail.firebase.CommentsFirebaseHelper
+import com.blogspot.android_czy_java.beautytips.view.detail.firebase.CommentsFirebaseHelper
 
 class NewCommentDialog : DialogFragment() {
 

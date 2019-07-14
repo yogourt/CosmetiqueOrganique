@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.detail;
+package com.blogspot.android_czy_java.beautytips.view.detail;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -12,15 +12,14 @@ import android.widget.ScrollView;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
-import com.blogspot.android_czy_java.beautytips.detail.dialogs.NewCommentDialog;
+import com.blogspot.android_czy_java.beautytips.view.detail.dialogs.NewCommentDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends BaseItemActivity implements
-        NewCommentDialog.AddCommentListener {
+public class DetailActivity extends BaseItemActivity {
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
@@ -53,9 +52,6 @@ public class DetailActivity extends BaseItemActivity implements
 
         ButterKnife.bind(this);
 
-        detailFragment = (DetailFragmentInterface)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
-
     }
 
     @Override
@@ -68,7 +64,7 @@ public class DetailActivity extends BaseItemActivity implements
     @Override
     public void onBackPressed() {
 
-        setResult(RESULT_OK, detailFragment.createDataIntent());
+        //setResult(RESULT_OK, detailFragment.createDataIntent());
         super.onBackPressed();
     }
 
@@ -98,7 +94,7 @@ public class DetailActivity extends BaseItemActivity implements
         if (!(FirebaseAuth.getInstance().getCurrentUser() == null) &&
                 !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             setFabInactive();
-            detailFragment.getFabState();
+           // detailFragment.getFabState();
         }
     }
 
@@ -115,10 +111,10 @@ public class DetailActivity extends BaseItemActivity implements
         int bluegray700 = getResources().getColor(R.color.bluegrey700);
         if (mFab.getImageTintList().getDefaultColor() == bluegray700) {
             setFabActive();
-            detailFragment.addFav();
+           // detailFragment.addFav();
         } else {
             setFabInactive();
-            detailFragment.removeFav();
+           // detailFragment.removeFav();
 
         }
     }
@@ -134,13 +130,6 @@ public class DetailActivity extends BaseItemActivity implements
 
 
 
-    /*
-        NewCommentDialog.AddCommentListener method
-     */
 
-    @Override
-    public void onNewCommentAdded() {
-        detailFragment.reloadComments();
-    }
 }
 

@@ -4,11 +4,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "UserLists")
-data class UserListModel (
+data class UserListModel(
         var listName: String,
         var recipesInList: String
-){
+        ) {
 
     @PrimaryKey(autoGenerate = true)
     var listId = 0L
+
+    var iconResourceId: String? = null
 }

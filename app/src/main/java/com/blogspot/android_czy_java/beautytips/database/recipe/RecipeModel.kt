@@ -22,4 +22,5 @@ data class RecipeModel(
         lateinit var details: RecipeDetailModel
 
         override var id = recipeId
+
 }

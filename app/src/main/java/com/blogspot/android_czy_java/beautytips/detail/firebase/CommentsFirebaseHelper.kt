@@ -1,8 +1,8 @@
-package com.blogspot.android_czy_java.beautytips.detail.firebase
+package com.blogspot.android_czy_java.beautytips.view.detail.firebase
 
-import com.blogspot.android_czy_java.beautytips.detail.dialogs.NewCommentDialog
-import com.blogspot.android_czy_java.beautytips.detail.model.Comment
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper
+import com.blogspot.android_czy_java.beautytips.view.detail.dialogs.NewCommentDialog
+import com.blogspot.android_czy_java.beautytips.view.detail.model.Comment
+import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseLoginHelper
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

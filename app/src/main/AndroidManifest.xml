@@ -29,7 +29,7 @@
             android:value="@string/add_mob_app_id"/>
 
         <activity
-            android:name=".listView.view.MainActivity"
+            android:name="com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity"
             android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,18 +55,18 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".detail.DetailActivity"
+            android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".ingredient.IngredientActivity" />
+        <activity android:name=".view.ingredient.IngredientActivity" />
 
-        <activity android:name=".welcome.WelcomeActivity" />
+        <activity android:name=".view.welcome.WelcomeActivity" />
 
         <activity
-            android:name=".newTip.view.NewTipActivity"
+            android:name=".view.newTip.view.NewTipActivity"
             android:label="@string/title_activity_new_tip"
             android:launchMode="singleTop"
-            android:parentActivityName=".listView.view.MainActivity"
+            android:parentActivityName="com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity"
             android:theme="@style/ActivityDialogTheme" />
 
         <provider

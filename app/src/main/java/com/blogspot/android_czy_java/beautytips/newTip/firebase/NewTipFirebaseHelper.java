@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.newTip.firebase;
+package com.blogspot.android_czy_java.beautytips.view.newTip.firebase;
 
 
 import android.net.Uri;
@@ -9,8 +9,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
-import com.blogspot.android_czy_java.beautytips.newTip.model.TipDetailsItem;
-import com.blogspot.android_czy_java.beautytips.newTip.model.TipListItem;
+import com.blogspot.android_czy_java.beautytips.view.newTip.model.TipDetailsItem;
+import com.blogspot.android_czy_java.beautytips.view.newTip.model.TipListItem;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

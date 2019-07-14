@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.usecase.common
+package com.blogspot.android_czy_java.beautytips.usecase.detail
 
 import com.blogspot.android_czy_java.beautytips.repository.exception.DataNotFoundException
 import com.blogspot.android_czy_java.beautytips.repository.DetailRepositoryInterface

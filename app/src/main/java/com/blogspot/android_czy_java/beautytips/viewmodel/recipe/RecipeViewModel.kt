@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,7 +18,7 @@ class RecipeViewModel(private val loadRecipesUseCase: LoadRecipesUseCase) : View
 
     private val defaultErrorMessage = "Sorry, an error occurred. "
 
-    val recipeLiveData: MutableLiveData<RecipeUiModel> = MutableLiveData()
+    val recipeLiveData: MutableLiveData<GenericUiModel<List<RecipeModel>>> = MutableLiveData()
 
     private val disposable = CompositeDisposable()
 
@@ -45,13 +47,13 @@ class RecipeViewModel(private val loadRecipesUseCase: LoadRecipesUseCase) : View
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
-                    recipeLiveData.value = RecipeUiModel.RecipeLoading()
+                    recipeLiveData.value = GenericUiModel.StatusLoading()
                 }.subscribe(
                         { recipes ->
-                            recipeLiveData.value = RecipeUiModel.RecipeSuccess(recipes)
+                            recipeLiveData.value = GenericUiModel.LoadingSuccess(recipes)
                         },
                         { error ->
-                            recipeLiveData.value = RecipeUiModel.RecipeLoadingError(error.message
+                            recipeLiveData.value = GenericUiModel.LoadingError(error.message
                                     ?: defaultErrorMessage)
                         }
                 ))

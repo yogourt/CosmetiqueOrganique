@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.detail.model;
+package com.blogspot.android_czy_java.beautytips.view.detail.model;
 
 public class Comment {
 

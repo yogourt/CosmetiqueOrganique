@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.view;
+package com.blogspot.android_czy_java.beautytips.view.listView.view;
 
 
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.newTip.view.dialog;
+package com.blogspot.android_czy_java.beautytips.view.newTip.view.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;

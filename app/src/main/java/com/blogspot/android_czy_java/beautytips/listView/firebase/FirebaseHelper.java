@@ -1,12 +1,12 @@
-package com.blogspot.android_czy_java.beautytips.listView.firebase;
+package com.blogspot.android_czy_java.beautytips.view.listView.firebase;
 
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.view.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.view.listView.model.TipListItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,12 +23,12 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel.ORDER_POPULAR;
-import static com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel.SUBCATEGORY_ALL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_FAVOURITES;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_YOUR_TIPS;
+import static com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel.ORDER_POPULAR;
+import static com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel.SUBCATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_FAVOURITES;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_YOUR_TIPS;
 
 
 public class FirebaseHelper {
@@ -58,11 +58,13 @@ public class FirebaseHelper {
 
                                 if (item != null) {
 
+                                    /*
                                     //check subcategory and if it's not the chosen, continue loop
                                     if (!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
                                             && !item.getSubcategory().equals(viewModel.getSubcategory())) {
                                         continue;
                                     }
+                                    */
 
                                     //if image is not already added to this tip, do not show it
                                     if (TextUtils.isEmpty(item.getImage())) {
@@ -79,12 +81,12 @@ public class FirebaseHelper {
                                         item.setInFav(true);
                                     }
                                     list.add(item);
-                                    viewModel.setRecyclerViewList(list);
+                                    //viewModel.setRecyclerViewList(list);
                                 }
                             }
 
                             //sort the list if the order should be popular
-                            if (viewModel.getOrder().equals(ORDER_POPULAR)) {
+                            //if (viewModel.getOrder().equals(ORDER_POPULAR)) {
                                 Collections.sort(list, new Comparator<ListItem>() {
                                     @Override
                                     public int compare(ListItem o1, ListItem o2) {
@@ -93,8 +95,8 @@ public class FirebaseHelper {
                                     }
                                 });
                             }
-                            viewModel.setRecyclerViewList(list);
-                        }
+                            //viewModel.setRecyclerViewList(list);
+                       // }
                     }
 
                     @Override
@@ -163,7 +165,7 @@ public class FirebaseHelper {
                                         o1.getMatches();
                             }
                         });
-                        viewModel.setRecyclerViewList(list);
+                        //viewModel.setRecyclerViewList(list);
                     }
 
                     @Override
@@ -178,11 +180,13 @@ public class FirebaseHelper {
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
             ListItem item = snapshot.getValue(ListItem.class);
 
+            /*
             if (!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
                     && !item.getSubcategory().equals(viewModel.getSubcategory())) {
                 //item discarded
                 continue;
             }
+            */
 
             //item accepted
             String id = snapshot.getKey();
@@ -191,7 +195,7 @@ public class FirebaseHelper {
             }
             list.add(item);
         }
-        viewModel.setRecyclerViewList(list);
+        //viewModel.setRecyclerViewList(list);
     }
 
     /*

@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.view;
+package com.blogspot.android_czy_java.beautytips.view.listView.view;
 
 import android.app.DialogFragment;
 import android.app.SearchManager;
@@ -26,12 +26,12 @@ import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
 import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper;
-import com.blogspot.android_czy_java.beautytips.listView.utils.LanguageHelper;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog;
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseLoginHelper;
+import com.blogspot.android_czy_java.beautytips.view.listView.utils.LanguageHelper;
+import com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.NicknamePickerDialog;
 import com.blogspot.android_czy_java.beautytips.notifications.NotificationTokenHelper;
-import com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity;
+import com.blogspot.android_czy_java.beautytips.view.welcome.WelcomeActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.IdpResponse;
@@ -47,19 +47,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PERMISSION_EXT_STORAGE;
 import static com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper.RC_PHOTO_PICKER;
-import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_ANONYMOUS;
-import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_NULL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.RC_NEW_TIP_ACTIVITY;
-import static com.blogspot.android_czy_java.beautytips.listView.view.dialogs.NicknamePickerDialog.TAG_NICKNAME_DIALOG;
-import static com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity.KEY_TIP_NUMBER;
-import static com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity.RESULT_DATA_CHANGE;
-import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RC_WELCOME_ACTIVITY;
-import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN;
-import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_LOG_IN_ANONYMOUSLY;
-import static com.blogspot.android_czy_java.beautytips.welcome.WelcomeActivity.RESULT_TERMINATE;
+import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_ANONYMOUS;
+import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_NULL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.NAV_POSITION_LOG_OUT;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.RC_NEW_TIP_ACTIVITY;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.NicknamePickerDialog.TAG_NICKNAME_DIALOG;
+import static com.blogspot.android_czy_java.beautytips.view.newTip.view.NewTipActivity.KEY_TIP_NUMBER;
+import static com.blogspot.android_czy_java.beautytips.view.newTip.view.NewTipActivity.RESULT_DATA_CHANGE;
+import static com.blogspot.android_czy_java.beautytips.view.welcome.WelcomeActivity.RC_WELCOME_ACTIVITY;
+import static com.blogspot.android_czy_java.beautytips.view.welcome.WelcomeActivity.RESULT_LOG_IN;
+import static com.blogspot.android_czy_java.beautytips.view.welcome.WelcomeActivity.RESULT_LOG_IN_ANONYMOUSLY;
+import static com.blogspot.android_czy_java.beautytips.view.welcome.WelcomeActivity.RESULT_TERMINATE;
 
 public abstract class BaseMainActivity extends AppCompatActivity
         implements FirebaseLoginHelper.MainViewInterface,
@@ -176,7 +176,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
         // navigation
         if (!viewModel.getCategory().equals(CATEGORY_ALL)) {
             viewModel.setNavigationPosition(NAV_POSITION_ALL);
-            viewModel.setCategory(CATEGORY_ALL);
+            //viewModel.setCategory(CATEGORY_ALL);
         } else super.onBackPressed();
     }
 
@@ -396,7 +396,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         if (requestCode == RC_NEW_TIP_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
             viewModel.waitForAddingImage(data.getStringExtra(KEY_TIP_NUMBER));
-            viewModel.setCategory(CATEGORY_ALL);
+            //TODO: viewModel.setCategory(CATEGORY_ALL);
             SnackbarHelper.showNewTipVisibleSoon(mDrawerLayout);
         }
     }

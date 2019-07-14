@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.view;
+package com.blogspot.android_czy_java.beautytips.view.listView.view;
 
 
 import android.content.Intent;
@@ -12,21 +12,22 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.detail.DetailActivityFragment;
-import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivityFragment;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPromptDialog;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPromptDialogInterface;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
-import com.google.android.gms.ads.AdRequest;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletDetailViewModel;
+import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment;
+import com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment;
+import com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.SupportPromptDialog;
+import com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.SupportPromptDialogInterface;
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel;
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
 import com.kobakei.ratethisapp.RateThisApp;
 
+
+import javax.inject.Inject;
 
 import de.cketti.mailto.EmailIntentBuilder;
 
 import static android.content.Intent.ACTION_SEARCH;
-import static com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
 public class MainActivity extends BaseMainActivity implements OpeningFragment.OpeningFragmentActivity,
         IngredientActivityFragment.IngredientFragmentActivity,
@@ -43,6 +44,9 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
     public static final String KEY_DETAIL_SCREEN_OPEN_TIMES = "detail screen open times";
 
     private FragmentManager fragmentManager;
+
+    @Inject
+    TabletDetailViewModel tabletDetailViewModel;
 
 
     @Override
@@ -75,7 +79,7 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
                         if (viewModel.getIsShowingIngredientFromRecipe()) {
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(R.anim.fade_in, R.anim.top_to_bottom)
-                                    .replace(R.id.fragment_detail_container, new DetailActivityFragment(),
+                                    .replace(R.id.fragment_detail_container, new DetailDescriptionFragment(),
                                             TAG_FRAGMENT_DETAIL)
                                     .commit();
 
@@ -85,7 +89,7 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
 
                         fragmentManager.beginTransaction()
                                 .setCustomAnimations(R.anim.fade_in, R.anim.quick_fade_out)
-                                .replace(R.id.fragment_detail_container, new DetailActivityFragment(),
+                                .replace(R.id.fragment_detail_container, new DetailDescriptionFragment(),
                                         TAG_FRAGMENT_DETAIL)
                                 .commit();
 
@@ -142,14 +146,13 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
 
         //when ingredient is launched by click on detail screen ingredients list, on back pressed
         //come back to this detail screen
-        TabletDetailViewModel tabletViewModel = (TabletDetailViewModel) viewModel;
-        if (tabletViewModel.getIsShowingIngredientFromRecipe()) {
-            tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
-            tabletViewModel.setIsShowingIngredientFromRecipe(false);
+        if (tabletDetailViewModel.getIsShowingIngredientFromRecipe()) {
+            tabletDetailViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+            tabletDetailViewModel.setIsShowingIngredientFromRecipe(false);
         } else if (viewModel.getCategory().equals(CATEGORY_ALL) &&
-                (!tabletViewModel.getCurrentDetailFragment()
+                (!tabletDetailViewModel.getCurrentDetailFragment()
                         .equals(TAG_FRAGMENT_OPENING))) {
-            tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_OPENING);
+            tabletDetailViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_OPENING);
         } else {
             super.onBackPressed();
         }
@@ -170,8 +173,8 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
 
     @Override
     void initViewModel() {
-        viewModel = ViewModelProviders.of(this).get(TabletDetailViewModel.class);
-        ((TabletDetailViewModel) viewModel).init();
+        viewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
+        viewModel.init();
     }
 
     /*

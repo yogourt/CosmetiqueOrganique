@@ -1,14 +1,11 @@
-package com.blogspot.android_czy_java.beautytips.listView.view.dialogs
+package com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs
 
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper
 
 class SupportPromptDialog : DialogFragment() {
 

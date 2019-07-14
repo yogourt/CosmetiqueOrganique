@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.view
+package com.blogspot.android_czy_java.beautytips.view.listView.view
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -8,7 +8,6 @@ import androidx.test.rule.ActivityTestRule
 import com.blogspot.android_czy_java.beautytips.R
 import org.junit.Rule
 
-import org.junit.Assert.*
 import org.junit.Test
 
 class MainActivityTest {

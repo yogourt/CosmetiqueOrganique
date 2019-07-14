@@ -17,6 +17,10 @@ class DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideDetailDao(db: AppDatabase) = db.recipeDetailDao()
+
+    @Provides
+    @Singleton
     fun provideAppDatabase(context: Context) = AppDatabase.getInstance(context)
 
     @Provides

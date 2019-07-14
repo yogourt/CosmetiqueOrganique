@@ -3,15 +3,19 @@ package com.blogspot.android_czy_java.beautytips.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.blogspot.android_czy_java.beautytips.appUtils.AppViewModelFactory
-import com.blogspot.android_czy_java.beautytips.di.detail.ImageModule
-import com.blogspot.android_czy_java.beautytips.di.recipe.RecipeModule
+import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
+import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailDescriptionFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.detail.ImageFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
 
 @Module(includes = [
-    RecipeModule::class,
-    ImageModule::class
+    MainActivityFragmentModule::class,
+    ImageFragmentModule::class,
+    DetailActivityModule::class,
+    DetailDescriptionFragmentModule::class
 ])
 class ViewModelModule {
 

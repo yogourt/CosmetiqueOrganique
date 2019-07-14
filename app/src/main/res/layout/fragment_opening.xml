@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="@dimen/activity_vertical_margin"
-            tools:context="com.blogspot.android_czy_java.beautytips.listView.view.OpeningFragment">
+            tools:context=".view.listView.view.OpeningFragment">
 
             <ImageView
                 android:layout_width="@dimen/header_image_width"

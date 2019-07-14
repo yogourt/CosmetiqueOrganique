@@ -1,8 +1,9 @@
-package com.blogspot.android_czy_java.beautytips.viewmodel.common
+package com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.blogspot.android_czy_java.beautytips.usecase.common.LoadImageFragmentDataUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadImageFragmentDataUseCase
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.ImageFragmentUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

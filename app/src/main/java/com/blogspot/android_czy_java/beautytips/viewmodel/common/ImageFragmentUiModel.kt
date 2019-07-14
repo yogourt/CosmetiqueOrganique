@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.viewmodel.common
+package com.blogspot.android_czy_java.beautytips.viewmodel.detail
 
 sealed class ImageFragmentUiModel {
 

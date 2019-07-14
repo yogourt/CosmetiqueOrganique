@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.view.dialogs;
+package com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
 
 public class DeleteTipDialog extends DialogFragment {
 

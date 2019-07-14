@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.viewmodel
+package com.blogspot.android_czy_java.beautytips.view.listView.viewmodel
 
 import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryHair

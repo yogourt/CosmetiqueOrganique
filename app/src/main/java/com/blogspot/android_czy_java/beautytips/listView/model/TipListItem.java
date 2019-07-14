@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.model;
+package com.blogspot.android_czy_java.beautytips.view.listView.model;
 
 
 import androidx.annotation.Keep;

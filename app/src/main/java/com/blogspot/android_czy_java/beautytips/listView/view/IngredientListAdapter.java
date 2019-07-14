@@ -1,28 +1,6 @@
-package com.blogspot.android_czy_java.beautytips.listView.view;
+package com.blogspot.android_czy_java.beautytips.view.listView.view;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.database.ingredient.IngredientModel;
-import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletDetailViewModel;
-
-import java.util.List;
-
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_INGREDIENTS;
-
-
+/*
 public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> {
 
     public static final int REQUEST_CODE_DETAIL_ACTIVITY = 50;
@@ -95,3 +73,4 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
     }
 
 }
+*/

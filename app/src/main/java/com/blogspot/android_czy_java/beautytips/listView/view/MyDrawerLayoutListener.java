@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.view;
+package com.blogspot.android_czy_java.beautytips.view.listView.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,9 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.AppInfoDialog;
-import com.blogspot.android_czy_java.beautytips.newTip.view.NewTipActivity;
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.AppInfoDialog;
+import com.blogspot.android_czy_java.beautytips.view.newTip.view.NewTipActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -82,7 +82,6 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
     @Override
     public void onDrawerClosed(@NonNull View drawerView) {
-        Timber.d("onDrawerClosed, itemId=" + itemId);
         activity.removeDrawerListenerFromDrawerLayout();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -93,7 +92,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                 case R.id.nav_your_tips:
                     if (!user.isAnonymous()) {
                         viewModel.setNavigationPosition(NAV_POSITION_YOUR_TIPS);
-                        viewModel.setCategory(CATEGORY_YOUR_TIPS);
+                        //TODO: viewModel.setCategory(CATEGORY_YOUR_TIPS);
                     } else {
                         SnackbarHelper.showFeatureForLoggedInUsersOnly(
                                 activity.getContext().getResources()
@@ -105,7 +104,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                 case R.id.nav_favourites:
                     if (!user.isAnonymous()) {
                         viewModel.setNavigationPosition(NAV_POSITION_FAVOURITES);
-                        viewModel.setCategory(CATEGORY_FAVOURITES);
+                        //TODO: viewModel.setCategory(CATEGORY_FAVOURITES);
                     } else {
                         SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getContext()
                                         .getResources().getString(R.string.feature_favourites),
@@ -160,23 +159,23 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
                 case R.id.nav_all:
                     viewModel.setNavigationPosition(NAV_POSITION_ALL);
-                    viewModel.setCategory(CATEGORY_ALL);
+                    //TODO: viewModel.setCategory(CATEGORY_ALL);
                     return;
                 case R.id.nav_hair:
                     viewModel.setNavigationPosition(NAV_POSITION_HAIR);
-                    viewModel.setCategory(CATEGORY_HAIR);
+                    //TODO: viewModel.setCategory(CATEGORY_HAIR);
                     return;
                 case R.id.nav_face:
                     viewModel.setNavigationPosition(NAV_POSITION_FACE);
-                    viewModel.setCategory(CATEGORY_FACE);
+                    //TODO: viewModel.setCategory(CATEGORY_FACE);
                     return;
                 case R.id.nav_body:
                     viewModel.setNavigationPosition(NAV_POSITION_BODY);
-                    viewModel.setCategory(CATEGORY_BODY);
+                    //TODO: viewModel.setCategory(CATEGORY_BODY);
                     return;
                 case R.id.nav_ingredients:
                     viewModel.setNavigationPosition(NAV_POSITION_INGREDIENTS);
-                    viewModel.setCategory(CATEGORY_INGREDIENTS);
+                    //TODO: viewModel.setCategory(CATEGORY_INGREDIENTS);
                     return;
                 case R.id.nav_about_app:
                     AppInfoDialog dialog = new AppInfoDialog();

@@ -1,16 +1,16 @@
 
-package com.blogspot.android_czy_java.beautytips.ingredient;
+package com.blogspot.android_czy_java.beautytips.view.ingredient;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.detail.BaseItemActivity;
-import com.blogspot.android_czy_java.beautytips.listView.view.MainActivity;
+import com.blogspot.android_czy_java.beautytips.view.detail.BaseItemActivity;
+import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity;
 
 import butterknife.ButterKnife;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.BaseMainActivity.KEY_QUERY;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.BaseMainActivity.KEY_QUERY;
 
 public class IngredientActivity extends BaseItemActivity
         implements IngredientActivityFragment.IngredientFragmentActivity {

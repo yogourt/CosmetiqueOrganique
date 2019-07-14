@@ -1,77 +1,39 @@
-package com.blogspot.android_czy_java.beautytips.detail;
+package com.blogspot.android_czy_java.beautytips.view.detail;
 
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.ArrayMap;
-import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.ScrollView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.appUtils.AnalyticsUtils;
-import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
-import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
-import com.blogspot.android_czy_java.beautytips.detail.dialogs.NewCommentDialog;
-import com.blogspot.android_czy_java.beautytips.detail.firebase.DetailFirebaseHelper;
-import com.blogspot.android_czy_java.beautytips.detail.model.Comment;
-import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivity;
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
-import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletDetailViewModel;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.blogspot.android_czy_java.beautytips.view.detail.firebase.DetailFirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.view.listView.exception.RecipeIdNotFoundException;
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.BaseDetailData;
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.BaseDetailUiModel;
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import timber.log.Timber;
 
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_FAV_NUM;
-import static com.blogspot.android_czy_java.beautytips.listView.view.BaseListViewAdapter.KEY_ID;
-import static com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.KEY_ITEM;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
-
-public class DetailActivityFragment extends Fragment
-        implements DetailFirebaseHelper.DetailViewInterface, DetailActivity.DetailFragmentInterface{
+public class DetailDescriptionFragment extends DetailBaseFragment {
 
     public static String KEY_COMMENT_AUTHOR = "comment_author";
     public static String KEY_COMMENT = "comment";
@@ -90,7 +52,7 @@ public class DetailActivityFragment extends Fragment
     View mLayoutIngredients;
 
     @BindView(R.id.description_text_view)
-    TextView mDescTextView;
+    TextView description;
 
     @BindView(R.id.ingredient1)
     TextView mIngredient1;
@@ -117,7 +79,7 @@ public class DetailActivityFragment extends Fragment
     TextView mFavTv;
 
     @BindView(R.id.source_text_view)
-    TextView mSourceTv;
+    TextView source;
 
     @BindView(R.id.share_button)
     ImageView mShareButton;
@@ -131,39 +93,19 @@ public class DetailActivityFragment extends Fragment
     @BindView(R.id.detail_linear_layout)
     LinearLayout mDetailLayout;
 
-    private String description;
-    private TabletDetailViewModel viewModel;
-    private TipListItem item;
 
     private DetailFirebaseHelper mFirebaseHelper;
 
     private ViewTreeObserver.OnScrollChangedListener scrollListener;
 
-    private boolean isPortrait;
-    private boolean isTablet;
-
     private ArrayList<ArrayMap<String, String>> comments;
 
-    private PopupWindow mCommentsWindow;
 
-    public DetailActivityFragment() {
+    @Inject
+    DetailViewModel viewModel;
+
+    public DetailDescriptionFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        isPortrait = getResources().getConfiguration()
-                .orientation == Configuration.ORIENTATION_PORTRAIT;
-
-        isTablet = getResources().getBoolean(R.bool.is_tablet);
-
-        if (isTablet && !isPortrait)
-            viewModel = ViewModelProviders.of(getActivity()).get(TabletDetailViewModel.class);
-
-        mFirebaseHelper = new DetailFirebaseHelper(this);
-
     }
 
     @Override
@@ -177,49 +119,62 @@ public class DetailActivityFragment extends Fragment
         return view;
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!isTablet || isPortrait) {
-            if (getActivity() != null) {
-                item = (TipListItem) getActivity().getIntent().getExtras().getSerializable(KEY_ITEM);
-            }
-        } else {
-            item = viewModel.getChosenTip();
-            if (item != null) prepareFab();
+            viewModel.getBaseDetailLiveData().observe(this, this::render);
+            try {
+                viewModel.init(getRecipeId());
+            } catch (RecipeIdNotFoundException e) {
+                e.printStackTrace();
         }
-
-        if (item == null) return;
-        mFirebaseHelper.getFirebaseDatabaseData(item.getId());
-        Timber.d("item id: " + item.getId());
-        prepareFavNum();
-
 
     }
 
+    /*
     @Override
     public void onPause() {
 
         if (getActivity() != null) {
-            Timber.d("set intent");
             getActivity().setIntent(createDataIntent());
-            if (getActivity().getIntent() != null) Timber.d("intent set");
         }
 
         super.onPause();
     }
+    */
 
     @Override
     public void onDestroyView() {
-
-        Timber.d("on destroy view");
 
         if (mScrollView != null)
             mScrollView.getViewTreeObserver().removeOnScrollChangedListener(scrollListener);
         super.onDestroyView();
     }
 
+    private void render(BaseDetailUiModel uiModel) {
+        if(uiModel instanceof BaseDetailUiModel.LoadingSuccess) {
+            BaseDetailData data =((BaseDetailUiModel.LoadingSuccess) uiModel).getData();
+            description.setText(data.getDescription());
+            prepareSource(data.getSource());
+
+        } else if (uiModel instanceof BaseDetailUiModel.StatusLoading) {
+
+        } else if (uiModel instanceof BaseDetailUiModel.LoadingError) {
+
+        }
+    }
+
+    private void prepareSource(String sourceData) {
+
+        source.setText(sourceData);
+        source.setVisibility(View.VISIBLE);
+        source.setText(Html.fromHtml(getResources().getString(R.string.source_label, sourceData)));
+        source.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    /*
     private void prepareFab() {
 
         if (scrollListener != null) mScrollView.getViewTreeObserver().
@@ -287,7 +242,7 @@ public class DetailActivityFragment extends Fragment
 
     /*
         DetailActivity.DetailFragmentInterface implementation
-     */
+
 
     @Override
     public void getFabState() {
@@ -315,24 +270,29 @@ public class DetailActivityFragment extends Fragment
         prepareFavNum();
     }
 
+
     @Override
     public Intent createDataIntent() {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
 
+        /*
         if (item != null) {
             bundle.putLong(KEY_FAV_NUM, item.getFavNum());
             bundle.putString(KEY_ID, item.getId());
         }
+
         intent.putExtras(bundle);
         return intent;
     }
+
+    */
 
 
 
     /*
         DetailFirebaseHelper.DetailViewInterface implementation
-     */
+
 
     @Override
     public void setFabActiveFromFirebaseHelper() {
@@ -353,13 +313,12 @@ public class DetailActivityFragment extends Fragment
         comments = new ArrayList<>();
 
         if (getActivity() == null) return;
-        description = (String) dataSnapshot.child("description").getValue();
 
         //start share button prep as soon as description is assigned
         prepareShareButton();
 
 
-        mDescTextView.setText(description);
+        description.setText(description);
         String ingredient1 = (String) dataSnapshot.child("ingredient1").getValue();
         if (!TextUtils.isEmpty(ingredient1)) {
             mIngredient1.setVisibility(View.VISIBLE);
@@ -396,14 +355,6 @@ public class DetailActivityFragment extends Fragment
         }
 
 
-        //set source if it's in database
-        if (dataSnapshot.child("source").getValue() != null) {
-            String source = String.valueOf(dataSnapshot.child("source").getValue());
-            mSourceTv.setVisibility(View.VISIBLE);
-            mSourceTv.setText(Html.fromHtml(getResources().getString(R.string.source_label, source)));
-            mSourceTv.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-
 
         if (mScrollView != null) {
             mScrollView.smoothScrollTo(0, 0);
@@ -411,30 +362,6 @@ public class DetailActivityFragment extends Fragment
         }
         makeIngredientsClickable();
 
-
-        if (dataSnapshot.child("commentsNum").getValue() == null) {
-            prepareCommentsButton("0");
-            ArrayMap<String, String> commentMap = new ArrayMap<>();
-            commentMap.put(KEY_COMMENT_AUTHOR, " ");
-            commentMap.put(KEY_COMMENT, getString(R.string.no_comment_label));
-            comments.add(commentMap);
-
-
-        } else {
-            prepareCommentsButton(dataSnapshot.child("commentsNum").getValue().toString());
-
-            for (DataSnapshot snapshot : dataSnapshot.child("comments").getChildren()) {
-
-                Comment comment = snapshot.getValue(Comment.class);
-                if (comment == null) continue;
-                Timber.d("comment: " + comment.toString());
-
-                ArrayMap<String, String> commentMap = new ArrayMap<>();
-                commentMap.put(KEY_COMMENT_AUTHOR, comment.getAuthorNickname());
-                commentMap.put(KEY_COMMENT, comment.getComment());
-                comments.add(commentMap);
-            }
-        }
     }
 
 
@@ -465,7 +392,7 @@ public class DetailActivityFragment extends Fragment
     /*
         end of interface
 
-     */
+
 
     private void makeIngredientsClickable() {
         FirebaseDatabase.getInstance().getReference("ingredientList").
@@ -525,9 +452,9 @@ public class DetailActivityFragment extends Fragment
                     startActivity(ingredientActivityIntent);
 
                 } else {
-                    viewModel.setIsShowingIngredientFromRecipe(true);
-                    viewModel.setChosenIngredient(ingredientItem);
-                    viewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_INGREDIENT);
+                    tabletViewModel.setIsShowingIngredientFromRecipe(true);
+                    tabletViewModel.setChosenIngredient(ingredientItem);
+                    tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_INGREDIENT);
                 }
 
 
@@ -543,7 +470,7 @@ public class DetailActivityFragment extends Fragment
                 Intent shareDataIntent = new Intent(Intent.ACTION_SEND);
                 shareDataIntent.setType("text/plain");
                 shareDataIntent.putExtra(Intent.EXTRA_SUBJECT, item.getTitle());
-                String sharedText = item.getTitle() + "\n\n" + description;
+                String sharedText = item.getTitle() + "\n\n" + description.getText();
                 shareDataIntent.putExtra(Intent.EXTRA_TEXT, sharedText);
 
                 startActivity(Intent.createChooser(shareDataIntent,
@@ -552,125 +479,7 @@ public class DetailActivityFragment extends Fragment
         });
     }
 
-    private void prepareCommentsButton(final String commentsNum) {
-
-        mCommentsButton.setText(String.format(getResources().getString(R.string.label_comments),
-                commentsNum));
-        mCommentsButton.setPaintFlags(mCommentsButton.getPaintFlags() |
-                Paint.UNDERLINE_TEXT_FLAG);
-
-        mCommentsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-
-                if(mCommentsWindow != null && mCommentsWindow.isShowing()) return;
-
-                LayoutInflater inflater = getLayoutInflater();
-                final View commentsView = inflater.inflate(R.layout.layout_popup_comments,
-                        mDetailLayout, false);
-
-
-                final ListView commentsList = commentsView.findViewById(R.id.comments_list_view);
-                final EditText newCommentEt = commentsView.findViewById(R.id.new_comment_edit_text);
-                TextView commentButtonTv = commentsView.findViewById(R.id.button_add);
-
-                String[] from = {KEY_COMMENT_AUTHOR, KEY_COMMENT};
-                int[] to = {R.id.comment_author_tv, R.id.comment_tv};
-
-                ListAdapter adapter = new SimpleAdapter(getContext(), comments,
-                        R.layout.layout_comment, from, to);
-                commentsList.setAdapter(adapter);
-
-                int width = getResources().getDisplayMetrics().widthPixels;
-
-                //on tablet landscape, width should be half of the screen
-                if(isTablet && !isPortrait) width *= 0.5f;
-
-                mCommentsWindow = new PopupWindow(commentsView,
-                        width, WRAP_CONTENT, true);
-
-                mCommentsWindow.setBackgroundDrawable(getResources().
-                        getDrawable(R.drawable.comments_backgorund));
-
-                mCommentsWindow.setElevation(10);
-
-                mCommentsWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-
-                mCommentsWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-
-
-                mCommentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM|Gravity.START, 0, 0);
-
-                final GestureDetector.SimpleOnGestureListener gestureListener =
-                        new GestureDetector.SimpleOnGestureListener() {
-                    @Override
-                    public boolean onFling(MotionEvent e1, MotionEvent e2,
-                                           float velocityX, float velocityY) {
-
-                        if(commentsList.getScrollY() == 0 && velocityY > 20
-                                && e2.getY() - e1.getY() > 200)
-                            mCommentsWindow.dismiss();
-
-
-                        return true;
-
-                    }
-                };
-
-                final GestureDetector gestureDetector =
-                        new GestureDetector(getContext(), gestureListener);
-
-                commentsList.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                        Timber.d("scrollY: " + commentsList.getFirstVisiblePosition() );
-                        if(commentsList.getFirstVisiblePosition() > 0) {
-                            return commentsList.onTouchEvent(motionEvent);
-                        } else {
-                            return gestureDetector.onTouchEvent(motionEvent);
-                        }
-                    }
-                });
-
-                commentButtonTv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        Context context = getContext();
-                        if (context != null && !NetworkConnectionHelper.isInternetConnection(context)) {
-                            SnackbarHelper.showUnableToAddComment(commentsView);
-                        } else if (FirebaseHelper.isUserAnonymous()) {
-                            SnackbarHelper.showFeatureForLoggedInUsersOnly(
-                                    getString(R.string.feature_add_comments), commentsView);
-                        } else {
-                            FragmentManager manager = getFragmentManager();
-                            if (manager != null) {
-                                NewCommentDialog commentDialog = new NewCommentDialog();
-                                commentDialog.setComment(
-                                        newCommentEt.getText().toString(), item.getId(), commentsNum);
-
-                                commentDialog.show(manager, TAG_NEW_COMMENT_DIALOG);
-                            }
-
-                        }
-                    }
-
-                });
-
-
-            }
-        });
-
-
-    }
-
-    @Override
-    public void reloadComments() {
-        mCommentsWindow.dismiss();
-        mFirebaseHelper.getFirebaseDatabaseData(item.getId());
-        //TODO: refactor it to load again comments and commentsNum only
-    }
+   */
 }
 
 

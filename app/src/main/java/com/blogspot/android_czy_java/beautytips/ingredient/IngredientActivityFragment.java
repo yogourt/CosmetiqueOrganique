@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.ingredient;
+package com.blogspot.android_czy_java.beautytips.view.ingredient;
 
 
 import android.content.Context;
@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletDetailViewModel;
+import com.blogspot.android_czy_java.beautytips.view.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.KEY_ITEM;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM;
 
 
 public class IngredientActivityFragment extends Fragment {
@@ -94,7 +94,7 @@ public class IngredientActivityFragment extends Fragment {
                 item = (ListItem) getActivity().getIntent().getExtras().getSerializable(KEY_ITEM);
             }
         } else {
-            item = viewModel.getChosenIngredient();
+            //item = viewModel.getChosenIngredient();
 
         }
 

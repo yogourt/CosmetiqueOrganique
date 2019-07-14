@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.utils;
+package com.blogspot.android_czy_java.beautytips.view.listView.utils;
 
 import android.net.Uri;
 
@@ -8,7 +8,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-import static com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper.getUserId;
+import static com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseLoginHelper.getUserId;
 
 public class LoginProvidersHelper {
 

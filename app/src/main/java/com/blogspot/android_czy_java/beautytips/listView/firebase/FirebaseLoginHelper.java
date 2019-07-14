@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.firebase;
+package com.blogspot.android_czy_java.beautytips.view.listView.firebase;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.viewmodel.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -26,10 +26,10 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_ANONYMOUS;
-import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_LOGGED_IN;
-import static com.blogspot.android_czy_java.beautytips.listView.utils.LoginProvidersHelper.saveProvidedPhoto;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_ANONYMOUS;
+import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_LOGGED_IN;
+import static com.blogspot.android_czy_java.beautytips.view.listView.utils.LoginProvidersHelper.saveProvidedPhoto;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
 public class FirebaseLoginHelper {
 
@@ -99,7 +99,7 @@ public class FirebaseLoginHelper {
         mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                viewModel.setCategory(CATEGORY_ALL);
+                //TODO: viewModel.setCategory(CATEGORY_ALL);
                 viewModel.changeUserState(USER_STATE_LOGGED_IN);
 
                 final Uri photoUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
@@ -161,7 +161,7 @@ public class FirebaseLoginHelper {
             @Override
             public void onSuccess(AuthResult authResult) {
                 viewModel.changeUserState(USER_STATE_ANONYMOUS);
-                viewModel.setCategory(CATEGORY_ALL);
+                //TODO: viewModel.setCategory(CATEGORY_ALL);
                 viewModel.notifyRecyclerDataHasChanged();
             }
         });

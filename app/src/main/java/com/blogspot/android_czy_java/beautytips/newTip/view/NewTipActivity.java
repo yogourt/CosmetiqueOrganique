@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.newTip.view;
+package com.blogspot.android_czy_java.beautytips.view.newTip.view;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -23,8 +23,8 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.appUtils.NetworkConnectionHelper;
-import com.blogspot.android_czy_java.beautytips.newTip.firebase.NewTipFirebaseHelper;
-import com.blogspot.android_czy_java.beautytips.newTip.view.dialog.ConfirmationDialog;
+import com.blogspot.android_czy_java.beautytips.view.newTip.firebase.NewTipFirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.view.newTip.view.dialog.ConfirmationDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.farbod.labelledspinner.LabelledSpinner;

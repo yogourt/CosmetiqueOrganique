@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.detail;
+package com.blogspot.android_czy_java.beautytips.view.detail;
 
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.view.listView.model.ListItem;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -30,7 +30,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import butterknife.BindView;
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.KEY_ITEM;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM;
 
 public abstract class BaseItemActivity extends AppCompatActivity {
 

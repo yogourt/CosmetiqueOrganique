@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils;
+package com.blogspot.android_czy_java.beautytips.view.listView.utils.recyclerViewUtils;
 
 import android.graphics.Rect;
 import android.view.View;

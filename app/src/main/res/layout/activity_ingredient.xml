@@ -13,7 +13,7 @@
 
         <fragment
             android:id="@+id/fragment_ingredient"
-            class="com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivityFragment"
+            class="com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

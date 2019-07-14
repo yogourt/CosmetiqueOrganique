@@ -9,14 +9,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.blogspot.android_czy_java.beautytips.R
 
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseLoginHelper
-import com.blogspot.android_czy_java.beautytips.listView.view.MainActivity
+import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseHelper
+import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseLoginHelper
+import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-import com.blogspot.android_czy_java.beautytips.listView.view.RecipeListAdapter.KEY_ITEM
+import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM
 import timber.log.Timber
 
 class NotificationService : FirebaseMessagingService() {

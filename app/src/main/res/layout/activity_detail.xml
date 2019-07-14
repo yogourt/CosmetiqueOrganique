@@ -16,7 +16,7 @@
    <fragment
        android:layout_height="wrap_content"
        android:layout_width="match_parent"
-       android:name="com.blogspot.android_czy_java.beautytips.detail.DetailActivityFragment"
+       android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment"
        android:id="@+id/fragment_detail"/>
 
 

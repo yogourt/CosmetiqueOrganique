@@ -1,22 +1,22 @@
-package com.blogspot.android_czy_java.beautytips.listView.viewmodel;
+package com.blogspot.android_czy_java.beautytips.viewmodel.recipe;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
-import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.listView.model.User;
+import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.view.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.view.listView.model.User;
 
 import java.util.List;
 
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_ANONYMOUS;
-import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_LOGGED_IN;
-import static com.blogspot.android_czy_java.beautytips.listView.model.User.USER_STATE_NULL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
-import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_ANONYMOUS;
+import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_LOGGED_IN;
+import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_NULL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
+import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.NAV_POSITION_ALL;
 
 public class ListViewViewModel extends ViewModel {
 
@@ -38,15 +38,9 @@ public class ListViewViewModel extends ViewModel {
     private MutableLiveData<String> userStateLiveData;
     private MutableLiveData<User> userLiveData;
 
-    private MutableLiveData<List<ListItem>> recyclerViewLiveData;
-
     private FirebaseHelper mFirebaseHelper;
 
     private boolean searchWasConducted;
-
-    private String listOrder;
-
-    private String subcategory;
 
     private String query;
 
@@ -66,13 +60,10 @@ public class ListViewViewModel extends ViewModel {
             else if(FirebaseHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
             else userStateLiveData.setValue(USER_STATE_LOGGED_IN);
 
-            recyclerViewLiveData = new MutableLiveData<>();
             notifyRecyclerDataHasChanged();
 
             searchWasConducted = false;
 
-            listOrder = ORDER_NEW;
-            subcategory = SUBCATEGORY_ALL;
             query = "";
         }
     }
@@ -83,21 +74,6 @@ public class ListViewViewModel extends ViewModel {
 
     public void setNavigationPosition(int position) {
         navigationPosition = position;
-    }
-
-    public void setCategory(String category) {
-        boolean categoryIsTheSame = categoryLiveData.getValue().equals(category);
-
-        this.categoryLiveData.setValue(category);
-        if(!categoryIsTheSame) {
-            setSubcategory(SUBCATEGORY_ALL);
-            notifyRecyclerDataHasChanged();
-        }
-
-        //even though user chosen the same category, he wants all the data to be loaded
-        if(searchWasConducted) {
-            resetSearch();
-        }
     }
 
     public LiveData<String> getCategoryLiveData() {
@@ -116,21 +92,6 @@ public class ListViewViewModel extends ViewModel {
         userStateLiveData.setValue(newState);
     }
 
-    public LiveData<List<ListItem>> getRecyclerViewLiveData() {
-        return recyclerViewLiveData;
-    }
-
-    public void setRecyclerViewList(List<ListItem> list) {
-        recyclerViewLiveData.setValue(list);
-    }
-
-    public LiveData<User> getUserLiveData() {
-        return userLiveData;
-    }
-
-    public void setUserLiveData(User user) {
-        userLiveData.setValue(user);
-    }
 
     public void deleteTipWithId(Long id) {
         mFirebaseHelper.deleteTipWithId(id);
@@ -154,7 +115,6 @@ public class ListViewViewModel extends ViewModel {
         if(query == null) return;
         query = query.toLowerCase();
         this.query = query;
-        subcategory = SUBCATEGORY_ALL;
         searchWasConducted = true;
         mFirebaseHelper.searchAndSetListToViewModel(query);
     }
@@ -167,27 +127,7 @@ public class ListViewViewModel extends ViewModel {
         searchWasConducted = false;
         notifyRecyclerDataHasChanged();
     }
-    public void setOrder(String order) {
-        listOrder = order;
-            notifyRecyclerDataHasChanged();
-    }
 
-    public String getOrder() {
-        return listOrder;
-    }
-
-    public String getSubcategory() {
-        return subcategory;
-    }
-
-    public void setSubcategory(String subcategory) {
-        if(subcategory == null) return;
-        subcategory = subcategory.toLowerCase();
-        if(!this.subcategory.equals(subcategory)) {
-            this.subcategory = subcategory;
-            notifyRecyclerDataHasChanged();
-        }
-    }
 
     public String getQuery() {
         return query;

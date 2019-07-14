@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.welcome;
+package com.blogspot.android_czy_java.beautytips.view.welcome;
 
 import android.os.Bundle;
 import android.view.MenuItem;

@@ -1,26 +1,30 @@
-package com.blogspot.android_czy_java.beautytips.di.recipe
+package com.blogspot.android_czy_java.beautytips.di.view.recipe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.recipe.RecipeUseCaseModule
-import com.blogspot.android_czy_java.beautytips.listView.view.MainActivityFragment
+import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
+import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivityFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 @Module(includes = [
-    RecipeModule.ProvideViewModel::class,
+    MainActivityFragmentModule.ProvideViewModel::class,
+    DetailActivityModule.ProvideViewModel::class,
     RecipeUseCaseModule::class
 ])
-abstract class RecipeModule {
+abstract class MainActivityFragmentModule {
 
     @ContributesAndroidInjector(modules = [
-        InjectViewModel::class
+        InjectViewModel::class,
+        DetailActivityModule::class
     ])
     abstract fun bind(): MainActivityFragment
 
@@ -43,6 +47,14 @@ abstract class RecipeModule {
                 target: MainActivityFragment
         ): RecipeViewModel =
                 ViewModelProviders.of(target, factory).get(RecipeViewModel::class.java)
+
+        @Provides
+        fun provideTabletDetailViewModel(
+                factory: ViewModelProvider.Factory,
+                target: MainActivityFragment
+        ): TabletDetailViewModel =
+                ViewModelProviders.of(target.requireActivity(), factory).get(TabletDetailViewModel::class.java)
     }
+
 
 }
