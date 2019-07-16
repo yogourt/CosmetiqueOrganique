@@ -149,7 +149,6 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
         prepareSpinners();
         prepareImageView();
 
-        Timber.d("onCreate");
     }
 
     /*
@@ -373,26 +372,23 @@ public class NewTipActivity extends AppCompatActivity implements NewTipFirebaseH
     }
 
     private void saveDataWhenNumIsGenerated() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(!newTipNum.isEmpty()) {
-                    Intent data = new Intent();
-                    data.putExtra(KEY_TIP_NUMBER, newTipNum);
-                    setResult(RESULT_DATA_CHANGE, data);
-                    String source = mSourceEt.getText().toString();
-                    mFirebaseHelper.addTip(title, ingredients, description, getCategory(),
-                            getSubcategory(), imagePath, source, newTipNum);
+        new Handler().postDelayed(() -> {
+            if(newTipNum != null && !TextUtils.isEmpty(newTipNum)) {
+                Intent data = new Intent();
+                data.putExtra(KEY_TIP_NUMBER, newTipNum);
+                setResult(RESULT_DATA_CHANGE, data);
+                String source = mSourceEt.getText().toString();
+                mFirebaseHelper.addTip(title, ingredients, description, getCategory(),
+                        getSubcategory(), imagePath, source, newTipNum);
+                finishWithTransition();
+            } else {
+                if(numGeneratingTries > 10) {
+                    setResult(RESULT_CANCELED);
+                    showSnackbar();
                     finishWithTransition();
-                } else {
-                    if(numGeneratingTries > 10) {
-                        setResult(RESULT_CANCELED);
-                        showSnackbar();
-                        finishWithTransition();
-                    }
-                    saveDataWhenNumIsGenerated();
-                    numGeneratingTries++;
                 }
+                saveDataWhenNumIsGenerated();
+                numGeneratingTries++;
             }
         }, 50);
     }
