@@ -92,7 +92,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                 case R.id.nav_your_tips:
                     if (!user.isAnonymous()) {
                         viewModel.setNavigationPosition(NAV_POSITION_YOUR_TIPS);
-                        //TODO: viewModel.setCategory(CATEGORY_YOUR_TIPS);
+                        //TODO: activityViewModel.setCategory(CATEGORY_YOUR_TIPS);
                     } else {
                         SnackbarHelper.showFeatureForLoggedInUsersOnly(
                                 activity.getContext().getResources()
@@ -104,7 +104,7 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
                 case R.id.nav_favourites:
                     if (!user.isAnonymous()) {
                         viewModel.setNavigationPosition(NAV_POSITION_FAVOURITES);
-                        //TODO: viewModel.setCategory(CATEGORY_FAVOURITES);
+                        //TODO: activityViewModel.setCategory(CATEGORY_FAVOURITES);
                     } else {
                         SnackbarHelper.showFeatureForLoggedInUsersOnly(activity.getContext()
                                         .getResources().getString(R.string.feature_favourites),
@@ -159,23 +159,23 @@ public class MyDrawerLayoutListener implements DrawerLayout.DrawerListener {
 
                 case R.id.nav_all:
                     viewModel.setNavigationPosition(NAV_POSITION_ALL);
-                    //TODO: viewModel.setCategory(CATEGORY_ALL);
+                    //TODO: activityViewModel.setCategory(CATEGORY_ALL);
                     return;
                 case R.id.nav_hair:
                     viewModel.setNavigationPosition(NAV_POSITION_HAIR);
-                    //TODO: viewModel.setCategory(CATEGORY_HAIR);
+                    //TODO: activityViewModel.setCategory(CATEGORY_HAIR);
                     return;
                 case R.id.nav_face:
                     viewModel.setNavigationPosition(NAV_POSITION_FACE);
-                    //TODO: viewModel.setCategory(CATEGORY_FACE);
+                    //TODO: activityViewModel.setCategory(CATEGORY_FACE);
                     return;
                 case R.id.nav_body:
                     viewModel.setNavigationPosition(NAV_POSITION_BODY);
-                    //TODO: viewModel.setCategory(CATEGORY_BODY);
+                    //TODO: activityViewModel.setCategory(CATEGORY_BODY);
                     return;
                 case R.id.nav_ingredients:
                     viewModel.setNavigationPosition(NAV_POSITION_INGREDIENTS);
-                    //TODO: viewModel.setCategory(CATEGORY_INGREDIENTS);
+                    //TODO: activityViewModel.setCategory(CATEGORY_INGREDIENTS);
                     return;
                 case R.id.nav_about_app:
                     AppInfoDialog dialog = new AppInfoDialog();

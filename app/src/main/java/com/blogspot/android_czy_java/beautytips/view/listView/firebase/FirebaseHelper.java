@@ -60,8 +60,8 @@ public class FirebaseHelper {
 
                                     /*
                                     //check subcategory and if it's not the chosen, continue loop
-                                    if (!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
-                                            && !item.getSubcategory().equals(viewModel.getSubcategory())) {
+                                    if (!activityViewModel.getSubcategory().equals(SUBCATEGORY_ALL)
+                                            && !item.getSubcategory().equals(activityViewModel.getSubcategory())) {
                                         continue;
                                     }
                                     */
@@ -81,12 +81,12 @@ public class FirebaseHelper {
                                         item.setInFav(true);
                                     }
                                     list.add(item);
-                                    //viewModel.setRecyclerViewList(list);
+                                    //activityViewModel.setRecyclerViewList(list);
                                 }
                             }
 
                             //sort the list if the order should be popular
-                            //if (viewModel.getOrder().equals(ORDER_POPULAR)) {
+                            //if (activityViewModel.getOrder().equals(ORDER_POPULAR)) {
                                 Collections.sort(list, new Comparator<ListItem>() {
                                     @Override
                                     public int compare(ListItem o1, ListItem o2) {
@@ -95,7 +95,7 @@ public class FirebaseHelper {
                                     }
                                 });
                             }
-                            //viewModel.setRecyclerViewList(list);
+                            //activityViewModel.setRecyclerViewList(list);
                        // }
                     }
 
@@ -165,7 +165,7 @@ public class FirebaseHelper {
                                         o1.getMatches();
                             }
                         });
-                        //viewModel.setRecyclerViewList(list);
+                        //activityViewModel.setRecyclerViewList(list);
                     }
 
                     @Override
@@ -181,8 +181,8 @@ public class FirebaseHelper {
             ListItem item = snapshot.getValue(ListItem.class);
 
             /*
-            if (!viewModel.getSubcategory().equals(SUBCATEGORY_ALL)
-                    && !item.getSubcategory().equals(viewModel.getSubcategory())) {
+            if (!activityViewModel.getSubcategory().equals(SUBCATEGORY_ALL)
+                    && !item.getSubcategory().equals(activityViewModel.getSubcategory())) {
                 //item discarded
                 continue;
             }
@@ -195,7 +195,7 @@ public class FirebaseHelper {
             }
             list.add(item);
         }
-        //viewModel.setRecyclerViewList(list);
+        //activityViewModel.setRecyclerViewList(list);
     }
 
     /*

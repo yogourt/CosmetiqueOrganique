@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.view.listView.model.ListItem;
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel;
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,7 +38,7 @@ public class IngredientActivityFragment extends Fragment {
     @BindView(R.id.searching_text_view)
     TextView mSearchTv;
 
-    private TabletDetailViewModel viewModel;
+    private DetailActivityViewModel viewModel;
     private ListItem item;
 
     private IngredientFragmentActivity activity;
@@ -56,7 +56,7 @@ public class IngredientActivityFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(TabletDetailViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(DetailActivityViewModel.class);
 
     }
 
@@ -94,7 +94,7 @@ public class IngredientActivityFragment extends Fragment {
                 item = (ListItem) getActivity().getIntent().getExtras().getSerializable(KEY_ITEM);
             }
         } else {
-            //item = viewModel.getChosenIngredient();
+            //item = activityViewModel.getChosenIngredient();
 
         }
 

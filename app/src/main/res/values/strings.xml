@@ -37,7 +37,7 @@
     <string name="banner_ad_test_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="ad_size">SMART_BANNER</string>
     <string name="add_mob_app_id">ca-app-pub-5993828134151976~2879998761</string>
-    <string name ="label_comments" formatted="true">Comments (%1$s)</string>
+    <string name="label_comments" formatted="true">Comments (%1$s)</string>
     <string name="add_comment_label">Comment</string>
     <string name="comment_hint">Write what you think&#8230;</string>
     <string name="comment_dialog_title">Is your comment ready? </string>
@@ -173,5 +173,6 @@
     <string name="developer_mail">jagoda.sylwester@gmail.com</string>
     <string name="feedback_email_title">Feedback for Cosmetique Organique</string>
     <string name="support_unit_ad_id">ca-app-pub-5993828134151976/1635349488</string>
+    <string name="error_not_able_to_load_recipe">Sorry, the recipe wasn\'t found.</string>
 
 </resources>

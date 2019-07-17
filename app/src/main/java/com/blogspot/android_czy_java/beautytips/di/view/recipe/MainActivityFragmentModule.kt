@@ -9,7 +9,7 @@ import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityMod
 import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivityFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -52,8 +52,8 @@ abstract class MainActivityFragmentModule {
         fun provideTabletDetailViewModel(
                 factory: ViewModelProvider.Factory,
                 target: MainActivityFragment
-        ): TabletDetailViewModel =
-                ViewModelProviders.of(target.requireActivity(), factory).get(TabletDetailViewModel::class.java)
+        ): DetailActivityViewModel =
+                ViewModelProviders.of(target.requireActivity(), factory).get(DetailActivityViewModel::class.java)
     }
 
 

@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.view.listView.view
 
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -18,11 +18,14 @@ import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.listView.utils.recyclerViewUtils.RecyclerViewHelper
 import com.blogspot.android_czy_java.beautytips.view.listView.utils.recyclerViewUtils.SpacesItemDecoration
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
+import com.blogspot.android_czy_java.beautytips.view.AppFragment
+import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
+import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity2
 
 import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM
 import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.RecipeListAdapterCallback
@@ -31,7 +34,7 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 
-class MainActivityFragment : Fragment(), RecipeListAdapterCallback {
+class MainActivityFragment : AppFragment(), RecipeListAdapterCallback {
 
 
     @BindView(R.id.recycler_view)
@@ -45,7 +48,7 @@ class MainActivityFragment : Fragment(), RecipeListAdapterCallback {
     lateinit var mAdapter: RecipeListAdapter
 
     @Inject
-    lateinit var viewModel: TabletDetailViewModel
+    lateinit var activityViewModel: DetailActivityViewModel
 
     @Inject
     lateinit var recipeViewModel: RecipeViewModel
@@ -137,7 +140,14 @@ class MainActivityFragment : Fragment(), RecipeListAdapterCallback {
     }
 
     override fun onRecipeClick(recipeId: Long) {
-        viewModel.chosenItemId = recipeId
+
+        if(isTablet) {
+            activityViewModel.chosenItemId = recipeId
+        } else {
+            val intent = Intent(context, DetailActivity2::class.java)
+            intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
+            startActivity(intent)
+        }
     }
 
 

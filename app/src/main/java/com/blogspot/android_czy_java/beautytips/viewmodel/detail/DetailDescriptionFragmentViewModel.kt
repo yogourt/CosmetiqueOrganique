@@ -7,21 +7,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class DetailViewModel(
-        private val loadBaseDetailUseCase: LoadBaseDetailUseCase //,
-        //TODO: private val loadCommentsUseCase: LoadCommentsUseCase,
-        //TODO: private val loadFavNumUseCase: LoadFavNumUseCase
-) : ViewModel() {
+class DetailDescriptionFragmentViewModel(
+        private val loadBaseDetailUseCase: LoadBaseDetailUseCase) : ViewModel() {
 
     val baseDetailLiveData = MutableLiveData<BaseDetailUiModel>()
 
-    val disposable = CompositeDisposable()
+    private val disposable = CompositeDisposable()
 
     fun init(recipeId: Long) {
         getBaseDataForDetailFragment(recipeId)
     }
 
-    fun getBaseDataForDetailFragment(id: Long) {
+    private fun getBaseDataForDetailFragment(id: Long) {
         disposable.add(loadBaseDetailUseCase.execute(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

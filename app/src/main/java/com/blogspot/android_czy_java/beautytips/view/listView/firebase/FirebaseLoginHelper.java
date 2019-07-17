@@ -99,7 +99,7 @@ public class FirebaseLoginHelper {
         mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //TODO: viewModel.setCategory(CATEGORY_ALL);
+                //TODO: activityViewModel.setCategory(CATEGORY_ALL);
                 viewModel.changeUserState(USER_STATE_LOGGED_IN);
 
                 final Uri photoUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
@@ -161,7 +161,7 @@ public class FirebaseLoginHelper {
             @Override
             public void onSuccess(AuthResult authResult) {
                 viewModel.changeUserState(USER_STATE_ANONYMOUS);
-                //TODO: viewModel.setCategory(CATEGORY_ALL);
+                //TODO: activityViewModel.setCategory(CATEGORY_ALL);
                 viewModel.notifyRecyclerDataHasChanged();
             }
         });

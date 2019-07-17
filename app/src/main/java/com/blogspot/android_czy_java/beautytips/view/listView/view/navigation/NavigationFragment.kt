@@ -94,7 +94,7 @@ class NavigationFragment {
                 //select appropriate chip
                 for (int i = 0; i < chipLabels.length; i++) {
                     if (chipLabels[i] != null &&
-                            chipLabels[i].toLowerCase().equals(viewModel.getSubcategory())) {
+                            chipLabels[i].toLowerCase().equals(activityViewModel.getSubcategory())) {
                         mChipCloud.setSelectedChip(i);
                         break;
                     }
@@ -108,14 +108,14 @@ class NavigationFragment {
             }
 
             mSwitchPopular.setOnClickListener(view -> {
-                if (viewModel.getOrder().equals(Order.NEW)) {
+                if (activityViewModel.getOrder().equals(Order.NEW)) {
                     activityCallback.setOrder(Order.POPULARITY);
                 }
             });
 
             mSwitchNew.setOnClickListener(view -> {
-                if (viewModel.getOrder().equals(ORDER_POPULAR)) {
-                    viewModel.setOrder(ORDER_NEW);
+                if (activityViewModel.getOrder().equals(ORDER_POPULAR)) {
+                    activityViewModel.setOrder(ORDER_NEW);
                 }
             });
         }

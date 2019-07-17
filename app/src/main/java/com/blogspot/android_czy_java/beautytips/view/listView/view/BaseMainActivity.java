@@ -176,7 +176,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
         // navigation
         if (!viewModel.getCategory().equals(CATEGORY_ALL)) {
             viewModel.setNavigationPosition(NAV_POSITION_ALL);
-            //viewModel.setCategory(CATEGORY_ALL);
+            //activityViewModel.setCategory(CATEGORY_ALL);
         } else super.onBackPressed();
     }
 
@@ -300,7 +300,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
         });
 
 
-        //when the user submit search, pass it to viewModel
+        //when the user submit search, pass it to activityViewModel
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -396,7 +396,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         if (requestCode == RC_NEW_TIP_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
             viewModel.waitForAddingImage(data.getStringExtra(KEY_TIP_NUMBER));
-            //TODO: viewModel.setCategory(CATEGORY_ALL);
+            //TODO: activityViewModel.setCategory(CATEGORY_ALL);
             SnackbarHelper.showNewTipVisibleSoon(mDrawerLayout);
         }
     }

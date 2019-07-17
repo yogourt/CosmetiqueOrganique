@@ -16,7 +16,7 @@ import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFra
 import com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment;
 import com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.SupportPromptDialog;
 import com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.SupportPromptDialogInterface;
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel;
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel;
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
 import com.kobakei.ratethisapp.RateThisApp;
 
@@ -46,7 +46,7 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
     private FragmentManager fragmentManager;
 
     @Inject
-    TabletDetailViewModel tabletDetailViewModel;
+    DetailActivityViewModel detailActivityViewModel;
 
 
     @Override
@@ -57,8 +57,8 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
 
-        final TabletDetailViewModel viewModel = ViewModelProviders.of(this).
-                get(TabletDetailViewModel.class);
+        final DetailActivityViewModel viewModel = ViewModelProviders.of(this).
+                get(DetailActivityViewModel.class);
 
 
         fragmentManager = getSupportFragmentManager();
@@ -146,13 +146,13 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
 
         //when ingredient is launched by click on detail screen ingredients list, on back pressed
         //come back to this detail screen
-        if (tabletDetailViewModel.getIsShowingIngredientFromRecipe()) {
-            tabletDetailViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
-            tabletDetailViewModel.setIsShowingIngredientFromRecipe(false);
+        if (detailActivityViewModel.getIsShowingIngredientFromRecipe()) {
+            detailActivityViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+            detailActivityViewModel.setIsShowingIngredientFromRecipe(false);
         } else if (viewModel.getCategory().equals(CATEGORY_ALL) &&
-                (!tabletDetailViewModel.getCurrentDetailFragment()
+                (!detailActivityViewModel.getCurrentDetailFragment()
                         .equals(TAG_FRAGMENT_OPENING))) {
-            tabletDetailViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_OPENING);
+            detailActivityViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_OPENING);
         } else {
             super.onBackPressed();
         }

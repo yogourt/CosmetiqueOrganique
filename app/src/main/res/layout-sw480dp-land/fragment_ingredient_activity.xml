@@ -17,7 +17,7 @@
 
         <fragment
             android:id="@+id/fragment_image"
-            android:name="com.blogspot.android_czy_java.beautytips.view.detail.ImageFragment"
+            android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailImageFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

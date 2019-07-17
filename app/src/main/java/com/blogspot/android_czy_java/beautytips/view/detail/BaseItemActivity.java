@@ -34,25 +34,15 @@ import static com.blogspot.android_czy_java.beautytips.view.listView.view.Recipe
 
 public abstract class BaseItemActivity extends AppCompatActivity {
 
-    @BindView(R.id.collapsing_toolbar_layout)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
-
 
     @BindView(R.id.app_bar)
     Toolbar mToolbar;
-
-    @BindView(R.id.image)
-    ImageView mImageView;
 
     @BindView(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
 
     @BindView(R.id.adView)
     AdView mAdView;
-
-    public String mTitle;
-    public String mImage;
-    public String mId;
 
     private Handler adHandler;
 
@@ -70,21 +60,6 @@ public abstract class BaseItemActivity extends AppCompatActivity {
         }
 
         supportPostponeEnterTransition();
-
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            ListItem item = (ListItem) bundle.getSerializable(KEY_ITEM);
-
-            if (item == null) finish();
-
-            else {
-                mTitle = item.getTitle();
-                mImage = item.getImage();
-                mId = item.getId();
-
-                Timber.d("BaseItemActivity: " + mTitle + " " + mImage + " " + mId);
-            }
-        }
     }
 
     @Override
@@ -97,6 +72,7 @@ public abstract class BaseItemActivity extends AppCompatActivity {
     }
 
     private void loadImage() {
+        /*
         mImageView.setTransitionName(mImage);
 
         Glide.with(this).
@@ -118,11 +94,10 @@ public abstract class BaseItemActivity extends AppCompatActivity {
                     }
                 }).
                 into(mImageView);
+                */
     }
 
     private void prepareToolbar() {
-        mCollapsingToolbarLayout.setTitle(mTitle);
-        setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

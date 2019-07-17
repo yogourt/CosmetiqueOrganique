@@ -9,11 +9,11 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
     public IngredientListAdapter(Context context,
                                  List<IngredientModel> list,
                                  PositionListener positionListener,
-                                 ListViewViewModel viewModel,
-                                 TabletDetailViewModel tabletDetailViewModel,
+                                 ListViewViewModel activityViewModel,
+                                 DetailActivityViewModel detailActivityViewModel,
                                  float itemHeightDivider) {
 
-        super(context, list, positionListener, viewModel, tabletDetailViewModel);
+        super(context, list, positionListener, activityViewModel, detailActivityViewModel);
 
         for (int i = 0; i < itemHeightsInDp.length; i++) {
             itemHeightsInDp[i] = (int) (itemHeightsInDp[i] / itemHeightDivider);
@@ -51,7 +51,7 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
         @Override
         public void onClick(View view) {
 
-            if (viewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
+            if (activityViewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
 
                 IngredientModel item = list.get(getAdapterPosition() - 1);
 
@@ -66,7 +66,7 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
                     mContext.startActivity(ingredientActivityIntent, createSharedElementTransition());
                 }
 
-                tabletDetailViewModel.onIngredientClick(item.getId());
+                detailActivityViewModel.onIngredientClick(item.getId());
 
             }
         }

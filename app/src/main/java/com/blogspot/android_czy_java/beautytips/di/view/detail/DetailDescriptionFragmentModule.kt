@@ -7,8 +7,8 @@ import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadBaseDetailUseCase
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailViewModel
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailDescriptionFragmentViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -31,9 +31,9 @@ abstract class DetailDescriptionFragmentModule {
 
         @Provides
         @IntoMap
-        @ViewModelKey(DetailViewModel::class)
+        @ViewModelKey(DetailDescriptionFragmentViewModel::class)
         fun provideDetailViewModel(loadBaseDetailUseCase: LoadBaseDetailUseCase): ViewModel =
-                DetailViewModel(loadBaseDetailUseCase)
+                DetailDescriptionFragmentViewModel(loadBaseDetailUseCase)
     }
 
 
@@ -44,15 +44,15 @@ abstract class DetailDescriptionFragmentModule {
         fun provideDetailViewModel(
                 factory: ViewModelProvider.Factory,
                 target: DetailDescriptionFragment
-        ): DetailViewModel =
-                ViewModelProviders.of(target, factory).get(DetailViewModel::class.java)
+        ): DetailDescriptionFragmentViewModel =
+                ViewModelProviders.of(target, factory).get(DetailDescriptionFragmentViewModel::class.java)
 
         @Provides
         fun provideTabletDetailViewModel(
                 factory: ViewModelProvider.Factory,
                 target: DetailDescriptionFragment
-        ): TabletDetailViewModel =
-                ViewModelProviders.of(target.requireActivity(), factory).get(TabletDetailViewModel::class.java)
+        ): DetailActivityViewModel =
+                ViewModelProviders.of(target.requireActivity(), factory).get(DetailActivityViewModel::class.java)
     }
 
 

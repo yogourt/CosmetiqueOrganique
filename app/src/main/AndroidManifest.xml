@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.detail.DetailActivity2"></activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -23,13 +24,12 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/pink300" />
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/add_mob_app_id"/>
+            android:value="@string/add_mob_app_id" />
 
         <activity
-            android:name="com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity"
+            android:name=".view.listView.view.MainActivity"
             android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,18 +55,15 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity"
+            android:name=".view.detail.DetailActivity"
             android:windowSoftInputMode="adjustResize" />
-
         <activity android:name=".view.ingredient.IngredientActivity" />
-
         <activity android:name=".view.welcome.WelcomeActivity" />
-
         <activity
             android:name=".view.newTip.view.NewTipActivity"
             android:label="@string/title_activity_new_tip"
             android:launchMode="singleTop"
-            android:parentActivityName="com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity"
+            android:parentActivityName=".view.listView.view.MainActivity"
             android:theme="@style/ActivityDialogTheme" />
 
         <provider
@@ -79,7 +76,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

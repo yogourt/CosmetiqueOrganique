@@ -155,12 +155,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
 
         @Override
         public void onClick(View view) {
-            RecipeModel recipe = items.get(getAdapterPosition() - 1);
-            openDetailScreen(view.getContext(), recipe.getId(), createSharedElementTransition());
+            RecipeModel recipe = items.get(getAdapterPosition());
+            //openDetailScreen(view.getContext(), recipe.getId(), createSharedElementTransition());
+            activityCallback.onRecipeClick(recipe.getId());
 
         }
 
-        public Bundle createSharedElementTransition() {
+        private Bundle createSharedElementTransition() {
             Pair<View, String> imagePair = new Pair<>(mImage, mImage.getTransitionName());
             Pair<View, String> scrimPair = new Pair<>(mScrim, mScrim.getTransitionName());
             return ActivityOptions.makeSceneTransitionAnimation((Activity) this.itemView.getContext(),

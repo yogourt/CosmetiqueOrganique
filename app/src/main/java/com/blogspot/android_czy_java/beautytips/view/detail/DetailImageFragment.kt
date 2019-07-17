@@ -15,13 +15,13 @@ import com.bumptech.glide.Glide
 import butterknife.BindView
 import butterknife.ButterKnife
 
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.ImageFragmentViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.ImageFragmentViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.ImageFragmentData
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.ImageFragmentUiModel
 import javax.inject.Inject
 
 
-class ImageFragment : DetailBaseFragment() {
+class DetailImageFragment : DetailFragment() {
 
 
     @BindView(R.id.image)
@@ -29,10 +29,6 @@ class ImageFragment : DetailBaseFragment() {
 
     @BindView(R.id.title_text_view)
     lateinit var mTitle: TextView
-
-    @BindView(R.id.icon_back)
-    lateinit var mIconBack: ImageView
-
     @Inject
     lateinit var viewModel: ImageFragmentViewModel
 
@@ -49,7 +45,7 @@ class ImageFragment : DetailBaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.imageFragmentLiveData.observe(this, Observer { render(it) } )
-        viewModel.init(getRecipeId())
+        getRecipeId()?.let { viewModel.init(it) }
     }
 
     private fun render(model: ImageFragmentUiModel) {
@@ -71,7 +67,7 @@ class ImageFragment : DetailBaseFragment() {
 
     private fun loadImage(data: ImageFragmentData) {
 
-        Glide.with(this@ImageFragment).load(data.imageUrl).into(mImageView)
+        Glide.with(this@DetailImageFragment).load(data.imageUrl).into(mImageView)
         mImageView.contentDescription = resources.getString(R.string.description_tip_image, data.title)
     }
 

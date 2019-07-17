@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet.TabletDetailViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -24,9 +24,9 @@ abstract class DetailActivityModule {
 
         @Provides
         @IntoMap
-        @ViewModelKey(TabletDetailViewModel::class)
+        @ViewModelKey(DetailActivityViewModel::class)
         fun provideTabletDetailViewModel(): ViewModel =
-                TabletDetailViewModel()
+                DetailActivityViewModel()
     }
 
     @Module
@@ -36,8 +36,8 @@ abstract class DetailActivityModule {
         fun provideTabletDetailViewModel(
                 factory: ViewModelProvider.Factory,
                 target: DetailActivity
-        ): TabletDetailViewModel =
-                ViewModelProviders.of(target, factory).get(TabletDetailViewModel::class.java)
+        ): DetailActivityViewModel =
+                ViewModelProviders.of(target, factory).get(DetailActivityViewModel::class.java)
     }
 }
 

@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.viewmodel.detail.tablet
+package com.blogspot.android_czy_java.beautytips.viewmodel.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
