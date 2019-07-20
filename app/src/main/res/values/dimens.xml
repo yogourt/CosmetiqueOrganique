@@ -129,4 +129,9 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="header_image_height">150dp</dimen>
     <dimen name="image_margin">8dp</dimen>
 
+
+    <dimen name="category_button_padding">6dp</dimen>
+    <dimen name="category_button_margin">8dp</dimen>
+    <dimen name="horizontal_margin_detail_ingredients">32dp</dimen>
+
 </resources>

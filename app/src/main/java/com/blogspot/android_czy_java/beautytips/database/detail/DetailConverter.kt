@@ -9,11 +9,22 @@ class DetailConverter(private val detailDataSnapshot: DataSnapshot) {
         val description = detailDataSnapshot.child(FirebaseKeys.KEY_RECIPE_DESCRIPTION).value.toString()
         val source = detailDataSnapshot.child("source").value
         val ingredients = detailDataSnapshot.child("ingredients").value.toString()
+        val optionalIngredients = detailDataSnapshot
+                .child("optionalIngredients")
+                .value?.toString() ?: ""
 
-        return if(source == null) {
-            RecipeDetailModel(description = description, ingredients = ingredients)
+
+        return if (source == null) {
+            RecipeDetailModel(
+                    description = description,
+                    ingredients = ingredients,
+                    optionalIngredients = optionalIngredients)
         } else {
-            RecipeDetailModel(description, source.toString(), ingredients)
+            RecipeDetailModel(
+                    description,
+                    source.toString(),
+                    ingredients,
+                    optionalIngredients)
         }
     }
 }

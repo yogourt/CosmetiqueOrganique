@@ -73,7 +73,7 @@ public abstract class BaseItemActivity extends AppCompatActivity {
 
     private void loadImage() {
         /*
-        mImageView.setTransitionName(mImage);
+        image.setTransitionName(mImage);
 
         Glide.with(this).
                 setDefaultRequestOptions(new RequestOptions().dontTransform()).
@@ -93,7 +93,7 @@ public abstract class BaseItemActivity extends AppCompatActivity {
                         return false;
                     }
                 }).
-                into(mImageView);
+                into(image);
                 */
     }
 

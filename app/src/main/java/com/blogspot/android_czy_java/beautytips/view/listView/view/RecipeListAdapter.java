@@ -157,7 +157,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
         public void onClick(View view) {
             RecipeModel recipe = items.get(getAdapterPosition());
             //openDetailScreen(view.getContext(), recipe.getId(), createSharedElementTransition());
-            activityCallback.onRecipeClick(recipe.getId());
+            activityCallback.onRecipeClick(recipe.getRecipeId());
 
         }
 

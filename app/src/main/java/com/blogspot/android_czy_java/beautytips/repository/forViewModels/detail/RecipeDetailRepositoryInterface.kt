@@ -1,10 +1,24 @@
 package com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail
 
 import androidx.lifecycle.LiveData
-import com.blogspot.android_czy_java.beautytips.repository.DetailRepositoryInterface
 import com.blogspot.android_czy_java.beautytips.repository.exception.DataNotFoundException
 
-interface RecipeDetailRepositoryInterface : DetailRepositoryInterface {
+interface RecipeDetailRepositoryInterface {
+
+
+    @Throws(DataNotFoundException::class)
+    fun getTitle(itemId: Long): String
+
+    @Throws(DataNotFoundException::class)
+    fun getImageUrl(itemId: Long): String
+
+
+    @Throws(DataNotFoundException::class)
+    fun getCategory(itemId: Long): String
+
+
+    @Throws(DataNotFoundException::class)
+    fun getSubcategory(itemId: Long): String
 
     @Throws(DataNotFoundException::class)
     fun getDescription(recipeId: Long): String
@@ -16,5 +30,10 @@ interface RecipeDetailRepositoryInterface : DetailRepositoryInterface {
     @Throws(DataNotFoundException::class)
     fun getIngredients(recipeId: Long): List<String>
 
+    fun getOptionalIngredientsWithQuantity(recipeId: Long): List<String>
+
+    fun getIngredientsWithQuantity(recipeId: Long): List<String>
+
     fun getFavNum(recipeId: Long): LiveData<Long>
+
 }

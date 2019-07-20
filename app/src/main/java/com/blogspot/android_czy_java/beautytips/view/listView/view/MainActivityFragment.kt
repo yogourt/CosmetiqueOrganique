@@ -25,7 +25,7 @@ import butterknife.ButterKnife
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.view.AppFragment
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
-import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity2
+import com.blogspot.android_czy_java.beautytips.view.detail.DetailOverviewActivity
 
 import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM
 import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.RecipeListAdapterCallback
@@ -144,7 +144,7 @@ class MainActivityFragment : AppFragment(), RecipeListAdapterCallback {
         if(isTablet) {
             activityViewModel.chosenItemId = recipeId
         } else {
-            val intent = Intent(context, DetailActivity2::class.java)
+            val intent = Intent(context, DetailOverviewActivity::class.java)
             intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
             startActivity(intent)
         }

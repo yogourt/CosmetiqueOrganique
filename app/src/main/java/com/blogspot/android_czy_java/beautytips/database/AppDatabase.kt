@@ -21,7 +21,7 @@ import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
         ErrorModel::class,
         UserModel::class,
         UserListModel::class),
-        version = 1,
+        version = 3,
         exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -43,6 +43,7 @@ abstract class AppDatabase: RoomDatabase() {
         private fun buildDatabase(context: Context) =
                 Room.databaseBuilder(context.applicationContext,
                         AppDatabase::class.java, "CosmetiqueOrganique.db")
+                        .fallbackToDestructiveMigration()
                         .build()
     }
 

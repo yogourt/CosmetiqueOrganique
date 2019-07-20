@@ -4,33 +4,36 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
-import com.blogspot.android_czy_java.beautytips.view.detail.DetailImageFragment
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.ImageFragmentViewModel
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadImageFragmentDataUseCase
+import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
+import com.blogspot.android_czy_java.beautytips.view.detail.DetailHeaderFragment
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderFragmentViewModel
+import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
-import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
-@Module
-abstract class ImageFragmentModule {
+@Module(includes = [
+    HeaderFragmentModule.ProvideViewModel::class,
+    DetailUseCaseModule::class
+])
+abstract class HeaderFragmentModule {
 
     @ContributesAndroidInjector(modules = [
         InjectViewModel::class,
         DetailActivityModule::class
     ])
-    abstract fun bind(): DetailImageFragment
+    abstract fun bind(): DetailHeaderFragment
 
     @Module
     class ProvideViewModel {
 
         @Provides
         @IntoMap
-        @ViewModelKey(RecipeViewModel::class)
-        fun provideImageFragmentViewModel(loadImageFragmentDataUseCase: LoadImageFragmentDataUseCase): ViewModel =
-                ImageFragmentViewModel(loadImageFragmentDataUseCase)
+        @ViewModelKey(HeaderFragmentViewModel::class)
+        fun provideImageFragmentViewModel(loadHeaderFragmentDataUseCase: LoadHeaderFragmentDataUseCase): ViewModel =
+                HeaderFragmentViewModel(loadHeaderFragmentDataUseCase)
     }
 
     @Module
@@ -39,14 +42,14 @@ abstract class ImageFragmentModule {
         @Provides
         fun provideImageFragmentViewModel(
                 factory: ViewModelProvider.Factory,
-                target: DetailImageFragment
-        ): ImageFragmentViewModel =
-                ViewModelProviders.of(target, factory).get(ImageFragmentViewModel::class.java)
+                target: DetailHeaderFragment
+        ): HeaderFragmentViewModel =
+                ViewModelProviders.of(target, factory).get(HeaderFragmentViewModel::class.java)
 
         @Provides
-        fun provideTabletDetailViewModel(
+        fun provideDetailActivityViewModel(
                 factory: ViewModelProvider.Factory,
-                target: DetailImageFragment
+                target: DetailHeaderFragment
         ): DetailActivityViewModel =
                 ViewModelProviders.of(target.requireActivity(), factory).get(DetailActivityViewModel::class.java)
     }

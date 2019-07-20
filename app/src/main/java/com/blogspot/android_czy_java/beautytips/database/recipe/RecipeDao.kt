@@ -40,4 +40,10 @@ interface RecipeDao {
     @Query("SELECT FavNum FROM Recipes WHERE recipeId=:recipeId")
     fun getFavNum(recipeId: Long): LiveData<Long>
 
+    @Query("SELECT Category FROM Recipes WHERE recipeId=:recipeId")
+    fun getCategory(recipeId: Long): String
+
+    @Query("SELECT Subcategory FROM Recipes WHERE recipeId=:recipeId")
+    fun getSubcategory(recipeId: Long): String
+
 }

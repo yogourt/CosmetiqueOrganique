@@ -19,6 +19,9 @@ interface DetailDao {
     @Query("SELECT ingredients FROM Recipes WHERE recipeId = :recipeId")
     fun getIngredients(recipeId: Long): String
 
+    @Query("SELECT optionalIngredients FROM Recipes WHERE recipeId = :recipeId")
+    fun getOptionalIngredients(recipeId: Long): String
+
     @Query("SELECT source FROM Recipes WHERE recipeId = :recipeId")
     fun getSource(recipeId: Long): String
 

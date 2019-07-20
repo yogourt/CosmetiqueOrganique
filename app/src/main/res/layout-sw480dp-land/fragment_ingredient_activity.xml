@@ -16,8 +16,8 @@
         android:orientation="vertical">
 
         <fragment
-            android:id="@+id/fragment_image"
-            android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailImageFragment"
+            android:id="@+id/fragment_header"
+            android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailHeaderFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

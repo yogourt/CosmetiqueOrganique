@@ -5,55 +5,52 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadBaseDetailUseCase
-import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailDescriptionFragmentViewModel
+import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadIngredientsUseCase
+import com.blogspot.android_czy_java.beautytips.view.detail.DetailIngredientsFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.IngredientsFragmentViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 @Module(includes = [
-    DetailDescriptionFragmentModule.ProvideViewModel::class,
+    DetailIngredientsFragmentModule.ProvideViewModel::class,
     DetailUseCaseModule::class
 ])
-abstract class DetailDescriptionFragmentModule {
+abstract class DetailIngredientsFragmentModule {
 
     @ContributesAndroidInjector(modules = [
         InjectViewModel::class,
         DetailActivityModule::class
     ])
-    abstract fun bind(): DetailDescriptionFragment
+    abstract fun bind(): DetailIngredientsFragment
 
     @Module
     class ProvideViewModel {
-
         @Provides
         @IntoMap
-        @ViewModelKey(DetailDescriptionFragmentViewModel::class)
-        fun provideDetailViewModel(loadBaseDetailUseCase: LoadBaseDetailUseCase): ViewModel =
-                DetailDescriptionFragmentViewModel(loadBaseDetailUseCase)
+        @ViewModelKey(IngredientsFragmentViewModel::class)
+        fun provideImageFragmentViewModel(loadIngredientsUseCase: LoadIngredientsUseCase): ViewModel =
+                IngredientsFragmentViewModel(loadIngredientsUseCase)
     }
-
 
     @Module
     class InjectViewModel {
 
         @Provides
-        fun provideDetailViewModel(
+        fun provideIngredientsFragmentViewModel(
                 factory: ViewModelProvider.Factory,
-                target: DetailDescriptionFragment
-        ): DetailDescriptionFragmentViewModel =
-                ViewModelProviders.of(target, factory).get(DetailDescriptionFragmentViewModel::class.java)
+                target: DetailIngredientsFragment
+        ): IngredientsFragmentViewModel =
+                ViewModelProviders.of(target, factory).get(IngredientsFragmentViewModel::class.java)
 
         @Provides
         fun provideDetailActivityViewModel(
                 factory: ViewModelProvider.Factory,
-                target: DetailDescriptionFragment
+                target: DetailIngredientsFragment
         ): DetailActivityViewModel =
                 ViewModelProviders.of(target.requireActivity(), factory).get(DetailActivityViewModel::class.java)
     }
-
 
 }

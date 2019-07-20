@@ -8,12 +8,18 @@ class RecipeConverter(private val recipeDataSnapshot: DataSnapshot) {
     fun getRecipe(): RecipeModel? {
         val recipeId = recipeDataSnapshot.key ?: return null
         val title = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_TITLE).value.toString()
-        val image = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_IMAGE).value?.toString() ?: return null
+        val image = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_IMAGE).value?.toString()
+                ?: return null
         val authorId = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_AUTHOR_ID).value
-        val category = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_CATEGORY).value.toString()
-        val subcategory = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_SUBCATEGORY).value.toString()
+        var category = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_CATEGORY).value.toString()
+        var subcategory = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_SUBCATEGORY).value.toString()
         val favNumDb = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_FAV_NUM).value
         val tags = recipeDataSnapshot.child(FirebaseKeys.KEY_RECIPE_TAGS).value.toString()
+
+        if (!category.startsWith("For")) {
+            category = "For $category"
+        }
+        subcategory = subcategory.capitalize()
 
         val favNum = favNumDb?.toString()?.toLong() ?: 0L
 

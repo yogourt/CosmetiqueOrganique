@@ -8,6 +8,11 @@
     <color name="pink600">#d81b60</color>
     <color name="pink700">#c2185b</color>
 
+    <color name="purple500">#9C27B0</color>
+    <color name="purple600">#8E24AA</color>
+    <color name="purple800">#6A1B9A</color>
+
+
     <color name="bluegrey50">#eceff1</color>
     <color name="bluegrey300">#90A4AE</color>
     <color name="bluegrey700">#455a64</color>

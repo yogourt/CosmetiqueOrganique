@@ -25,7 +25,10 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val firebaseToR
 
         return Single.create { emitter ->
 
-            if (recipeDao.getAllRecipesIds().isEmpty()) {
+
+            //TODO: change
+           // if (recipeDao.getAllRecipesIds().isEmpty()) {
+            if (true) {
 
                 firebaseToRoom.observeFirebaseAndSaveToRoom().subscribe({
                     run {

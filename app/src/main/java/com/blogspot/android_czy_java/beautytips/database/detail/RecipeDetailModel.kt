@@ -6,5 +6,6 @@ import androidx.room.Entity
 data class RecipeDetailModel (
     var description: String,
     var source: String? = null,
-    var ingredients: String
+    var ingredients: String,
+    var optionalIngredients: String
 )
