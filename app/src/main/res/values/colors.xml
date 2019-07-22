@@ -8,6 +8,8 @@
     <color name="pink600">#d81b60</color>
     <color name="pink700">#c2185b</color>
 
+    <color name="purple200">#CE93D8</color>
+    <color name="purple300">#BA68C8</color>
     <color name="purple500">#9C27B0</color>
     <color name="purple600">#8E24AA</color>
     <color name="purple800">#6A1B9A</color>
@@ -18,6 +20,7 @@
     <color name="bluegrey700">#455a64</color>
     <color name="bluegrey700_semi">#77455a64</color>
     <color name="bluegrey800">#37474f</color>
+    <color name="bluegrey800_darker">#232D31</color>
     <color name="bluegrey900">#263238</color>
     <color name="bluegrey900_semi">#55263238</color>
     <color name="black_semi">#73000000</color>

@@ -8,13 +8,14 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class AppInfoDialog extends DialogFragment {
 
     @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogStyle);
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
             builder.setView(R.layout.dialog_app_info);
             builder.setIcon(R.drawable.ic_soap);
             builder.setTitle(R.string.info_dialog_title);
