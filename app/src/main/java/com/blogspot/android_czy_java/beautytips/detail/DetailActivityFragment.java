@@ -71,7 +71,7 @@ import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAda
 import static com.blogspot.android_czy_java.beautytips.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
 
 public class DetailActivityFragment extends Fragment
-        implements DetailFirebaseHelper.DetailViewInterface, DetailActivity.DetailFragmentInterface{
+        implements DetailFirebaseHelper.DetailViewInterface, DetailActivity.DetailFragmentInterface {
 
     public static String KEY_COMMENT_AUTHOR = "comment_author";
     public static String KEY_COMMENT = "comment";
@@ -296,7 +296,9 @@ public class DetailActivityFragment extends Fragment
 
     @Override
     public int getIngredientLayoutHeight() {
-        return mLayoutIngredients.getHeight();
+        if (getActivity() != null)
+            return mLayoutIngredients.getHeight();
+        else return 0;
     }
 
     @Override
@@ -455,10 +457,11 @@ public class DetailActivityFragment extends Fragment
 
     @Override
     public void setAuthorPhoto(String photoUrl) {
-        Glide.with(this)
-                .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700_semi))
-                .load(photoUrl)
-                .into(mAuthorPhoto);
+        if (getActivity() != null)
+            Glide.with(this)
+                    .setDefaultRequestOptions(new RequestOptions().placeholder(R.color.bluegray700_semi))
+                    .load(photoUrl)
+                    .into(mAuthorPhoto);
     }
 
 
@@ -563,7 +566,7 @@ public class DetailActivityFragment extends Fragment
             @Override
             public void onClick(final View view) {
 
-                if(mCommentsWindow != null && mCommentsWindow.isShowing()) return;
+                if (mCommentsWindow != null && mCommentsWindow.isShowing()) return;
 
                 LayoutInflater inflater = getLayoutInflater();
                 final View commentsView = inflater.inflate(R.layout.layout_popup_comments,
@@ -584,7 +587,7 @@ public class DetailActivityFragment extends Fragment
                 int width = getResources().getDisplayMetrics().widthPixels;
 
                 //on tablet landscape, width should be half of the screen
-                if(isTablet && !isPortrait) width *= 0.5f;
+                if (isTablet && !isPortrait) width *= 0.5f;
 
                 mCommentsWindow = new PopupWindow(commentsView,
                         width, WRAP_CONTENT, true);
@@ -599,23 +602,23 @@ public class DetailActivityFragment extends Fragment
                 mCommentsWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
 
-                mCommentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM|Gravity.START, 0, 0);
+                mCommentsWindow.showAtLocation(mLayoutShare, Gravity.BOTTOM | Gravity.START, 0, 0);
 
                 final GestureDetector.SimpleOnGestureListener gestureListener =
                         new GestureDetector.SimpleOnGestureListener() {
-                    @Override
-                    public boolean onFling(MotionEvent e1, MotionEvent e2,
-                                           float velocityX, float velocityY) {
+                            @Override
+                            public boolean onFling(MotionEvent e1, MotionEvent e2,
+                                                   float velocityX, float velocityY) {
 
-                        if(commentsList.getScrollY() == 0 && velocityY > 20
-                                && e2.getY() - e1.getY() > 200)
-                            mCommentsWindow.dismiss();
+                                if (commentsList.getScrollY() == 0 && velocityY > 20
+                                        && e2.getY() - e1.getY() > 200)
+                                    mCommentsWindow.dismiss();
 
 
-                        return true;
+                                return true;
 
-                    }
-                };
+                            }
+                        };
 
                 final GestureDetector gestureDetector =
                         new GestureDetector(getContext(), gestureListener);
@@ -624,8 +627,8 @@ public class DetailActivityFragment extends Fragment
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
 
-                        Timber.d("scrollY: " + commentsList.getFirstVisiblePosition() );
-                        if(commentsList.getFirstVisiblePosition() > 0) {
+                        Timber.d("scrollY: " + commentsList.getFirstVisiblePosition());
+                        if (commentsList.getFirstVisiblePosition() > 0) {
                             return commentsList.onTouchEvent(motionEvent);
                         } else {
                             return gestureDetector.onTouchEvent(motionEvent);

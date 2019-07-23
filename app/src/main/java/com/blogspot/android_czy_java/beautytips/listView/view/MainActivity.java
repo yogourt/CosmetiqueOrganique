@@ -14,22 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivityFragment;
 import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivityFragment;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPromptDialog;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPromptDialogInterface;
 import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
-import com.google.android.gms.ads.AdRequest;
 import com.kobakei.ratethisapp.RateThisApp;
 
-
-import de.cketti.mailto.EmailIntentBuilder;
 
 import static android.content.Intent.ACTION_SEARCH;
 import static com.blogspot.android_czy_java.beautytips.listView.view.ListViewAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
 import static com.blogspot.android_czy_java.beautytips.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
 public class MainActivity extends BaseMainActivity implements OpeningFragment.OpeningFragmentActivity,
-        IngredientActivityFragment.IngredientFragmentActivity,
-        SupportPromptDialogInterface {
+        IngredientActivityFragment.IngredientFragmentActivity {
 
 
     private FrameLayout mDetailContainer;
@@ -122,18 +117,14 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
         getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_FIRST_OPEN, false).apply();
     }
 
-    private boolean shouldDialogBeShown() {
-        return !getPreferences(MODE_PRIVATE).getBoolean(KEY_FIRST_OPEN, true) &&
-                viewModel.shouldSupportDialogBeShown();
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(shouldDialogBeShown() && interstitialAd.isLoaded()) {
-            showSupportPromptDialog();
-            viewModel.detailScreenOpenTimesAfterPromptDialog = 0;
+        if(viewModel.shouldInterstitialAdBeShown() && interstitialAd.isLoaded()) {
+            showInterstitialAd();
+            viewModel.detailScreenOpenTimesAfterInterstitialAd = 0;
         }
     }
 
@@ -212,23 +203,9 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
         RateThisApp.showRateDialogIfNeeded(this, R.style.DialogStyle);
     }
 
-    private void showSupportPromptDialog() {
-        new SupportPromptDialog().show(fragmentManager, SupportPromptDialog.DIALOG_TAG);
-    }
-
-
-    @Override
-    public void onWatchAddButtonClicked() {
+    private void showInterstitialAd() {
         interstitialAd.show();
     }
 
-    @Override
-    public void onWriteButtonClicked() {
-        EmailIntentBuilder.from(this)
-                .to(getString(R.string.developer_mail))
-                .subject(getString(R.string.feedback_email_title))
-                .start();
-
-    }
 
 }

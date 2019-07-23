@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.User;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class ListViewViewModel extends ViewModel {
 
     public static final String SUBCATEGORY_ALL = "all";
 
-    public int detailScreenOpenTimesAfterPromptDialog = 0;
+    public int detailScreenOpenTimesAfterInterstitialAd = 0;
 
     /*
      Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
@@ -51,7 +52,7 @@ public class ListViewViewModel extends ViewModel {
     private String query;
 
     public void init() {
-        if(categoryLiveData == null) {
+        if (categoryLiveData == null) {
             mFirebaseHelper = new FirebaseHelper(this);
             categoryLiveData = new MutableLiveData<>();
             categoryLiveData.setValue(CATEGORY_ALL);
@@ -62,8 +63,9 @@ public class ListViewViewModel extends ViewModel {
             //set value of userStateLiveData. This will be observed in Main Activity to prepare
             // navigation drawer header.
             userStateLiveData = new MutableLiveData<>();
-            if(FirebaseHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
-            else if(FirebaseHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
+            if (FirebaseHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
+            else if (FirebaseHelper.isUserAnonymous())
+                userStateLiveData.setValue(USER_STATE_ANONYMOUS);
             else userStateLiveData.setValue(USER_STATE_LOGGED_IN);
 
             recyclerViewLiveData = new MutableLiveData<>();
@@ -89,13 +91,13 @@ public class ListViewViewModel extends ViewModel {
         boolean categoryIsTheSame = categoryLiveData.getValue().equals(category);
 
         this.categoryLiveData.setValue(category);
-        if(!categoryIsTheSame) {
+        if (!categoryIsTheSame) {
             setSubcategory(SUBCATEGORY_ALL);
             notifyRecyclerDataHasChanged();
         }
 
         //even though user chosen the same category, he wants all the data to be loaded
-        if(searchWasConducted) {
+        if (searchWasConducted) {
             resetSearch();
         }
     }
@@ -151,7 +153,7 @@ public class ListViewViewModel extends ViewModel {
 
     //implementation of search tip list in searchView
     public void search(String query) {
-        if(query == null) return;
+        if (query == null) return;
         query = query.toLowerCase();
         this.query = query;
         subcategory = SUBCATEGORY_ALL;
@@ -167,9 +169,10 @@ public class ListViewViewModel extends ViewModel {
         searchWasConducted = false;
         notifyRecyclerDataHasChanged();
     }
+
     public void setOrder(String order) {
         listOrder = order;
-            notifyRecyclerDataHasChanged();
+        notifyRecyclerDataHasChanged();
     }
 
     public String getOrder() {
@@ -181,9 +184,9 @@ public class ListViewViewModel extends ViewModel {
     }
 
     public void setSubcategory(String subcategory) {
-        if(subcategory == null) return;
+        if (subcategory == null) return;
         subcategory = subcategory.toLowerCase();
-        if(!this.subcategory.equals(subcategory)) {
+        if (!this.subcategory.equals(subcategory)) {
             this.subcategory = subcategory;
             notifyRecyclerDataHasChanged();
         }
@@ -193,7 +196,7 @@ public class ListViewViewModel extends ViewModel {
         return query;
     }
 
-    public boolean shouldSupportDialogBeShown() {
-        return detailScreenOpenTimesAfterPromptDialog > 2;
+    public boolean shouldInterstitialAdBeShown() {
+        return detailScreenOpenTimesAfterInterstitialAd > 3;
     }
- }
+}
