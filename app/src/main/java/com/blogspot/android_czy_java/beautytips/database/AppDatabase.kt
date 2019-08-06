@@ -21,7 +21,7 @@ import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
         ErrorModel::class,
         UserModel::class,
         UserListModel::class),
-        version = 3,
+        version = 4,
         exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 

@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".view.comments.CommentsActivity"></activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -57,12 +57,9 @@
         <activity
             android:name=".view.detail.DetailActivity"
             android:windowSoftInputMode="adjustResize" />
-
-
-        <activity android:name=".view.detail.DetailOverviewActivity"
-            android:theme="@style/FullScreenTheme"/>
-
-
+        <activity
+            android:name=".view.detail.DetailOverviewActivity"
+            android:theme="@style/FullScreenTheme" />
         <activity android:name=".view.ingredient.IngredientActivity" />
         <activity android:name=".view.welcome.WelcomeActivity" />
         <activity
@@ -71,9 +68,6 @@
             android:launchMode="singleTop"
             android:parentActivityName=".view.listView.view.MainActivity"
             android:theme="@style/ActivityDialogTheme" />
-
-
-
 
         <provider
             android:name="com.facebook.FacebookContentProvider"

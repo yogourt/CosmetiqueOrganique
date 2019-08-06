@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.view.detail.comments
+package com.blogspot.android_czy_java.beautytips.view.comments
 
 class CommentsFragment {
     /*

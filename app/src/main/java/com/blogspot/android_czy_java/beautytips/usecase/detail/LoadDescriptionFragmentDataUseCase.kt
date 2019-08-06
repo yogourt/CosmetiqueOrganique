@@ -3,20 +3,19 @@ package com.blogspot.android_czy_java.beautytips.usecase.detail
 import com.blogspot.android_czy_java.beautytips.repository.exception.DataNotFoundException
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepositoryInterface
 import com.blogspot.android_czy_java.beautytips.usecase.UseCaseInterface
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.BaseDetailData
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DescriptionFragmentData
 import io.reactivex.Single
 
-class LoadBaseDetailUseCase(private val detailRepositoryInterface: RecipeDetailRepositoryInterface):
-        UseCaseInterface<Long, BaseDetailData> {
+class LoadDescriptionFragmentDataUseCase(private val detailRepositoryInterface: RecipeDetailRepositoryInterface):
+        UseCaseInterface<Long, DescriptionFragmentData> {
 
-    override fun execute(request: Long): Single<BaseDetailData> {
+    override fun execute(request: Long): Single<DescriptionFragmentData> {
         return Single.create {
             try {
                 val description = detailRepositoryInterface.getDescription(request)
-                val ingredients = detailRepositoryInterface.getIngredients(request)
                 val source = detailRepositoryInterface.getSource(request)
 
-                it.onSuccess(BaseDetailData(description, ingredients, source))
+                it.onSuccess(DescriptionFragmentData(description, source))
 
             } catch (e: DataNotFoundException) {
                 it.onError(DataNotFoundException())

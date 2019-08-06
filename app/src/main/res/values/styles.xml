@@ -141,4 +141,9 @@
         <item name="android:background">@drawable/category_button_background_ripple</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.DifferentCornerSize.DiscussionButton" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+    </style>
+
 </resources>

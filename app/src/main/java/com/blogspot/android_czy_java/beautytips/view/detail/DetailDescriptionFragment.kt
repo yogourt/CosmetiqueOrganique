@@ -2,34 +2,21 @@ package com.blogspot.android_czy_java.beautytips.view.detail
 
 
 import android.os.Bundle
-import android.text.Html
-import android.text.method.LinkMovementMethod
-import android.util.ArrayMap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.view.detail.firebase.DetailFirebaseHelper
-import com.blogspot.android_czy_java.beautytips.view.listView.exception.RecipeIdNotFoundException
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.BaseDetailData
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.BaseDetailUiModel
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailDescriptionFragmentViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-
-import java.util.ArrayList
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DescriptionFragmentViewModel
 
 import javax.inject.Inject
 
 import butterknife.BindView
 import butterknife.ButterKnife
-import de.hdodenhof.circleimageview.CircleImageView
+import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DescriptionFragmentData
 
 class DetailDescriptionFragment : DetailFragment() {
 
@@ -37,7 +24,7 @@ class DetailDescriptionFragment : DetailFragment() {
     lateinit var description: TextView
 
     @Inject
-    lateinit var viewModel: DetailDescriptionFragmentViewModel
+    lateinit var viewModel: DescriptionFragmentViewModel
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +39,7 @@ class DetailDescriptionFragment : DetailFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.baseDetailLiveData.observe(this, Observer<BaseDetailUiModel> { this.render(it) })
+        viewModel.descriptionLiveData.observe(this, Observer { this.render(it) })
         if (getRecipeId() != null)
             viewModel.init(getRecipeId()!!)
 
@@ -60,15 +47,19 @@ class DetailDescriptionFragment : DetailFragment() {
     }
 
 
-    private fun render(uiModel: BaseDetailUiModel) {
-        if (uiModel is BaseDetailUiModel.LoadingSuccess) {
-            val data = uiModel.data
-            description.text = data.description
+    private fun render(uiModel: GenericUiModel<DescriptionFragmentData>) {
+        when (uiModel) {
+            is GenericUiModel.LoadingSuccess -> {
+                val data = uiModel.data
+                description.text = data.description
 
-        } else if (uiModel is BaseDetailUiModel.StatusLoading) {
+            }
+            is GenericUiModel.StatusLoading -> {
 
-        } else if (uiModel is BaseDetailUiModel.LoadingError) {
+            }
+            is GenericUiModel.LoadingError -> {
 
+            }
         }
     }
 }

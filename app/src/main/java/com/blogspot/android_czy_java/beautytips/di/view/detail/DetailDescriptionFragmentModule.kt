@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadBaseDetailUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadDescriptionFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailDescriptionFragmentViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DescriptionFragmentViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import dagger.Module
 import dagger.Provides
@@ -31,9 +31,9 @@ abstract class DetailDescriptionFragmentModule {
 
         @Provides
         @IntoMap
-        @ViewModelKey(DetailDescriptionFragmentViewModel::class)
-        fun provideDetailViewModel(loadBaseDetailUseCase: LoadBaseDetailUseCase): ViewModel =
-                DetailDescriptionFragmentViewModel(loadBaseDetailUseCase)
+        @ViewModelKey(DescriptionFragmentViewModel::class)
+        fun provideDetailViewModel(loadDescriptionFragmentDataUseCase: LoadDescriptionFragmentDataUseCase): ViewModel =
+                DescriptionFragmentViewModel(loadDescriptionFragmentDataUseCase)
     }
 
 
@@ -44,8 +44,8 @@ abstract class DetailDescriptionFragmentModule {
         fun provideDetailViewModel(
                 factory: ViewModelProvider.Factory,
                 target: DetailDescriptionFragment
-        ): DetailDescriptionFragmentViewModel =
-                ViewModelProviders.of(target, factory).get(DetailDescriptionFragmentViewModel::class.java)
+        ): DescriptionFragmentViewModel =
+                ViewModelProviders.of(target, factory).get(DescriptionFragmentViewModel::class.java)
 
         @Provides
         fun provideDetailActivityViewModel(

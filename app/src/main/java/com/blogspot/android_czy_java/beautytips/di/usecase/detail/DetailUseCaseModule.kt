@@ -2,7 +2,7 @@ package com.blogspot.android_czy_java.beautytips.di.usecase.detail
 
 import com.blogspot.android_czy_java.beautytips.di.repository.detail.DetailRepositoryModule
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepository
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadBaseDetailUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadDescriptionFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadIngredientsUseCase
 import dagger.Module
@@ -15,7 +15,7 @@ class DetailUseCaseModule {
 
     @Provides
     fun provideLoadBaseDetailUseCase(recipeDetailRepository: RecipeDetailRepository) =
-            LoadBaseDetailUseCase(recipeDetailRepository)
+            LoadDescriptionFragmentDataUseCase(recipeDetailRepository)
 
     @Provides
     fun provideLoadHeaderFragmentDataUseCase(recipeDetailRepository: RecipeDetailRepository) =

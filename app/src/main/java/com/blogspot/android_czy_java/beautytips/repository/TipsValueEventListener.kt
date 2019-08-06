@@ -28,7 +28,7 @@ class TipsValueEventListener(private val database: AppDatabase,
                 val id = item.key ?: continue
                 val recipeId = id.toLong()
 
-                comments.addAll(CommentListConverter(item, recipeId).getComments())
+                comments.addAll(CommentListConverter(item.child("comments"), recipeId).getComments())
 
                 tipDetailsMap.append(recipeId, DetailConverter(item).getDetails())
 

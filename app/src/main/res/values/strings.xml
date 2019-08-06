@@ -175,5 +175,6 @@
     <string name="support_unit_ad_id">ca-app-pub-5993828134151976/1635349488</string>
     <string name="error_not_able_to_load_recipe">Sorry, the recipe wasn\'t found.</string>
     <string name="button_go_to_recipe">Go to recipe</string>
+    <string name="button_discussion">Discussion</string>
 
 </resources>

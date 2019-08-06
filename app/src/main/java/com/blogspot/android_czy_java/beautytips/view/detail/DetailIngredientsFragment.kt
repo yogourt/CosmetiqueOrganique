@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import butterknife.BindView
@@ -19,7 +18,7 @@ import javax.inject.Inject
 class DetailIngredientsFragment : DetailFragment() {
 
     @BindView(R.id.ingredients)
-    lateinit var ingredients: ListView
+    lateinit var ingredients: LinearLayout
 
     @Inject
     lateinit var viewModel: IngredientsFragmentViewModel
@@ -46,14 +45,13 @@ class DetailIngredientsFragment : DetailFragment() {
     }
 
     private fun prepareContent(data: IngredientsFragmentData) {
- /*
+
         for(ingredient in data.ingredients) {
             val view = layoutInflater.inflate(R.layout.item_detail_ingredient, ingredients)
             view.findViewById<TextView>(R.id.name).text = ingredient.name
             view.findViewById<TextView>(R.id.quantity).text = ingredient.quantity
         }
-        */
-        context?.let { ingredients.adapter = DetailIngredientsAdapter(context!!, data.ingredients) }
+
     }
 
 }

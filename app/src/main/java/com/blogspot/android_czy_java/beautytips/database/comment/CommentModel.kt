@@ -6,12 +6,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName="RecipeComments")
 data class CommentModel(
-        var firebaseId: String,
+        @PrimaryKey
+        var id: String,
+        var responseTo: String?,
         var recipeId: Long,
         var authorId: String,
         var authorNickname: String,
         var message: String
-) {
-        @PrimaryKey(autoGenerate = true)
-        var id = 0L
-}
+)
