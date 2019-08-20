@@ -15,7 +15,7 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val firebaseToR
         RecipeRepositoryInterface<RecipeRequest> {
 
     override fun getRecipes(request: RecipeRequest): Single<List<RecipeModel>> {
-        return when(request.order) {
+        return when (request.order) {
             Order.NEW -> getByDate(request.category)
             Order.POPULARITY -> getByPopularity(request.category)
         }
@@ -26,9 +26,8 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val firebaseToR
         return Single.create { emitter ->
 
 
-            //TODO: change
-           // if (recipeDao.getAllRecipesIds().isEmpty()) {
-            if (true) {
+            if (recipeDao.getAllRecipesIds().isEmpty()) {
+                //if (true) {
 
                 firebaseToRoom.observeFirebaseAndSaveToRoom().subscribe({
                     run {

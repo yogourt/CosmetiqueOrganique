@@ -36,7 +36,7 @@
     <dimen name="image_height">230dp</dimen>
     <dimen name="app_bar_layout_height">@dimen/image_height</dimen>
     <dimen name="fav_padding_end">64dp</dimen>
-    <dimen name="title_bottom_padding">20dp</dimen>
+    <dimen name="title_vert_padding">20dp</dimen>
     <dimen name="title_start_padding">48dp</dimen>
     <dimen name="exp_title_text_size">34sp</dimen>
     <dimen name="ingredients_bottom_padding">26dp</dimen>

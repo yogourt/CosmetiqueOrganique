@@ -23,13 +23,14 @@ import com.kobakei.ratethisapp.RateThisApp;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjection;
 import de.cketti.mailto.EmailIntentBuilder;
 
 import static android.content.Intent.ACTION_SEARCH;
 import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
 import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
-public class MainActivity extends BaseMainActivity implements OpeningFragment.OpeningFragmentActivity,
+public class MainActivity extends BaseMainActivity implements
         IngredientActivityFragment.IngredientFragmentActivity,
         SupportPromptDialogInterface {
 
@@ -183,13 +184,6 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
 
      */
 
-    @Override
-    public void selectNavigationViewItem(int itemId) {
-        mDrawerListener = new MyDrawerLayoutListener(this, viewModel,
-                itemId);
-        mDrawerLayout.addDrawerListener(mDrawerListener);
-        mDrawerListener.onDrawerClosed(mDrawerLayout);
-    }
 
 
     /*

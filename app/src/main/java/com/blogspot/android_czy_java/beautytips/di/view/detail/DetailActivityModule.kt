@@ -5,13 +5,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
+import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
+import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
-@Module
+@Module(includes = [
+    DetailActivityModule.ProvideViewModel::class
+])
 abstract class DetailActivityModule {
 
     @ContributesAndroidInjector(modules = [
@@ -21,24 +26,38 @@ abstract class DetailActivityModule {
 
     @Module
     class ProvideViewModel {
-
         @Provides
         @IntoMap
         @ViewModelKey(DetailActivityViewModel::class)
-        fun provideTabletDetailViewModel(): ViewModel =
-                DetailActivityViewModel()
+        fun provideDetailActivityViewModel(): ViewModel = DetailActivityViewModel()
+
+        @Provides
+        @IntoMap
+        @ViewModelKey(HeaderViewModel::class)
+        fun provideHeaderViewModel(loadHeaderFragmentDataUseCase: LoadHeaderFragmentDataUseCase):
+                ViewModel = HeaderViewModel(loadHeaderFragmentDataUseCase)
+
     }
 
     @Module
     class InjectViewModel {
 
         @Provides
-        fun provideTabletDetailViewModel(
+        fun provideDetailActivityViewModel(
                 factory: ViewModelProvider.Factory,
                 target: DetailActivity
         ): DetailActivityViewModel =
                 ViewModelProviders.of(target, factory).get(DetailActivityViewModel::class.java)
+
+        @Provides
+        fun provideHeaderViewModel(
+                factory: ViewModelProvider.Factory,
+                target: DetailActivity
+        ): HeaderViewModel =
+                ViewModelProviders.of(target, factory).get(HeaderViewModel::class.java)
+
     }
 }
+
 
 

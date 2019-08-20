@@ -15,8 +15,7 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 @Module(includes = [
-    DetailDescriptionFragmentModule.ProvideViewModel::class,
-    DetailUseCaseModule::class
+    DetailDescriptionFragmentModule.ProvideViewModel::class
 ])
 abstract class DetailDescriptionFragmentModule {
 

@@ -16,7 +16,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.comments.CommentsActivity"></activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -56,10 +55,9 @@
         </activity>
         <activity
             android:name=".view.detail.DetailActivity"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".view.detail.DetailOverviewActivity"
-            android:theme="@style/FullScreenTheme" />
+            android:theme="@style/FullScreenTheme"
+            android:launchMode="singleTop"/>
+
         <activity android:name=".view.ingredient.IngredientActivity" />
         <activity android:name=".view.welcome.WelcomeActivity" />
         <activity

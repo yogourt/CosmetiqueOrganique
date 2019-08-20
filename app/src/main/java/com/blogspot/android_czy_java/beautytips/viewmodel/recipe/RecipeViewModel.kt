@@ -42,6 +42,10 @@ class RecipeViewModel(private val loadRecipesUseCase: LoadRecipesUseCase) : View
         loadRecipes()
     }
 
+    fun retry() {
+        loadRecipes()
+    }
+
     private fun loadRecipes() {
         disposable.add(loadRecipesUseCase.execute(RecipeRequest(category, order))
                 .subscribeOn(Schedulers.io())
@@ -53,8 +57,8 @@ class RecipeViewModel(private val loadRecipesUseCase: LoadRecipesUseCase) : View
                             recipeLiveData.value = GenericUiModel.LoadingSuccess(recipes)
                         },
                         { error ->
-                            recipeLiveData.value = GenericUiModel.LoadingError(error.message
-                                    ?: defaultErrorMessage)
+                            recipeLiveData.value = GenericUiModel.LoadingError(
+                                    error.message ?: defaultErrorMessage)
                         }
                 ))
     }

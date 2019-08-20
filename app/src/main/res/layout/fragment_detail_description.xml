@@ -5,9 +5,15 @@
     android:padding="@dimen/activity_margin">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/recipe"
+        style="@style/FragmentDetailTitle"/>
+    <TextView
         android:id="@+id/description_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/very_high_bottom_margin_for_detail"
         style="@style/NormalTextStyle"/>
 
 </LinearLayout>

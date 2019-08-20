@@ -14,9 +14,6 @@ class DetailBottomActionFragment : DetailFragment() {
     @BindView(R.id.discussion)
     lateinit var discussion: Button
 
-    @BindView(R.id.go_to_recipe)
-    lateinit var goToRecipe: Button
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail_bottom_action,
@@ -30,14 +27,9 @@ class DetailBottomActionFragment : DetailFragment() {
 
     private fun prepareButtons() {
         discussion.setOnClickListener { onClickDiscussion() }
-        goToRecipe.setOnClickListener { onClickGoToRecipe() }
     }
 
     private fun onClickDiscussion() {
         //TODO: implement
-    }
-
-    private fun onClickGoToRecipe() {
-
     }
 }

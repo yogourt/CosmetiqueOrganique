@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+    <Transition
+        app:constraintSetEnd="@layout/motion_layout_activity_detail_2"
+        app:constraintSetStart="@layout/motion_layout_activity_detail_1"
+        app:duration="500"
+        app:motionInterpolator="linear">
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:touchAnchorId="@id/scrollable_content"
+            app:touchAnchorSide="top" />
+    </Transition>
+</MotionScene>

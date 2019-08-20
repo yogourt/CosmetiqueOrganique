@@ -22,7 +22,6 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.appUtils.SnackbarHelper;
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel;
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys;
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity;
@@ -60,7 +59,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View itemView = inflater.inflate(R.layout.item_grid_view,
+        View itemView = inflater.inflate(R.layout.card,
                 parent, false);
 
         return new ItemViewHolder(itemView);
@@ -133,17 +132,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
         @BindView(R.id.title)
         TextView mTitle;
 
-        @BindView(R.id.scrim)
-        View mScrim;
-
         @BindView(R.id.item_layout)
         CardView mCardView;
-
-        @BindView(R.id.delete_tip_icon)
-        ImageView mDeleteTipIcon;
-
-        @BindView(R.id.heart_icon)
-        ImageView mHeartIcon;
 
 
         ItemViewHolder(View itemView) {
@@ -163,9 +153,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
 
         private Bundle createSharedElementTransition() {
             Pair<View, String> imagePair = new Pair<>(mImage, mImage.getTransitionName());
-            Pair<View, String> scrimPair = new Pair<>(mScrim, mScrim.getTransitionName());
             return ActivityOptions.makeSceneTransitionAnimation((Activity) this.itemView.getContext(),
-                    imagePair, scrimPair).toBundle();
+                    imagePair).toBundle();
         }
     }
 

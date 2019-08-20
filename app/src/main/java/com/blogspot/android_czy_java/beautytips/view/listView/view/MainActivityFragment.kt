@@ -25,11 +25,12 @@ import butterknife.ButterKnife
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.view.AppFragment
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
-import com.blogspot.android_czy_java.beautytips.view.detail.DetailOverviewActivity
+import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
 
 import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM
 import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.RecipeListAdapterCallback
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -38,14 +39,14 @@ class MainActivityFragment : AppFragment(), RecipeListAdapterCallback {
 
 
     @BindView(R.id.recycler_view)
-    lateinit var mRecyclerView: RecyclerView
+    lateinit var list: RecyclerView
 
     @BindView(R.id.loading_indicator)
     lateinit var loadingIndicator: ProgressBar
 
-    lateinit var mLayoutManager: StaggeredGridLayoutManager
+    lateinit var layoutManager: StaggeredGridLayoutManager
 
-    lateinit var mAdapter: RecipeListAdapter
+    lateinit var adapter: RecipeListAdapter
 
     @Inject
     lateinit var activityViewModel: DetailActivityViewModel
@@ -85,7 +86,7 @@ class MainActivityFragment : AppFragment(), RecipeListAdapterCallback {
         if (activity != null && activity!!.intent != null) {
             val tipId = activity!!.intent.getStringExtra(KEY_ITEM)
             if (!TextUtils.isEmpty(tipId) && tipId != null) {
-                mAdapter.openDetailScreen(context, tipId.toLong(), null)
+                adapter.openDetailScreen(context, tipId.toLong(), null)
                 activity!!.intent = null
             }
         }
@@ -97,10 +98,10 @@ class MainActivityFragment : AppFragment(), RecipeListAdapterCallback {
             loadingIndicator.visibility = View.INVISIBLE
         }
 
-        mAdapter = RecipeListAdapter(this, recyclerViewList)
+        adapter = RecipeListAdapter(this, recyclerViewList)
 
 
-        mRecyclerView.adapter = mAdapter
+        list.adapter = adapter
 
         val columnNum: Int
 
@@ -113,12 +114,12 @@ class MainActivityFragment : AppFragment(), RecipeListAdapterCallback {
             columnNum = 1
 
         //add layout manager
-        mLayoutManager = RecyclerViewHelper.createLayoutManager(columnNum)
-        mRecyclerView.layoutManager = mLayoutManager
+        layoutManager = RecyclerViewHelper.createLayoutManager(columnNum)
+        list.layoutManager = layoutManager
 
         //item decoration is added to make spaces between items in recycler view
-        if (mRecyclerView.itemDecorationCount == 0)
-            mRecyclerView.addItemDecoration(SpacesItemDecoration(
+        if (list.itemDecorationCount == 0)
+            list.addItemDecoration(SpacesItemDecoration(
                     resources.getDimension(R.dimen.list_padding).toInt()))
 
 
@@ -130,10 +131,10 @@ class MainActivityFragment : AppFragment(), RecipeListAdapterCallback {
                 prepareRecyclerView(uiModel.data)
             }
             is GenericUiModel.StatusLoading -> {
-
+                loadingIndicator.visibility = View.VISIBLE
             }
             is GenericUiModel.LoadingError -> {
-
+                showInfoAboutError(uiModel.message)
             }
         }
 
@@ -141,13 +142,24 @@ class MainActivityFragment : AppFragment(), RecipeListAdapterCallback {
 
     override fun onRecipeClick(recipeId: Long) {
 
-        if(isTablet) {
+        if (isTablet) {
             activityViewModel.chosenItemId = recipeId
         } else {
-            val intent = Intent(context, DetailOverviewActivity::class.java)
+            val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
             startActivity(intent)
         }
+    }
+
+
+    private fun showInfoAboutError(message: String) {
+        Snackbar.make(
+                list,
+                getString(R.string.database_error_msg, message),
+                Snackbar.LENGTH_INDEFINITE
+        ).setAction(
+                R.string.retry
+        ) { recipeViewModel.retry() }
     }
 
 

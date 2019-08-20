@@ -11,7 +11,6 @@ import javax.inject.Provider
 
 @Module(includes = [
     MainActivityFragmentModule::class,
-    HeaderFragmentModule::class,
     DetailActivityModule::class,
     DetailDescriptionFragmentModule::class,
     DetailBottomActionModule::class,

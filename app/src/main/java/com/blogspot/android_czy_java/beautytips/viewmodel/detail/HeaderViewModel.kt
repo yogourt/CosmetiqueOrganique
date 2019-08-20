@@ -8,10 +8,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class HeaderFragmentViewModel(private val loadHeaderFragmentDataUseCase: LoadHeaderFragmentDataUseCase)
+class HeaderViewModel(private val loadHeaderFragmentDataUseCase: LoadHeaderFragmentDataUseCase)
     : ViewModel() {
 
-    val headerFragmentLiveData = MutableLiveData<GenericUiModel<HeaderFragmentData>>()
+    val headerFragmentLiveData = MutableLiveData<GenericUiModel<HeaderData>>()
 
     private val disposable = CompositeDisposable()
 

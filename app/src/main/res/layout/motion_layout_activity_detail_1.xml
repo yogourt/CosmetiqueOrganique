@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/motion_scene_activity_detail">
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/bluegrey800"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/category_button_margin"
+        android:layout_marginTop="@dimen/margin_vert_detail_fragments"
+        android:layout_marginBottom="@dimen/margin_vert_detail_fragments"
+        app:layout_constraintTop_toBottomOf="@id/title">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="For Hair" />
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/subcategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Masks" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/TitleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_margin"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/image" />
+
+
+    <include
+        android:id="@+id/scrollable_content"
+        layout="@layout/activity_detail_overview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_vert_detail_fragments"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chips" />
+
+    <fragment
+        android:id="@+id/fragment_bottom_action"
+        android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailBottomActionFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

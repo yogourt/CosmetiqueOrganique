@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -63,8 +65,7 @@ import static com.blogspot.android_czy_java.beautytips.view.welcome.WelcomeActiv
 
 public abstract class BaseMainActivity extends AppCompatActivity
         implements FirebaseLoginHelper.MainViewInterface,
-        NicknamePickerDialog.NicknamePickerDialogListener,
-        MyDrawerLayoutListener.DrawerCreationInterface {
+        NicknamePickerDialog.NicknamePickerDialogListener {
 
 
 
@@ -72,24 +73,18 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
     public static final String KEY_TOKEN_FLAG = "notification_token";
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
 
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+    @BindView(R.id.main_layout)
+    FrameLayout layout;
 
     SearchView mSearchView;
 
-    @BindView(R.id.nav_view)
-    NavigationView mNavigationView;
 
     FirebaseLoginHelper mLoginHelper;
 
-    View mHeaderLayout;
     CircleImageView photoIv;
     TextView nicknameTv;
 
-    MyDrawerLayoutListener mDrawerListener;
 
     boolean isPhotoSaving;
 
@@ -121,21 +116,19 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         prepareInterstitialAd();
 
-        //it has to be added here to avoid adding it multiple times. It doesn't have to be done on category change,
-        //this is why it's not part of prepareNavigationDrawer()
-        setListenerToNavigationView();
+    }
 
-        viewModel.getCategoryLiveData().observe(this, category -> {
-            prepareNavigationDrawer();
-            prepareActionBar();
-        });
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        viewModel.getUserStateLiveData().observe(this, createUserStateObserver());
-
+        if(userIsNull()) {
+            mLoginHelper.showSignInScreen();
+        }
     }
 
     abstract void initViewModel();
-
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -154,6 +147,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
         }
         return super.onCreateOptionsMenu(menu);
     }
+    */
 
     @Override
     protected void onDestroy() {
@@ -180,53 +174,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
         } else super.onBackPressed();
     }
 
-    @NonNull
-    private Observer<String> createUserStateObserver() {
-        return new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String userState) {
-                MenuItem logOutItem = mNavigationView.getMenu().getItem(NAV_POSITION_LOG_OUT);
-                if (userState.equals(USER_STATE_NULL)) {
-                    Intent welcomeActivityIntent = new Intent(BaseMainActivity.this,
-                            WelcomeActivity.class);
-                    startActivityForResult(welcomeActivityIntent, RC_WELCOME_ACTIVITY);
-                }
-                //user just logged in anonymously
-                else if (userState.equals(USER_STATE_ANONYMOUS)) {
-                    logOutItem.setTitle(R.string.nav_log_in);
-                    logOutItem.setIcon(R.drawable.ic_login);
-                    photoIv.setOnClickListener(null);
-                    photoIv.setImageDrawable(getResources().getDrawable(R.drawable.placeholder));
-                    nicknameTv.setText(R.string.label_anonymous);
-                }
-                //user just logged in or logged in user opened the app
-                else {
-                    logOutItem.setTitle(R.string.nav_log_out);
-                    logOutItem.setIcon(R.drawable.ic_logout);
-                    mLoginHelper.prepareNavDrawerHeader();
-
-                    //when user clicks photo button_background the photo chooser is opening
-                    photoIv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (ExternalStoragePermissionHelper
-                                    .isPermissionGranted(BaseMainActivity.this)) {
-                                ExternalStoragePermissionHelper.showPhotoPicker(BaseMainActivity.this);
-                            } else {
-                                ExternalStoragePermissionHelper.askForPermission(
-                                        BaseMainActivity.this);
-                            }
-                        }
-                    });
-
-                    if(!tokenWasSaved())
-                    NotificationTokenHelper.saveUserNotificationToken();
-                }
-            }
-
-        };
-    }
-
     private boolean tokenWasSaved() {
         boolean tokenWaSaved = getPreferences(MODE_PRIVATE).getBoolean(KEY_TOKEN_FLAG, false);
 
@@ -235,56 +182,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
     }
 
 
-    private void prepareActionBar() {
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        }
-    }
 
-    /*
-      here we set navigation drawer actions. There is apparently some bug in recreate(),
-      because drawer is not closing but stays open on recreating, so here everything is surrounded
-      by onDrawerClosed() from DrawerListener.
-    */
-    private void prepareNavigationDrawer() {
-
-        mHeaderLayout = mNavigationView.getHeaderView(0);
-        photoIv = mHeaderLayout.findViewById(R.id.nav_photo);
-        nicknameTv = mHeaderLayout.findViewById(R.id.nav_nickname);
-
-
-        //make all items in menu unchecked and then check the one that was selected recently
-        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
-            mNavigationView.getMenu().getItem(i).setChecked(false);
-        }
-        mNavigationView.getMenu().getItem(viewModel.getNavigationPosition()).setChecked(true);
-    }
-
-    private void setListenerToNavigationView() {
-        mNavigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
-                        mDrawerLayout.closeDrawers();
-
-
-                        /*
-                        Here we need mDrawerListener to properly close NavigationDrawer when calling
-                        recreate(), this is why DrawerListener is added and inside it selection of item
-                        is handled.
-                         */
-                        mDrawerListener = new MyDrawerLayoutListener(BaseMainActivity.this, viewModel,
-                                item.getItemId());
-                        mDrawerLayout.addDrawerListener(mDrawerListener);
-
-                        return true;
-                    }
-                }
-        );
-    }
 
     void prepareSearchView() {
 
@@ -300,6 +198,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
         });
 
 
+        /* TODO: make searching
         //when the user submit search, pass it to activityViewModel
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -332,17 +231,9 @@ public abstract class BaseMainActivity extends AppCompatActivity
             getIntent().setAction(null);
 
         }
+        */
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            mDrawerLayout.openDrawer(GravityCompat.START);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     //This method is called after user signed in or canceled signing in (depending on result code)
     @Override
@@ -379,12 +270,12 @@ public abstract class BaseMainActivity extends AppCompatActivity
             Uri photoUri = data.getData();
             if (photoUri != null) {
                 if (!NetworkConnectionHelper.isInternetConnection(this)) {
-                    SnackbarHelper.showUnableToAddImage(mDrawerLayout);
+                    SnackbarHelper.showUnableToAddImage(layout);
                 } else {
                     Glide.with(this)
                             .load(R.drawable.placeholder)
                             .into(photoIv);
-                    SnackbarHelper.showAddImageMayTakeSomeTime(mDrawerLayout);
+                    SnackbarHelper.showAddImageMayTakeSomeTime(layout);
                 }
                 if (isPhotoSaving) {
                     mLoginHelper.stopPreviousUserPhotoSaving();
@@ -397,7 +288,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
         if (requestCode == RC_NEW_TIP_ACTIVITY && resultCode == RESULT_DATA_CHANGE) {
             viewModel.waitForAddingImage(data.getStringExtra(KEY_TIP_NUMBER));
             //TODO: activityViewModel.setCategory(CATEGORY_ALL);
-            SnackbarHelper.showNewTipVisibleSoon(mDrawerLayout);
+            SnackbarHelper.showNewTipVisibleSoon(layout);
         }
     }
 
@@ -408,7 +299,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         if (requestCode == RC_PERMISSION_EXT_STORAGE) {
             ExternalStoragePermissionHelper.answerForPermissionResult(this, grantResults,
-                    mDrawerLayout);
+                    layout);
         }
     }
 
@@ -437,26 +328,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
        implementation of MyDrawerLayoutListener.DrawerCreationInterface
      */
 
-    @Override
-    public void logOut() {
-        mLoginHelper.logOut();
-    }
-
-    @Override
-    public void removeDrawerListenerFromDrawerLayout() {
-        mDrawerLayout.removeDrawerListener(mDrawerListener);
-    }
-
-    //This is called by navigation drawer when clicking on "log in"
-    @Override
-    public void signInAnonymousUser() {
-        mLoginHelper.showSignInScreen();
-    }
-
-    @Override
-    public DrawerLayout getDrawerLayout() {
-        return mDrawerLayout;
-    }
 
     @Override
     public Context getContext() {
@@ -508,4 +379,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
         End of interfaces
      */
 
+    private boolean userIsNull() {
+        return viewModel.getUserStateLiveData().getValue().equals(USER_STATE_NULL);
+    }
 }

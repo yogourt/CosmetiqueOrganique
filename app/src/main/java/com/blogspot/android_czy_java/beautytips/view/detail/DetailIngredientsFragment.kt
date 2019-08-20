@@ -13,6 +13,7 @@ import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.IngredientsFragmentData
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.IngredientsFragmentViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 class DetailIngredientsFragment : DetailFragment() {
@@ -47,9 +48,10 @@ class DetailIngredientsFragment : DetailFragment() {
     private fun prepareContent(data: IngredientsFragmentData) {
 
         for(ingredient in data.ingredients) {
-            val view = layoutInflater.inflate(R.layout.item_detail_ingredient, ingredients)
+            val view = layoutInflater.inflate(R.layout.item_detail_ingredient, null)
             view.findViewById<TextView>(R.id.name).text = ingredient.name
             view.findViewById<TextView>(R.id.quantity).text = ingredient.quantity
+            ingredients.addView(view)
         }
 
     }

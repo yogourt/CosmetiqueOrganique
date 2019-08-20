@@ -13,7 +13,7 @@
     <dimen name="title_text_size">32sp</dimen>
     <dimen name="list_start_padding">40dp</dimen>
     <dimen name="list_end_padding">40dp</dimen>
-    <dimen name="title_bottom_padding">32dp</dimen>
+    <dimen name="title_vert_padding">32dp</dimen>
     <dimen name="title_start_padding">64dp</dimen>
 
     <!-- detail screen dimens -->

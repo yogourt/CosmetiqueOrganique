@@ -10,10 +10,10 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
                                  List<IngredientModel> list,
                                  PositionListener positionListener,
                                  ListViewViewModel activityViewModel,
-                                 DetailActivityViewModel detailActivityViewModel,
+                                 DetailActivityViewModel viewModel,
                                  float itemHeightDivider) {
 
-        super(context, list, positionListener, activityViewModel, detailActivityViewModel);
+        super(context, list, positionListener, activityViewModel, viewModel);
 
         for (int i = 0; i < itemHeightsInDp.length; i++) {
             itemHeightsInDp[i] = (int) (itemHeightsInDp[i] / itemHeightDivider);
@@ -32,7 +32,7 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
             itemView = inflater.inflate(R.layout.header_item_grid_view, parent, false);
             return new HeaderViewHolder(itemView);
         } else {
-            itemView = inflater.inflate(R.layout.item_grid_view,
+            itemView = inflater.inflate(R.layout.card,
                     parent, false);
             return new ItemViewHolder(itemView);
         }
@@ -66,7 +66,7 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
                     mContext.startActivity(ingredientActivityIntent, createSharedElementTransition());
                 }
 
-                detailActivityViewModel.onIngredientClick(item.getId());
+                viewModel.onIngredientClick(item.getId());
 
             }
         }

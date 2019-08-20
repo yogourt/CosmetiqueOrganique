@@ -42,14 +42,14 @@ abstract class MainActivityFragmentModule {
     class InjectViewModel {
 
         @Provides
-        fun provideListNotesViewModel(
+        fun provideRecipeViewModel(
                 factory: ViewModelProvider.Factory,
                 target: MainActivityFragment
         ): RecipeViewModel =
                 ViewModelProviders.of(target, factory).get(RecipeViewModel::class.java)
 
         @Provides
-        fun provideTabletDetailViewModel(
+        fun provideDetailActivityViewModel(
                 factory: ViewModelProvider.Factory,
                 target: MainActivityFragment
         ): DetailActivityViewModel =
