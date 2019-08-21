@@ -8,18 +8,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/fragment_main"
-            android:name="com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivityFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <fragment
-            android:id="@+id/fragment_add"
-            android:name="com.blogspot.android_czy_java.beautytips.view.listView.view.AdBannerFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center" />
+    <fragment
+        android:id="@+id/fragment_main"
+        android:name="com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivityFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -29,7 +22,7 @@
         android:background="@color/bluegrey900"
         app:menu="@menu/menu_main" />
 
-    </FrameLayout>
+</FrameLayout>
 
 
 

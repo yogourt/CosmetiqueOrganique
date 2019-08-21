@@ -4,7 +4,7 @@ import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryHair
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadListDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 import org.junit.Before
@@ -20,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class RecipeViewModelTest {
 
     @Mock
-    private lateinit var loadRecipesUseCase: LoadRecipesUseCase
+    private lateinit var loadListDataUseCase: LoadListDataUseCase
 
     @Mock
     private lateinit var recipeObserver: Observer<List<RecipeModel>>
@@ -30,7 +30,7 @@ class RecipeViewModelTest {
 
     @Before
     fun setUp() {
-        SUT = RecipeViewModel(loadRecipesUseCase)
+        SUT = RecipeViewModel(loadListDataUseCase)
     }
 
     @Test
@@ -42,7 +42,7 @@ class RecipeViewModelTest {
         SUT.order = Order.POPULARITY
 
         //then
-        verify(loadRecipesUseCase).execute(RecipeRequest(any(), Order.POPULARITY))
+        verify(loadListDataUseCase).execute(RecipeRequest(any(), Order.POPULARITY))
     }
 
     @Test
@@ -54,7 +54,7 @@ class RecipeViewModelTest {
         SUT.category = CategoryHair.SUBCATEGORY_ALL
 
         //then
-        verify(loadRecipesUseCase).execute(RecipeRequest(CategoryHair.SUBCATEGORY_ALL, any()))
+        verify(loadListDataUseCase).execute(RecipeRequest(CategoryHair.SUBCATEGORY_ALL, any()))
     }
 
 }

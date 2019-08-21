@@ -115,6 +115,9 @@ dependencies {
     //rating app
     implementation 'io.github.kobakei:ratethisapp:1.2.0'
 
+    //orientation aware recycler view
+    implementation 'com.github.rubensousa:gravitysnaphelper:2.1.0'
+
     //kotlin std lib
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 

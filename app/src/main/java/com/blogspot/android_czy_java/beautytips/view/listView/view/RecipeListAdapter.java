@@ -132,8 +132,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
         @BindView(R.id.title)
         TextView mTitle;
 
-        @BindView(R.id.item_layout)
-        CardView mCardView;
 
 
         ItemViewHolder(View itemView) {

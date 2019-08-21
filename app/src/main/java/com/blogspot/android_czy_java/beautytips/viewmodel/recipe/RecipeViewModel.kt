@@ -5,20 +5,22 @@ import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.CreateRecipeRequestsUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadListDataUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 
-class RecipeViewModel(private val loadRecipesUseCase: LoadRecipesUseCase) : ViewModel() {
+class RecipeViewModel(
+        private val createRecipeRequestsUseCase: CreateRecipeRequestsUseCase,
+        private val loadListDataUseCase: LoadListDataUseCase) : ViewModel() {
 
     private val defaultErrorMessage = "Sorry, an error occurred. "
 
-    val recipeLiveData: MutableLiveData<GenericUiModel<List<RecipeModel>>> = MutableLiveData()
+    val listData = MainListData(arrayListOf())
+    val mainFragmentLiveData: MutableLiveData<GenericUiModel<MainListData>> = MutableLiveData()
 
     private val disposable = CompositeDisposable()
 
@@ -47,20 +49,25 @@ class RecipeViewModel(private val loadRecipesUseCase: LoadRecipesUseCase) : View
     }
 
     private fun loadRecipes() {
-        disposable.add(loadRecipesUseCase.execute(RecipeRequest(category, order))
+        disposable.add(loadListDataUseCase.execute(createRecipeRequestsUseCase.execute())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
-                    recipeLiveData.value = GenericUiModel.StatusLoading()
+                    mainFragmentLiveData.value = GenericUiModel.StatusLoading()
                 }.subscribe(
-                        { recipes ->
-                            recipeLiveData.value = GenericUiModel.LoadingSuccess(recipes)
+                        {
+                            this.onNextRecipeList(it)
                         },
                         { error ->
-                            recipeLiveData.value = GenericUiModel.LoadingError(
+                            mainFragmentLiveData.value = GenericUiModel.LoadingError(
                                     error.message ?: defaultErrorMessage)
                         }
                 ))
+    }
+
+    private fun onNextRecipeList(recipes: InnerListData) {
+        listData.data.add(recipes)
+        mainFragmentLiveData.value = GenericUiModel.LoadingSuccess(listData)
     }
 
 }
