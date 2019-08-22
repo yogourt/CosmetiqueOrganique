@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.view.listView.view;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 import de.cketti.mailto.EmailIntentBuilder;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static android.content.Intent.ACTION_SEARCH;
 import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
@@ -227,6 +229,11 @@ public class MainActivity extends BaseMainActivity implements
                 .subject(getString(R.string.feedback_email_title))
                 .start();
 
+    }
+
+    @Override
+    public void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
 }

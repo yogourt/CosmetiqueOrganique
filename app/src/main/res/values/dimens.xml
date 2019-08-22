@@ -44,7 +44,7 @@
     <dimen name="app_bar_layout_height">192dp</dimen>
     <dimen name="image_height">0dp</dimen>
     <dimen name="fab_margin">32dp</dimen>
-    <dimen name="exp_title_text_size">@dimen/title_text_size</dimen>
+    <dimen name="exp_title_text_size">20sp</dimen>
     <dimen name="fav_margin_top">16dp</dimen>
     <dimen name="fav_margin_start">16dp</dimen>
     <dimen name="source_margin">16dp</dimen>

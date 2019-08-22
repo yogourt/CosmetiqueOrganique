@@ -41,11 +41,9 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/TitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/collapsed_image_height"
-        android:textAlignment="center"
         app:layout_constraintTop_toTopOf="@id/image" />
 
 
@@ -54,11 +52,11 @@
         layout="@layout/activity_detail_overview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_vert_detail_fragments"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chips"
-        android:layout_marginTop="@dimen/margin_vert_detail_fragments"/>
+        app:layout_constraintTop_toBottomOf="@id/chips" />
 
     <fragment
         android:id="@+id/fragment_bottom_action"

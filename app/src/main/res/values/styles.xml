@@ -59,12 +59,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TitleStyle" parent="TextAppearance.AppCompat.Medium">
+    <style name="TitleStyle" parent="android:TextAppearance">
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/purple100</item>
         <item name="android:textSize">@dimen/title_text_size</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">cursive</item>
+        <item name="fontPath">fonts/Lobster2.ttf</item>
     </style>
 
     <style name="ExpandedTitleStyle" parent="TitleStyle">
@@ -161,8 +160,8 @@
 
     
     <style name="FragmentDetailTitle">
-        <item name="android:fontFamily">cursive</item>
-        <item name="android:textSize">20sp</item>
+        <item name="fontPath">fonts/Lobster2.ttf</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/purple100</item>
     </style>

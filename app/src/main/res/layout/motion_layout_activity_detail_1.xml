@@ -41,11 +41,10 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/TitleStyle"
+        style="@style/ExpandedTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_margin"
-        android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/image" />
 
 

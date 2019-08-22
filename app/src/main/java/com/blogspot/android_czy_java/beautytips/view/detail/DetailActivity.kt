@@ -1,5 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.view.detail
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
@@ -16,6 +17,7 @@ import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderData
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderViewModel
 import com.bumptech.glide.Glide
 import dagger.android.AndroidInjection
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import javax.inject.Inject
 
 class DetailActivity : AppCompatActivity() {
@@ -77,5 +79,9 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setStatusBarTransparent() {
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+    }
+
+    public override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase))
     }
 }

@@ -5,6 +5,12 @@
     android:orientation="vertical"
 >
 
+    <TextView
+        android:id="@+id/category_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
     <include
         android:id="@+id/card_expanded"
         layout="@layout/card_expanded" />
