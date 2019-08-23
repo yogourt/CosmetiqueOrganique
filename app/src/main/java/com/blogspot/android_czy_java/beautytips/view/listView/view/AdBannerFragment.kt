@@ -15,7 +15,7 @@ import com.google.android.gms.ads.AdView
 
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.blogspot.android_czy_java.beautytips.view.AppFragment
+import com.blogspot.android_czy_java.beautytips.view.common.AppFragment
 
 class AdBannerFragment : AppFragment() {
 

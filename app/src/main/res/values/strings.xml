@@ -182,5 +182,7 @@
     <string name="home">Home</string>
     <string name="database_error_msg">Database error: %s.</string>
     <string name="retry">Retry</string>
+    <string name="nav_account">Account</string>
+    <string name="notify_developer">Notify developer</string>
 
 </resources>

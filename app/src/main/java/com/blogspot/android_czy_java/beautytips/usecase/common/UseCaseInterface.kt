@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.usecase
+package com.blogspot.android_czy_java.beautytips.usecase.common
 
 import io.reactivex.Single
 

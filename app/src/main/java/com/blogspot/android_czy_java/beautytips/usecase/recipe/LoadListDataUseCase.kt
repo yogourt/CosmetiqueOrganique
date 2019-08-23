@@ -1,24 +1,25 @@
 package com.blogspot.android_czy_java.beautytips.usecase.recipe
 
+import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
+import com.blogspot.android_czy_java.beautytips.usecase.common.LoadNestedListDataUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.InnerListData
 import io.reactivex.Observable
 
-open class LoadListDataUseCase(private val loadRecipesUseCase: LoadRecipesUseCase) {
+open class LoadListDataUseCase(loadRecipesUseCase: LoadRecipesUseCase<RecipeRequest>):
+        LoadNestedListDataUseCase<RecipeRequest>(loadRecipesUseCase) {
 
-    fun execute(request: MainListRequest): Observable<InnerListData> {
 
-        return Observable.create {
-            var counter = 0
-
-            for (recipeRequest in request.requests) {
-                loadRecipesUseCase.execute(recipeRequest)
-                        .subscribe { result ->
-                            it.onNext(InnerListData(result))
-                            counter++
-                            if(counter == request.requests.size) {
-                                it.onComplete()
-                            }
-                        }
+    override fun createListTitle(recipeRequest: RecipeRequest): String {
+        recipeRequest.apply {
+            return when (category) {
+                is CategoryAll -> order.label
+                else -> {
+                    if (category.isSubcategoryAll()) {
+                        category.getCategoryLabel()
+                    } else {
+                        category.getSubcategoryLabel()
+                    }
+                }
             }
         }
     }

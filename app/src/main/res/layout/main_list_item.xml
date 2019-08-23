@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
->
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/category_title"
+        android:id="@+id/list_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:paddingStart="@dimen/activity_margin"
+        android:paddingEnd="@dimen/activity_margin"
+        android:paddingTop="@dimen/activity_margin"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        tools:text="For hair" />
 
     <include
-        android:id="@+id/card_expanded"
+        android:id="@+id/card_first"
         layout="@layout/card_expanded" />
 
     <com.github.rubensousa.gravitysnaphelper.OrientationAwareRecyclerView

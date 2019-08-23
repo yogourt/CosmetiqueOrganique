@@ -28,13 +28,13 @@ interface RecipeDao {
     @Query("SELECT * FROM Recipes WHERE category=:category AND subcategory=:subcategory")
     fun getRecipesByCategoryAndSubcategory(category: String, subcategory: String): List<RecipeModel>
 
-    @Query("SELECT * FROM Recipes ORDER BY favNum DESC")
+    @Query("SELECT * FROM Recipes ORDER BY favNum")
     fun getAllRecipesOrderByPopularity(): List<RecipeModel>
 
-    @Query("SELECT * FROM Recipes WHERE category=:category ORDER BY favNum DESC")
+    @Query("SELECT * FROM Recipes WHERE category=:category ORDER BY favNum")
     fun getRecipesByCategoryOrderByPopularity(category: String): List<RecipeModel>
 
-    @Query("SELECT * FROM Recipes WHERE category=:category AND subcategory=:subcategory ORDER BY favNum DESC")
+    @Query("SELECT * FROM Recipes WHERE category=:category AND subcategory=:subcategory ORDER BY favNum")
     fun getRecipesByCategoryAndSubcategoryOrderByPopularity(category: String, subcategory: String): List<RecipeModel>
 
     @Query("SELECT FavNum FROM Recipes WHERE recipeId=:recipeId")

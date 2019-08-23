@@ -1,3 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.usecase.recipe
 
-class MainListRequest(val requests: List<RecipeRequest>)
+import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequest
+
+class MainListRequest(override val requests: List<RecipeRequest>):
+        NestedListRequest<RecipeRequest>(requests)

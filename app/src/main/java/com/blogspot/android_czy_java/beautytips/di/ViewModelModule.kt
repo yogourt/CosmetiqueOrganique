@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.blogspot.android_czy_java.beautytips.appUtils.AppViewModelFactory
+import com.blogspot.android_czy_java.beautytips.di.view.account.UserListFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.*
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
 import dagger.Module
@@ -14,7 +15,8 @@ import javax.inject.Provider
     DetailActivityModule::class,
     DetailDescriptionFragmentModule::class,
     DetailBottomActionModule::class,
-    DetailIngredientsFragmentModule::class
+    DetailIngredientsFragmentModule::class,
+    UserListFragmentModule::class
 ])
 class ViewModelModule {
 

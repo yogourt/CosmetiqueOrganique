@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.usecase.recipe
+package com.blogspot.android_czy_java.beautytips.usecase.account
 
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 

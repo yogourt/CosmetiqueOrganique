@@ -2,7 +2,7 @@ package com.blogspot.android_czy_java.beautytips.view.detail
 
 import android.content.Context
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.view.AppFragment
+import com.blogspot.android_czy_java.beautytips.view.common.AppFragment
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
 import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel

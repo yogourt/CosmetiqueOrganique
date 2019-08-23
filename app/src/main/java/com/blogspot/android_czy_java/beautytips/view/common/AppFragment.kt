@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.view
+package com.blogspot.android_czy_java.beautytips.view.common
 
 import android.content.Context
 import androidx.fragment.app.Fragment

@@ -9,9 +9,9 @@
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
 
-    <item android:id="@+id/menu_favorites"
-        android:title="@string/nav_favourites"
-        android:icon="@drawable/ic_heart"
+    <item android:id="@+id/menu_account"
+        android:title="@string/nav_account"
+        android:icon="@drawable/ic_person"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
 

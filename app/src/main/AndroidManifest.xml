@@ -53,19 +53,27 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".view.detail.DetailActivity"
-            android:theme="@style/FullScreenTheme"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:theme="@style/FullScreenTheme" />
 
         <activity android:name=".view.ingredient.IngredientActivity" />
+
         <activity android:name=".view.welcome.WelcomeActivity" />
+
         <activity
             android:name=".view.newTip.view.NewTipActivity"
             android:label="@string/title_activity_new_tip"
             android:launchMode="singleTop"
             android:parentActivityName=".view.listView.view.MainActivity"
             android:theme="@style/ActivityDialogTheme" />
+
+
+        <activity
+            android:name=".view.account.AccountActivity"
+            android:launchMode="singleTop" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"

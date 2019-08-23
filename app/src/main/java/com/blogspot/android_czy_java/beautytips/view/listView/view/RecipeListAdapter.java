@@ -3,8 +3,6 @@ package com.blogspot.android_czy_java.beautytips.view.listView.view;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -16,16 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel;
-import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys;
-import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity;
-import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.RecipeListAdapterCallback;
+import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.NestedListCallback;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -45,9 +39,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
 
     private List<RecipeModel> items;
 
-    private RecipeListAdapterCallback activityCallback;
+    private NestedListCallback activityCallback;
 
-    public RecipeListAdapter(RecipeListAdapterCallback activityCallback, List<RecipeModel> list) {
+    public RecipeListAdapter(NestedListCallback activityCallback, List<RecipeModel> list) {
         this.activityCallback = activityCallback;
         items = list;
 
@@ -81,6 +75,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
         holder.mTitle.setText(item.getTitle());
         holder.mImage.setContentDescription(context.getResources()
                 .getString(R.string.description_tip_image, item.getTitle()));
+        holder.card.setOnClickListener(view -> activityCallback.onRecipeClick(item.getRecipeId()));
 
         setAnimation(holder.itemView, position);
 
@@ -101,30 +96,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
         return items.size();
     }
 
-    void openDetailScreen(Context context, long recipeId, @Nullable Bundle sharedElementTransition) {
 
-        //if the configuration is portrait, start detail activity
-        if (!context.getResources().getBoolean(R.bool.is_tablet) ||
-                context.getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_PORTRAIT) {
-
-            Bundle bundle = new Bundle();
-            bundle.putLong(IntentDataKeys.KEY_RECIPE_ID, recipeId);
-            Intent detailActivityIntent = new Intent(context, DetailActivity.class);
-            detailActivityIntent.putExtras(bundle);
-            if (sharedElementTransition != null)
-                ((Activity) context).startActivityForResult(detailActivityIntent,
-                        REQUEST_CODE_DETAIL_ACTIVITY, sharedElementTransition);
-            else ((Activity) context).startActivityForResult(detailActivityIntent,
-                    REQUEST_CODE_DETAIL_ACTIVITY);
-        }
-
-        //for tablet landscape
-        else activityCallback.onRecipeClick(recipeId);
-    }
-
-
-    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.image)
         ImageView mImage;
@@ -132,21 +105,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.It
         @BindView(R.id.title)
         TextView mTitle;
 
-
+        @BindView(R.id.card)
+        View card;
 
         ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            mImage.setOnClickListener(this);
-            mTitle.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            RecipeModel recipe = items.get(getAdapterPosition());
-            //openDetailScreen(view.getContext(), recipe.getId(), createSharedElementTransition());
-            activityCallback.onRecipeClick(recipe.getRecipeId());
-
         }
 
         private Bundle createSharedElementTransition() {
