@@ -8,7 +8,7 @@ import com.blogspot.android_czy_java.beautytips.di.usecase.account.AccountUseCas
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
 import com.blogspot.android_czy_java.beautytips.usecase.account.CreateUserListRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.LoadRecipesFromUserListUseCase
-import com.blogspot.android_czy_java.beautytips.view.account.UserListFragment
+import com.blogspot.android_czy_java.beautytips.view.account.AccountActivityFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.UserListViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import dagger.Module
@@ -27,7 +27,7 @@ abstract class UserListFragmentModule {
         UserListFragmentModule.InjectViewModel::class,
         DetailActivityModule::class
     ])
-    abstract fun bind(): UserListFragment
+    abstract fun bind(): AccountActivityFragment
 
     @Module
     class ProvideViewModel {
@@ -46,14 +46,14 @@ abstract class UserListFragmentModule {
         @Provides
         fun provideUserListViewModel(
                 factory: ViewModelProvider.Factory,
-                target: UserListFragment
+                target: AccountActivityFragment
         ): UserListViewModel =
                 ViewModelProviders.of(target, factory).get(UserListViewModel::class.java)
 
         @Provides
         fun provideDetailActivityViewModel(
                 factory: ViewModelProvider.Factory,
-                target: UserListFragment
+                target: AccountActivityFragment
         ): DetailActivityViewModel =
                 ViewModelProviders.of(target.requireActivity(), factory).get(DetailActivityViewModel::class.java)
     }

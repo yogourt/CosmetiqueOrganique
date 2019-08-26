@@ -12,9 +12,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-abstract class NestedRecipeListViewModel<RECIPE_REQUEST> (
+abstract class NestedRecipeListViewModel<RECIPE_REQUEST>(
         private val createRecipeRequestsUseCase: NestedListRequestUseCase<RECIPE_REQUEST>,
-        private val loadListDataUseCase: LoadNestedListDataUseCase<RECIPE_REQUEST>): ViewModel() {
+        private val loadListDataUseCase: LoadNestedListDataUseCase<RECIPE_REQUEST>) : ViewModel() {
 
     private val defaultErrorMessage = "Sorry, an error occurred. "
 
@@ -24,14 +24,15 @@ abstract class NestedRecipeListViewModel<RECIPE_REQUEST> (
     private val disposable = CompositeDisposable()
 
     fun init() {
+        listData.data.clear()
         loadRecipes()
     }
 
     fun retry() {
-        loadRecipes()
+        init()
     }
 
-    fun loadRecipes() {
+    private fun loadRecipes() {
         disposable.add(loadListDataUseCase.execute(createRecipeRequestsUseCase.execute())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

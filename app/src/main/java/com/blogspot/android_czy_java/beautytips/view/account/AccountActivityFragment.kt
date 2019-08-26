@@ -5,7 +5,7 @@ import com.blogspot.android_czy_java.beautytips.view.common.NestedRecipeListFrag
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.UserListViewModel
 import javax.inject.Inject
 
-class UserListFragment: NestedRecipeListFragment() {
+class AccountActivityFragment: NestedRecipeListFragment() {
 
 
     @Inject

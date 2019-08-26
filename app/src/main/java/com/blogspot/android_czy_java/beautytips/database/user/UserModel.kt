@@ -12,4 +12,6 @@ data class UserModel(
 ) {
     @PrimaryKey
     var id = 0
+
+    var isLoggedIn = false
 }

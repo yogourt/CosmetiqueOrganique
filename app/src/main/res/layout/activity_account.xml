@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment_user_lists"
-        class="com.blogspot.android_czy_java.beautytips.view.account.UserListFragment"
+        class="com.blogspot.android_czy_java.beautytips.view.account.AccountActivityFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
