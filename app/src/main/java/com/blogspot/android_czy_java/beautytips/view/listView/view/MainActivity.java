@@ -129,18 +129,14 @@ public class MainActivity extends BaseMainActivity implements
         getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_FIRST_OPEN, false).apply();
     }
 
-    private boolean shouldDialogBeShown() {
-        return !getPreferences(MODE_PRIVATE).getBoolean(KEY_FIRST_OPEN, true) &&
-                viewModel.shouldSupportDialogBeShown();
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(shouldDialogBeShown() && interstitialAd.isLoaded()) {
-            showSupportPromptDialog();
-            viewModel.detailScreenOpenTimesAfterPromptDialog = 0;
+        if(viewModel.shouldInterstitialAdBeShown() && interstitialAd.isLoaded()) {
+            showInterstitialAd();
+            viewModel.detailScreenOpenTimesAfterInterstitialAd = 0;
         }
     }
 
@@ -201,7 +197,6 @@ public class MainActivity extends BaseMainActivity implements
     }
 
 
-
     private void prepareRatingRequest() {
         // Custom condition: 3 days and 4 launches
         RateThisApp.Config config = new RateThisApp.Config(3, 4);
@@ -212,24 +207,10 @@ public class MainActivity extends BaseMainActivity implements
         RateThisApp.showRateDialogIfNeeded(this, R.style.DialogStyle);
     }
 
-    private void showSupportPromptDialog() {
-        new SupportPromptDialog().show(fragmentManager, SupportPromptDialog.DIALOG_TAG);
-    }
-
-
-    @Override
-    public void onWatchAddButtonClicked() {
+    private void showInterstitialAd() {
         interstitialAd.show();
     }
 
-    @Override
-    public void onWriteButtonClicked() {
-        EmailIntentBuilder.from(this)
-                .to(getString(R.string.developer_mail))
-                .subject(getString(R.string.feedback_email_title))
-                .start();
-
-    }
 
     @Override
     public void attachBaseContext(Context newBase) {

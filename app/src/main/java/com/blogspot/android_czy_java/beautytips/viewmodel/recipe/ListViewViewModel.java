@@ -7,6 +7,10 @@ import androidx.lifecycle.ViewModel;
 import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseHelper;
 import com.blogspot.android_czy_java.beautytips.view.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.view.listView.model.User;
+import com.blogspot.android_czy_java.beautytips.listView.firebase.FirebaseHelper;
+import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
+import com.blogspot.android_czy_java.beautytips.listView.model.User;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.List;
 
@@ -25,10 +29,10 @@ public class ListViewViewModel extends ViewModel {
 
     public static final String SUBCATEGORY_ALL = "all";
 
-    public int detailScreenOpenTimesAfterPromptDialog = 0;
+    public int detailScreenOpenTimesAfterInterstitialAd = 0;
 
     /*
-     CategoryLabel and navigationPosition are used in Navigation Drawer: navigationPosition is used
+     Category and navigationPosition are used in Navigation Drawer: navigationPosition is used
      to check selected item (it's rose), categoryLiveData is used when creating firebase query
    */
     private int navigationPosition;
@@ -56,8 +60,9 @@ public class ListViewViewModel extends ViewModel {
             //set value of userStateLiveData. This will be observed in Main Activity to prepare
             // navigation drawer header.
             userStateLiveData = new MutableLiveData<>();
-            if(FirebaseHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
-            else if(FirebaseHelper.isUserAnonymous()) userStateLiveData.setValue(USER_STATE_ANONYMOUS);
+            if (FirebaseHelper.isUserNull()) userStateLiveData.setValue(USER_STATE_NULL);
+            else if (FirebaseHelper.isUserAnonymous())
+                userStateLiveData.setValue(USER_STATE_ANONYMOUS);
             else userStateLiveData.setValue(USER_STATE_LOGGED_IN);
 
             notifyRecyclerDataHasChanged();
@@ -112,7 +117,7 @@ public class ListViewViewModel extends ViewModel {
 
     //implementation of search tip list in searchView
     public void search(String query) {
-        if(query == null) return;
+        if (query == null) return;
         query = query.toLowerCase();
         this.query = query;
         searchWasConducted = true;
@@ -133,7 +138,7 @@ public class ListViewViewModel extends ViewModel {
         return query;
     }
 
-    public boolean shouldSupportDialogBeShown() {
-        return detailScreenOpenTimesAfterPromptDialog > 2;
+    public boolean shouldInterstitialAdBeShown() {
+        return detailScreenOpenTimesAfterInterstitialAd > 3;
     }
- }
+}
