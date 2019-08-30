@@ -5,48 +5,40 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment;
 import com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment;
-import com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.SupportPromptDialog;
-import com.blogspot.android_czy_java.beautytips.view.listView.view.dialogs.SupportPromptDialogInterface;
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel;
-import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainActivityViewModel;
 import com.kobakei.ratethisapp.RateThisApp;
 
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import de.cketti.mailto.EmailIntentBuilder;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static android.content.Intent.ACTION_SEARCH;
 import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
 public class MainActivity extends BaseMainActivity implements
-        IngredientActivityFragment.IngredientFragmentActivity,
-        SupportPromptDialogInterface {
+        IngredientActivityFragment.IngredientFragmentActivity {
 
-
-    private FrameLayout mDetailContainer;
 
     public static final String TAG_FRAGMENT_OPENING = "fragment_opening";
     public static final String TAG_FRAGMENT_INGREDIENT = "fragment_ingredient";
     public static final String TAG_FRAGMENT_DETAIL = "fragment_detail";
 
     public static final String KEY_FIRST_OPEN = "first open";
-    public static final String KEY_DETAIL_SCREEN_OPEN_TIMES = "detail screen open times";
 
     private FragmentManager fragmentManager;
+
+    @Inject
+    MainActivityViewModel viewModel;
 
     @Inject
     DetailActivityViewModel detailActivityViewModel;
@@ -60,33 +52,28 @@ public class MainActivity extends BaseMainActivity implements
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
 
-        final DetailActivityViewModel viewModel = ViewModelProviders.of(this).
-                get(DetailActivityViewModel.class);
-
+        AndroidInjection.inject(this);
 
         fragmentManager = getSupportFragmentManager();
 
         if (getResources().getBoolean(R.bool.is_tablet) &&
                 getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-            mDetailContainer = findViewById(R.id.fragment_detail_container);
 
+            detailActivityViewModel.getCurrentDetailFragmentLiveData().observe(this, fragmentTag -> {
+                if (fragmentTag == null) return;
 
-            viewModel.getCurrentDetailFragmentLiveData().observe(this, new Observer<String>() {
-                @Override
-                public void onChanged(@Nullable String fragmentTag) {
-                    if (fragmentTag == null) return;
+                switch (fragmentTag) {
+                    case TAG_FRAGMENT_DETAIL:
 
-                    if (fragmentTag.equals(TAG_FRAGMENT_DETAIL)) {
-
-                        if (viewModel.getIsShowingIngredientFromRecipe()) {
+                        if (detailActivityViewModel.getIsShowingIngredientFromRecipe()) {
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(R.anim.fade_in, R.anim.top_to_bottom)
                                     .replace(R.id.fragment_detail_container, new DetailDescriptionFragment(),
                                             TAG_FRAGMENT_DETAIL)
                                     .commit();
 
-                            viewModel.setIsShowingIngredientFromRecipe(false);
+                            detailActivityViewModel.setIsShowingIngredientFromRecipe(false);
 
                         }
 
@@ -96,9 +83,10 @@ public class MainActivity extends BaseMainActivity implements
                                         TAG_FRAGMENT_DETAIL)
                                 .commit();
 
-                    } else if (fragmentTag.equals(TAG_FRAGMENT_INGREDIENT)) {
+                        break;
+                    case TAG_FRAGMENT_INGREDIENT:
 
-                        if (viewModel.getIsShowingIngredientFromRecipe()) {
+                        if (detailActivityViewModel.getIsShowingIngredientFromRecipe()) {
                             fragmentManager.beginTransaction()
                                     .setCustomAnimations(R.anim.bottom_to_top, R.anim.fade_out)
                                     .replace(R.id.fragment_detail_container,
@@ -113,14 +101,15 @@ public class MainActivity extends BaseMainActivity implements
                                     .commit();
                         }
 
-                    } else if (fragmentTag.equals(TAG_FRAGMENT_OPENING)) {
+                        break;
+                    case TAG_FRAGMENT_OPENING:
 
                         fragmentManager.beginTransaction()
                                 .setCustomAnimations(R.anim.fade_in, R.anim.quick_fade_out)
                                 .replace(R.id.fragment_detail_container,
                                         new OpeningFragment(), TAG_FRAGMENT_OPENING)
                                 .commit();
-                    }
+                        break;
                 }
             });
         }
@@ -136,7 +125,7 @@ public class MainActivity extends BaseMainActivity implements
 
         if(viewModel.shouldInterstitialAdBeShown() && interstitialAd.isLoaded()) {
             showInterstitialAd();
-            viewModel.detailScreenOpenTimesAfterInterstitialAd = 0;
+            viewModel.setDetailScreenOpenTimesAfterInterstitialAd(0);
         }
     }
 
@@ -148,8 +137,7 @@ public class MainActivity extends BaseMainActivity implements
         if (detailActivityViewModel.getIsShowingIngredientFromRecipe()) {
             detailActivityViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
             detailActivityViewModel.setIsShowingIngredientFromRecipe(false);
-        } else if (viewModel.getCategory().equals(CATEGORY_ALL) &&
-                (!detailActivityViewModel.getCurrentDetailFragment()
+        } else if ((!detailActivityViewModel.getCurrentDetailFragment()
                         .equals(TAG_FRAGMENT_OPENING))) {
             detailActivityViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_OPENING);
         } else {
@@ -170,11 +158,6 @@ public class MainActivity extends BaseMainActivity implements
         }
     }
 
-    @Override
-    void initViewModel() {
-        viewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
-        viewModel.init();
-    }
 
     /*
 
@@ -198,12 +181,9 @@ public class MainActivity extends BaseMainActivity implements
 
 
     private void prepareRatingRequest() {
-        // Custom condition: 3 days and 4 launches
         RateThisApp.Config config = new RateThisApp.Config(3, 4);
         RateThisApp.init(config);
-        // Monitor launch times and interval from installation
         RateThisApp.onCreate(this);
-        // If the condition is satisfied, "Rate this app" dialog will be shown
         RateThisApp.showRateDialogIfNeeded(this, R.style.DialogStyle);
     }
 

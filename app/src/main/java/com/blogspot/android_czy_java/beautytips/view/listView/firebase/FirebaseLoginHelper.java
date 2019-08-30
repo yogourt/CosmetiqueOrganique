@@ -7,7 +7,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.ListViewViewModel;
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainActivityViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -29,12 +29,11 @@ import timber.log.Timber;
 import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_ANONYMOUS;
 import static com.blogspot.android_czy_java.beautytips.view.listView.model.User.USER_STATE_LOGGED_IN;
 import static com.blogspot.android_czy_java.beautytips.view.listView.utils.LoginProvidersHelper.saveProvidedPhoto;
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.MyDrawerLayoutListener.CATEGORY_ALL;
 
 public class FirebaseLoginHelper {
 
     public static final int RC_SIGN_IN = 123;
-    //list of authentication providers
+    //list of authentication login_providers
     private static final List<AuthUI.IdpConfig> providers = Arrays.asList(
             new AuthUI.IdpConfig.EmailBuilder().build(),
             new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -50,10 +49,10 @@ public class FirebaseLoginHelper {
 
     private MainViewInterface activity;
 
-    private ListViewViewModel viewModel;
+    private MainActivityViewModel viewModel;
 
 
-    public FirebaseLoginHelper(MainViewInterface activity, ListViewViewModel viewModel) {
+    public FirebaseLoginHelper(MainViewInterface activity, MainActivityViewModel viewModel) {
         mAuth = FirebaseAuth.getInstance();
         this.activity = activity;
         this.viewModel = viewModel;
@@ -85,12 +84,6 @@ public class FirebaseLoginHelper {
     }
 
 
-    public void logOut() {
-        mUserPhotoReference = null;
-        mAuth.signOut();
-        signInAnonymously();
-    }
-
     /*
       The actual signing in is handled by FirebaseUI-auth and we are just listening for change to
       update listView UI
@@ -99,8 +92,6 @@ public class FirebaseLoginHelper {
         mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //TODO: activityViewModel.setCategory(CATEGORY_ALL);
-                viewModel.changeUserState(USER_STATE_LOGGED_IN);
 
                 final Uri photoUrl = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
                 if (photoUrl != null) {
@@ -156,16 +147,6 @@ public class FirebaseLoginHelper {
         });
     }
 
-    public void signInAnonymously() {
-        mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                viewModel.changeUserState(USER_STATE_ANONYMOUS);
-                //TODO: activityViewModel.setCategory(CATEGORY_ALL);
-                viewModel.notifyRecyclerDataHasChanged();
-            }
-        });
-    }
 
     private void setNicknameInNavDrawer() {
         if (mAuth.getCurrentUser() != null) {

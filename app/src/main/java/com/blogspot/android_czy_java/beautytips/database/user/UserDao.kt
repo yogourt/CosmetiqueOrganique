@@ -16,6 +16,6 @@ interface UserDao {
     @Query("UPDATE User SET isLoggedIn = 0 WHERE id = :userId ")
     fun logOut(userId: Long)
 
-    @Query("SELECT firebaseId FROM User WHERE isLoggedIn")
-    fun getUserFirebaseId(): String
+    @Query("SELECT * FROM User")
+    fun getUsers(): List<UserModel>
 }

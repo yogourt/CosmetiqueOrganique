@@ -9,7 +9,7 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
     public IngredientListAdapter(Context context,
                                  List<IngredientModel> list,
                                  PositionListener positionListener,
-                                 ListViewViewModel activityViewModel,
+                                 MainActivityViewModel activityViewModel,
                                  DetailActivityViewModel viewModel,
                                  float itemHeightDivider) {
 

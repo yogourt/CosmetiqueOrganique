@@ -139,7 +139,9 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="margin_vert_detail_fragments">16dp</dimen>
     <dimen name="very_high_bottom_margin_for_detail">60dp</dimen>
     <dimen name="horiz_list_bottom_padding">24dp</dimen>
-    <dimen name="main_list_bottom_padding">40dp</dimen>
+    <dimen name="main_list_bottom_padding">48dp</dimen>
     <dimen name="card_expanded_padding">12dp</dimen>
+    <dimen name="start_margin_for_app_features">42dp</dimen>
+    <dimen name="bottom_margin_for_app_features">60dp</dimen>
 
 </resources>

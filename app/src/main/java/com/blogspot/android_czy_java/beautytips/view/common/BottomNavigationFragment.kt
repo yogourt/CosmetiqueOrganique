@@ -1,7 +1,5 @@
 package com.blogspot.android_czy_java.beautytips.view.common
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -9,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.view.account.AccountActivity
 import com.blogspot.android_czy_java.beautytips.view.account.AccountActivityFragment
-import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity
 import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivityFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.fragment_main_bottom_navigation.view.*
+import kotlinx.android.synthetic.main.fragment_main_bottom_navigation.view.bottom_navigation
 
 class BottomNavigationFragment : AppFragment() {
 
@@ -60,13 +56,12 @@ class BottomNavigationFragment : AppFragment() {
                 MainActivityFragment())?.commit()
     }
 
-    private fun getCurrentFragment(item: MenuItem): NestedRecipeListFragment? {
-        val fragment = when (item.itemId) {
+    private fun getCurrentFragment(item: MenuItem): Fragment? {
+        return when (item.itemId) {
             R.id.menu_home -> MainActivityFragment()
             R.id.menu_account -> AccountActivityFragment()
             else -> null
         }
-        return fragment
     }
 
     private fun replaceFragment(fragment: Fragment) {

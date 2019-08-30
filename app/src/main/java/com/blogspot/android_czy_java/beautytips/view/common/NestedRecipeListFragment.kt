@@ -21,7 +21,7 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_nested_list.*
 import javax.inject.Inject
 
-abstract class NestedRecipeListFragment: AppFragment(), NestedListCallback {
+abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
 
     @Inject
     lateinit var activityViewModel: DetailActivityViewModel
@@ -38,6 +38,7 @@ abstract class NestedRecipeListFragment: AppFragment(), NestedListCallback {
         prepareViewModel()
 
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
@@ -53,7 +54,6 @@ abstract class NestedRecipeListFragment: AppFragment(), NestedListCallback {
             }
             is GenericUiModel.LoadingError -> {
                 showInfoAboutError(uiModel.message)
-                //TODO: log error
             }
         }
     }
@@ -65,11 +65,17 @@ abstract class NestedRecipeListFragment: AppFragment(), NestedListCallback {
         }
 
         recycler_view.apply {
-            layoutManager = LinearLayoutManager(context,
-                    RecyclerView.VERTICAL, false)
-            adapter = MainListAdapter(this@NestedRecipeListFragment, recyclerViewList)
+            if (adapter == null) {
+                layoutManager = LinearLayoutManager(context,
+                        RecyclerView.VERTICAL, false)
+                adapter = MainListAdapter(this@NestedRecipeListFragment, recyclerViewList)
+            } else {
+                (adapter as MainListAdapter).apply {
+                    parents = recyclerViewList
+                    notifyItemInserted(recyclerViewList.data.size - 1)
+                }
+            }
         }
-
     }
 
     private fun showInfoAboutError(message: String) {
@@ -80,6 +86,7 @@ abstract class NestedRecipeListFragment: AppFragment(), NestedListCallback {
         ).setAction(
                 R.string.retry
         ) { retryDataLoading() }
+                .show()
     }
 
     override fun onRecipeClick(recipeId: Long) {
@@ -95,7 +102,5 @@ abstract class NestedRecipeListFragment: AppFragment(), NestedListCallback {
     abstract fun retryDataLoading()
 
     abstract fun prepareViewModel()
-
-
 
 }

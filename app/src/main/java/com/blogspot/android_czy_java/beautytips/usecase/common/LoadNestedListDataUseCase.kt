@@ -15,14 +15,19 @@ abstract class LoadNestedListDataUseCase<RECIPE_REQUEST>(
 
             for (recipeRequest in request.requests) {
                 loadRecipesUseCase.execute(recipeRequest)
-                        .subscribe { result ->
-                            it.onNext(InnerListData(result.subList(0, min(15, result.size)),
-                                    createListTitle(recipeRequest)))
-                            counter++
-                            if (counter == request.requests.size) {
-                                it.onComplete()
-                            }
-                        }
+                        .subscribe(
+                                { result ->
+                                    it.onNext(InnerListData(result.subList(0, min(15, result.size)),
+                                            createListTitle(recipeRequest)))
+                                    counter++
+                                    if (counter == request.requests.size) {
+                                        it.onComplete()
+                                    }
+                                },
+                                { error ->
+                                    it.onError(error)
+                                }
+                        )
             }
         }
     }

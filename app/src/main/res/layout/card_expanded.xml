@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/bluegrey900"
-        app:cardCornerRadius="4dp">
+        app:cardCornerRadius="4dp"
+        android:elevation="12dp">
 
         <ImageView
             android:id="@+id/image"

@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.card_expanded.view.*
 import kotlinx.android.synthetic.main.main_list_item.view.*
 
 class MainListAdapter(private val callback: NestedListCallback,
-                      private val parents: MainListData)
+                      public var parents: MainListData)
     : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()

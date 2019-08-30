@@ -184,5 +184,10 @@
     <string name="retry">Retry</string>
     <string name="nav_account">Account</string>
     <string name="notify_developer">Notify developer</string>
+    <string name="info_for_anonymous">Please login to use all the app features:</string>
+    <string name="login">Log in</string>
+    <string name="info_for_anonymous_2">• user profile
+        \n• custom recipe lists
+        \n• adding comments</string>
 
 </resources>

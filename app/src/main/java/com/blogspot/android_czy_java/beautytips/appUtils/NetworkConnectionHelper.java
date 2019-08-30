@@ -15,7 +15,7 @@ public class NetworkConnectionHelper {
         if(cm != null) {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             return activeNetwork != null &&
-                    activeNetwork.isConnectedOrConnecting();
+                    activeNetwork.isConnected();
         }
         return false;
     }

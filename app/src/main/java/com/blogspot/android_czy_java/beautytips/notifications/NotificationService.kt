@@ -9,7 +9,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.blogspot.android_czy_java.beautytips.R
 
-import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseHelper
 import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseLoginHelper
 import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity
 import com.google.firebase.database.FirebaseDatabase
@@ -17,33 +16,29 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM
-import timber.log.Timber
 
 class NotificationService : FirebaseMessagingService() {
 
     companion object {
 
-        private val CHANNEL_ID = "Comments notifications"
+        private const val CHANNEL_ID = "Comments notifications"
     }
 
     private var isChannelCreated = false
 
     override fun onNewToken(token: String?) {
-        if (!FirebaseHelper.isUserNull() && !FirebaseHelper.isUserAnonymous()) {
             FirebaseDatabase.getInstance().getReference("userTokens").child(
                     FirebaseLoginHelper.getUserId()).setValue(token)
-        }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
 
-        Timber.d("Notification sent from onMessageReceived")
         if (remoteMessage != null) {
             createNotificationChannel()
 
             val intent = Intent().setClass(this, MainActivity::class.java)
             val tipId = remoteMessage.data["tip"]
-            intent.putExtra(KEY_ITEM, tipId);
+            intent.putExtra(KEY_ITEM, tipId)
             val uniqueInt = (System.currentTimeMillis() and 0xfffffff).toInt()
             val pendingIntent = PendingIntent.getActivity(this, uniqueInt,
                     intent, PendingIntent.FLAG_CANCEL_CURRENT)

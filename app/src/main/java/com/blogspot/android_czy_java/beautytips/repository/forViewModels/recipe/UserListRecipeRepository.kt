@@ -3,7 +3,7 @@ package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.usecase.account.UserListRecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
 import io.reactivex.Single
 
 class UserListRecipeRepository(private val recipeDao: RecipeDao) :

@@ -71,10 +71,6 @@
             android:theme="@style/ActivityDialogTheme" />
 
 
-        <activity
-            android:name=".view.account.AccountActivity"
-            android:launchMode="singleTop" />
-
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"

@@ -21,10 +21,15 @@ class DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideUserDao(db: AppDatabase) = db.userDao()
+
+    @Provides
+    @Singleton
     fun provideAppDatabase(context: Context) = AppDatabase.getInstance(context)
 
     @Provides
     @Singleton
     fun provideFirebaseToRoom(db: AppDatabase) = FirebaseToRoom(db)
+
 
 }

@@ -17,6 +17,7 @@ import io.github.inflationx.viewpump.ViewPump
 import timber.log.Timber
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
+import io.reactivex.plugins.RxJavaPlugins
 
 
 class MyApplication : Application(), HasSupportFragmentInjector, HasActivityInjector {
@@ -44,7 +45,8 @@ class MyApplication : Application(), HasSupportFragmentInjector, HasActivityInje
             Timber.plant(Timber.DebugTree())
         }
 
-        FirebaseDatabase.getInstance().reference.keepSynced(true)
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        FirebaseDatabase.getInstance().getReference("tipNumber").keepSynced(true)
 
         ViewPump.init(ViewPump.builder()
                 .addInterceptor(CalligraphyInterceptor(
@@ -58,6 +60,9 @@ class MyApplication : Application(), HasSupportFragmentInjector, HasActivityInje
                 .context(this)
                 .build()
         component.inject(this)
+
+
+        RxJavaPlugins.setErrorHandler { }
 
     }
 
