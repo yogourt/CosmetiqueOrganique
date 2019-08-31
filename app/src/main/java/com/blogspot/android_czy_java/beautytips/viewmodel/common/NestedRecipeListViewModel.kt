@@ -23,12 +23,8 @@ abstract class NestedRecipeListViewModel<RECIPE_REQUEST>(
 
     private val disposable = CompositeDisposable()
 
-    fun init() {
-        if (listData.data.isEmpty()) {
+    open fun init() {
             loadRecipes()
-        } else {
-            //recipeListLiveData.value = GenericUiModel.LoadingSuccess(listData)
-        }
     }
 
     fun retry() {

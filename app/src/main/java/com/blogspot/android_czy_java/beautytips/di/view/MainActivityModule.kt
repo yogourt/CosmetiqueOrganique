@@ -34,9 +34,8 @@ abstract class MainActivityModule {
         @Provides
         @IntoMap
         @ViewModelKey(MainActivityViewModel::class)
-        fun provideMainActivityViewModel(getCurrentUserUseCase: GetCurrentUserUseCase,
-                                         loginUseCase: LoginUseCase): ViewModel =
-                MainActivityViewModel(getCurrentUserUseCase, loginUseCase)
+        fun provideMainActivityViewModel(loginUseCase: LoginUseCase): ViewModel =
+                MainActivityViewModel(loginUseCase)
     }
 
     @Module

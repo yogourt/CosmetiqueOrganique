@@ -6,12 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "User")
 data class UserModel(
-        val firebaseId: String,
+        @PrimaryKey
+        val id: String,
         val nickname: String,
         val photo: String
-) {
-    @PrimaryKey
-    var id = 0
-
-    var isLoggedIn = false
-}
+)

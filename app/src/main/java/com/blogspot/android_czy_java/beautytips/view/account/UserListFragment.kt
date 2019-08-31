@@ -24,6 +24,4 @@ class UserListFragment: NestedRecipeListFragment() {
         viewModel.init()
     }
 
-
-
 }

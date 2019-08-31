@@ -2,7 +2,8 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:id="@+id/fragment_account">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -13,11 +14,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <fragment
+            <include
+                layout="@layout/layout_user_info" />
+
+            <FrameLayout
                 android:id="@+id/fragment_user_lists"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <fragment
                 class="com.blogspot.android_czy_java.beautytips.view.account.UserListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            </FrameLayout>
 
         </LinearLayout>
 

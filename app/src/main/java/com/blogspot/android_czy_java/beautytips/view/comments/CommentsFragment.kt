@@ -116,7 +116,7 @@ class CommentsFragment {
                         Context context = getContext();
                         if (context != null && !NetworkConnectionHelper.isInternetConnection(context)) {
                             SnackbarHelper.showUnableToAddComment(commentsView);
-                        } else if (FirebaseHelper.isUserAnonymous()) {
+                        } else if (FirebaseHelper.isUserAnonymousOrNull()) {
                             SnackbarHelper.showFeatureForLoggedInUsersOnly(
                                     getString(R.string.feature_add_comments), commentsView);
                         } else {

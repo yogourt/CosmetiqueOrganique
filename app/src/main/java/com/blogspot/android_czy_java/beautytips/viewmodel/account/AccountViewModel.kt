@@ -1,22 +1,70 @@
 package com.blogspot.android_czy_java.beautytips.viewmodel.account
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.blogspot.android_czy_java.beautytips.R
+import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCase
+import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.firebase.ui.auth.AuthUI
-import java.util.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class AccountViewModel(private val loginUseCase: LoginUseCase,
                        private val getCurrentUserUseCase: GetCurrentUserUseCase) : ViewModel() {
 
-    val request_code_login = 123
 
-    val login_providers = listOf(
+    private val defaultErrorMessage = "Sorry, an error occurred. "
+
+    val requestCode = 123
+
+    private val providers = listOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.FacebookBuilder().setPermissions(listOf("public_profile")).build())
 
+    private val disposable = CompositeDisposable()
 
-    fun isUserLoggedIn() = (getCurrentUserUseCase.execute() != null)
+    val userLiveData = MutableLiveData<GenericUiModel<UserModel>>()
+
+    fun init() {
+        if (!isUserAnonymous()) {
+            loadUser()
+        }
+    }
+
+    private fun loadUser() {
+        disposable.add(getCurrentUserUseCase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            userLiveData.value = GenericUiModel.LoadingSuccess(it)
+                        },
+                        {
+                            userLiveData.value = GenericUiModel.LoadingError(it.message
+                                    ?: defaultErrorMessage)
+                        }
+                ))
+    }
+
+    fun isUserAnonymous(): Boolean {
+        return loginUseCase.isUserAnonymousOrNull() ?: let {
+            loginUseCase.loginAnonymously()
+            true
+        }
+    }
+
+    fun buildIntentForLoginActivity() = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setIsSmartLockEnabled(false)
+            .setAvailableProviders(providers)
+            .setTheme(R.style.LoginStyle)
+            .setLogo(R.drawable.withoutback)
+            .build()
+
+    fun reloadUser() = loadUser()
 
 }
