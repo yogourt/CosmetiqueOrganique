@@ -279,6 +279,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
                         recreate(), this is why DrawerListener is added and inside it selection of item
                         is handled.
                          */
+                        mDrawerLayout.removeDrawerListener(mDrawerListener);
                         mDrawerListener = new MyDrawerLayoutListener(BaseMainActivity.this, viewModel,
                                 item.getItemId());
                         mDrawerLayout.addDrawerListener(mDrawerListener);

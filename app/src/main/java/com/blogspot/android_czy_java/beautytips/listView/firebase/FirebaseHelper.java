@@ -69,29 +69,29 @@ public class FirebaseHelper {
                                         continue;
                                     }
 
-                                    String author = String.valueOf(snapshot.child("author").getValue());
+                                    String author = String.valueOf(snapshot.child("authorId").getValue());
                                     String id = snapshot.getKey();
                                     item.setId(id);
-                                    if (!author.equals("null")) item.setAuthorId(author);
+                                    if (!author.equals("null")) {
+                                        item.setAuthorId(author);
+                                        //if the language is other than english & current user is not author of this tip, don't show it
+                                        if(item.getLanguage() != null && !author.equals(FirebaseLoginHelper.getUserId())) {
+                                                continue;
+                                        }
+                                    }
 
                                     if (!isUserNull() && !isUserAnonymous()
                                             && snapshot.child(FirebaseLoginHelper.getUserId()).getValue() != null) {
                                         item.setInFav(true);
                                     }
                                     list.add(item);
-                                    viewModel.setRecyclerViewList(list);
                                 }
                             }
 
                             //sort the list if the order should be popular
                             if (viewModel.getOrder().equals(ORDER_POPULAR)) {
-                                Collections.sort(list, new Comparator<ListItem>() {
-                                    @Override
-                                    public int compare(ListItem o1, ListItem o2) {
-                                        return (int) (((TipListItem) o1).getFavNum() -
-                                                ((TipListItem) o2).getFavNum());
-                                    }
-                                });
+                                Collections.sort(list, (o1, o2) -> (int) (((TipListItem) o1).getFavNum() -
+                                        ((TipListItem) o2).getFavNum()));
                             }
                             viewModel.setRecyclerViewList(list);
                         }

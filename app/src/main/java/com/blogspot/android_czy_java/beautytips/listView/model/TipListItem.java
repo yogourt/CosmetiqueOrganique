@@ -14,6 +14,7 @@ public class TipListItem extends ListItem implements Serializable{
     public String authorId;
     public long favNum;
     public boolean inFav;
+    public String language;
     
     public TipListItem() {}
 
@@ -70,6 +71,10 @@ public class TipListItem extends ListItem implements Serializable{
 
     public void setInFav(boolean inFav) {
         this.inFav = inFav;
+    }
+
+    public String getLanguage() {
+        return language;
     }
 
 }
