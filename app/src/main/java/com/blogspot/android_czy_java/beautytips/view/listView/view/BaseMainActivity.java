@@ -59,9 +59,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
     SearchView mSearchView;
 
-
-    FirebaseLoginHelper mLoginHelper;
-
     CircleImageView photoIv;
     TextView nicknameTv;
 
@@ -85,7 +82,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        mLoginHelper = new FirebaseLoginHelper(this, viewModel);
+
 
         if (savedInstanceState == null) {
             MobileAds.initialize(this, getResources().getString(R.string.add_mob_app_id));
@@ -116,11 +113,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
     }
     */
 
-    @Override
-    protected void onDestroy() {
-        mLoginHelper = null;
-        super.onDestroy();
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -147,7 +139,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
             if (resultCode == RESULT_TERMINATE) {
                 onBackPressed();
             } else if (resultCode == RESULT_LOG_IN) {
-                mLoginHelper.showSignInScreen();
+
             } else if (resultCode == RESULT_LOG_IN_ANONYMOUSLY) {
                 viewModel.logInAnonymously();
             }
@@ -157,7 +149,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                mLoginHelper.signIn();
                 showPickNicknameDialog();
             } else {
                 //if response is null the user canceled sign in flow using back button, so we sign
@@ -178,10 +169,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
                             .into(photoIv);
                     SnackbarHelper.showAddImageMayTakeSomeTime(layout);
                 }
-                if (isPhotoSaving) {
-                    mLoginHelper.stopPreviousUserPhotoSaving();
-                }
-                mLoginHelper.saveUserPhoto(photoUri);
                 isPhotoSaving = true;
             }
         }
@@ -270,7 +257,6 @@ public abstract class BaseMainActivity extends AppCompatActivity
      */
     @Override
     public void onDialogSaveButtonClick(String nickname) {
-        mLoginHelper.saveNickname(nickname);
         setNickname(nickname);
     }
 

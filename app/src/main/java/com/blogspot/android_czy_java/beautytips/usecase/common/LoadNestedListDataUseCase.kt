@@ -1,12 +1,19 @@
 package com.blogspot.android_czy_java.beautytips.usecase.common
 
+import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.RecipeRepositoryInterface
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.InnerListData
 import io.reactivex.Observable
+import io.reactivex.Single
 import kotlin.math.min
 
 abstract class LoadNestedListDataUseCase<RECIPE_REQUEST>(
-        private val loadRecipesUseCase: LoadRecipesUseCase<RECIPE_REQUEST>) {
+        private val loadRecipesUseCase: LoadRecipesUseCase<RECIPE_REQUEST>,
+        private val recipeRepositoryInterface: RecipeRepositoryInterface<RECIPE_REQUEST>) {
+
+    fun isDatabaseEmpty(): Single<Boolean> = Single.create{
+        it.onSuccess(recipeRepositoryInterface.getAllRecipesIds().isEmpty())
+    }
 
     fun execute(request: NestedListRequest<RECIPE_REQUEST>): Observable<InnerListData> {
 
@@ -14,6 +21,7 @@ abstract class LoadNestedListDataUseCase<RECIPE_REQUEST>(
             var counter = 0
 
             for (recipeRequest in request.requests) {
+
                 loadRecipesUseCase.execute(recipeRequest)
                         .subscribe(
                                 { result ->

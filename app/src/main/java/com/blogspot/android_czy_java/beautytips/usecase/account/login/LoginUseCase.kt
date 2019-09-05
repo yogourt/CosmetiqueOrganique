@@ -11,6 +11,8 @@ class LoginUseCase {
         return FirebaseAuth.getInstance().currentUser?.isAnonymous
     }
 
+    fun isUserNull() = FirebaseAuth.getInstance().currentUser == null
+
     fun loginAnonymously() = FirebaseAuth.getInstance().signInAnonymously().isSuccessful
 
     fun loginAnonymouslyIfNull() {
@@ -18,9 +20,9 @@ class LoginUseCase {
     }
 
     fun saveAndReturnUser(firebaseId: Long): Single<UserModel> =
-        Single.create {
-            FirebaseDatabase.getInstance().reference
-        }
+            Single.create {
+                FirebaseDatabase.getInstance().reference
+            }
 
 
 }

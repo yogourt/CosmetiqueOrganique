@@ -5,14 +5,14 @@ import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInte
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.repository.FirebaseToRoom
+import com.blogspot.android_czy_java.beautytips.exception.common.DatabaseIsEmptyException
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
 
-class RecipeRepository(private val recipeDao: RecipeDao, private val firebaseToRoom: FirebaseToRoom) :
-        RecipeRepositoryInterface<RecipeRequest> {
+class RecipeRepository(private val recipeDao: RecipeDao) :
+        RecipeRepositoryInterface<RecipeRequest>(recipeDao) {
 
     override fun getRecipes(request: RecipeRequest): Single<List<RecipeModel>> {
         return when (request.order) {
@@ -24,21 +24,8 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val firebaseToR
     private fun getByDate(category: CategoryInterface): Single<List<RecipeModel>> {
 
         return Single.create { emitter ->
-
-
             if (recipeDao.getAllRecipesIds().isEmpty()) {
-                //if (true) {
-
-                firebaseToRoom.observeFirebaseAndSaveToRoom().subscribe({
-                    run {
-                        emitResultByDate(category, emitter)
-                    }
-                },
-                        { error ->
-                            emitter.onError(error)
-                        }
-
-                )
+                emitter.onError(DatabaseIsEmptyException())
             } else {
                 emitResultByDate(category, emitter)
             }
@@ -62,17 +49,7 @@ class RecipeRepository(private val recipeDao: RecipeDao, private val firebaseToR
         return Single.create { emitter ->
 
             if (recipeDao.getAllRecipesIds().isEmpty()) {
-
-                firebaseToRoom.observeFirebaseAndSaveToRoom().subscribe({
-                    run {
-                        emitResultByPopularity(category, emitter)
-                    }
-                },
-                        { error ->
-                            emitter.onError(error)
-                        }
-
-                )
+                emitter.onError(DatabaseIsEmptyException())
             } else {
                 emitResultByPopularity(category, emitter)
             }

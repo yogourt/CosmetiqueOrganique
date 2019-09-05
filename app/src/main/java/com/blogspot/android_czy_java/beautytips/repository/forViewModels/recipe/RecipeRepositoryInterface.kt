@@ -1,9 +1,12 @@
 package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import io.reactivex.Single
 
-interface RecipeRepositoryInterface<REQUEST> {
+abstract class RecipeRepositoryInterface<REQUEST>(private val recipeDao: RecipeDao) {
 
-    fun  getRecipes(request: REQUEST):  Single<List<RecipeModel>>
+    abstract fun getRecipes(request: REQUEST):  Single<List<RecipeModel>>
+
+    fun getAllRecipesIds() = recipeDao.getAllRecipesIds()
 }

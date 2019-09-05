@@ -15,8 +15,9 @@ import dagger.Provides
 class RecipeUseCaseModule {
 
     @Provides
-    fun provideLoadListDataUseCase(loadRecipesUseCase: LoadRecipesUseCase<RecipeRequest>)
-            = LoadListDataUseCase(loadRecipesUseCase)
+    fun provideLoadListDataUseCase(loadRecipesUseCase: LoadRecipesUseCase<RecipeRequest>,
+                                   recipeRepository: RecipeRepositoryInterface<RecipeRequest>)
+            = LoadListDataUseCase(loadRecipesUseCase, recipeRepository)
 
     @Provides
     fun provideLoadRecipesUseCase(recipeRepository: RecipeRepositoryInterface<RecipeRequest>)

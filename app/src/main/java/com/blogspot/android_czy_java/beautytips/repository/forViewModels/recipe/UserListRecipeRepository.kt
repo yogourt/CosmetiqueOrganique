@@ -7,7 +7,7 @@ import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserLis
 import io.reactivex.Single
 
 class UserListRecipeRepository(private val recipeDao: RecipeDao) :
-        RecipeRepositoryInterface<UserListRecipeRequest> {
+        RecipeRepositoryInterface<UserListRecipeRequest>(recipeDao) {
 
     override fun getRecipes(request: UserListRecipeRequest): Single<List<RecipeModel>> {
         return Single.create { emitter ->

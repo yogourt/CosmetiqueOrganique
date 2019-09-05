@@ -70,6 +70,7 @@
             android:parentActivityName=".view.listView.view.MainActivity"
             android:theme="@style/ActivityDialogTheme" />
 
+        <activity android:name=".view.splash.SplashActivity" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"

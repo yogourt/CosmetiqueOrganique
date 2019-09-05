@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
+import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderViewModel

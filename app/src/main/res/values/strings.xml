@@ -189,5 +189,6 @@
     <string name="info_for_anonymous_2">• user profile
         \n• custom recipe lists
         \n• adding comments</string>
+    <string name="no_internet_data_loading">Turn on internet connection to load data</string>
 
 </resources>

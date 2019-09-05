@@ -9,8 +9,6 @@ import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 import com.blogspot.android_czy_java.beautytips.view.common.NestedRecipeListFragment
 
 import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM
-import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
-import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import javax.inject.Inject
 
 
@@ -22,11 +20,17 @@ class MainActivityFragment : NestedRecipeListFragment() {
 
     override fun prepareViewModel() {
         recipeViewModel.recipeListLiveData.observe(this, Observer { this.render(it) })
+        recipeViewModel.networkNeededNotAvailableLiveData.observe(this, Observer { this.onNetworkNeedChanged(it) })
         recipeViewModel.init()
     }
 
     override fun retryDataLoading() {
         recipeViewModel.retry()
+    }
+
+    override fun onNetworkAvailableOrNotNeeded() {
+        super.onNetworkAvailableOrNotNeeded()
+        recipeViewModel.onNetworkAvailableOrNotNeeded()
     }
 
     override fun onResume() {

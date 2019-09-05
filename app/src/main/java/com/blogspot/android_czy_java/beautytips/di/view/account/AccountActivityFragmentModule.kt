@@ -50,7 +50,7 @@ abstract class AccountActivityFragmentModule {
                 factory: ViewModelProvider.Factory,
                 target: AccountActivityFragment
         ): AccountViewModel =
-                ViewModelProviders.of(target, factory).get(AccountViewModel::class.java)
+                ViewModelProviders.of(target.requireActivity(), factory).get(AccountViewModel::class.java)
 
 
     }

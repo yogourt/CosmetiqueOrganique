@@ -27,8 +27,9 @@ class NotificationService : FirebaseMessagingService() {
     private var isChannelCreated = false
 
     override fun onNewToken(token: String?) {
-            FirebaseDatabase.getInstance().getReference("userTokens").child(
-                    FirebaseLoginHelper.getUserId()).setValue(token)
+           //TODO:
+        //FirebaseDatabase.getInstance().getReference("userTokens").child(
+          //          FirebaseLoginHelper.getUserId()).setValue(token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {

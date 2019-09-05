@@ -22,8 +22,9 @@ class AccountUseCaseModule {
 
     @Provides
     fun provideLoadRecipesFromUserListUseCase(
-            loadRecipesUseCase: LoadRecipesUseCase<UserListRecipeRequest>
-    ) = LoadRecipesFromUserListUseCase(loadRecipesUseCase)
+            loadRecipesUseCase: LoadRecipesUseCase<UserListRecipeRequest>,
+            recipeRepository: UserListRecipeRepository
+    ) = LoadRecipesFromUserListUseCase(loadRecipesUseCase, recipeRepository)
 
     @Provides
     fun provideLoadRecipesUseCase(recipeRepository: UserListRecipeRepository)
