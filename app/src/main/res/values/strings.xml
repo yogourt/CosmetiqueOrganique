@@ -35,6 +35,7 @@
     <string name="fav_label">%1$s</string>
     <string name="banner_ad_unit_id">ca-app-pub-5993828134151976/3917748262</string>
     <string name="banner_ad_test_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="support_unit_ad_id">ca-app-pub-5993828134151976/1635349488</string>
     <string name="ad_size">SMART_BANNER</string>
     <string name="add_mob_app_id">ca-app-pub-5993828134151976~2879998761</string>
     <string name="label_comments" formatted="true">Comments (%1$s)</string>
@@ -157,22 +158,8 @@
     <string name="label_face">for face,</string>
     <string name="label_body">for body?</string>
 
-
-    <!-- dialog support prompt strings -->
-    <string name="dialog_support_prompt_title">Are you willing to help?</string>
-    <string name="dialog_support_prompt_text">I am a single developer who would love to make this app grow!
-        You can help me by watching a short ad.
-        Please do and see this app changing in front of you!</string>
-
-    <string name="dialog_support_prompt_second_text">Also, if you have any ideas for app\'s features, write to me!</string>
-
-    <string name="dialog_support_prompt_button_watch_add">Watch ad</string>
-    <string name="dialog_support_prompt_button_write">Write</string>
-    <string name="dialog_support_prompt_close">Close</string>
-
     <string name="developer_mail">jagoda.sylwester@gmail.com</string>
     <string name="feedback_email_title">Feedback for Cosmetique Organique</string>
-    <string name="support_unit_ad_id">ca-app-pub-5993828134151976/1635349488</string>
     <string name="error_not_able_to_load_recipe">Sorry, the recipe wasn\'t found.</string>
     <string name="button_go_to_recipe">Go to recipe</string>
     <string name="button_discussion">Discussion</string>
@@ -189,6 +176,9 @@
     <string name="info_for_anonymous_2">• user profile
         \n• custom recipe lists
         \n• adding comments</string>
-    <string name="no_internet_data_loading">Turn on internet connection to load data</string>
+
+    <!-- splash activity strings -->
+    <string name="no_internet_data_loading">Turn on internet connection to download data</string>
+    <string name="splash_info_bottom">App is downloading necessary data</string>
 
 </resources>

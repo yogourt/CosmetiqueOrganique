@@ -19,7 +19,6 @@ import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_nested_list.*
-import kotlinx.android.synthetic.main.fragment_nested_list.view.*
 import javax.inject.Inject
 
 abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
@@ -27,20 +26,11 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
     @Inject
     lateinit var activityViewModel: DetailActivityViewModel
 
-    private lateinit var networkNeededSnackbar: Snackbar
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_nested_list,
+        return inflater.inflate(R.layout.fragment_nested_list,
                 container, false)
-
-        networkNeededSnackbar = Snackbar.make(
-                view.recycler_view,
-                getString(R.string.no_internet_data_loading),
-                Snackbar.LENGTH_INDEFINITE
-        )
-        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -110,20 +100,8 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
         }
     }
 
-    fun onNetworkNeedChanged(isNeededAndNotAvailable: Boolean) {
-        if(isNeededAndNotAvailable) {
-            networkNeededSnackbar.show()
-        } else {
-            onNetworkAvailableOrNotNeeded()
-        }
-    }
-
     abstract fun retryDataLoading()
 
     abstract fun prepareViewModel()
-
-    open fun onNetworkAvailableOrNotNeeded() {
-        networkNeededSnackbar.dismiss()
-    }
 
 }

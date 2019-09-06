@@ -9,6 +9,7 @@ import com.blogspot.android_czy_java.beautytips.di.view.account.ProfileDetailsFr
 import com.blogspot.android_czy_java.beautytips.di.view.account.UserListFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.*
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.splash.SplashActivityModule
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
@@ -22,7 +23,8 @@ import javax.inject.Provider
     DetailIngredientsFragmentModule::class,
     UserListFragmentModule::class,
     AccountActivityFragmentModule::class,
-    ProfileDetailsFragmentModule::class
+    ProfileDetailsFragmentModule::class,
+    SplashActivityModule::class
 ])
 class ViewModelModule {
 

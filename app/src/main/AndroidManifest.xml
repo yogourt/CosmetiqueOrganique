@@ -31,11 +31,6 @@
             android:name=".view.listView.view.MainActivity"
             android:configChanges="locale">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -70,7 +65,15 @@
             android:parentActivityName=".view.listView.view.MainActivity"
             android:theme="@style/ActivityDialogTheme" />
 
-        <activity android:name=".view.splash.SplashActivity" />
+        <activity
+            android:name=".view.splash.SplashActivity"
+            android:theme="@style/FullScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:name="com.facebook.FacebookContentProvider"

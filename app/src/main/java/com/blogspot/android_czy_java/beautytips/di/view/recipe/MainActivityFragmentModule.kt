@@ -7,7 +7,7 @@ import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.livedata.LiveDataModule
 import com.blogspot.android_czy_java.beautytips.di.usecase.recipe.RecipeUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
-import com.blogspot.android_czy_java.beautytips.livedata.common.NetworkNeededNotAvailableLiveData
+import com.blogspot.android_czy_java.beautytips.livedata.common.NetworkLiveData
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.CreateRecipeRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivityFragment
@@ -21,8 +21,7 @@ import dagger.multibindings.IntoMap
 
 @Module(includes = [
     MainActivityFragmentModule.ProvideViewModel::class,
-    RecipeUseCaseModule::class,
-    LiveDataModule::class
+    RecipeUseCaseModule::class
 ])
 abstract class MainActivityFragmentModule {
 
@@ -39,10 +38,8 @@ abstract class MainActivityFragmentModule {
         @IntoMap
         @ViewModelKey(RecipeViewModel::class)
         fun provideRecipeViewModel(createRecipeRequestsUseCase: CreateRecipeRequestsUseCase,
-                                   loadListDataUseCase: LoadListDataUseCase,
-                                   networkNeededNotAvailableLiveData: NetworkNeededNotAvailableLiveData,
-                                   loginUseCase: LoginUseCase): ViewModel =
-                RecipeViewModel(createRecipeRequestsUseCase, loadListDataUseCase, networkNeededNotAvailableLiveData, loginUseCase)
+                                   loadListDataUseCase: LoadListDataUseCase): ViewModel =
+                RecipeViewModel(createRecipeRequestsUseCase, loadListDataUseCase)
     }
 
     @Module

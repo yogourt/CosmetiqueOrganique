@@ -20,17 +20,11 @@ class MainActivityFragment : NestedRecipeListFragment() {
 
     override fun prepareViewModel() {
         recipeViewModel.recipeListLiveData.observe(this, Observer { this.render(it) })
-        recipeViewModel.networkNeededNotAvailableLiveData.observe(this, Observer { this.onNetworkNeedChanged(it) })
         recipeViewModel.init()
     }
 
     override fun retryDataLoading() {
         recipeViewModel.retry()
-    }
-
-    override fun onNetworkAvailableOrNotNeeded() {
-        super.onNetworkAvailableOrNotNeeded()
-        recipeViewModel.onNetworkAvailableOrNotNeeded()
     }
 
     override fun onResume() {

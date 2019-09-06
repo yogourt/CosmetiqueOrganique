@@ -7,7 +7,7 @@ import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.livedata.LiveDataModule
 import com.blogspot.android_czy_java.beautytips.di.usecase.account.AccountUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
-import com.blogspot.android_czy_java.beautytips.livedata.common.NetworkNeededNotAvailableLiveData
+import com.blogspot.android_czy_java.beautytips.livedata.common.NetworkLiveData
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.CreateUserListRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.LoadRecipesFromUserListUseCase
@@ -20,9 +20,7 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 @Module(includes = [
-    UserListFragmentModule.ProvideViewModel::class,
-    AccountUseCaseModule::class,
-    LiveDataModule::class
+    UserListFragmentModule.ProvideViewModel::class
 ])
 abstract class UserListFragmentModule {
 
@@ -39,10 +37,8 @@ abstract class UserListFragmentModule {
         @IntoMap
         @ViewModelKey(UserListViewModel::class)
         fun provideUserListViewModel(createUserListRequestsUseCase: CreateUserListRequestsUseCase,
-                                     loadRecipesFromUserListUseCase: LoadRecipesFromUserListUseCase,
-                                     networkNeededNotAvailableLiveData: NetworkNeededNotAvailableLiveData,
-                                     loginUseCase: LoginUseCase): ViewModel =
-                UserListViewModel(createUserListRequestsUseCase, loadRecipesFromUserListUseCase, networkNeededNotAvailableLiveData, loginUseCase)
+                                     loadRecipesFromUserListUseCase: LoadRecipesFromUserListUseCase): ViewModel =
+                UserListViewModel(createUserListRequestsUseCase, loadRecipesFromUserListUseCase)
     }
 
     @Module

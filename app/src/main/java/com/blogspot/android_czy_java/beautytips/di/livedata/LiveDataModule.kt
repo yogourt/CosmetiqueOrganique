@@ -3,7 +3,7 @@ package com.blogspot.android_czy_java.beautytips.di.livedata
 import android.content.Context
 import android.net.ConnectivityManager
 import com.blogspot.android_czy_java.beautytips.MyApplication
-import com.blogspot.android_czy_java.beautytips.livedata.common.NetworkNeededNotAvailableLiveData
+import com.blogspot.android_czy_java.beautytips.livedata.common.NetworkLiveData
 import dagger.Module
 import dagger.Provides
 
@@ -11,7 +11,7 @@ import dagger.Provides
 class LiveDataModule {
 
     @Provides
-    fun provideNetworkLiveData(connectivityManager: ConnectivityManager) = NetworkNeededNotAvailableLiveData(connectivityManager)
+    fun provideNetworkLiveData(connectivityManager: ConnectivityManager) = NetworkLiveData(connectivityManager)
 
     @Provides
     fun provideConnectivityManager(context: MyApplication): ConnectivityManager =
