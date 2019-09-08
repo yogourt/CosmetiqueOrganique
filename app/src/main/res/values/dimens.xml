@@ -9,7 +9,7 @@
     <dimen name="header_bottom_padding">24dp</dimen>
     <dimen name="header_horiz_padding">16dp</dimen>
     <dimen name="username_text_size">22sp</dimen>
-    <dimen name="photo_size">72dp</dimen>
+    <dimen name="photo_size">90dp</dimen>
 
     <!-- list view dimens -->
     <dimen name="list_start_padding">0dp</dimen>
@@ -143,5 +143,8 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="card_expanded_padding">12dp</dimen>
     <dimen name="start_margin_for_app_features">42dp</dimen>
     <dimen name="bottom_margin_for_app_features">60dp</dimen>
+    <dimen name="account_top_margin">32dp</dimen>
+    <dimen name="label_space">4dp</dimen>
+    <dimen name="photo_bcg">100dp</dimen>
 
 </resources>

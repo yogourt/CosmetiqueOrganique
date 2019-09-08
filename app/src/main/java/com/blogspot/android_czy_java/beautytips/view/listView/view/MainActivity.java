@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment;
 import com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment;
+import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel;
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel;
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainActivityViewModel;
 import com.kobakei.ratethisapp.RateThisApp;
@@ -158,20 +159,6 @@ public class MainActivity extends BaseMainActivity implements
         }
     }
 
-
-    /*
-
-    OpeningFragmentActivity interface method
-
-     */
-
-
-
-    /*
-
-    IngredientFragmentActivity interface method
-
-     */
 
     @Override
     public void search(String query) {

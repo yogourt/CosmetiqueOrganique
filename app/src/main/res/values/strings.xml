@@ -180,5 +180,8 @@
     <!-- splash activity strings -->
     <string name="no_internet_data_loading">Turn on internet connection to download data</string>
     <string name="splash_info_bottom">App is downloading necessary data</string>
+    <string name="no_internet">No internet</string>
+    <string name="error_msg_common">An error occured</string>
+    <string name="about_me">About me:</string>
 
 </resources>

@@ -31,7 +31,7 @@ class AccountUseCaseModule {
             = LoadRecipesUseCase(recipeRepository)
 
     @Provides
-    fun provideLoginUseCase() = LoginUseCase()
+    fun provideLoginUseCase(repository: UserRepository) = LoginUseCase(repository)
 
     @Provides
     fun provideGetCurrentUserUseCase(repository: UserRepository) = GetCurrentUserUseCase(repository)

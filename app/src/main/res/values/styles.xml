@@ -54,9 +54,8 @@
     <!-- Navigation drawer -->
     <style name="UsernameStyle" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textSize">@dimen/username_text_size</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:fontFamily">cursive</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/pink200</item>
+        <item name="fontPath">fonts/Lobster2.ttf</item>
     </style>
 
     <style name="TitleStyle" parent="android:TextAppearance">

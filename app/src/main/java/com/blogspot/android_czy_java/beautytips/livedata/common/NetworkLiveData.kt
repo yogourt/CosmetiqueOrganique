@@ -37,6 +37,8 @@ class NetworkLiveData(private val connectivityManager: ConnectivityManager) : Li
     override fun onInactive() {
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
+
+    fun isConnection(): Boolean = connectivityManager.activeNetworkInfo?.isConnectedOrConnecting ?: false
 }
 
 

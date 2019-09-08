@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
@@ -27,16 +28,20 @@ class AccountActivityFragment : AppFragment() {
     @Inject
     lateinit var viewModel: AccountViewModel
 
+    private lateinit var infoForAnonymous: View
+
+    private lateinit var loginButton: Button
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_activity_account,
                 container, false)
 
 
-        if (!viewModel.isUserAnonymous()) {
-            makeUserListInvisible(view)
-            prepareInfoForAnonymous(view)
-        }
+        infoForAnonymous = view.fragment_info_for_anonymous
+        loginButton = view.login_button
+
+        prepareInfoForAnonymous()
 
         viewModel.userLiveData.observe(this, Observer { render(it) })
         viewModel.init()
@@ -49,48 +54,57 @@ class AccountActivityFragment : AppFragment() {
         AndroidSupportInjection.inject(this)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == viewModel.requestCode && resultCode == Activity.RESULT_OK) {
-            viewModel.reloadUser()
-        } else super.onActivityResult(requestCode, resultCode, data)
-    }
 
-    private fun makeUserListInvisible(view: View) {
-        view.fragment_user_lists.visibility = View.INVISIBLE
-    }
-
-    private fun prepareInfoForAnonymous(view: View) {
-        view.login_button.setOnClickListener {
-            openLoginActivity()
+    private fun prepareInfoForAnonymous() {
+        loginButton.setOnClickListener {
+            if (viewModel.isNetworkConnection()) {
+                openLoginActivity()
+            } else {
+                showInfoAboutError(getString(R.string.no_internet))
+            }
         }
     }
 
-    private fun render(uiModel: GenericUiModel<UserModel>) {
+    private fun render(uiModel: GenericUiModel<UserModel>?) {
+        if (uiModel != null) {
+            infoForAnonymous.visibility = View.INVISIBLE
+        } else {
+            infoForAnonymous.visibility = View.VISIBLE
+        }
         when (uiModel) {
             is GenericUiModel.LoadingSuccess -> {
-                prepareUserInfo(uiModel.data)
+                loading_indicator.visibility = View.INVISIBLE
             }
+
             is GenericUiModel.StatusLoading -> {
                 loading_indicator.visibility = View.VISIBLE
             }
             is GenericUiModel.LoadingError -> {
+                loading_indicator.visibility = View.INVISIBLE
                 showInfoAboutError(uiModel.message)
+                if (viewModel.isNetworkConnection()) {
+                    viewModel.logout()
+                }
             }
         }
     }
 
     private fun openLoginActivity() {
-        if (activity != null) {
-            activity!!.startActivityForResult(
-                    viewModel.buildIntentForLoginActivity(),
-                    viewModel.requestCode
-            )
-        }
+        startActivityForResult(
+                viewModel.buildIntentForLoginActivity(),
+                viewModel.requestCode
+        )
+
     }
 
-    private fun prepareUserInfo(user: UserModel) {
-        Glide.with(this).load(user.photo).into(photo)
-        nickname.text = user.nickname
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == viewModel.requestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.saveUserToDatabase()
+            } else {
+                showInfoAboutError(getString(R.string.error_msg_common))
+            }
+        } else super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun showInfoAboutError(message: String) {
@@ -98,12 +112,7 @@ class AccountActivityFragment : AppFragment() {
                 fragment_account,
                 message,
                 Snackbar.LENGTH_LONG
-        ).setAction(
-                R.string.retry
-        ) { retryDataLoading() }
-                .show()
+        ).show()
     }
-
-    private fun retryDataLoading() = viewModel.reloadUser()
 
 }

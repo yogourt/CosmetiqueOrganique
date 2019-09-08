@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.blogspot.android_czy_java.beautytips"
     android:installLocation="preferExternal">
 
@@ -55,8 +54,6 @@
             android:theme="@style/FullScreenTheme" />
 
         <activity android:name=".view.ingredient.IngredientActivity" />
-
-        <activity android:name=".view.welcome.WelcomeActivity" />
 
         <activity
             android:name=".view.newTip.view.NewTipActivity"

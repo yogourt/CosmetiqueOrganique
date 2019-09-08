@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
+import com.blogspot.android_czy_java.beautytips.livedata.common.NetworkLiveData
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
@@ -13,12 +14,13 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class AccountViewModel(private val loginUseCase: LoginUseCase,
-                       private val getCurrentUserUseCase: GetCurrentUserUseCase) : ViewModel() {
+                       private val getCurrentUserUseCase: GetCurrentUserUseCase,
+                       private val networkLiveData: NetworkLiveData) : ViewModel() {
 
 
-    private val defaultErrorMessage = "Sorry, an error occurred. "
+    private val defaultErrorMessage = "Sorry, an error occurred "
 
-    val requestCode = 123
+     val requestCode = 123
 
     private val providers = listOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
@@ -39,6 +41,7 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
         disposable.add(getCurrentUserUseCase.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { userLiveData.value = GenericUiModel.StatusLoading() }
                 .subscribe(
                         {
                             userLiveData.value = GenericUiModel.LoadingSuccess(it)
@@ -50,7 +53,24 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
                 ))
     }
 
-    fun isUserAnonymous(): Boolean {
+
+    fun saveUserToDatabase() {
+        disposable.add(loginUseCase.saveAndReturnUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { userLiveData.value = GenericUiModel.StatusLoading() }
+                .subscribe(
+                        {
+                            userLiveData.value = GenericUiModel.LoadingSuccess(it)
+                        },
+                        {
+                            userLiveData.value = GenericUiModel.LoadingError(it.message
+                                    ?: defaultErrorMessage)
+                        }
+                ))
+    }
+
+    private fun isUserAnonymous(): Boolean {
         return loginUseCase.isUserAnonymousOrNull() ?: let {
             loginUseCase.loginAnonymously()
             true
@@ -65,6 +85,10 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
             .setLogo(R.drawable.withoutback)
             .build()
 
-    fun reloadUser() = loadUser()
+    fun logout() {
+        loginUseCase.loginAnonymously()
+        userLiveData.value = null
+    }
 
+    fun isNetworkConnection(): Boolean = networkLiveData.isConnection()
 }
