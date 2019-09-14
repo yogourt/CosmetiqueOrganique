@@ -14,7 +14,6 @@ import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewMod
 import com.bumptech.glide.Glide
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile_details.view.*
-import kotlinx.android.synthetic.main.layout_user_info.*
 import javax.inject.Inject
 
 class ProfileDetailsFragment : AppFragment() {
@@ -60,6 +59,17 @@ class ProfileDetailsFragment : AppFragment() {
     private fun prepareButtons(view: View) {
         view.apply {
             logout_button.setOnClickListener { accountViewModel.logout() }
+
+            edit_button.setOnClickListener {
+                fragmentManager?.let {
+                    accountViewModel.userLiveData.value.apply {
+                        if (this is GenericUiModel.LoadingSuccess)
+                        ProfileDetailsEditDialogFragment.getInstance(this.data).show(it,
+                                ProfileDetailsEditDialogFragment.FRAGMENT_TAG)
+                    }
+                }
+            }
+
         }
     }
 
@@ -67,16 +77,23 @@ class ProfileDetailsFragment : AppFragment() {
         view?.apply {
             Glide.with(this).load(user.photo).into(photo)
             nickname.text = user.nickname
+            about_me.text = user.about
             logout_button.visibility = View.VISIBLE
         }
     }
 
     private fun prepareLayoutForAnonymous() {
         view?.apply {
-            Glide.with(this).load(R.color.bluegrey700).into(photo)
-            nickname.text = getString(R.string.label_anonymous)
             logout_button.visibility = View.INVISIBLE
+            Glide.with(this).clear(photo)
+            photo.setCircleBackgroundColorResource(R.color.bluegrey700)
+            nickname.text = getString(R.string.label_anonymous)
+
         }
+    }
+
+    fun saveNewUserInfo(user: UserModel) {
+        accountViewModel.updateUserData(user)
     }
 
 }

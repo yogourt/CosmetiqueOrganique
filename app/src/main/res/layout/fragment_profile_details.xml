@@ -22,6 +22,7 @@
         android:layout_height="@dimen/photo_size"
         android:contentDescription="@string/description_user_image"
         android:src="@color/bluegrey700"
+        app:civ_circle_background_color="@color/bluegrey700"
         app:layout_constraintEnd_toStartOf="@+id/nickname"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -33,7 +34,6 @@
         style="@style/UsernameStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/ic_edit"
         android:drawablePadding="@dimen/icon_padding"
         android:gravity="center_vertical"
         android:text="@string/label_anonymous"
@@ -57,6 +57,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/edit_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/logout_button"
+        app:layout_constraintEnd_toStartOf="@id/logout_button" />
+
     <TextView
         android:id="@+id/about_label"
         android:layout_width="wrap_content"
@@ -75,7 +85,6 @@
         android:layout_marginTop="@dimen/activity_margin"
         android:layout_marginEnd="@dimen/activity_margin"
         android:layout_marginBottom="@dimen/activity_margin"
-        android:drawableStart="@drawable/ic_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/about_label"
         app:layout_constraintTop_toBottomOf="@+id/photo"
@@ -84,9 +93,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintTop_toBottomOf="@id/about_me"
+        android:layout_margin="@dimen/activity_margin"
         android:background="@color/bluegrey700"
-        android:layout_margin="@dimen/activity_margin"/>
+        app:layout_constraintTop_toBottomOf="@id/about_me" />
 
     <ProgressBar
         android:id="@+id/loading_indicator"

@@ -27,6 +27,7 @@
     <color name="black_semi">#73000000</color>
 
     <color name="colorWhite">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="almostWhite">#fefefe</color>
     <color name="white_semi">#deffffff</color>
     <color name="white_title_tint">#39ffffff</color>

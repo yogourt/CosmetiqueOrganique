@@ -9,6 +9,6 @@ class LoadRecipesFromUserListUseCase(loadRecipesUseCase: LoadRecipesUseCase<User
         LoadNestedListDataUseCase<UserListRecipeRequest>(loadRecipesUseCase, recipeRepositoryInterface) {
 
     override fun createListTitle(recipeRequest: UserListRecipeRequest): String {
-        return "My favorites"
+        return recipeRequest.userList.capitalize().replace("_", " ")
     }
 }

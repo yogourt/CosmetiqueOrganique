@@ -141,10 +141,15 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="horiz_list_bottom_padding">24dp</dimen>
     <dimen name="main_list_bottom_padding">48dp</dimen>
     <dimen name="card_expanded_padding">12dp</dimen>
+
+
+    <!-- account screen dimens -->
     <dimen name="start_margin_for_app_features">42dp</dimen>
     <dimen name="bottom_margin_for_app_features">60dp</dimen>
     <dimen name="account_top_margin">32dp</dimen>
     <dimen name="label_space">4dp</dimen>
     <dimen name="photo_bcg">100dp</dimen>
+    <dimen name="photo_size_edit_screen">120dp</dimen>
+    <dimen name="photo_bcg_edit_screen">120dp</dimen>
 
 </resources>

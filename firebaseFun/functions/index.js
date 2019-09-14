@@ -163,39 +163,79 @@ exports.updateFavNumber = functions.database.ref('tipList/{tipId}')
 	childrenNum *= -1;
 	admin.database().ref('tipList/' + context.params.tipId + '/favNum').set(childrenNum);
 
+	//refactorUserData();
+
 	return null;
 });
 
 
-function refactorIngredientList() {
-	admin.database().ref('/tips').on("value", function(snapshot) {
+function refactorUserData() {
+	admin.database().ref().on("value", function(snapshot) {
 
-		snapshot.forEach(function(item) {
-			var ingredient1 = item.child('ingredient1').val();
-			var ingredient2 = item.child('ingredient2').val();
-			var ingredient3 = item.child('ingredient3').val();
-			var ingredient4 = item.child('ingredient4').val();
+		var userRec = new Map();
+		var favs = new Map();
+		var tokens = new Map();
+		var photos = new Map();
 
-			var ingredients = ingredient1;
+		snapshot.child("/tipList").forEach(function(item) {
+			var authorId = item.child('authorId').val();
+			var recipeId = item.key;
 
-			if(ingredient2 !== null) {
-				ingredients += ", " + ingredient2;
+
+			if(authorId !== null) {
+
+				if(userRec.has(authorId)) {
+					userRec.set(authorId, userRec.get(authorId) + ", " + recipeId );
+				} else {
+					userRec.set(authorId, recipeId);
+				}
 			}
 
-			if(ingredient3 !== null) {
-				ingredients += ", " + ingredient3;
-			}
-
-			if(ingredient4 !== null) {
-				ingredients += ", " + ingredient4;
-			}
-
-			console.log("Item key " + item.key);
-			return admin.database().ref('/tips/' + item.key + '/ingredients').set(ingredients);
-		
+			item.forEach(function(userIdSnapshot) {
+				//is user id indeed
+				if(userIdSnapshot.val() === true) {
+					var userId = userIdSnapshot.key;
+					if(favs.has(userId)) {
+						favs.set(userId, favs.get(userId) + ", " + recipeId);
+					} else {
+						favs.set(userId, recipeId);
+					}
+				}
+			})
 		});
+
+
+		snapshot.child("userTokens").forEach(function(tokenSnapshot) {
+			tokens.set(tokenSnapshot.key, tokenSnapshot.val());
+		});	
+
+		snapshot.child("userPhotos").forEach(function(photoSnapshot) {
+			photos.set(photoSnapshot.key, photoSnapshot.val());
+		});
+
+
+		var json = {};
+
+		snapshot.child("userNicknames").forEach(function(nicknameSnapshot) {
+			var id = nicknameSnapshot.key;
+			json[id] = {}
+			json[id]["nickname"] = nicknameSnapshot.val();
+			if(favs.has(id)) {
+	    		json[id]["favorites"] = favs.get(id);
+	    	}
+			if(userRec.has(id)) {
+	    		json[id]["my_recipes"] = userRec.get(id);
+	    	}
+	    	if(tokens.has(id)) {
+	    		json[id]["token"] = tokens.get(id);
+	    	}
+	    	if(photos.has(id)) {
+	    		json[id]["photo"] = photos.get(id);
+	    	}
+		});
+	    
+		return admin.database().ref('/users/').set(json);
+			
 	});
+
 }
-
-
-

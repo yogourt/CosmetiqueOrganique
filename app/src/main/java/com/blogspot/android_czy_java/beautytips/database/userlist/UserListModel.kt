@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "UserLists")
 data class UserListModel(
+        var userId: String,
         var listName: String,
         var recipesInList: String
         ) {

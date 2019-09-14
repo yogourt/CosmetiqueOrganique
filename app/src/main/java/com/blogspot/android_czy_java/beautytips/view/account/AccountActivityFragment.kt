@@ -14,7 +14,6 @@ import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.view.common.AppFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_activity_account.*
@@ -100,7 +99,7 @@ class AccountActivityFragment : AppFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == viewModel.requestCode) {
             if (resultCode == Activity.RESULT_OK) {
-                viewModel.saveUserToDatabase()
+                viewModel.saveFirebaseUserToDatabase()
             } else {
                 showInfoAboutError(getString(R.string.error_msg_common))
             }

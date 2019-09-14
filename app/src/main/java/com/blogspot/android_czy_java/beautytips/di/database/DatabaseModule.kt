@@ -25,6 +25,10 @@ class DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideUserListDao(db: AppDatabase) = db.userListDao()
+
+    @Provides
+    @Singleton
     fun provideAppDatabase(context: Context) = AppDatabase.getInstance(context)
 
     @Provides

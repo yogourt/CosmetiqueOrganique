@@ -5,13 +5,10 @@
     android:layout_width="match_parent"
     android:id="@+id/fragment_account">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
           <fragment
@@ -24,12 +21,11 @@
                 android:id="@+id/fragment_user_lists"
                 class="com.blogspot.android_czy_java.beautytips.view.account.UserListFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="0dp"
+                android:layout_weight="2"/>
 
         </LinearLayout>
 
-
-    </ScrollView>
 
     <include
         android:id="@+id/fragment_info_for_anonymous"

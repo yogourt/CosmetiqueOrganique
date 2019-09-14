@@ -183,5 +183,8 @@
     <string name="no_internet">No internet</string>
     <string name="error_msg_common">An error occured</string>
     <string name="about_me">About me:</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="discard">Discard</string>
 
 </resources>

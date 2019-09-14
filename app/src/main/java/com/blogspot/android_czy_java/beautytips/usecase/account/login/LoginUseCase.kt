@@ -22,7 +22,8 @@ class LoginUseCase(private val userRepository: UserRepository) {
         return FirebaseAuth.getInstance().signInAnonymously().isSuccessful
     }
 
-    private fun isUserLoggedIn(): Boolean = !(FirebaseAuth.getInstance().currentUser?.isAnonymous ?: true)
+    private fun isUserLoggedIn(): Boolean = !(FirebaseAuth.getInstance().currentUser?.isAnonymous
+            ?: true)
 
 
     fun loginAnonymouslyIfNull() {
@@ -34,6 +35,12 @@ class LoginUseCase(private val userRepository: UserRepository) {
                 getCurrentUserFirebaseId()?.let { id ->
                     userRepository.insertCurrentFirebaseUser(id, it)
                 } ?: it.onError(UserNotLoggedInException())
+            }
+
+    fun updateUserData(user: UserModel): Single<UserModel> =
+            Single.create {
+                userRepository.updateUser(user)
+                it.onSuccess(user)
             }
 
     private fun getCurrentUserFirebaseId() = FirebaseAuth.getInstance().currentUser?.uid

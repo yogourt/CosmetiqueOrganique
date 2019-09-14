@@ -13,6 +13,7 @@ import com.blogspot.android_czy_java.beautytips.database.error.ErrorModel
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.database.user.UserDao
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
+import com.blogspot.android_czy_java.beautytips.database.userlist.UserListDao
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
 
 @Database(entities = arrayOf(
@@ -21,7 +22,7 @@ import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
         ErrorModel::class,
         UserModel::class,
         UserListModel::class),
-        version = 7,
+        version = 9,
         exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -30,6 +31,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun commentDao(): CommentDao
     abstract fun errorDao(): ErrorDao
     abstract fun userDao(): UserDao
+    abstract fun userListDao(): UserListDao
 
     companion object {
 

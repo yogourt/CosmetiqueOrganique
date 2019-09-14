@@ -20,7 +20,7 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
 
     private val defaultErrorMessage = "Sorry, an error occurred "
 
-     val requestCode = 123
+    val requestCode = 123
 
     private val providers = listOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
@@ -34,6 +34,8 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
     fun init() {
         if (!isUserAnonymous()) {
             loadUser()
+        } else {
+            userLiveData.value = null
         }
     }
 
@@ -53,8 +55,7 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
                 ))
     }
 
-
-    fun saveUserToDatabase() {
+    fun saveFirebaseUserToDatabase() {
         disposable.add(loginUseCase.saveAndReturnUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -68,6 +69,23 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
                                     ?: defaultErrorMessage)
                         }
                 ))
+    }
+
+    fun updateUserData(user: UserModel) {
+        disposable.add(loginUseCase.updateUserData(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { userLiveData.value = GenericUiModel.StatusLoading() }
+                .subscribe(
+                        {
+                            userLiveData.value = GenericUiModel.LoadingSuccess(it)
+                        },
+                        {
+                            userLiveData.value = GenericUiModel.LoadingError(it.message
+                                    ?: defaultErrorMessage)
+                        }
+                ))
+
     }
 
     private fun isUserAnonymous(): Boolean {
