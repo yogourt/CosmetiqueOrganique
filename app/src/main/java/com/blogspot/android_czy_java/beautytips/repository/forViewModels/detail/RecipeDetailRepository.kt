@@ -3,7 +3,7 @@ package com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail
 import android.text.TextUtils
 import com.blogspot.android_czy_java.beautytips.database.detail.DetailDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
-import com.blogspot.android_czy_java.beautytips.repository.exception.DataNotFoundException
+import com.blogspot.android_czy_java.beautytips.exception.common.DataNotFoundException
 
 class RecipeDetailRepository(private val detailDao: DetailDao, private val recipeDao: RecipeDao) :
         RecipeDetailRepositoryInterface {

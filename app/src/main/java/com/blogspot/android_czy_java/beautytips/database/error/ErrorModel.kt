@@ -3,11 +3,11 @@ package com.blogspot.android_czy_java.beautytips.database.error
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "Errors")
 data class ErrorModel(
-       override val message: String,
-        val code: Int
-): Throwable() {
+        val tableName: String,
+        val rowId: String
+) {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }

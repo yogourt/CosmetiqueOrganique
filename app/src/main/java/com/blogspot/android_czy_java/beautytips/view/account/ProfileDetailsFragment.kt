@@ -75,16 +75,16 @@ class ProfileDetailsFragment : AppFragment() {
 
     private fun prepareLayoutForUser(user: UserModel) {
         view?.apply {
+            elements_for_loggedIn_user.visibility = View.VISIBLE
             Glide.with(this).load(user.photo).into(photo)
             nickname.text = user.nickname
             about_me.text = user.about
-            logout_button.visibility = View.VISIBLE
         }
     }
 
     private fun prepareLayoutForAnonymous() {
         view?.apply {
-            logout_button.visibility = View.INVISIBLE
+            elements_for_loggedIn_user.visibility = View.INVISIBLE
             Glide.with(this).clear(photo)
             photo.setCircleBackgroundColorResource(R.color.bluegrey700)
             nickname.text = getString(R.string.label_anonymous)

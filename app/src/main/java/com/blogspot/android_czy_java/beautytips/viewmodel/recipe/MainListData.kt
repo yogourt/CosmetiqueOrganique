@@ -1,3 +1,3 @@
 package com.blogspot.android_czy_java.beautytips.viewmodel.recipe
 
-class MainListData(val data: ArrayList<InnerListData>)
+class MainListData(val data: List<InnerListData>)

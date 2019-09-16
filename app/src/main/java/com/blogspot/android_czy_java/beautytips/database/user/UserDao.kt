@@ -12,7 +12,7 @@ interface UserDao {
     fun getUsers(): List<UserModel>
 
     @Query("SELECT * FROM User WHERE id = :firebaseId")
-    fun getUserByFirebaseId(firebaseId: String): UserModel
+    fun getUserByFirebaseId(firebaseId: String): UserModel?
 
     @Update
     fun updateUser(user: UserModel)

@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.repository.exception
+package com.blogspot.android_czy_java.beautytips.exception.common
 
 import java.lang.Exception
 

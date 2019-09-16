@@ -55,7 +55,7 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
                 ))
     }
 
-    fun saveFirebaseUserToDatabase() {
+    fun loginUser() {
         disposable.add(loginUseCase.saveAndReturnUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

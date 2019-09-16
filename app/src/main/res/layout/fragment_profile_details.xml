@@ -107,4 +107,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/elements_for_loggedIn_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="about_me, about_label, logout_button, edit_button">
+
+    </androidx.constraintlayout.widget.Group>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

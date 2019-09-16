@@ -11,25 +11,25 @@ abstract class LoadNestedListDataUseCase<RECIPE_REQUEST>(
         private val loadRecipesUseCase: LoadRecipesUseCase<RECIPE_REQUEST>,
         private val recipeRepositoryInterface: RecipeRepositoryInterface<RECIPE_REQUEST>) {
 
-    fun isDatabaseEmpty(): Single<Boolean> = Single.create{
+    fun isDatabaseEmpty(): Single<Boolean> = Single.create {
         it.onSuccess(recipeRepositoryInterface.getAllRecipesIds().isEmpty())
     }
 
-    fun execute(request: NestedListRequest<RECIPE_REQUEST>): Observable<InnerListData> {
+    fun execute(request: NestedListRequest<RECIPE_REQUEST>): Single<List<InnerListData>> {
 
-        return Observable.create {
-            var counter = 0
+        return Single.create {
+            val outerListData = arrayListOf<InnerListData>()
 
             for (recipeRequest in request.requests) {
 
                 loadRecipesUseCase.execute(recipeRequest)
                         .subscribe(
                                 { result ->
-                                    it.onNext(InnerListData(result.subList(0, min(15, result.size)),
-                                            createListTitle(recipeRequest)))
-                                    counter++
-                                    if (counter == request.requests.size) {
-                                        it.onComplete()
+                                    outerListData.add(request.requests.indexOf(recipeRequest),
+                                            (InnerListData(result.subList(0, min(15, result.size)),
+                                                    createListTitle(recipeRequest))))
+                                    if (outerListData.size == request.requests.size) {
+                                        it.onSuccess(outerListData)
                                     }
                                 },
                                 { error ->

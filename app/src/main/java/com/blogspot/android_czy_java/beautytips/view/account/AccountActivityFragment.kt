@@ -99,7 +99,7 @@ class AccountActivityFragment : AppFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == viewModel.requestCode) {
             if (resultCode == Activity.RESULT_OK) {
-                viewModel.saveFirebaseUserToDatabase()
+                viewModel.loginUser()
             } else {
                 showInfoAboutError(getString(R.string.error_msg_common))
             }

@@ -19,6 +19,7 @@ import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_nested_list.*
+import kotlinx.android.synthetic.main.fragment_nested_list.view.*
 import javax.inject.Inject
 
 abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
@@ -26,11 +27,17 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
     @Inject
     lateinit var activityViewModel: DetailActivityViewModel
 
+    internal lateinit var recyclerView: RecyclerView
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_nested_list,
+        val view = inflater.inflate(R.layout.fragment_nested_list,
                 container, false)
+
+        recyclerView = view.recycler_view
+
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -65,23 +72,16 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
             loading_indicator.visibility = View.INVISIBLE
         }
 
-        recycler_view.apply {
-            if (adapter == null) {
-                layoutManager = LinearLayoutManager(context,
-                        RecyclerView.VERTICAL, false)
-                adapter = MainListAdapter(this@NestedRecipeListFragment, recyclerViewList)
-            } else {
-                (adapter as MainListAdapter).apply {
-                    parents = recyclerViewList
-                    notifyItemInserted(recyclerViewList.data.size - 1)
-                }
-            }
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context,
+                    RecyclerView.VERTICAL, false)
+            adapter = MainListAdapter(this@NestedRecipeListFragment, recyclerViewList)
         }
     }
 
     private fun showInfoAboutError(message: String) {
         Snackbar.make(
-                recycler_view,
+                recyclerView,
                 getString(R.string.database_error_msg, message),
                 Snackbar.LENGTH_INDEFINITE
         ).setAction(

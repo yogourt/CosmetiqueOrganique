@@ -29,6 +29,10 @@ class DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideErrorDao(db: AppDatabase) = db.errorDao()
+
+    @Provides
+    @Singleton
     fun provideAppDatabase(context: Context) = AppDatabase.getInstance(context)
 
     @Provides

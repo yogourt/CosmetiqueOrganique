@@ -19,9 +19,9 @@ class UserListRecipeRepository(private val recipeDao: RecipeDao,
                 Order.POPULARITY -> recipeDao.getAllRecipesOrderByPopularity()
             }.filter {
                 userListDao.getListByUserIdAndName(request.userId, request.userList)
-                        .split(",")
-                        .map { it.trim() }
-                        .contains(it.recipeId.toString())
+                        ?.split(",")
+                        ?.map { it.trim() }
+                        ?.contains(it.recipeId.toString()) ?: false
             }
             emitter.onSuccess(recipes)
         }

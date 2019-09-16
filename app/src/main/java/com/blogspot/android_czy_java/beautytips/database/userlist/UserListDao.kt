@@ -12,7 +12,7 @@ interface UserListDao {
     fun getAllUserLists(userId: String): List<UserListModel>
 
     @Query("SELECT recipesInList FROM UserLists WHERE userId=:userId AND listName=:listName")
-    fun getListByUserIdAndName(userId: String, listName: String): String
+    fun getListByUserIdAndName(userId: String, listName: String): String?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: UserListModel)
