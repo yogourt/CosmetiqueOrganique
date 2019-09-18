@@ -11,7 +11,7 @@ class CreateUserListRequestsUseCase(private val currentUserUseCase: GetCurrentUs
     override fun execute(): NestedListRequest<UserListRecipeRequest> {
         val requests = arrayListOf<UserListRecipeRequest>()
 
-        currentUserUseCase.currentUserId?.let {
+        currentUserUseCase.currentUserId()?.let {
             requests.add(UserListRecipeRequest("favorites", it, Order.NEW))
             requests.add(UserListRecipeRequest("my_recipes", it, Order.NEW))
         }

@@ -59,6 +59,7 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
             }
             is GenericUiModel.StatusLoading -> {
                 loading_indicator.visibility = View.VISIBLE
+                clearRecyclerView()
             }
             is GenericUiModel.LoadingError -> {
                 showInfoAboutError(uiModel.message)
@@ -76,6 +77,13 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
             layoutManager = LinearLayoutManager(context,
                     RecyclerView.VERTICAL, false)
             adapter = MainListAdapter(this@NestedRecipeListFragment, recyclerViewList)
+        }
+    }
+
+    private fun clearRecyclerView() {
+        recyclerView.apply {
+            layoutManager = null
+            adapter = null
         }
     }
 

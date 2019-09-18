@@ -57,11 +57,7 @@ class UserListFragment : NestedRecipeListFragment() {
         }
         when(uiModel) {
             is GenericUiModel.LoadingSuccess -> retryDataLoading()
-            is GenericUiModel.LoadingError -> clearRecipeList()
         }
     }
 
-    private fun clearRecipeList() {
-        recyclerView.adapter = null
-    }
 }

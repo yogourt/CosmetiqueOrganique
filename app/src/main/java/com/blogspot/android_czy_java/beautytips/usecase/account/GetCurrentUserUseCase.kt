@@ -28,6 +28,6 @@ class GetCurrentUserUseCase(private val userRepository: UserRepository) :
                 }
             }
 
-    val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+    fun currentUserId() = FirebaseAuth.getInstance().currentUser?.uid
 
 }
