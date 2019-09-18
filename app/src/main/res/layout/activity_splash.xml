@@ -26,6 +26,8 @@
     </LinearLayout>
 
     <TextView
+        android:visibility="invisible"
+        android:id="@+id/splash_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"

@@ -30,6 +30,7 @@ class UserValueEventListener(private val emitter: SingleEmitter<UserModel>,
 
             emitter.onSuccess(user)
 
+
         }).start()
 
     }

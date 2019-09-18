@@ -7,9 +7,9 @@ import com.blogspot.android_czy_java.beautytips.exception.account.UserNotLoggedI
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.error.ErrorRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.user.UserRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.UpdateUserDataInFirebaseUseCase
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import io.reactivex.Single
 
 class LoginUseCase(private val userRepository: UserRepository,
@@ -22,18 +22,20 @@ class LoginUseCase(private val userRepository: UserRepository,
 
     fun isUserNull() = FirebaseAuth.getInstance().currentUser == null
 
-    fun loginAnonymously(): Boolean {
-
+    fun loginAnonymously(): Task<AuthResult> {
         if (isUserLoggedIn()) FirebaseAuth.getInstance().signOut()
-        return FirebaseAuth.getInstance().signInAnonymously().isSuccessful
+        return FirebaseAuth.getInstance().signInAnonymously()
     }
 
     private fun isUserLoggedIn(): Boolean = !(FirebaseAuth.getInstance().currentUser?.isAnonymous
             ?: true)
 
 
-    fun loginAnonymouslyIfNull() {
-        if (FirebaseAuth.getInstance().currentUser == null) loginAnonymously()
+    fun loginAnonymouslyIfNull(): Task<AuthResult>? {
+        if (FirebaseAuth.getInstance().currentUser == null)
+            return loginAnonymously()
+        else
+            return null
     }
 
     fun saveAndReturnUser(): Single<UserModel> =

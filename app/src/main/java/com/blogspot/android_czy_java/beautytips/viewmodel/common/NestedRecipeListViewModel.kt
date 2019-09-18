@@ -24,7 +24,6 @@ abstract class NestedRecipeListViewModel<RECIPE_REQUEST>(
     }
 
     fun retry() {
-        if (recipeListLiveData.value !is GenericUiModel.StatusLoading)
             loadRecipes()
     }
 

@@ -21,9 +21,10 @@ class SplashViewModel(private val fetchDataFromFirebaseUseCase: FetchDataFromFir
 
     fun init() {
         loginUseCase.loginAnonymouslyIfNull()
-        if (!loginUseCase.isUserNull()) {
-            fetchAllData()
-        }
+                ?.addOnCompleteListener { fetchAllData() }
+                ?.addOnFailureListener { fetchSuccessLiveData.value = GenericUiModel.LoadingError() }
+                ?: fetchAllData()
+
     }
 
     fun retry() {
@@ -45,7 +46,7 @@ class SplashViewModel(private val fetchDataFromFirebaseUseCase: FetchDataFromFir
     }
 
     fun onNetworkAccessed() {
-        if(fetchSuccessLiveData.value == null) {
+        if (fetchSuccessLiveData.value == null) {
             retry()
         }
     }

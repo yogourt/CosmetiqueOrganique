@@ -3,7 +3,9 @@ package com.blogspot.android_czy_java.beautytips.view.splash
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.R
@@ -26,6 +28,7 @@ class SplashActivity : AppCompatActivity() {
     lateinit var viewModel: SplashViewModel
 
     private lateinit var networkNeededSnackbar: Snackbar
+    private lateinit var splashInfo: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +46,8 @@ class SplashActivity : AppCompatActivity() {
         setStatusBarTransparent()
 
         startMainActivityIfFirstFetchNotNeeded()
+
+        splashInfo = splash_info
 
         viewModel.networkLiveData.observe(this, Observer { handleNetworkChange(it) })
         viewModel.fetchSuccessLiveData.observe(this, Observer { handleFetchResult(it) })
@@ -62,8 +67,11 @@ class SplashActivity : AppCompatActivity() {
                 startMainActivity()
             }
             is GenericUiModel.StatusLoading -> {
+                splashInfo.visibility = View.VISIBLE
+
             }
             is GenericUiModel.LoadingError -> {
+                splashInfo.visibility = View.INVISIBLE
                 viewModel.retry()
             }
         }

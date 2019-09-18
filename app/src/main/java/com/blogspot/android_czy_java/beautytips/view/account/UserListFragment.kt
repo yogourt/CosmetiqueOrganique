@@ -50,14 +50,14 @@ class UserListFragment : NestedRecipeListFragment() {
 
     private fun handleUserChange(uiModel: GenericUiModel<UserModel>?) {
 
-        list?.visibility = if (uiModel == null) {
-            View.INVISIBLE
-        } else {
+        list?.visibility = if (uiModel is GenericUiModel.LoadingSuccess) {
             View.VISIBLE
+        } else {
+            View.INVISIBLE
         }
         when(uiModel) {
             is GenericUiModel.LoadingSuccess -> retryDataLoading()
-            else -> clearRecipeList()
+            is GenericUiModel.LoadingError -> clearRecipeList()
         }
     }
 
