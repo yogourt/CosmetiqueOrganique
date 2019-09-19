@@ -44,8 +44,8 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
 
         ItemViewHolder(View itemView) {
             super(itemView);
-            mImage.setOnClickListener(this);
-            mTitle.setOnClickListener(this);
+            image.setOnClickListener(this);
+            title.setOnClickListener(this);
         }
 
         @Override

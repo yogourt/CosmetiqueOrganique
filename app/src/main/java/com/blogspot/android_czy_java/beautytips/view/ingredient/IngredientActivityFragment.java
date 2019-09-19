@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM;
+import static com.blogspot.android_czy_java.beautytips.notifications.NotificationService.KEY_ITEM;
 
 
 public class IngredientActivityFragment extends Fragment {

@@ -18,4 +18,8 @@ class CreateUserListRequestsUseCase(private val currentUserUseCase: GetCurrentUs
 
         return UserListRequest(requests)
     }
+
+    override fun getOneRequest(listId: Int): NestedListRequest<UserListRecipeRequest> {
+        return UserListRequest(execute().requests[listId])
+    }
 }

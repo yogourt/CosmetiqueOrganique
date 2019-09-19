@@ -9,19 +9,16 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.blogspot.android_czy_java.beautytips.R
 
-import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseLoginHelper
 import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM
 
 class NotificationService : FirebaseMessagingService() {
 
     companion object {
-
         private const val CHANNEL_ID = "Comments notifications"
+        public const val KEY_ITEM = "recipe id"
     }
 
     private var isChannelCreated = false

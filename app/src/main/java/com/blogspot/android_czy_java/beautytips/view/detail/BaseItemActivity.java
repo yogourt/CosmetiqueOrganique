@@ -25,12 +25,10 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import butterknife.BindView;
 import timber.log.Timber;
 
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM;
 
 public abstract class BaseItemActivity extends AppCompatActivity {
 
@@ -73,11 +71,11 @@ public abstract class BaseItemActivity extends AppCompatActivity {
 
     private void loadImage() {
         /*
-        image.setTransitionName(mImage);
+        image.setTransitionName(image);
 
         Glide.with(this).
                 setDefaultRequestOptions(new RequestOptions().dontTransform()).
-                load(mImage).
+                load(image).
                 listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,

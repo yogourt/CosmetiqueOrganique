@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
+import com.blogspot.android_czy_java.beautytips.view.common.RecipeListFragment;
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment;
 import com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment;
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel;
@@ -24,7 +26,6 @@ import dagger.android.AndroidInjection;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static android.content.Intent.ACTION_SEARCH;
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.REQUEST_CODE_DETAIL_ACTIVITY;
 
 public class MainActivity extends BaseMainActivity implements
         IngredientActivityFragment.IngredientFragmentActivity {
@@ -124,46 +125,19 @@ public class MainActivity extends BaseMainActivity implements
     protected void onResume() {
         super.onResume();
 
-        if(viewModel.shouldInterstitialAdBeShown() && interstitialAd.isLoaded()) {
+        if (viewModel.shouldInterstitialAdBeShown() && getInterstitialAd().isLoaded()) {
             showInterstitialAd();
             viewModel.setDetailScreenOpenTimesAfterInterstitialAd(0);
         }
     }
 
-    @Override
-    public void onBackPressed() {
 
-        //when ingredient is launched by click on detail screen ingredients list, on back pressed
-        //come back to this detail screen
-        if (detailActivityViewModel.getIsShowingIngredientFromRecipe()) {
-            detailActivityViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
-            detailActivityViewModel.setIsShowingIngredientFromRecipe(false);
-        } else if ((!detailActivityViewModel.getCurrentDetailFragment()
-                        .equals(TAG_FRAGMENT_OPENING))) {
-            detailActivityViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_OPENING);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //this is only for portrait screen orientation, the data is passed in the intent
-        // to MainActivityFragment
-        if (requestCode == REQUEST_CODE_DETAIL_ACTIVITY) {
-            if (data != null)
-                setIntent(data);
-
-        }
-    }
 
 
     @Override
     public void search(String query) {
-        mSearchView.setIconified(false);
-        mSearchView.setQuery(query, true);
+        getMSearchView().setIconified(false);
+        getMSearchView().setQuery(query, true);
     }
 
 
@@ -175,7 +149,7 @@ public class MainActivity extends BaseMainActivity implements
     }
 
     private void showInterstitialAd() {
-        interstitialAd.show();
+        getInterstitialAd().show();
     }
 
 

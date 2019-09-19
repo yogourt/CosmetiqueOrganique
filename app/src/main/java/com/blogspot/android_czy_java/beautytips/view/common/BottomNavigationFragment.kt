@@ -14,7 +14,13 @@ import kotlinx.android.synthetic.main.fragment_main_bottom_navigation.view.botto
 
 class BottomNavigationFragment : AppFragment() {
 
-    private var selectedItemId = 0
+    private lateinit var navigation: BottomNavigationView
+
+    private val indexToIdMap = mapOf(
+            Pair(R.id.menu_home, 0),
+            Pair(R.id.menu_account, 1),
+            Pair(R.id.menu_search, 2)
+    )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -25,21 +31,36 @@ class BottomNavigationFragment : AppFragment() {
             addMainFragment()
         }
 
-        prepareBottomNavigation(view.bottom_navigation)
+        navigation = view.bottom_navigation
+        prepareBottomNavigation()
+        addBackStackChangeListener()
 
         return view
     }
 
-    private fun prepareBottomNavigation(navigation: BottomNavigationView) {
-        selectItem(navigation)
-        addOnClickListener(navigation)
+    private fun prepareBottomNavigation() {
+        navigation.selectedItemId = R.id.menu_home
+        addOnClickListener()
     }
 
-    private fun selectItem(navigation: BottomNavigationView) {
-        navigation.selectedItemId = selectedItemId
+    private fun addBackStackChangeListener() {
+        fragmentManager?.addOnBackStackChangedListener {
+            fragmentManager?.findFragmentById(R.id.main_container)?.let { selectItem(it) }
+        }
     }
 
-    private fun addOnClickListener(navigation: BottomNavigationView) {
+    private fun selectItem(id: Int) {
+        indexToIdMap[id]?.let { navigation.menu.getItem(it).isChecked = true; }
+    }
+
+    private fun selectItem(fragment: Fragment) {
+        when (fragment) {
+            is MainActivityFragment -> selectItem(R.id.menu_home)
+            is AccountActivityFragment -> selectItem(R.id.menu_account)
+        }
+    }
+
+    private fun addOnClickListener() {
         navigation.setOnNavigationItemSelectedListener { item ->
 
             val fragment = getCurrentFragment(item)
@@ -51,12 +72,15 @@ class BottomNavigationFragment : AppFragment() {
     }
 
     private fun addMainFragment() {
+        val fragment = MainActivityFragment()
         fragmentManager?.beginTransaction()?.add(
                 R.id.main_container,
-                MainActivityFragment())?.commit()
+                fragment)
+                ?.addToBackStack(null)
+                ?.commit()
     }
 
-    private fun getCurrentFragment(item: MenuItem): Fragment? {
+    private fun getCurrentFragment(item: MenuItem): AppFragment? {
         return when (item.itemId) {
             R.id.menu_home -> MainActivityFragment()
             R.id.menu_account -> AccountActivityFragment()
@@ -64,10 +88,10 @@ class BottomNavigationFragment : AppFragment() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: AppFragment) {
         fragmentManager?.beginTransaction()?.replace(
                 R.id.main_container,
-                fragment)?.commit()
+                fragment)?.addToBackStack(null)?.commit()
     }
 
 }

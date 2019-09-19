@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.view.listView.utils.recyclerViewUtils.SpacesItemDecoration
-import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.NestedListCallback
+import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.ListCallback
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import com.bumptech.glide.Glide
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.android.synthetic.main.card_expanded.view.*
 import kotlinx.android.synthetic.main.main_list_item.view.*
 
-class MainListAdapter(private val callback: NestedListCallback,
-                      public var parents: MainListData)
+class MainListAdapter(private val callback: ListCallback,
+                      private val parents: MainListData)
     : RecyclerView.Adapter<MainListAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -37,6 +37,7 @@ class MainListAdapter(private val callback: NestedListCallback,
         val parent = parents.data[position]
 
         holder.listTitle.text = parent.listTitle
+        holder.seeAllButton.setOnClickListener { callback.onListClick(position) }
 
         prepareRecipeList(holder, parent.data)
 
@@ -73,6 +74,7 @@ class MainListAdapter(private val callback: NestedListCallback,
 
         val recyclerView: RecyclerView = itemView.categorised_list
         val listTitle: TextView = itemView.list_title
+        val seeAllButton: LinearLayout = itemView.see_all_button
 
         val expandedImage: ImageView = itemView.image
         val expandedTitle: TextView = itemView.title

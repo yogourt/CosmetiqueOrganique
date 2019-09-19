@@ -5,15 +5,31 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/list_title"
+    <LinearLayout
+        android:id="@+id/see_all_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/activity_margin"
-        android:paddingEnd="@dimen/activity_margin"
-        android:paddingTop="@dimen/activity_margin"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-        tools:text="For hair" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/activity_margin">
+
+        <TextView
+            android:id="@+id/list_title"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/activity_margin"
+            android:paddingEnd="@dimen/activity_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            tools:text="For hair" />
+
+        <ImageView
+            android:contentDescription="@string/see_all_button"
+            android:layout_marginEnd="@dimen/activity_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 
     <include
         android:id="@+id/card_first"

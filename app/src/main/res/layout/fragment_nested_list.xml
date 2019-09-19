@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/main_list_bottom_padding">
@@ -7,9 +8,9 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/bluegrey900"
         android:paddingStart="@dimen/list_start_padding"
-        android:paddingEnd="@dimen/list_end_padding"
-        android:background="@color/bluegrey900"/>
+        android:paddingEnd="@dimen/list_end_padding" />
 
     <ProgressBar
         android:id="@+id/loading_indicator"
@@ -17,8 +18,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:indeterminate="true"
-        />
+        android:indeterminate="true" />
 
+
+    <LinearLayout
+        android:id="@+id/one_category_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/bluegrey900"
+        android:elevation="30dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_margin">
+
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/back"
+            android:paddingEnd="@dimen/activity_margin"
+            android:paddingStart="@dimen/activity_margin"
+            android:src="@drawable/ic_arrow_left" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            tools:text="For hair" />
+    </LinearLayout>
 
 </FrameLayout>

@@ -1,5 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.usecase.common
 
+import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.RecipeRepositoryInterface
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.InnerListData
@@ -26,8 +27,10 @@ abstract class LoadNestedListDataUseCase<RECIPE_REQUEST>(
                         .subscribe(
                                 { result ->
                                     outerListData.add(request.requests.indexOf(recipeRequest),
-                                            (InnerListData(result.subList(0, min(15, result.size)),
-                                                    createListTitle(recipeRequest))))
+                                            prepareList(result,
+                                                    recipeRequest,
+                                                    request.requests.size == 1)
+                                    )
                                     if (outerListData.size == request.requests.size) {
                                         it.onSuccess(outerListData)
                                     }
@@ -38,6 +41,16 @@ abstract class LoadNestedListDataUseCase<RECIPE_REQUEST>(
                         )
             }
         }
+    }
+
+    private fun prepareList(list: List<RecipeModel>,
+                            recipeRequest: RECIPE_REQUEST, shouldPassAll: Boolean): InnerListData {
+
+        return InnerListData(if (!shouldPassAll) {
+            list.subList(0, min(15, list.size))
+        } else {
+            list
+        }, createListTitle(recipeRequest))
     }
 
     abstract fun createListTitle(recipeRequest: RECIPE_REQUEST): String

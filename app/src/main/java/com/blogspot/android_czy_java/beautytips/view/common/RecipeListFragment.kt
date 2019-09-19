@@ -12,7 +12,8 @@ import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
 import com.blogspot.android_czy_java.beautytips.view.listView.view.MainListAdapter
-import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.NestedListCallback
+import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter
+import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.ListCallback
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
@@ -22,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_nested_list.*
 import kotlinx.android.synthetic.main.fragment_nested_list.view.*
 import javax.inject.Inject
 
-abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
+abstract class RecipeListFragment : AppFragment(), ListCallback {
 
     @Inject
     lateinit var activityViewModel: DetailActivityViewModel
@@ -36,6 +37,7 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
                 container, false)
 
         recyclerView = view.recycler_view
+        view.one_category_bottom_nav.setOnClickListener { loadInitialData() }
 
         return view
     }
@@ -43,7 +45,7 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        prepareViewModel()
+        prepareViewModel(savedInstanceState == null)
 
     }
 
@@ -76,7 +78,16 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context,
                     RecyclerView.VERTICAL, false)
-            adapter = MainListAdapter(this@NestedRecipeListFragment, recyclerViewList)
+            if (recyclerViewList.data.size == 1) {
+                val list = recyclerViewList.data[0]
+                adapter = RecipeListAdapter(this@RecipeListFragment,
+                        list.data, false)
+                prepareOneCategoryBottomNav(list.listTitle)
+            } else {
+                adapter = MainListAdapter(this@RecipeListFragment, recyclerViewList)
+                hideOneCategoryBottomNav()
+            }
+
         }
     }
 
@@ -84,6 +95,21 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
         recyclerView.apply {
             layoutManager = null
             adapter = null
+            hideOneCategoryBottomNav()
+        }
+    }
+
+    private fun prepareOneCategoryBottomNav(listTitle: String) {
+        one_category_bottom_nav?.apply {
+            title.text = listTitle
+            visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideOneCategoryBottomNav() {
+        one_category_bottom_nav?.apply {
+            title.text = ""
+            visibility = View.INVISIBLE
         }
     }
 
@@ -108,8 +134,17 @@ abstract class NestedRecipeListFragment : AppFragment(), NestedListCallback {
         }
     }
 
+    fun onBackPressed(): Boolean {
+        return if (one_category_bottom_nav?.visibility == View.VISIBLE) {
+            loadInitialData()
+            true
+        } else false
+    }
+
     abstract fun retryDataLoading()
 
-    abstract fun prepareViewModel()
+    abstract fun prepareViewModel(init: Boolean)
+
+    private fun loadInitialData() = retryDataLoading()
 
 }

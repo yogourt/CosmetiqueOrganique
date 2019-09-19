@@ -3,24 +3,23 @@ package com.blogspot.android_czy_java.beautytips.view.listView.view
 
 import android.text.TextUtils
 import androidx.lifecycle.Observer
+import com.blogspot.android_czy_java.beautytips.notifications.NotificationService.Companion.KEY_ITEM
 
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 
-import com.blogspot.android_czy_java.beautytips.view.common.NestedRecipeListFragment
+import com.blogspot.android_czy_java.beautytips.view.common.RecipeListFragment
 
-import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter.KEY_ITEM
 import javax.inject.Inject
 
 
-class MainActivityFragment : NestedRecipeListFragment() {
-
+class MainActivityFragment : RecipeListFragment() {
 
     @Inject
     lateinit var recipeViewModel: RecipeViewModel
 
-    override fun prepareViewModel() {
+    override fun prepareViewModel(init: Boolean) {
         recipeViewModel.recipeListLiveData.observe(this, Observer { this.render(it) })
-        recipeViewModel.init()
+        if (init) recipeViewModel.init()
     }
 
     override fun retryDataLoading() {
@@ -37,6 +36,10 @@ class MainActivityFragment : NestedRecipeListFragment() {
                 activity!!.intent = null
             }
         }
+    }
+
+    override fun onListClick(listId: Int) {
+        recipeViewModel.loadOneList(listId)
     }
 
 

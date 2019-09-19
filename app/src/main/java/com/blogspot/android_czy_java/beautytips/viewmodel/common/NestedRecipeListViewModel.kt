@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.viewmodel.common
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadNestedListDataUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequestUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
@@ -20,16 +21,20 @@ abstract class NestedRecipeListViewModel<RECIPE_REQUEST>(
     private val disposable = CompositeDisposable()
 
     open fun init() {
-        loadRecipes()
+        loadRecipes(nestedListRequestUseCase.execute())
     }
 
     fun retry() {
-            loadRecipes()
+            loadRecipes(nestedListRequestUseCase.execute())
     }
 
-    private fun loadRecipes() {
+    fun loadOneList(listId: Int) {
+        loadRecipes(nestedListRequestUseCase.getOneRequest(listId))
+    }
 
-        disposable.add(loadListDataUseCase.execute(nestedListRequestUseCase.execute())
+    private fun loadRecipes(requests: NestedListRequest<RECIPE_REQUEST>) {
+
+        disposable.add(loadListDataUseCase.execute(requests)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
@@ -44,4 +49,5 @@ abstract class NestedRecipeListViewModel<RECIPE_REQUEST>(
                         }
                 ))
     }
+
 }

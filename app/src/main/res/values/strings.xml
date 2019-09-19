@@ -186,5 +186,7 @@
     <string name="edit">Edit</string>
     <string name="save">Save</string>
     <string name="discard">Discard</string>
+    <string name="see_all_button">See all recipes button</string>
+    <string name="back">Arrow back</string>
 
 </resources>

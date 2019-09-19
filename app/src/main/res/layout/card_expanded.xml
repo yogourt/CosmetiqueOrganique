@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:id="@+id/card_expanded"
+    android:id="@+id/card"
     android:padding="@dimen/card_expanded_padding">
 
     <androidx.cardview.widget.CardView
