@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_margin">
+
+        <TextView
+            android:id="@+id/fragment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="@dimen/icon_padding"
+            android:padding="@dimen/activity_margin"
+            android:text="@string/Search_engine"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.farbod.labelledspinner.LabelledSpinner
+            android:id="@+id/category_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:labelText="@string/spinner_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_title"
+            app:widgetColor="@color/white_title_tint"
+            android:foregroundTint="@color/white" />
+
+        <com.farbod.labelledspinner.LabelledSpinner
+            android:id="@+id/subcategory_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/activity_margin"
+            app:labelText="@string/subcategory_spinner_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/category_spinner"
+            app:widgetColor="@color/white_title_tint" />
+
+        <com.farbod.labelledspinner.LabelledSpinner
+            android:id="@+id/order_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:labelText="@string/order_spinner_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subcategory_spinner"
+            app:widgetColor="@color/white_title_tint" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/title_et_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_margin"
+            app:layout_constraintTop_toBottomOf="@id/order_spinner">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/title_et"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_recipe_title" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/author_et_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inner_et_vert_margin"
+            app:layout_constraintTop_toBottomOf="@id/title_et_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/author_et"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_author"
+                android:nextFocusForward="@id/keywords_et"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/keywords_et_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_margin"
+            app:boxBackgroundColor="@color/bluegrey900"
+            app:layout_constraintTop_toBottomOf="@id/author_et_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/keywords_et"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_keywords" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/search_button_margin"
+            android:layout_marginEnd="@dimen/search_button_margin"
+            android:layout_marginBottom="32dp"
+            android:text="@string/search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/keywords_et_layout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

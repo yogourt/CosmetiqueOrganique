@@ -6,7 +6,11 @@ interface CategoryInterface {
 
     val subcategory: SubcategoryLabel
 
+    fun subcategories(): List<String>
+
     fun getCategoryLabel(): String
     fun getSubcategoryLabel() = subcategory.label
     fun isSubcategoryAll() = subcategory == SubcategoryLabel.SUBCATEGORY_ALL
+    fun newSubcategory(id: Int): CategoryInterface
+
 }

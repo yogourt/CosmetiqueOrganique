@@ -188,5 +188,10 @@
     <string name="discard">Discard</string>
     <string name="see_all_button">See all recipes button</string>
     <string name="back">Arrow back</string>
+    <string name="Search_engine">Search engine</string>
+    <string name="hint_recipe_title">Recipe title</string>
+    <string name="hint_author">Author</string>
+    <string name="hint_keywords">Keywords</string>
+    <string name="order_spinner_label">Order</string>
 
 </resources>

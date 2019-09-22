@@ -14,11 +14,9 @@ enum class CategoryHair(override val subcategory: SubcategoryLabel) : CategoryIn
 
     override fun getCategoryLabel() = CategoryLabel.CATEGORY_HAIR.label
 
-    companion object {
+    override fun subcategories() = values().map { it.getSubcategoryLabel() }
 
-        val subcategories = values().map { it.getSubcategoryLabel() }
-
-    }
+    override fun newSubcategory(id: Int) = values()[id]
 
 }
 

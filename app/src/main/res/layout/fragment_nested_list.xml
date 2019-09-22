@@ -18,7 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:visibility="gone"/>
 
 
     <LinearLayout
@@ -28,6 +29,7 @@
         android:layout_gravity="bottom"
         android:background="@color/bluegrey900"
         android:elevation="30dp"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:padding="@dimen/activity_margin">
 

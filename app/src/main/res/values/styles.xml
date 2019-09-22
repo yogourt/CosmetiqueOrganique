@@ -47,7 +47,6 @@
     </style>
 
     <style name="editTextStyle" parent="Widget.AppCompat.EditText">
-        <item name="android:backgroundTint">@color/bluegrey300</item>
         <item name="android:inputType">textCapSentences|textMultiLine</item>
         <item name="android:textColor">@color/white</item>
     </style>
@@ -176,5 +175,6 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/purple100</item>
     </style>
+
 
 </resources>

@@ -4,7 +4,7 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.
 import com.blogspot.android_czy_java.beautytips.di.repository.recipe.RecipeRepositoryModule
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.CreateRecipeRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadListDataUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import dagger.Module
 import dagger.Provides

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.account.AccountActivityFragment
 import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivityFragment
+import com.blogspot.android_czy_java.beautytips.view.search.SearchActivityFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main_bottom_navigation.view.bottom_navigation
 
@@ -57,6 +58,7 @@ class BottomNavigationFragment : AppFragment() {
         when (fragment) {
             is MainActivityFragment -> selectItem(R.id.menu_home)
             is AccountActivityFragment -> selectItem(R.id.menu_account)
+            is SearchActivityFragment -> selectItem(R.id.menu_search)
         }
     }
 
@@ -84,6 +86,7 @@ class BottomNavigationFragment : AppFragment() {
         return when (item.itemId) {
             R.id.menu_home -> MainActivityFragment()
             R.id.menu_account -> AccountActivityFragment()
+            R.id.menu_search -> SearchActivityFragment()
             else -> null
         }
     }

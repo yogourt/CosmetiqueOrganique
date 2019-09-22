@@ -4,6 +4,7 @@ import android.content.Context
 import com.blogspot.android_czy_java.beautytips.MyApplication
 import com.blogspot.android_czy_java.beautytips.di.database.DatabaseModule
 import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
+import com.blogspot.android_czy_java.beautytips.di.usecase.search.SearchUseCaseModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -14,7 +15,8 @@ import javax.inject.Singleton
     AndroidSupportInjectionModule::class,
     ViewModelModule::class,
     DatabaseModule::class,
-    DetailUseCaseModule::class
+    DetailUseCaseModule::class,
+    SearchUseCaseModule::class
 ])
 
 @Singleton

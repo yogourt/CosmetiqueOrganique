@@ -10,12 +10,9 @@ enum class CategoryAll(override val subcategory: SubcategoryLabel) : CategoryInt
 
     override fun getCategoryLabel() = CategoryLabel.CATEGORY_ALL.label
 
+    override fun subcategories() = values().map { it.getSubcategoryLabel() }
 
-    companion object {
-
-        val subcategories = values().map { it.getSubcategoryLabel() }
-
-    }
+    override fun newSubcategory(id: Int) = values()[id]
 
 }
 

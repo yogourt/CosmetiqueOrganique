@@ -16,12 +16,9 @@ enum class CategoryFace(override val subcategory: SubcategoryLabel) : CategoryIn
 
     override fun getCategoryLabel() = CategoryLabel.CATEGORY_FACE.label
 
+    override fun subcategories() = values().map { it.getSubcategoryLabel() }
 
-    companion object {
-
-        val subcategories = values().map { it.getSubcategoryLabel() }
-
-    }
+    override fun newSubcategory(id: Int) = values()[id]
 
 }
 

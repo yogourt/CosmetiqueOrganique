@@ -11,7 +11,7 @@ import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCa
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.CreateUserListRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.LoadRecipesFromUserListUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
 import dagger.Module
 import dagger.Provides
 

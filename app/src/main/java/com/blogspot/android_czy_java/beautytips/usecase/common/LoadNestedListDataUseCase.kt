@@ -2,9 +2,7 @@ package com.blogspot.android_czy_java.beautytips.usecase.common
 
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.RecipeRepositoryInterface
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadRecipesUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.InnerListData
-import io.reactivex.Observable
 import io.reactivex.Single
 import kotlin.math.min
 
