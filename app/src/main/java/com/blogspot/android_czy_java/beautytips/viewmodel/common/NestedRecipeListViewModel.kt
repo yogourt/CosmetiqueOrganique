@@ -32,7 +32,7 @@ abstract class NestedRecipeListViewModel<RECIPE_REQUEST>(
         loadRecipes(nestedListRequestUseCase.getOneRequest(listId))
     }
 
-    private fun loadRecipes(requests: NestedListRequest<RECIPE_REQUEST>) {
+    internal fun loadRecipes(requests: NestedListRequest<RECIPE_REQUEST>) {
 
         disposable.add(loadListDataUseCase.execute(requests)
                 .subscribeOn(Schedulers.io())

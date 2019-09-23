@@ -4,13 +4,18 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadNestedListDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
 
-class LoadSearchResultListDataUseCase(loadRecipesUseCase: LoadRecipesUseCase<SearchResultRequest>,
-                                      recipeRepositoryInterface: RecipeRepositoryInterface<SearchResultRequest>
+class LoadSearchResultListDataUseCase(loadRecipesUseCase: LoadRecipesUseCase<SearchResultInnerRequest>,
+                                      recipeRepositoryInterface: RecipeRepositoryInterface<SearchResultInnerRequest>
 ) :
-        LoadNestedListDataUseCase<SearchResultRequest>(loadRecipesUseCase,
+        LoadNestedListDataUseCase<SearchResultInnerRequest>(loadRecipesUseCase,
                 recipeRepositoryInterface) {
 
-    override fun createListTitle(recipeRequest: SearchResultRequest): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun createListTitle(recipeRequest: SearchResultInnerRequest): String {
+        return String.format("%s %s %s in %s: %s",
+                recipeRequest.title,
+                recipeRequest.author,
+                recipeRequest.keywords,
+                recipeRequest.category.getCategoryLabel(),
+                recipeRequest.category.getSubcategoryLabel())
     }
 }

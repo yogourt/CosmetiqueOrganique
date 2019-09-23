@@ -11,7 +11,7 @@ import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
 
-class RecipeRepository(private val recipeDao: RecipeDao) :
+class RecipeRepository(override val recipeDao: RecipeDao) :
         RecipeRepositoryInterface<RecipeRequest>(recipeDao) {
 
     override fun getRecipes(request: RecipeRequest): Single<List<RecipeModel>> {

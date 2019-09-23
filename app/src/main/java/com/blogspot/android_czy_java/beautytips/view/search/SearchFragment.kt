@@ -1,5 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.view.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,11 @@ import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
-import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.SubcategoryLabel
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultInnerRequest
 import com.blogspot.android_czy_java.beautytips.view.common.AppFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.search.SearchActivityViewModel
-import com.farbod.labelledspinner.LabelledSpinner
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import javax.inject.Inject
 
@@ -32,6 +32,11 @@ class SearchFragment : AppFragment() {
         prepareLayout(view)
 
         return view;
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
     }
 
     private fun prepareLayout(view: View) {
@@ -52,8 +57,8 @@ class SearchFragment : AppFragment() {
         }
     }
 
-    private fun prepareRequest(view: View): SearchResultRequest {
-        return SearchResultRequest(
+    private fun prepareRequest(view: View): SearchResultInnerRequest {
+        return SearchResultInnerRequest(
                 category,
                 order,
                 view.title_et.text.toString(),

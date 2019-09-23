@@ -1,18 +1,23 @@
 package com.blogspot.android_czy_java.beautytips.di.repository.search
 
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
+import com.blogspot.android_czy_java.beautytips.di.repository.recipe.RecipeRepositoryModule
+import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.RecipeRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.RecipeRepositoryInterface
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.SearchResultRecipeRepository
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultInnerRequest
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [
+    RecipeRepositoryModule::class
+])
 class SearchResultRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRecipeRepository(recipeDao: RecipeDao):
-            RecipeRepositoryInterface<SearchResultRequest> = SearchResultRecipeRepository(recipeDao)
+    fun provideRecipeRepository(recipeRepository:
+                                RecipeRepositoryInterface<RecipeRequest>):
+            RecipeRepositoryInterface<SearchResultInnerRequest> = SearchResultRecipeRepository(recipeRepository)
 }

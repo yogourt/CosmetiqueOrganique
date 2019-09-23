@@ -7,7 +7,7 @@ import com.blogspot.android_czy_java.beautytips.database.userlist.UserListDao
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
 import io.reactivex.Single
 
-class UserListRecipeRepository(private val recipeDao: RecipeDao,
+class UserListRecipeRepository(override val recipeDao: RecipeDao,
                                private val userListDao: UserListDao) :
         RecipeRepositoryInterface<UserListRecipeRequest>(recipeDao) {
 

@@ -5,7 +5,7 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.search.CreateSearchResultRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.search.LoadSearchResultListDataUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultInnerRequest
 import dagger.Module
 import dagger.Provides
 
@@ -15,12 +15,12 @@ import dagger.Provides
 class SearchUseCaseModule {
 
     @Provides
-    fun provideLoadSearchResultListDataUseCase(loadRecipesUseCase: LoadRecipesUseCase<SearchResultRequest>,
-                                   recipeRepository: RecipeRepositoryInterface<SearchResultRequest>)
+    fun provideLoadSearchResultListDataUseCase(loadRecipesUseCase: LoadRecipesUseCase<SearchResultInnerRequest>,
+                                               recipeRepository: RecipeRepositoryInterface<SearchResultInnerRequest>)
             = LoadSearchResultListDataUseCase(loadRecipesUseCase, recipeRepository)
 
     @Provides
-    fun provideLoadRecipesUseCase(recipeRepository: RecipeRepositoryInterface<SearchResultRequest>)
+    fun provideLoadRecipesUseCase(recipeRepository: RecipeRepositoryInterface<SearchResultInnerRequest>)
             = LoadRecipesUseCase(recipeRepository)
 
     @Provides
