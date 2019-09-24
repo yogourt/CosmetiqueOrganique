@@ -126,6 +126,10 @@ dependencies {
     //easyimage
     implementation 'com.github.jkwiecien:EasyImage:3.0.3'
 
+    //split pane
+
+    implementation 'com.mobidevelop.spl:split-pane-layout:1.0.0'
+
     //kotlin std lib
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 

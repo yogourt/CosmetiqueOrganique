@@ -9,6 +9,7 @@ import com.blogspot.android_czy_java.beautytips.di.view.account.ProfileDetailsFr
 import com.blogspot.android_czy_java.beautytips.di.view.account.UserListFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.*
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.search.SearchActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.search.SearchFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.search.SearchResultFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.splash.SplashActivityModule
@@ -27,6 +28,7 @@ import javax.inject.Provider
     AccountActivityFragmentModule::class,
     ProfileDetailsFragmentModule::class,
     SplashActivityModule::class,
+    SearchActivityFragmentModule::class,
     SearchFragmentModule::class,
     SearchResultFragmentModule::class
 ])

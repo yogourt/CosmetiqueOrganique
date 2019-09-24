@@ -41,7 +41,9 @@ class SearchFragment : AppFragment() {
 
     private fun prepareLayout(view: View) {
         prepareSpinners(view)
-        view.button_search.setOnClickListener { viewModel.search(prepareRequest(view)) }
+        view.button_search.setOnClickListener {
+            viewModel.search(prepareRequest(view))
+        }
     }
 
     private fun prepareSpinners(view: View) {

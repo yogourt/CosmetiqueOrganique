@@ -153,5 +153,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="photo_bcg_edit_screen">120dp</dimen>
     <dimen name="inner_et_vert_margin">4dp</dimen>
     <dimen name="search_button_margin">60dp</dimen>
+    <dimen name="bottom_margin_for_search_fragment">32dp</dimen>
+    <dimen name="search_layout_collapsed_height">120dp</dimen>
 
 </resources>
