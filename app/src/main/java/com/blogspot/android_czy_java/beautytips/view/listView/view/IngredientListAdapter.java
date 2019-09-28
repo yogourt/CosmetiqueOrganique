@@ -32,7 +32,7 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
             itemView = inflater.inflate(R.layout.header_item_grid_view, parent, false);
             return new HeaderViewHolder(itemView);
         } else {
-            itemView = inflater.inflate(R.layout.card,
+            itemView = inflater.inflate(R.layout.item_recipe_inner_list,
                     parent, false);
             return new ItemViewHolder(itemView);
         }

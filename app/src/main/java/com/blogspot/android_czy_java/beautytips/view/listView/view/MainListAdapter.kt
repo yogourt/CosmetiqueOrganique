@@ -16,8 +16,8 @@ import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.List
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import com.bumptech.glide.Glide
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
-import kotlinx.android.synthetic.main.card_expanded.view.*
-import kotlinx.android.synthetic.main.main_list_item.view.*
+import kotlinx.android.synthetic.main.item_recipe_expanded.view.*
+import kotlinx.android.synthetic.main.item_recipe_main_list.view.*
 
 class MainListAdapter(private val callback: ListCallback,
                       private val parents: MainListData)
@@ -27,7 +27,7 @@ class MainListAdapter(private val callback: ListCallback,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-                .inflate(R.layout.main_list_item, parent, false)
+                .inflate(R.layout.item_recipe_main_list, parent, false)
         return ViewHolder(v)
     }
 

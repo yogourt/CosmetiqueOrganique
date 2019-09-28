@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/activity_margin"
             app:labelText="@string/subcategory_spinner_label"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/category_spinner"
             app:widgetColor="@color/white_title_tint" />
@@ -65,26 +66,9 @@
                 style="@style/editTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_recipe_title" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:visibility="gone"
-            android:id="@+id/author_et_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/inner_et_vert_margin"
-            app:layout_constraintTop_toBottomOf="@id/title_et_layout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/author_et"
-                style="@style/editTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_author"
-                android:nextFocusForward="@id/keywords_et"/>
+                android:hint="@string/hint_recipe_title"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@id/keywords_et_layout"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,13 +78,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_margin"
             app:boxBackgroundColor="@color/bluegrey900"
-            app:layout_constraintTop_toBottomOf="@id/author_et_layout">
+            app:layout_constraintTop_toBottomOf="@id/title_et_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/keywords_et"
-                style="@style/editTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nextFocusDown="@id/button_search"
+                android:imeOptions="actionNext"
+                android:textColor="@color/white"
                 android:hint="@string/hint_keywords" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,6 +102,7 @@
             android:text="@string/search"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/keywords_et_layout" />
+            app:layout_constraintTop_toBottomOf="@id/keywords_et_layout"
+            android:imeOptions="actionDone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

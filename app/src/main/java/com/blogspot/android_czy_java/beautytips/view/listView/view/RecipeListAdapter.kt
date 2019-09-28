@@ -26,9 +26,9 @@ class RecipeListAdapter(private val activityCallback: ListCallback,
     private var lastAnimatedPosition = -1
 
     private val itemLayout = if (isInnerList) {
-        R.layout.card
+        R.layout.item_recipe_inner_list
     } else {
-        R.layout.card_expanded
+        R.layout.item_recipe_expanded
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {

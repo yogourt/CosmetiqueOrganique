@@ -64,7 +64,7 @@ class SearchFragment : AppFragment() {
                 category,
                 order,
                 view.title_et.text.toString(),
-                view.author_et.text.toString(),
+                "",
                 view.keywords_et.text.toString()
         )
     }

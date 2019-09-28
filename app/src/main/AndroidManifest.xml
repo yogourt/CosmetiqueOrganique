@@ -30,7 +30,9 @@
 
         <activity
             android:name=".view.listView.view.MainActivity"
-            android:configChanges="locale">
+            android:configChanges="locale"
+            android:windowSoftInputMode="adjustResize">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

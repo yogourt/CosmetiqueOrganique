@@ -33,7 +33,7 @@
 
     <include
         android:id="@+id/card_first"
-        layout="@layout/card_expanded" />
+        layout="@layout/item_recipe_expanded" />
 
     <com.github.rubensousa.gravitysnaphelper.OrientationAwareRecyclerView
         android:id="@+id/categorised_list"

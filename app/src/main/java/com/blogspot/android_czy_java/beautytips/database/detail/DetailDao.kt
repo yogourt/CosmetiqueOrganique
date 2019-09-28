@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.database.detail
 import android.database.Observable
 import androidx.room.Dao
 import androidx.room.Query
+import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
 
 @Dao
 interface DetailDao {
@@ -24,5 +25,8 @@ interface DetailDao {
 
     @Query("SELECT source FROM Recipes WHERE recipeId = :recipeId")
     fun getSource(recipeId: Long): String
+
+    @Query("SELECT * FROM RecipeComments WHERE recipeId = :recipeId")
+    fun getComments(recipeId: Long): List<CommentModel>
 
 }

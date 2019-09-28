@@ -18,21 +18,11 @@ import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderViewModel
 import com.bumptech.glide.Glide
 import dagger.android.AndroidInjection
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
+import kotlinx.android.synthetic.main.motion_layout_activity_detail_1.*
 import javax.inject.Inject
+import kotlin.text.category
 
 class DetailActivity : AppCompatActivity() {
-
-    @BindView(R.id.image)
-    lateinit var image: ImageView
-
-    @BindView(R.id.title)
-    lateinit var title: TextView
-
-    @BindView(R.id.category)
-    lateinit var category: TextView
-
-    @BindView(R.id.subcategory)
-    lateinit var subcategory: TextView
 
     @Inject
     lateinit var headerViewModel: HeaderViewModel
@@ -41,7 +31,6 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.motion_layout_activity_detail_1)
 
-        ButterKnife.bind(this)
         AndroidInjection.inject(this)
 
         setStatusBarTransparent()
@@ -65,10 +54,9 @@ class DetailActivity : AppCompatActivity() {
     private fun prepareContent(data: HeaderData) {
 
         loadImage(data)
-        title.text = data.title
+        findViewById<TextView>(R.id.title).text = data.title
         category.text = data.category
         subcategory.text = data.subcategory
-
     }
 
     private fun loadImage(data: HeaderData) {

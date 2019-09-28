@@ -2,6 +2,8 @@ package com.blogspot.android_czy_java.beautytips.view.search
 
 import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.view.common.RecipeListFragment
+import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import com.blogspot.android_czy_java.beautytips.viewmodel.search.SearchActivityViewModel
 import javax.inject.Inject
 

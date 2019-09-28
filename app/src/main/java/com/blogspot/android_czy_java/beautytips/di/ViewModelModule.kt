@@ -7,6 +7,7 @@ import com.blogspot.android_czy_java.beautytips.di.view.MainActivityModule
 import com.blogspot.android_czy_java.beautytips.di.view.account.AccountActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.account.ProfileDetailsFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.account.UserListFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.comment.CommentFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.*
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.search.SearchActivityFragmentModule
@@ -30,7 +31,8 @@ import javax.inject.Provider
     SplashActivityModule::class,
     SearchActivityFragmentModule::class,
     SearchFragmentModule::class,
-    SearchResultFragmentModule::class
+    SearchResultFragmentModule::class,
+    CommentFragmentModule::class
 ])
 class ViewModelModule {
 

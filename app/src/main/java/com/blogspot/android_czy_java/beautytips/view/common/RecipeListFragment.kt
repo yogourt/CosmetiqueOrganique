@@ -54,7 +54,7 @@ abstract class RecipeListFragment : AppFragment(), ListCallback {
         AndroidSupportInjection.inject(this)
     }
 
-    fun render(uiModel: GenericUiModel<MainListData>) {
+    internal fun render(uiModel: GenericUiModel<MainListData>) {
         when (uiModel) {
             is GenericUiModel.LoadingSuccess -> {
                 prepareRecyclerView(uiModel.data)
@@ -132,13 +132,6 @@ abstract class RecipeListFragment : AppFragment(), ListCallback {
             intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
             startActivity(intent)
         }
-    }
-
-    fun onBackPressed(): Boolean {
-        return if (one_category_bottom_nav?.visibility == View.VISIBLE) {
-            loadInitialData()
-            true
-        } else false
     }
 
     abstract fun retryDataLoading()

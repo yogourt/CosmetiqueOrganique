@@ -23,18 +23,25 @@ class SearchActivityFragment : AppFragment() {
     @Inject
     lateinit var viewModel: SearchActivityViewModel
 
+    private var firstExpanded = false;
+
     private lateinit var searchSheetBehaviour: BottomSheetBehavior<FrameLayout>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_activity_search, container, false)
+
+        prepareViewModel()
+
+        return view;
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         searchSheetBehaviour = BottomSheetBehavior.from(view.fragment_search_container)
         searchSheetBehaviour.apply {
             peekHeight = resources.getDimensionPixelSize(R.dimen.search_layout_collapsed_height)
             state = BottomSheetBehavior.STATE_EXPANDED
         }
-
-        viewModel.recipeListLiveData.observe(this, Observer { render(it) })
-        return view;
     }
 
     override fun onAttach(context: Context) {
@@ -42,10 +49,23 @@ class SearchActivityFragment : AppFragment() {
         AndroidSupportInjection.inject(this)
     }
 
+    private fun prepareViewModel() {
+        viewModel.recipeListLiveData.observe(this, Observer { render(it) })
+    }
+
     private fun render(uiModel: GenericUiModel<MainListData>) {
-        when(uiModel) {
-            is GenericUiModel.LoadingSuccess ->
-                searchSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+        if (uiModel is GenericUiModel.LoadingSuccess) {
+            if (firstExpanded) collapseBottomSearch()
+            else firstExpanded = true
         }
+        else if (!firstExpanded) firstExpanded = true
+    }
+
+    private fun expandBottomSearch() {
+        searchSheetBehaviour.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun collapseBottomSearch() {
+        searchSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 }
