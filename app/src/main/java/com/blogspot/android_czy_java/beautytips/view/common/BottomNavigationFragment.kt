@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.account.AccountActivityFragment
-import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivityFragment
+import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivityFragment
 import com.blogspot.android_czy_java.beautytips.view.search.SearchActivityFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main_bottom_navigation.view.bottom_navigation

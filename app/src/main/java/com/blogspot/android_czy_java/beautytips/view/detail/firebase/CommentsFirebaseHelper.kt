@@ -2,7 +2,7 @@ package com.blogspot.android_czy_java.beautytips.view.detail.firebase
 
 import com.blogspot.android_czy_java.beautytips.view.detail.dialogs.NewCommentDialog
 import com.blogspot.android_czy_java.beautytips.view.detail.model.Comment
-import com.blogspot.android_czy_java.beautytips.view.listView.firebase.FirebaseLoginHelper
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,7 +16,7 @@ class CommentsFirebaseHelper(private val addCommentListener: NewCommentDialog.Ad
 
     fun saveComment(recipeId: String, commentDesc: String, commentsNum: String) {
 
-        val authorId = FirebaseLoginHelper.getUserId()
+        val authorId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         FirebaseDatabase.getInstance().getReference("userNicknames/$authorId").
                 addListenerForSingleValueEvent(object : ValueEventListener {

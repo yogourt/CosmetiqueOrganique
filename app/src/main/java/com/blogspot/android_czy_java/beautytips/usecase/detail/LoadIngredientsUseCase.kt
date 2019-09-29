@@ -2,7 +2,7 @@ package com.blogspot.android_czy_java.beautytips.usecase.detail
 
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepositoryInterface
 import com.blogspot.android_czy_java.beautytips.usecase.common.UseCaseInterface
-import com.blogspot.android_czy_java.beautytips.view.listView.exception.RecipeIdNotFoundException
+import com.blogspot.android_czy_java.beautytips.exception.recipe.RecipeIdNotFoundException
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailIngredient
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.IngredientsFragmentData
 import io.reactivex.Single

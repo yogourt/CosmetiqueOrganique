@@ -18,7 +18,7 @@ class CreateRecipeRequestsUseCase : NestedListRequestUseCase<RecipeRequest> {
     ))
 
 
-    override fun getOneRequest(listId: Int): NestedListRequest<RecipeRequest> {
-        return MainListRequest(execute().requests[listId])
+    override fun getOneRequest(listId: Int): RecipeRequest {
+        return execute().requests[listId]
     }
 }

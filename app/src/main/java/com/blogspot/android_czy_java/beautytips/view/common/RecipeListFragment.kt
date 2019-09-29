@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
-import com.blogspot.android_czy_java.beautytips.view.listView.view.MainListAdapter
-import com.blogspot.android_czy_java.beautytips.view.listView.view.RecipeListAdapter
-import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.ListCallback
+import com.blogspot.android_czy_java.beautytips.view.recipe.MainListAdapter
+import com.blogspot.android_czy_java.beautytips.view.recipe.RecipeListAdapter
+import com.blogspot.android_czy_java.beautytips.view.recipe.callback.ListCallback
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
@@ -28,7 +28,10 @@ abstract class RecipeListFragment : AppFragment(), ListCallback {
     @Inject
     lateinit var activityViewModel: DetailActivityViewModel
 
-    internal lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
+
+    override val innerListCallback: ListCallback.InnerListCallback
+        get() = InnerListCallbackImpl()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -80,7 +83,7 @@ abstract class RecipeListFragment : AppFragment(), ListCallback {
                     RecyclerView.VERTICAL, false)
             if (recyclerViewList.data.size == 1) {
                 val list = recyclerViewList.data[0]
-                adapter = RecipeListAdapter(this@RecipeListFragment,
+                adapter = RecipeListAdapter(this@RecipeListFragment.innerListCallback,
                         list.data, false)
                 prepareOneCategoryBottomNav(list.listTitle)
             } else {
@@ -124,20 +127,23 @@ abstract class RecipeListFragment : AppFragment(), ListCallback {
                 .show()
     }
 
-    override fun onRecipeClick(recipeId: Long) {
-        if (isTablet) {
-            activityViewModel.chosenItemId = recipeId
-        } else {
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
-            startActivity(intent)
-        }
-    }
-
     abstract fun retryDataLoading()
 
     abstract fun prepareViewModel(init: Boolean)
 
     private fun loadInitialData() = retryDataLoading()
+
+    inner class InnerListCallbackImpl : ListCallback.InnerListCallback {
+        override fun onRecipeClick(recipeId: Long) {
+            if (isTablet) {
+                activityViewModel.chosenItemId = recipeId
+            } else {
+                val intent = Intent(context, DetailActivity::class.java)
+                intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
+                startActivity(intent)
+            }
+        }
+    }
+
 
 }

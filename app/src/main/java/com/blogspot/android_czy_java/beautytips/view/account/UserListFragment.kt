@@ -40,7 +40,7 @@ class UserListFragment : RecipeListFragment() {
     }
 
     override fun onListClick(listId: Int) {
-        viewModel.loadOneList(listId)
+        viewModel.getRequestForId(listId)
     }
 
     override fun retryDataLoading() {

@@ -1,20 +1,16 @@
-package com.blogspot.android_czy_java.beautytips.view.listView.view;
+package com.blogspot.android_czy_java.beautytips.view.recipe;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.view.common.RecipeListFragment;
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment;
 import com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment;
-import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel;
+import com.blogspot.android_czy_java.beautytips.view.listView.view.BaseMainActivity;
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel;
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainActivityViewModel;
 import com.kobakei.ratethisapp.RateThisApp;
@@ -28,7 +24,7 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import static android.content.Intent.ACTION_SEARCH;
 
 public class MainActivity extends BaseMainActivity implements
-        IngredientActivityFragment.IngredientFragmentActivity {
+        IngredientActivityFragment.IngredientFragmentInterface {
 
 
     public static final String TAG_FRAGMENT_OPENING = "fragment_opening";

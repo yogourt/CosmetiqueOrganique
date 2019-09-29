@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/bottom_action_vert_padding"
-    android:paddingBottom="@dimen/bottom_action_vert_padding">
+    android:paddingTop="@dimen/bottom_action_vert_padding">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/comments"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:text="@string/button_discussion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="end|bottom"
+        android:elevation="30dp">
 
+        <ImageButton
+            android:id="@+id/comments"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:background="@drawable/bcg_comment_label_ripple" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:layout_gravity="end|bottom"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/comments"/>
+    </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

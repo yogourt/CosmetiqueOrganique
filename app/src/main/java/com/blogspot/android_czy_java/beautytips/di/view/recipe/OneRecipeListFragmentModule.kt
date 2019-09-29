@@ -6,53 +6,52 @@ import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.recipe.RecipeUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.CreateRecipeRequestsUseCase
-import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadListDataUseCase
-import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivityFragment
+import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.view.recipe.OneListFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 @Module(includes = [
-    MainActivityFragmentModule.ProvideViewModel::class,
+    OneRecipeListFragmentModule.ProvideViewModel::class,
     RecipeUseCaseModule::class
 ])
-abstract class MainActivityFragmentModule {
+abstract class OneRecipeListFragmentModule {
 
     @ContributesAndroidInjector(modules = [
         InjectViewModel::class,
         DetailActivityModule.ProvideViewModel::class
     ])
-    abstract fun bind(): MainActivityFragment
+    abstract fun bind(): OneListFragment.OneRecipeListFragment
 
     @Module
     class ProvideViewModel {
 
         @Provides
         @IntoMap
-        @ViewModelKey(RecipeViewModel::class)
-        fun provideRecipeViewModel(createRecipeRequestsUseCase: CreateRecipeRequestsUseCase,
-                                   loadListDataUseCase: LoadListDataUseCase): ViewModel =
-                RecipeViewModel(createRecipeRequestsUseCase, loadListDataUseCase)
+        @ViewModelKey(OneListViewModel.OneRecipeListViewModel::class)
+        fun provideOneListViewModel(loadListDataUseCase: LoadRecipesUseCase<RecipeRequest>): ViewModel =
+                OneListViewModel.OneRecipeListViewModel(loadListDataUseCase)
     }
 
     @Module
     class InjectViewModel {
 
         @Provides
-        fun provideRecipeViewModel(
+        fun provideOneListViewModel(
                 factory: ViewModelProvider.Factory,
-                target: MainActivityFragment
-        ): RecipeViewModel =
-                ViewModelProviders.of(target, factory).get(RecipeViewModel::class.java)
+                target: OneListFragment.OneRecipeListFragment
+        ): OneListViewModel.OneRecipeListViewModel =
+                ViewModelProviders.of(target, factory).get(OneListViewModel.OneRecipeListViewModel::class.java)
 
         @Provides
         fun provideDetailActivityViewModel(
                 factory: ViewModelProvider.Factory,
-                target: MainActivityFragment
+                target: OneListFragment.OneRecipeListFragment
         ): DetailActivityViewModel =
                 ViewModelProviders.of(target.requireActivity(), factory).get(DetailActivityViewModel::class.java)
     }

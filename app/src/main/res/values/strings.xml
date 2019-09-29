@@ -162,7 +162,7 @@
     <string name="feedback_email_title">Feedback for Cosmetique Organique</string>
     <string name="error_not_able_to_load_recipe">Sorry, the recipe wasn\'t found.</string>
     <string name="button_go_to_recipe">Go to recipe</string>
-    <string name="button_discussion">Discussion</string>
+    <string name="comments">Comments</string>
     <string name="ingredients">Ingredients</string>
     <string name="recipe">Recipe</string>
     <string name="search">Search</string>

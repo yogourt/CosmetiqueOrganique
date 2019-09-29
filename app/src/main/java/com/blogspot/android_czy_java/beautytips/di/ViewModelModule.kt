@@ -10,6 +10,8 @@ import com.blogspot.android_czy_java.beautytips.di.view.account.UserListFragment
 import com.blogspot.android_czy_java.beautytips.di.view.comment.CommentFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.*
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.recipe.OneRecipeListFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.recipe.OneUserRecipeListFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.search.SearchActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.search.SearchFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.search.SearchResultFragmentModule
@@ -32,7 +34,9 @@ import javax.inject.Provider
     SearchActivityFragmentModule::class,
     SearchFragmentModule::class,
     SearchResultFragmentModule::class,
-    CommentFragmentModule::class
+    CommentFragmentModule::class,
+    OneRecipeListFragmentModule::class,
+    OneUserRecipeListFragmentModule::class
 ])
 class ViewModelModule {
 

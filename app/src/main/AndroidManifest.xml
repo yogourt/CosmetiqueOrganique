@@ -29,7 +29,7 @@
             android:value="@string/add_mob_app_id" />
 
         <activity
-            android:name=".view.listView.view.MainActivity"
+            android:name=".view.recipe.MainActivity"
             android:configChanges="locale"
             android:windowSoftInputMode="adjustResize">
 

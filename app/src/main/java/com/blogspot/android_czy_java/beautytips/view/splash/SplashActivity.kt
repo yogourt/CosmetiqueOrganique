@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity
+import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivity
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.splash.SplashViewModel
 import com.google.android.material.snackbar.Snackbar

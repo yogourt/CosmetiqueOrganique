@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.account.AccountUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
-import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCase
-import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity
+import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivity
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainActivityViewModel
 import dagger.Module

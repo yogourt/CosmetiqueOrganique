@@ -8,7 +8,7 @@ class CreateSearchResultRequestsUseCase: NestedListRequestUseCase<SearchResultIn
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getOneRequest(listId: Int): NestedListRequest<SearchResultInnerRequest> {
+    override fun getOneRequest(listId: Int): SearchResultInnerRequest {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

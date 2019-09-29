@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.view.listView.view
+package com.blogspot.android_czy_java.beautytips.view.recipe
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.ListCallback
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.blogspot.android_czy_java.beautytips.view.recipe.callback.ListCallback
 
 
-class RecipeListAdapter(private val activityCallback: ListCallback,
+class RecipeListAdapter(private val activityCallback: ListCallback.InnerListCallback,
                         private val items: List<RecipeModel>,
                         isInnerList: Boolean = true) :
         RecyclerView.Adapter<RecipeListAdapter.ItemViewHolder>() {

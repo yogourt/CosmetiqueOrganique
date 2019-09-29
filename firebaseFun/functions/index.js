@@ -13,6 +13,8 @@ const mailTransport = nodemailer.createTransport({
 
 var admin = require("firebase-admin");
 
+var commentRefactoring = require("./comment_refactoring.js");
+
 admin.initializeApp({
   credential: admin.credential.cert({
     projectId: "beautytips-28e20",
@@ -164,6 +166,7 @@ exports.updateFavNumber = functions.database.ref('tipList/{tipId}')
 	admin.database().ref('tipList/' + context.params.tipId + '/favNum').set(childrenNum);
 
 	//refactorUserData();
+	commentRefactoring.refactor(admin);
 
 	return null;
 });

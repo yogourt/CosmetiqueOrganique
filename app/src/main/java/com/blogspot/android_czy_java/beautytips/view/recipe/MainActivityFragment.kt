@@ -1,13 +1,16 @@
-package com.blogspot.android_czy_java.beautytips.view.listView.view
+package com.blogspot.android_czy_java.beautytips.view.recipe
 
 
+import android.os.Bundle
 import android.text.TextUtils
 import androidx.lifecycle.Observer
+import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.notifications.NotificationService.Companion.KEY_ITEM
 
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 
 import com.blogspot.android_czy_java.beautytips.view.common.RecipeListFragment
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 import javax.inject.Inject
 
@@ -32,14 +35,21 @@ class MainActivityFragment : RecipeListFragment() {
         if (activity != null && activity!!.intent != null) {
             val recipeId = activity!!.intent.getStringExtra(KEY_ITEM)
             if (!TextUtils.isEmpty(recipeId) && recipeId != null) {
-                onRecipeClick(recipeId.toLong())
+                innerListCallback.onRecipeClick(recipeId.toLong())
                 activity!!.intent = null
             }
         }
     }
 
     override fun onListClick(listId: Int) {
-        recipeViewModel.loadOneList(listId)
+
+        val request = recipeViewModel.getRequestForId(listId)
+        val fragment = OneListFragment.OneRecipeListFragment.getInstance(request)
+        fragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.main_container, fragment, OneListFragment.TAG_ONE_LIST_FRAGMENT)
+                ?.addToBackStack(null)
+                ?.commit()
     }
 
 

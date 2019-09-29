@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity.TAG_FRAGMENT_DETAIL;
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity.TAG_FRAGMENT_INGREDIENT;
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity.TAG_FRAGMENT_OPENING;
+import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivity;
+
 
 public class DetailActivityViewModel extends ViewModel {
 
@@ -21,7 +20,7 @@ public class DetailActivityViewModel extends ViewModel {
     public void init() {
         if (currentDetailFragmentLiveData == null) {
             currentDetailFragmentLiveData = new MutableLiveData<>();
-            currentDetailFragmentLiveData.setValue(TAG_FRAGMENT_OPENING);
+            currentDetailFragmentLiveData.setValue(MainActivity.TAG_FRAGMENT_OPENING);
         }
     }
 
@@ -46,14 +45,14 @@ public class DetailActivityViewModel extends ViewModel {
     }
 
     public void onGoingBackFromIngredientToDetail() {
-        setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+        setCurrentDetailFragmentLiveData(MainActivity.TAG_FRAGMENT_DETAIL);
         isShowingIngredientFromRecipe = false;
     }
 
     public void onRecipeClick(Long recipeId) {
         if (!(chosenItemId == recipeId)) {
             chosenItemId = recipeId;
-            setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
+            setCurrentDetailFragmentLiveData(MainActivity.TAG_FRAGMENT_DETAIL);
         }
     }
 
@@ -64,7 +63,7 @@ public class DetailActivityViewModel extends ViewModel {
 
         if (!(chosenItemId == ingredientId)) {
             chosenItemId = ingredientId;
-            setCurrentDetailFragmentLiveData(TAG_FRAGMENT_INGREDIENT);
+            setCurrentDetailFragmentLiveData(MainActivity.TAG_FRAGMENT_INGREDIENT);
         }
     }
 

@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentActivity
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.appUtils.ExternalStoragePermissionHelper
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainActivityViewModel
-import com.blogspot.android_czy_java.beautytips.view.listView.utils.LanguageHelper
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -33,8 +32,6 @@ abstract class BaseMainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        LanguageHelper.setLanguageToEnglish(this)
 
         setContentView(R.layout.activity_main)
 

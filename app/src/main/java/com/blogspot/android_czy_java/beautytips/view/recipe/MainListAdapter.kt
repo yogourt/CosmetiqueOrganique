@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.view.listView.view
+package com.blogspot.android_czy_java.beautytips.view.recipe
 
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.view.listView.utils.recyclerViewUtils.SpacesItemDecoration
-import com.blogspot.android_czy_java.beautytips.view.listView.view.callback.ListCallback
+import com.blogspot.android_czy_java.beautytips.view.recipe.callback.ListCallback
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import com.bumptech.glide.Glide
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
@@ -54,7 +53,7 @@ class MainListAdapter(private val callback: ListCallback,
 
         holder.recyclerView.apply {
             layoutManager = childLayoutManager
-            adapter = RecipeListAdapter(callback, data)
+            adapter = RecipeListAdapter(callback.innerListCallback, data)
             addItemDecoration(SpacesItemDecoration(
                     resources.getDimension(R.dimen.list_padding).toInt()))
             GravitySnapHelper(Gravity.START).attachToRecyclerView(this)
@@ -66,7 +65,7 @@ class MainListAdapter(private val callback: ListCallback,
         holder.expandedTitle.text = recipe.title
         Glide.with(holder.itemView).load(recipe.imageUrl).into(holder.expandedImage)
         holder.expandedLayout.setOnClickListener {
-            callback.onRecipeClick(recipe.recipeId)
+            callback.innerListCallback.onRecipeClick(recipe.recipeId)
         }
     }
 

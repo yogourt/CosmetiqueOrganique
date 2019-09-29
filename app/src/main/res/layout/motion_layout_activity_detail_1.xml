@@ -59,12 +59,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chips" />
 
-    <fragment
-        android:id="@+id/fragment_bottom_action"
-        android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailBottomActionFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

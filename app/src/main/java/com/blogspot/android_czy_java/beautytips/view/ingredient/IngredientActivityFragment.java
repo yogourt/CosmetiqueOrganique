@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.blogspot.android_czy_java.beautytips.R;
-import com.blogspot.android_czy_java.beautytips.view.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +31,7 @@ import static com.blogspot.android_czy_java.beautytips.notifications.Notificatio
 
 public class IngredientActivityFragment extends Fragment {
 
+    /*
     @BindView(R.id.properties_layout)
     LinearLayout mPropertiesLayout;
 
@@ -39,18 +39,19 @@ public class IngredientActivityFragment extends Fragment {
     TextView mSearchTv;
 
     private DetailActivityViewModel viewModel;
-    private ListItem item;
 
-    private IngredientFragmentActivity activity;
+    private IngredientFragmentInterface activity;
 
 
     public IngredientActivityFragment() {
         // Required empty public constructor
     }
-
-    public interface IngredientFragmentActivity {
+*/
+    public interface IngredientFragmentInterface {
         void search(String query);
     }
+
+    /*
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class IngredientActivityFragment extends Fragment {
         super.onAttach(context);
 
         try {
-            activity = (IngredientFragmentActivity) getActivity();
+            activity = (IngredientFragmentInterface) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -163,5 +164,7 @@ public class IngredientActivityFragment extends Fragment {
     public void searchFor() {
         activity.search(item.title);
     }
+
+    */
 
 }

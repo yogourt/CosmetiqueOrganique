@@ -8,8 +8,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.blogspot.android_czy_java.beautytips.R
+import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivity
 
-import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadNestedListDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequestUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,8 +29,8 @@ abstract class NestedRecipeListViewModel<RECIPE_REQUEST>(
             loadRecipes(nestedListRequestUseCase.execute())
     }
 
-    fun loadOneList(listId: Int) {
-        loadRecipes(nestedListRequestUseCase.getOneRequest(listId))
+    fun getRequestForId(listId: Int):RECIPE_REQUEST {
+        return nestedListRequestUseCase.getOneRequest(listId)
     }
 
     internal fun loadRecipes(requests: NestedListRequest<RECIPE_REQUEST>) {

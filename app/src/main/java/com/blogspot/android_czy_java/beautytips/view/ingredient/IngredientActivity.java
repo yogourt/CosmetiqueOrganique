@@ -6,14 +6,14 @@ import android.os.Bundle;
 
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.view.detail.BaseItemActivity;
-import com.blogspot.android_czy_java.beautytips.view.listView.view.MainActivity;
+import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivity;
 
 import butterknife.ButterKnife;
 
 import static com.blogspot.android_czy_java.beautytips.view.listView.view.BaseMainActivity.KEY_QUERY;
 
 public class IngredientActivity extends BaseItemActivity
-        implements IngredientActivityFragment.IngredientFragmentActivity {
+        implements IngredientActivityFragment.IngredientFragmentInterface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

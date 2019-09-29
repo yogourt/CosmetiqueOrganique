@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluegrey900"
-    android:paddingTop="@dimen/activity_margin">
+    android:paddingTop="@dimen/activity_margin"
+    android:paddingBottom="@dimen/activity_margin">
 
     <LinearLayout
         android:layout_width="match_parent"
