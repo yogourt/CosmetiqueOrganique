@@ -11,17 +11,15 @@ import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultInnerRequest
-import com.blogspot.android_czy_java.beautytips.view.common.AppFragment
-import com.blogspot.android_czy_java.beautytips.viewmodel.search.SearchActivityViewModel
+import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.view.common.AppBottomSheetDialogFragment
+import com.blogspot.android_czy_java.beautytips.view.recipe.OneListFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import javax.inject.Inject
 
-class SearchFragment : AppFragment() {
-
-    @Inject
-    lateinit var viewModel: SearchActivityViewModel
+class SearchFragment : AppBottomSheetDialogFragment() {
 
     private var category: CategoryInterface = CategoryAll.SUBCATEGORY_ALL
     private var order = Order.NEW
@@ -31,18 +29,21 @@ class SearchFragment : AppFragment() {
 
         prepareLayout(view)
 
+        expand()
         return view;
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
     }
 
     private fun prepareLayout(view: View) {
         prepareSpinners(view)
         view.button_search.setOnClickListener {
-            viewModel.search(prepareRequest(view))
+            fragmentManager
+                    ?.beginTransaction()?.replace(
+                            R.id.main_container,
+                            OneListFragment.OneSearchRecipeListFragment.getInstance(prepareRequest(view)),
+                            OneListFragment.TAG_ONE_LIST_FRAGMENT)
+                    ?.addToBackStack(null)
+                    ?.commit()
+            this.dismiss()
         }
     }
 
@@ -59,8 +60,8 @@ class SearchFragment : AppFragment() {
         }
     }
 
-    private fun prepareRequest(view: View): SearchResultInnerRequest {
-        return SearchResultInnerRequest(
+    private fun prepareRequest(view: View): SearchResultRequest {
+        return SearchResultRequest(
                 category,
                 order,
                 view.title_et.text.toString(),
@@ -97,5 +98,10 @@ class SearchFragment : AppFragment() {
                                   id: Long) {
             order = Order.values()[id.toInt()]
         }
+    }
+
+
+    companion object {
+        const val TAG_SEARCH_FRAGMENT = "search fragment"
     }
 }

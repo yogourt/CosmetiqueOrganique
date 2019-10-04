@@ -54,7 +54,6 @@
 
         <activity
             android:name=".view.detail.DetailActivity"
-            android:launchMode="singleTop"
             android:theme="@style/FullScreenTheme" />
 
         <activity android:name=".view.ingredient.IngredientActivity" />

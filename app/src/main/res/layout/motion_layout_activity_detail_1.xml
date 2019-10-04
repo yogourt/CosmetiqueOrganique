@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     app:layoutDescription="@xml/motion_scene_activity_detail">
 
-
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
@@ -59,5 +58,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chips" />
 
+    <FrameLayout
+        android:id="@+id/detail_for_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

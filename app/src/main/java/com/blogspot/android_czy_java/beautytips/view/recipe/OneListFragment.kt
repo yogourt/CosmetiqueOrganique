@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
 import com.blogspot.android_czy_java.beautytips.view.common.AppFragment
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
@@ -22,6 +24,7 @@ import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityV
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListViewModel
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_one_list.*
+import kotlinx.android.synthetic.main.fragment_one_list.view.*
 import javax.inject.Inject
 
 sealed class OneListFragment<RECIPE_REQUEST, VIEW_MODEL : OneListViewModel<RECIPE_REQUEST>> :
@@ -33,8 +36,12 @@ sealed class OneListFragment<RECIPE_REQUEST, VIEW_MODEL : OneListViewModel<RECIP
     @Inject
     lateinit var viewModel: VIEW_MODEL
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_one_list, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_one_list, container, false)
+        prepareRecipeList(view)
+        return view
     }
 
     override fun onAttach(context: Context) {
@@ -45,6 +52,17 @@ sealed class OneListFragment<RECIPE_REQUEST, VIEW_MODEL : OneListViewModel<RECIP
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         prepareViewModel()
+    }
+
+    private fun prepareRecipeList(view: View) {
+        val recipeList = view.recipe_list
+        val params = FrameLayout.LayoutParams(recipeList.layoutParams)
+        if (context is MainActivity) {
+            params.bottomMargin = resources.getDimensionPixelSize(R.dimen.main_list_bottom_padding)
+        } else if (context is DetailActivity) {
+            params.topMargin = resources.getDimensionPixelSize(R.dimen.main_list_bottom_padding)
+        }
+        recipeList.layoutParams = params
     }
 
     private fun prepareViewModel() {
@@ -108,6 +126,19 @@ sealed class OneListFragment<RECIPE_REQUEST, VIEW_MODEL : OneListViewModel<RECIP
         companion object {
             fun getInstance(request: UserListRecipeRequest): OneUserRecipeListFragment {
                 val fragment = OneUserRecipeListFragment()
+                val bundle = Bundle()
+                bundle.putSerializable(KEY_REQUEST, request)
+                fragment.arguments = bundle
+                return fragment
+            }
+        }
+    }
+
+    class OneSearchRecipeListFragment : OneListFragment<SearchResultRequest,
+            OneListViewModel.SearchResultViewModel>() {
+        companion object {
+            fun getInstance(request: SearchResultRequest): OneSearchRecipeListFragment {
+                val fragment = OneSearchRecipeListFragment()
                 val bundle = Bundle()
                 bundle.putSerializable(KEY_REQUEST, request)
                 fragment.arguments = bundle

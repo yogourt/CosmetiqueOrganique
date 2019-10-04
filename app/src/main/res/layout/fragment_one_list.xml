@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bluegrey900">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipe_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_recipe_expanded"
-        android:paddingBottom="@dimen/main_list_bottom_padding"/>
+        tools:listitem="@layout/item_recipe_expanded"/>
 
 </FrameLayout>

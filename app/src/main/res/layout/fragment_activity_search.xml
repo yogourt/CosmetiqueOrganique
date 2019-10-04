@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/bottom_margin_for_search_fragment">
-
-    <fragment
-        android:id="@+id/fragment_search_result"
-        android:name="com.blogspot.android_czy_java.beautytips.view.search.SearchResultFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    android:layout_marginBottom="@dimen/bottom_margin_for_search_fragment"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/fragment_search_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-    <fragment
-        android:id="@+id/fragment_search"
-        android:name="com.blogspot.android_czy_java.beautytips.view.search.SearchFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
+        <fragment
+            android:id="@+id/fragment_search"
+            android:name="com.blogspot.android_czy_java.beautytips.view.search.SearchFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

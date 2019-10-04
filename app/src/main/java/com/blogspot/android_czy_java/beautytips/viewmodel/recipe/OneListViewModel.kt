@@ -7,6 +7,7 @@ import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserLis
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadListDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -45,4 +46,7 @@ sealed class OneListViewModel<REQUEST>(private val loadListDataUseCase: LoadReci
 
     class OneUserRecipeListViewModel(loadListDataUseCase: LoadRecipesUseCase<UserListRecipeRequest>) :
             OneListViewModel<UserListRecipeRequest>(loadListDataUseCase)
+
+    class SearchResultViewModel(loadListDataUseCase: LoadRecipesUseCase<SearchResultRequest>) :
+            OneListViewModel<SearchResultRequest>(loadListDataUseCase)
 }

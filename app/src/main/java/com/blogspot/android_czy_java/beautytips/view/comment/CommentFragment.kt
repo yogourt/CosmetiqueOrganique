@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
+import com.blogspot.android_czy_java.beautytips.view.common.AppBottomSheetDialogFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.comments.CommentsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -21,7 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_comments.view.*
 
 
-class CommentFragment : BottomSheetDialogFragment() {
+class CommentFragment : AppBottomSheetDialogFragment() {
 
     @Inject
     lateinit var viewModel: CommentsViewModel
@@ -43,17 +44,6 @@ class CommentFragment : BottomSheetDialogFragment() {
         return view
     }
 
-    private fun expand() {
-        dialog?.let { dialog ->
-            dialog.setOnShowListener {
-                val bottomSheet = (dialog as BottomSheetDialog)
-                        .findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-                bottomSheet?.let {
-                    BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED
-                }
-            }
-        }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

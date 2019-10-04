@@ -9,13 +9,15 @@ import androidx.fragment.app.Fragment
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.account.AccountActivityFragment
 import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivityFragment
-import com.blogspot.android_czy_java.beautytips.view.search.SearchActivityFragment
+import com.blogspot.android_czy_java.beautytips.view.search.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main_bottom_navigation.view.bottom_navigation
 
 class BottomNavigationFragment : AppFragment() {
 
     private lateinit var navigation: BottomNavigationView
+
+    private var searchFragment = SearchFragment()
 
     private val indexToIdMap = mapOf(
             Pair(R.id.menu_home, 0),
@@ -46,6 +48,14 @@ class BottomNavigationFragment : AppFragment() {
 
     private fun addBackStackChangeListener() {
         fragmentManager?.addOnBackStackChangedListener {
+            selectItem()
+        }
+    }
+
+    private fun selectItem() {
+        if (searchFragment.isVisible) {
+            selectItem(R.id.menu_search)
+        } else {
             fragmentManager?.findFragmentById(R.id.main_container)?.let { selectItem(it) }
         }
     }
@@ -58,7 +68,7 @@ class BottomNavigationFragment : AppFragment() {
         when (fragment) {
             is MainActivityFragment -> selectItem(R.id.menu_home)
             is AccountActivityFragment -> selectItem(R.id.menu_account)
-            is SearchActivityFragment -> selectItem(R.id.menu_search)
+            is SearchFragment -> selectItem(R.id.menu_search)
         }
     }
 
@@ -67,9 +77,25 @@ class BottomNavigationFragment : AppFragment() {
 
             val fragment = getCurrentFragment(item)
             if (fragment != null) {
-                replaceFragment(fragment)
+                if (fragment is SearchFragment) {
+                    showSearchFragment()
+                } else {
+                    replaceFragment(fragment)
+                }
             }
             true
+        }
+    }
+
+    private fun showSearchFragment() {
+        fragmentManager?.let {
+            searchFragment.apply {
+                show(it, SearchFragment.TAG_SEARCH_FRAGMENT)
+                it.executePendingTransactions()
+                dialog?.setOnCancelListener {
+                    selectItem()
+                }
+            }
         }
     }
 
@@ -82,16 +108,16 @@ class BottomNavigationFragment : AppFragment() {
                 ?.commit()
     }
 
-    private fun getCurrentFragment(item: MenuItem): AppFragment? {
+    private fun getCurrentFragment(item: MenuItem): Fragment? {
         return when (item.itemId) {
             R.id.menu_home -> MainActivityFragment()
             R.id.menu_account -> AccountActivityFragment()
-            R.id.menu_search -> SearchActivityFragment()
+            R.id.menu_search -> searchFragment
             else -> null
         }
     }
 
-    private fun replaceFragment(fragment: AppFragment) {
+    private fun replaceFragment(fragment: Fragment) {
         fragmentManager?.beginTransaction()?.replace(
                 R.id.main_container,
                 fragment)?.addToBackStack(null)?.commit()

@@ -2,14 +2,14 @@ package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultInnerRequest
+import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
 import io.reactivex.Single
 
 class SearchResultRecipeRepository(private val recipeRepository:
                                    RecipeRepositoryInterface<RecipeRequest>) :
-        RecipeRepositoryInterface<SearchResultInnerRequest>(recipeRepository.recipeDao) {
+        RecipeRepositoryInterface<SearchResultRequest>(recipeRepository.recipeDao) {
 
-    override fun getRecipes(request: SearchResultInnerRequest): Single<List<RecipeModel>> {
+    override fun getRecipes(request: SearchResultRequest): Single<List<RecipeModel>> {
 
         return recipeRepository.getRecipes(
                 RecipeRequest(request.category,
