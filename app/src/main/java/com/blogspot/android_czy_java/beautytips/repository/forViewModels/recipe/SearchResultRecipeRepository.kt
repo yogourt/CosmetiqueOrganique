@@ -3,13 +3,14 @@ package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import io.reactivex.Single
 
 class SearchResultRecipeRepository(private val recipeRepository:
                                    RecipeRepositoryInterface<RecipeRequest>) :
         RecipeRepositoryInterface<SearchResultRequest>(recipeRepository.recipeDao) {
 
-    override fun getRecipes(request: SearchResultRequest): Single<List<RecipeModel>> {
+    override fun getRecipes(request: SearchResultRequest): Single<OneListData> {
 
         return recipeRepository.getRecipes(
                 RecipeRequest(request.category,
@@ -18,12 +19,13 @@ class SearchResultRecipeRepository(private val recipeRepository:
                     if (titleAndKeywordsBlank(request.title, request.keywords)) {
                         return@map it
                     } else {
-                        it.filter { recipe ->
+                        OneListData(it.data.filter { recipe ->
                             (prepareExpression(recipe)).let { exp ->
                                 checkIfTitleMatches(exp, request.title) ||
                                         checkIfKeywordsMatch(exp, request.keywords)
                             }
-                        }
+                        },
+                                createTitle(request))
                     }
                 }
 
@@ -48,6 +50,9 @@ class SearchResultRecipeRepository(private val recipeRepository:
                     expression.contains(it)
                 }
     }
+
+    private fun createTitle(request: SearchResultRequest) =
+            "Searching for: ${request.title} ${request.keywords}"
 }
 
 

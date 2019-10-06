@@ -8,7 +8,4 @@ class LoadRecipesFromUserListUseCase(loadRecipesUseCase: LoadRecipesUseCase<User
                                      recipeRepositoryInterface: RecipeRepositoryInterface<UserListRecipeRequest>) :
         LoadNestedListDataUseCase<UserListRecipeRequest>(loadRecipesUseCase, recipeRepositoryInterface) {
 
-    override fun createListTitle(recipeRequest: UserListRecipeRequest): String {
-        return recipeRequest.userList.capitalize().replace("_", " ")
-    }
 }

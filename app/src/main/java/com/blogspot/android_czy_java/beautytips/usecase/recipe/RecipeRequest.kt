@@ -1,10 +1,8 @@
 package com.blogspot.android_czy_java.beautytips.usecase.recipe
 
-import android.os.Parcelable
-import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
-import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
-import java.io.Serializable
+import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
 
-class RecipeRequest(val category: CategoryInterface, val order: Order): Serializable
+class RecipeRequest(override val category: CategoryInterface, override val order: Order):
+        OneListRequest(category, order)

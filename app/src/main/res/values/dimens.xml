@@ -159,5 +159,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="comment_margin_vert">6dp</dimen>
     <dimen name="photo_comment">35dp</dimen>
     <dimen name="comment_padding">8dp</dimen>
+    <dimen name="main_list_top_padding">40dp</dimen>
+    <dimen name="status_bar_layout_height">25dp</dimen>
 
 </resources>

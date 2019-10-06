@@ -13,4 +13,6 @@ interface CategoryInterface {
     fun isSubcategoryAll() = subcategory == SubcategoryLabel.SUBCATEGORY_ALL
     fun newSubcategory(id: Int): CategoryInterface
 
+    fun getListTitle() = "${getCategoryLabel()} > ${getSubcategoryLabel()}"
+
 }

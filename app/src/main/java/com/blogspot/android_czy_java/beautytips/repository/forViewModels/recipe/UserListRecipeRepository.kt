@@ -5,13 +5,14 @@ import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListDao
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import io.reactivex.Single
 
 class UserListRecipeRepository(override val recipeDao: RecipeDao,
                                private val userListDao: UserListDao) :
         RecipeRepositoryInterface<UserListRecipeRequest>(recipeDao) {
 
-    override fun getRecipes(request: UserListRecipeRequest): Single<List<RecipeModel>> {
+    override fun getRecipes(request: UserListRecipeRequest): Single<OneListData> {
         return Single.create { emitter ->
 
             val recipes = when (request.order) {
@@ -23,7 +24,11 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
                         ?.map { it.trim() }
                         ?.contains(it.recipeId.toString()) ?: false
             }
-            emitter.onSuccess(recipes)
+            emitter.onSuccess(OneListData(recipes, createListTitle(request)))
         }
+    }
+
+    private fun createListTitle(recipeRequest: UserListRecipeRequest): String {
+        return recipeRequest.userList.capitalize().replace("_", " ")
     }
 }

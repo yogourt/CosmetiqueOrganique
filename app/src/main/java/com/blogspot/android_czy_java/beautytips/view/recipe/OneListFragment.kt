@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
@@ -21,13 +19,18 @@ import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
 import com.blogspot.android_czy_java.beautytips.view.recipe.callback.ListCallback
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListViewModel
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_one_list.*
-import kotlinx.android.synthetic.main.fragment_one_list.view.*
 import javax.inject.Inject
+import android.view.ContextThemeWrapper
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.blogspot.android_czy_java.beautytips.R
+import kotlinx.android.synthetic.main.fragment_one_list.view.*
 
-sealed class OneListFragment<RECIPE_REQUEST, VIEW_MODEL : OneListViewModel<RECIPE_REQUEST>> :
+
+sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneListViewModel<RECIPE_REQUEST>> :
         AppFragment(), ListCallback.InnerListCallback {
 
     @Inject
@@ -55,14 +58,13 @@ sealed class OneListFragment<RECIPE_REQUEST, VIEW_MODEL : OneListViewModel<RECIP
     }
 
     private fun prepareRecipeList(view: View) {
-        val recipeList = view.recipe_list
-        val params = FrameLayout.LayoutParams(recipeList.layoutParams)
         if (context is MainActivity) {
-            params.bottomMargin = resources.getDimensionPixelSize(R.dimen.main_list_bottom_padding)
-        } else if (context is DetailActivity) {
-            params.topMargin = resources.getDimensionPixelSize(R.dimen.main_list_bottom_padding)
+            view.recipe_list.setPadding(0, 0, 0,
+                    resources.getDimensionPixelSize(R.dimen.main_list_bottom_padding)
+            )
+        } else if(context is DetailActivity) {
+            view.status_bar.visibility = View.VISIBLE
         }
-        recipeList.layoutParams = params
     }
 
     private fun prepareViewModel() {
@@ -72,15 +74,16 @@ sealed class OneListFragment<RECIPE_REQUEST, VIEW_MODEL : OneListViewModel<RECIP
         }
     }
 
-    private fun render(uiModel: GenericUiModel<List<RecipeModel>>?) {
+    private fun render(uiModel: GenericUiModel<OneListData>?) {
 
         when (uiModel) {
             is GenericUiModel.LoadingSuccess -> {
                 recipe_list.apply {
                     adapter = RecipeListAdapter(this@OneListFragment,
-                            uiModel.data, false)
+                            uiModel.data.data, false)
                     layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 }
+                title.text = uiModel.data.listTitle
             }
 
             is GenericUiModel.StatusLoading -> {

@@ -62,7 +62,7 @@
             android:name=".view.newTip.view.NewTipActivity"
             android:label="@string/title_activity_new_tip"
             android:launchMode="singleTop"
-            android:parentActivityName=".view.listView.view.MainActivity"
+            android:parentActivityName=".view.recipe.MainActivity"
             android:theme="@style/ActivityDialogTheme" />
 
         <activity

@@ -7,6 +7,7 @@ import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.exception.common.DatabaseIsEmptyException
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
@@ -14,14 +15,14 @@ import io.reactivex.SingleEmitter
 class RecipeRepository(override val recipeDao: RecipeDao) :
         RecipeRepositoryInterface<RecipeRequest>(recipeDao) {
 
-    override fun getRecipes(request: RecipeRequest): Single<List<RecipeModel>> {
+    override fun getRecipes(request: RecipeRequest): Single<OneListData> {
         return when (request.order) {
             Order.NEW -> getByDate(request.category)
             Order.POPULARITY -> getByPopularity(request.category)
         }
     }
 
-    private fun getByDate(category: CategoryInterface): Single<List<RecipeModel>> {
+    private fun getByDate(category: CategoryInterface): Single<OneListData> {
 
         return Single.create { emitter ->
             if (recipeDao.getAllRecipesIds().isEmpty()) {
@@ -32,19 +33,24 @@ class RecipeRepository(override val recipeDao: RecipeDao) :
         }
     }
 
-    private fun emitResultByDate(category: CategoryInterface, emitter: SingleEmitter<List<RecipeModel>>) {
-        when {
-            category == CategoryAll.SUBCATEGORY_ALL -> emitter.onSuccess(recipeDao.getAllRecipes())
+    private fun emitResultByDate(category: CategoryInterface, emitter: SingleEmitter<OneListData>) {
+        val list = when {
+            category == CategoryAll.SUBCATEGORY_ALL -> recipeDao.getAllRecipes()
 
-            category.isSubcategoryAll() -> emitter.onSuccess(
-                    recipeDao.getRecipesByCategory(category.getCategoryLabel()))
+            category.isSubcategoryAll() ->
+                recipeDao.getRecipesByCategory(category.getCategoryLabel())
 
-            else -> emitter.onSuccess(recipeDao.getRecipesByCategoryAndSubcategory(
-                    category.getCategoryLabel(), category.getSubcategoryLabel()))
+            else -> recipeDao.getRecipesByCategoryAndSubcategory(
+                    category.getCategoryLabel(), category.getSubcategoryLabel())
         }
+        emitter.onSuccess(
+                OneListData(list,
+                category.getListTitle()
+                )
+        )
     }
 
-    private fun getByPopularity(category: CategoryInterface): Single<List<RecipeModel>> {
+    private fun getByPopularity(category: CategoryInterface): Single<OneListData> {
 
         return Single.create { emitter ->
 
@@ -56,16 +62,18 @@ class RecipeRepository(override val recipeDao: RecipeDao) :
         }
     }
 
-    private fun emitResultByPopularity(category: CategoryInterface, emitter: SingleEmitter<List<RecipeModel>>) {
-        when {
-            category == CategoryAll.SUBCATEGORY_ALL -> emitter.onSuccess(recipeDao.getAllRecipesOrderByPopularity())
+    private fun emitResultByPopularity(category: CategoryInterface, emitter: SingleEmitter<OneListData>) {
+        val list = when {
+            category == CategoryAll.SUBCATEGORY_ALL -> recipeDao.getAllRecipesOrderByPopularity()
 
-            category.isSubcategoryAll() -> emitter.onSuccess(
-                    recipeDao.getRecipesByCategoryOrderByPopularity(category.getCategoryLabel()))
+            category.isSubcategoryAll() ->
+                    recipeDao.getRecipesByCategoryOrderByPopularity(category.getCategoryLabel())
 
-            else -> emitter.onSuccess(recipeDao.getRecipesByCategoryAndSubcategoryOrderByPopularity(
-                    category.getCategoryLabel(), category.getSubcategoryLabel()))
+            else -> recipeDao.getRecipesByCategoryAndSubcategoryOrderByPopularity(
+                    category.getCategoryLabel(), category.getSubcategoryLabel())
         }
+
+        emitter.onSuccess(OneListData(list, category.getListTitle()))
     }
 
 

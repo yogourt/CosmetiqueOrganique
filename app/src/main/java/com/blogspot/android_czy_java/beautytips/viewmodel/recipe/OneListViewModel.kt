@@ -2,10 +2,9 @@ package com.blogspot.android_czy_java.beautytips.viewmodel.recipe
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.LoadListDataUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
@@ -13,13 +12,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-sealed class OneListViewModel<REQUEST>(private val loadListDataUseCase: LoadRecipesUseCase<REQUEST>) :
+sealed class OneListViewModel<REQUEST: OneListRequest>(private val loadListDataUseCase: LoadRecipesUseCase<REQUEST>) :
         ViewModel() {
 
     private val defaultErrorMessage = "Sorry, an error occurred. "
 
-    val recipeListLiveData = MutableLiveData<GenericUiModel<List<RecipeModel>>>()
+    val recipeListLiveData = MutableLiveData<GenericUiModel<OneListData>>()
     private val disposable = CompositeDisposable()
+
+    var title = ""
 
     fun getList(request: REQUEST) {
         execute(request)

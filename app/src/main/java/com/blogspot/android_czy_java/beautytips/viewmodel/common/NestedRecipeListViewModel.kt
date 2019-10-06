@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadNestedListDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequestUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
@@ -12,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-abstract class NestedRecipeListViewModel<RECIPE_REQUEST>(
+abstract class NestedRecipeListViewModel<RECIPE_REQUEST: OneListRequest>(
         private val nestedListRequestUseCase: NestedListRequestUseCase<RECIPE_REQUEST>,
         private val loadListDataUseCase: LoadNestedListDataUseCase<RECIPE_REQUEST>) : ViewModel() {
 
