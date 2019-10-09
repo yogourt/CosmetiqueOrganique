@@ -166,7 +166,7 @@ exports.updateFavNumber = functions.database.ref('tipList/{tipId}')
 	admin.database().ref('tipList/' + context.params.tipId + '/favNum').set(childrenNum);
 
 	//refactorUserData();
-	commentRefactoring.refactor(admin);
+	//commentRefactoring.refactor(admin);
 
 	return null;
 });

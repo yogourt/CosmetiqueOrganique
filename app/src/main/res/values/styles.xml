@@ -23,6 +23,7 @@
         <item name="snackbarStyle">@style/snackbarStyle</item>
         <item name="chipStyle">@style/chipStyle</item>
         <item name="editTextStyle">@style/editTextStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/spinnerItemStyle</item>
 
     </style>
 
@@ -53,6 +54,10 @@
         <item name="android:inputType">textCapSentences|textMultiLine</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <style name="spinnerItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:background">@drawable/ripple_background</item>
     </style>
 
     <style name="ActivityDialogTheme" parent="AppTheme"/>
