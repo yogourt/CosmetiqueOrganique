@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/activity_margin"
+    android:layout_marginStart="@dimen/new_comment_horiz_margin"
+    android:layout_marginEnd="@dimen/new_comment_horiz_margin"
+    android:layout_marginTop="@dimen/new_comment_vert_margin"
+    android:paddingEnd="@dimen/activity_margin"
+    android:layout_marginBottom="@dimen/new_comment_vert_margin"
+    android:background="@drawable/comments_background"
+    android:orientation="horizontal">
+
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/new_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="bottom"
+        android:hint="@string/comment_hint"
+        android:imeOptions="actionSend"
+        android:inputType="textAutoComplete|textMultiLine|textCapSentences"
+        android:padding="@dimen/activity_margin"
+        android:textColorHint="@color/white" />
+
+
+    <ImageView
+        android:id="@+id/button_add_new"
+        android:layout_width="@dimen/item_icon_size"
+        android:layout_height="@dimen/item_icon_size"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/item_icon_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_send_ripple" />
+
+</LinearLayout>

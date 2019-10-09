@@ -32,6 +32,7 @@
     <color name="white_semi">#deffffff</color>
     <color name="white_title_tint">#39ffffff</color>
 
-    <color name="colorAccent">@color/pink300</color>
+    <color name="colorAccent">@color/pink200</color>
+    <color name="colorSecondary">@color/purple300</color>
 
 </resources>

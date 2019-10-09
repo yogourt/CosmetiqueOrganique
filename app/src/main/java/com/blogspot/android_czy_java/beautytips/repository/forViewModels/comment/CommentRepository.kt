@@ -6,4 +6,6 @@ class CommentRepository(private val recipeDetailDao: DetailDao) {
 
     fun getCommentsForRecipe(recipeId: Long) = recipeDetailDao.getComments(recipeId)
 
+    fun getCommentNumberForRecipe(recipeId: Long) = recipeDetailDao.getCommentNumberForRecipe(recipeId)
+
 }

@@ -2,14 +2,25 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/comment_padding">
 
     <include
         layout="@layout/item_discussion_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_margin"
-        android:layout_marginEnd="@dimen/activity_margin"/>
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:layout_marginBottom="0dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reply"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/purple100"
+        android:layout_marginStart="@dimen/reply_button_start_margin"/>
 
 
 </LinearLayout>

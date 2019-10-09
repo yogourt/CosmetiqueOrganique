@@ -193,5 +193,6 @@
     <string name="hint_author">Author</string>
     <string name="hint_keywords">Keywords</string>
     <string name="order_spinner_label">Order</string>
+    <string name="reply">Reply</string>
 
 </resources>

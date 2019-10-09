@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/comment_margin_start"
+    android:layout_marginStart="@dimen/comment_margin_start"
     android:paddingTop="@dimen/comment_margin_vert"
-    android:paddingEnd="@dimen/activity_margin"
-    android:paddingBottom="@dimen/comment_margin_vert"
+    android:layout_marginEnd="@dimen/activity_margin"
+    android:layout_marginBottom="@dimen/comment_margin_vert"
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -22,7 +22,7 @@
         android:layout_marginStart="@dimen/label_space"
         android:layout_weight="1"
         android:padding="@dimen/comment_padding"
-        android:background="@drawable/comments_backgorund"
+        android:background="@drawable/comments_background"
         android:orientation="vertical">
 
         <TextView

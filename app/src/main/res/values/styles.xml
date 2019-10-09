@@ -53,7 +53,6 @@
     <style name="editTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:inputType">textCapSentences|textMultiLine</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:backgroundTint">@color/white</item>
     </style>
 
     <style name="spinnerItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
@@ -92,6 +91,10 @@
     <style name="NormalTextStyle" parent="TextAppearance.AppCompat.Small">
         <item name="android:textSize">@dimen/normal_text_size</item>
         <item name="android:textColor">@color/bluegrey50</item>
+    </style>
+
+    <style name="DarkNormalTextStyle" parent="NormalTextStyle">
+        <item name="android:textColor">@color/bluegrey900</item>
     </style>
 
     <style name="IngredientStyle" parent="TextAppearance.AppCompat.Small">

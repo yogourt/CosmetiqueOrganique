@@ -80,9 +80,15 @@ class CommentFragment : AppBottomSheetDialogFragment() {
     }
 
     private fun prepareCommentList(comments: List<CommentModel>) {
-        commentList.apply {
-            adapter = CommentListAdapter(comments)
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
+
+        if(comments.isEmpty()) {
+            commentList.visibility = View.GONE
+        } else {
+            commentList.visibility = View.VISIBLE
+            commentList.apply {
+                adapter = CommentListAdapter(comments)
+                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
+            }
         }
     }
 

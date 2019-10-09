@@ -29,4 +29,7 @@ interface DetailDao {
     @Query("SELECT * FROM RecipeComments WHERE recipeId = :recipeId")
     fun getComments(recipeId: Long): List<CommentModel>
 
+    @Query("SELECT COUNT(id) FROM RecipeComments WHERE recipeId = :recipeId")
+    fun getCommentNumberForRecipe(recipeId: Long): Int
+
 }

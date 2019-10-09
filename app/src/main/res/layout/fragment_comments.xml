@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bluegrey900"
-    android:paddingTop="@dimen/activity_margin"
-    android:paddingBottom="@dimen/activity_margin">
+    android:background="@color/bluegrey900">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,14 +14,19 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/comments_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_discussion_comment" />
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:visibility="gone"
+            tools:listitem="@layout/item_discussion_comment"
+            android:paddingTop="@dimen/activity_margin"/>
+
+        <include layout="@layout/layout_new_comment" />
     </LinearLayout>
 
     <ProgressBar
+        android:id="@+id/loading_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/loading_indicator"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 </FrameLayout>
