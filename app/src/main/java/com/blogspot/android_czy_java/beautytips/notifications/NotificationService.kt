@@ -18,7 +18,7 @@ class NotificationService : FirebaseMessagingService() {
 
     companion object {
         private const val CHANNEL_ID = "Comments notifications"
-        public const val KEY_ITEM = "recipe id"
+        public const val KEY_ITEM = "recipe firebaseId"
     }
 
     private var isChannelCreated = false

@@ -66,7 +66,7 @@ public class IngredientListAdapter extends BaseListViewAdapter<IngredientModel> 
                     mContext.startActivity(ingredientActivityIntent, createSharedElementTransition());
                 }
 
-                viewModel.onIngredientClick(item.getId());
+                viewModel.onIngredientClick(item.getFirebaseId());
 
             }
         }

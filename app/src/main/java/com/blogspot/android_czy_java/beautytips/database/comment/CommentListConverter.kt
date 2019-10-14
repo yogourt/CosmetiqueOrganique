@@ -3,8 +3,7 @@ package com.blogspot.android_czy_java.beautytips.database.comment
 import com.google.firebase.database.DataSnapshot
 
 class CommentListConverter(private val recipeCommentsSnapshot: DataSnapshot,
-                           private val recipeId: Long,
-                           private val replyTo: String? = null) {
+                           private val recipeId: Long) {
 
     fun getComments(): ArrayList<CommentModel> {
 
@@ -15,35 +14,16 @@ class CommentListConverter(private val recipeCommentsSnapshot: DataSnapshot,
 
             if (comment != null) {
                 comments.add(comment)
-
-                if (replyTo == null) {
-                    comments.addAll(
-                            getSubcomments(
-                                    commentSnapshot.child("subcomments"),
-                                    comment.id))
-                }
             }
         }
-
         return comments
     }
 
     private fun getComment(commentSnapshot: DataSnapshot): CommentModel? {
         return CommentConverter(
                 commentSnapshot,
-                recipeId,
-                replyTo)
+                recipeId)
                 .getComment()
     }
-
-    private fun getSubcomments(subcommentsSnapshot: DataSnapshot, replyTo: String): ArrayList<CommentModel> {
-        return CommentListConverter(
-                subcommentsSnapshot,
-                recipeId,
-                replyTo
-        )
-                .getComments()
-    }
-
 
 }

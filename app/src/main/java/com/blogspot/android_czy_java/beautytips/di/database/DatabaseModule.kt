@@ -29,6 +29,10 @@ class DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideCommentDao(db: AppDatabase) = db.commentDao()
+
+    @Provides
+    @Singleton
     fun provideErrorDao(db: AppDatabase) = db.errorDao()
 
     @Provides

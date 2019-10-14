@@ -32,10 +32,10 @@ import static com.blogspot.android_czy_java.beautytips.notifications.Notificatio
 public class IngredientActivityFragment extends Fragment {
 
     /*
-    @BindView(R.id.properties_layout)
+    @BindView(R.firebaseId.properties_layout)
     LinearLayout mPropertiesLayout;
 
-    @BindView(R.id.searching_text_view)
+    @BindView(R.firebaseId.searching_text_view)
     TextView mSearchTv;
 
     private DetailActivityViewModel viewModel;
@@ -114,7 +114,7 @@ public class IngredientActivityFragment extends Fragment {
             }
         });
 
-        FirebaseDatabase.getInstance().getReference("ingredients/" + item.getId()).
+        FirebaseDatabase.getInstance().getReference("ingredients/" + item.getFirebaseId()).
                 addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -147,9 +147,9 @@ public class IngredientActivityFragment extends Fragment {
                                     this.getContext()).
                                     inflate(R.layout.layout_ingredient_properties,
                                             mPropertiesLayout, false);
-                            ((TextView) propertyView.findViewById(R.id.title_text_view)).
+                            ((TextView) propertyView.findViewById(R.firebaseId.title_text_view)).
                                     setText(title);
-                            ((TextView) propertyView.findViewById(R.id.desc_text_view)).
+                            ((TextView) propertyView.findViewById(R.firebaseId.desc_text_view)).
                                     setText(description);
                             mPropertiesLayout.addView(propertyView);
                         }

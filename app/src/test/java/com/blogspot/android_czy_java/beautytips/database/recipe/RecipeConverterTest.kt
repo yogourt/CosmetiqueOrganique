@@ -18,7 +18,7 @@ class RecipeConverterTest {
     private val testedRecipeId = -1L
     private val testedRecipeTitle = "example title"
     private val testedRecipeImage = "example image"
-    private val testedRecipeAuthorId = "example author id"
+    private val testedRecipeAuthorId = "example author firebaseId"
     private val testedRecipeCategory = "example category"
     private val testedRecipeSubcategory = "example subcategory"
     private val testedRecipeFavNum = 10L

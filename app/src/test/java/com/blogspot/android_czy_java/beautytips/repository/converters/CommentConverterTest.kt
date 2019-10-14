@@ -20,7 +20,7 @@ class CommentConverterTest {
     private val testedCommentId = "123"
     private val testedCommentMessage = "example message"
     private val testedCommentAuthor = "example author"
-    private val testedCommentAuthorId = "example author id"
+    private val testedCommentAuthorId = "example author firebaseId"
 
     private val comment = CommentModel(testedCommentId, testedRecipeId, testedCommentAuthorId, testedCommentAuthor, testedCommentMessage)
 

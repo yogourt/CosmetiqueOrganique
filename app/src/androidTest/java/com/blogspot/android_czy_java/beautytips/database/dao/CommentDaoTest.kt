@@ -20,7 +20,7 @@ class CommentDaoTest {
     private val otherCommentId = "234"
     private val testedCommentDesc = "example message"
     private val testedCommentAuthor = "example author"
-    private val testedCommentAuthorId = "example author id"
+    private val testedCommentAuthorId = "example author firebaseId"
 
     lateinit var db: AppDatabase
     lateinit var SUT: CommentDao
@@ -45,7 +45,7 @@ class CommentDaoTest {
         SUT.insertComments(listOf(insertedComment))
 
         //when
-        val result = SUT.getCommentsForRecipe(testedRecipeId)
+        val result = SUT.getComments(testedRecipeId)
 
         //then
         assertThat(result[0], equalTo(insertedComment))
@@ -61,7 +61,7 @@ class CommentDaoTest {
         SUT.insertComments(listOf(insertedComment, otherComment))
 
         //when
-        val result = SUT.getCommentsForRecipe(testedRecipeId)
+        val result = SUT.getComments(testedRecipeId)
 
         //then
         for(resultElement in result)

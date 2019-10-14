@@ -163,7 +163,7 @@ private void setFabInactive() {
 
 @Override
 public void getFabState() {
-    mFirebaseHelper.setFabState(item.getId());
+    mFirebaseHelper.setFabState(item.getFirebaseId());
 }
 
 @Override
@@ -196,7 +196,7 @@ public Intent createDataIntent() {
 
     if (item != null) {
         bundle.putLong(KEY_FAV_NUM, item.getFavNum());
-        bundle.putString(KEY_ID, item.getId());
+        bundle.putString(KEY_ID, item.getFirebaseId());
     }
 
     intent.putExtras(bundle);
@@ -356,9 +356,9 @@ private void makeIngredientClickable(TextView ingredientView, final DataSnapshot
         public void onClick(View view) {
 
             final ListItem ingredientItem = ingredientData.getValue(ListItem.class);
-            String id = ingredientData.getKey();
+            String firebaseId = ingredientData.getKey();
             if (ingredientItem != null) {
-                ingredientItem.setId(id);
+                ingredientItem.setFirebaseId(firebaseId);
             }
 
             if (!isTablet || isPortrait) {

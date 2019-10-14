@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.comment.CommentUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
+import com.blogspot.android_czy_java.beautytips.usecase.comment.AddCommentUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.LoadCommentsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.view.comment.CommentFragment
@@ -36,8 +37,9 @@ abstract class CommentFragmentModule {
         @Provides
         @IntoMap
         @ViewModelKey(CommentsViewModel::class)
-        fun provideCommentViewModel(loadCommentsUseCase: LoadCommentsUseCase):
-                ViewModel = CommentsViewModel(loadCommentsUseCase)
+        fun provideCommentViewModel(loadCommentsUseCase: LoadCommentsUseCase,
+                                    addCommentUseCase: AddCommentUseCase):
+                ViewModel = CommentsViewModel(loadCommentsUseCase, addCommentUseCase)
 
     }
 

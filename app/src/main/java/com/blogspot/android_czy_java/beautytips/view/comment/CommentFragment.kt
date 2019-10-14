@@ -20,6 +20,7 @@ import javax.inject.Inject
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_comments.view.*
+import kotlinx.android.synthetic.main.layout_new_comment.view.*
 
 
 class CommentFragment : AppBottomSheetDialogFragment() {
@@ -40,6 +41,7 @@ class CommentFragment : AppBottomSheetDialogFragment() {
         commentList = view.comments_list
 
         expand()
+        prepareNewCommentLayout(view)
 
         return view
     }
@@ -63,6 +65,15 @@ class CommentFragment : AppBottomSheetDialogFragment() {
 
     }
 
+    private fun prepareNewCommentLayout(view: View) {
+        view.button_add_new.setOnClickListener {
+            addComment(
+                    view.new_comment.text.toString(),
+                    null
+            )
+        }
+    }
+
     private fun render(uiModel: GenericUiModel<List<CommentModel>>?) {
         when (uiModel) {
             is GenericUiModel.LoadingSuccess -> {
@@ -81,7 +92,7 @@ class CommentFragment : AppBottomSheetDialogFragment() {
 
     private fun prepareCommentList(comments: List<CommentModel>) {
 
-        if(comments.isEmpty()) {
+        if (comments.isEmpty()) {
             commentList.visibility = View.GONE
         } else {
             commentList.visibility = View.VISIBLE
@@ -90,6 +101,10 @@ class CommentFragment : AppBottomSheetDialogFragment() {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
             }
         }
+    }
+
+    fun addComment(newComment: String, responseTo: String?) {
+        viewModel.addComment(newComment, responseTo)
     }
 
     private fun hideLoadingIndicator() {
@@ -101,7 +116,7 @@ class CommentFragment : AppBottomSheetDialogFragment() {
     }
 
     companion object {
-        const val KEY_RECIPE_ID = "recipe id"
+        const val KEY_RECIPE_ID = "recipe firebaseId"
         const val TAG_COMMENTS_FRAGMENT = "comments fragment"
 
         fun getInstance(recipeId: Long): CommentFragment {
