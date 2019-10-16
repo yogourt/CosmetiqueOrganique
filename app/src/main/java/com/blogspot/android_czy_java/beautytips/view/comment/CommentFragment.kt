@@ -5,33 +5,40 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
+import com.blogspot.android_czy_java.beautytips.view.comment.callback.CommentListCallback
 import com.blogspot.android_czy_java.beautytips.view.common.AppBottomSheetDialogFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.comments.CommentsViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.fragment_comments.view.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.layout_new_comment.view.*
+import android.app.Activity
+import kotlinx.android.synthetic.main.fragment_comments.view.*
 
 
-class CommentFragment : AppBottomSheetDialogFragment() {
+class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
 
     @Inject
     lateinit var viewModel: CommentsViewModel
+
+    @Inject
+    lateinit var accountViewModel: AccountViewModel
 
     private var recipeId: Long = 1
 
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var commentList: RecyclerView
+    private lateinit var commentsLayout: CoordinatorLayout
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,6 +46,7 @@ class CommentFragment : AppBottomSheetDialogFragment() {
 
         loadingIndicator = view.loading_indicator
         commentList = view.comments_list
+        commentsLayout = view.comments_layout
 
         expand()
         prepareNewCommentLayout(view)
@@ -97,14 +105,20 @@ class CommentFragment : AppBottomSheetDialogFragment() {
         } else {
             commentList.visibility = View.VISIBLE
             commentList.apply {
-                adapter = CommentListAdapter(comments)
+                adapter = CommentListAdapter(this@CommentFragment, comments)
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
             }
         }
     }
 
-    fun addComment(newComment: String, responseTo: String?) {
-        viewModel.addComment(newComment, responseTo)
+    override fun addComment(newComment: String, responseTo: String?) {
+        if (accountViewModel.isUserAnonymous()) {
+            showLoginSnackbar(commentList,
+                    responseTo != null)
+        } else {
+            viewModel.addComment(newComment, responseTo)
+            collapse()
+        }
     }
 
     private fun hideLoadingIndicator() {
@@ -113,6 +127,44 @@ class CommentFragment : AppBottomSheetDialogFragment() {
 
     private fun showLoadingIndicator() {
         loadingIndicator.visibility = View.VISIBLE
+    }
+
+    private fun showLoginSnackbar(view: View, closeKeyboard: Boolean = false) {
+
+        if (closeKeyboard) closeKeyboard()
+
+        Snackbar.make(view, R.string.login_prompt, Snackbar.LENGTH_LONG)
+                .setAction(R.string.login) {
+                    handleLoginClick(view)
+                }
+                .show()
+    }
+
+    private fun closeKeyboard() {
+        val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager
+        view?.let {
+            imm?.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
+
+    private fun handleLoginClick(view: View) {
+        if (accountViewModel.isNetworkConnection()) {
+            openLoginActivity()
+        } else {
+            showInfoAboutError(view, getString(R.string.no_internet))
+        }
+    }
+
+    private fun showInfoAboutError(view: View, message: String) {
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun openLoginActivity() {
+        startActivityForResult(
+                accountViewModel.buildIntentForLoginActivity(),
+                accountViewModel.requestCode
+        )
+
     }
 
     companion object {

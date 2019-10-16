@@ -1,7 +1,6 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/comment_padding">
 
@@ -11,16 +10,28 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_margin"
         android:layout_marginEnd="@dimen/activity_margin"
-        android:layout_marginBottom="0dp"/>
+        android:layout_marginBottom="0dp" />
 
     <TextView
+        android:id="@+id/reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/reply_button_start_margin"
         android:text="@string/reply"
-        android:textSize="@dimen/small_text_size"
-        android:textStyle="bold"
         android:textColor="@color/purple100"
-        android:layout_marginStart="@dimen/reply_button_start_margin"/>
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold" />
+
+    <include
+        android:id="@+id/new_comment_layout"
+        layout="@layout/layout_new_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/reply_start_margin"
+        android:layout_marginTop="@dimen/new_comment_vert_margin"
+        android:layout_marginBottom="@dimen/new_comment_vert_margin"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:visibility="gone" />
 
 
 </LinearLayout>

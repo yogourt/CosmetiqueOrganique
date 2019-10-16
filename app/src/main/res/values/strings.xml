@@ -181,7 +181,7 @@
     <string name="no_internet_data_loading">Turn on internet connection to download data</string>
     <string name="splash_info_bottom">App is downloading necessary data</string>
     <string name="no_internet">No internet</string>
-    <string name="error_msg_common">An error occured</string>
+    <string name="error_msg_common">An error occurred</string>
     <string name="about_me">About me:</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
@@ -194,5 +194,6 @@
     <string name="hint_keywords">Keywords</string>
     <string name="order_spinner_label">Order</string>
     <string name="reply">Reply</string>
+    <string name="login_prompt">Log in to use this feature</string>
 
 </resources>

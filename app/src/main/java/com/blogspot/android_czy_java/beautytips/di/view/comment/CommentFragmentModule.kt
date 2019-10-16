@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.comment.CommentUseCaseModule
+import com.blogspot.android_czy_java.beautytips.di.view.account.AccountActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
 import com.blogspot.android_czy_java.beautytips.usecase.comment.AddCommentUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.LoadCommentsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.view.comment.CommentFragment
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
+import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.comments.CommentsViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderViewModel
@@ -21,7 +23,8 @@ import dagger.multibindings.IntoMap
 
 @Module(includes = [
     CommentFragmentModule.ProvideViewModel::class,
-    CommentUseCaseModule::class
+    CommentUseCaseModule::class,
+    AccountActivityFragmentModule::class
 ])
 abstract class CommentFragmentModule {
 
@@ -60,5 +63,13 @@ abstract class CommentFragmentModule {
         ): CommentsViewModel =
                 ViewModelProviders.of(target, factory).get(CommentsViewModel::class.java)
 
+        @Provides
+        fun provideAccountViewModel(
+                factory: ViewModelProvider.Factory,
+                target: CommentFragment
+        ): AccountViewModel =
+                ViewModelProviders.of(target, factory).get(AccountViewModel::class.java)
+        
     }
+
 }

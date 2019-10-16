@@ -22,5 +22,13 @@ open class AppBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
+    internal fun collapse() {
+        val bottomSheet = (dialog as BottomSheetDialog)
+                .findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet?.let {
+            BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+    }
+
 
 }

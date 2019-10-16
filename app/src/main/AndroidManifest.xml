@@ -54,7 +54,8 @@
 
         <activity
             android:name=".view.detail.DetailActivity"
-            android:theme="@style/FullScreenTheme" />
+            android:theme="@style/FullScreenTheme"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".view.ingredient.IngredientActivity" />
 

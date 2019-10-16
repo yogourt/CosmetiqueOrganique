@@ -88,7 +88,7 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
 
     }
 
-    private fun isUserAnonymous(): Boolean {
+    fun isUserAnonymous(): Boolean {
         return loginUseCase.isUserAnonymousOrNull() ?: let {
             loginUseCase.loginAnonymously()
             true
