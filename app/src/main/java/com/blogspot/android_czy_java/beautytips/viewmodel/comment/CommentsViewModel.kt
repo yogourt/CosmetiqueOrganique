@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.viewmodel.comments
+package com.blogspot.android_czy_java.beautytips.viewmodel.comment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +15,7 @@ class CommentsViewModel(private val loadCommentsUseCase: LoadCommentsUseCase,
 
     private val defaultErrorMessage = "Sorry, an error occurred. "
 
-    val commentListLiveData: MutableLiveData<GenericUiModel<List<CommentModel>>> = MutableLiveData()
+    val commentListLiveData: MutableLiveData<GenericUiModel<List<CommentWithAuthorModel>>> = MutableLiveData()
     private val disposable = CompositeDisposable()
 
     private var recipeId: Long = 1

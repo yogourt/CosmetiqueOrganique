@@ -1,7 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.usecase.comment
 
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
-import com.blogspot.android_czy_java.beautytips.exception.account.UserNotLoggedInException
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.comment.CommentRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import io.reactivex.Single
@@ -28,7 +27,6 @@ class AddCommentUseCase(private val getCurrentUserUseCase: GetCurrentUserUseCase
                                         responseTo,
                                         recipeId,
                                         user.id,
-                                        user.nickname,
                                         message
                                 )
 

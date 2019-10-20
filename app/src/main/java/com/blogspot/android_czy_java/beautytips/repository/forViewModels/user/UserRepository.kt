@@ -16,14 +16,17 @@ class UserRepository(private val userDao: UserDao,
 
     fun insertUserList(list: UserListModel) = userListDao.insertList(list)
 
-    fun insertCurrentFirebaseUser(id: String, emitter: SingleEmitter<UserModel>) {
+    fun insertFirebaseUser(firebaseId: String,
+                           emitter: SingleEmitter<UserModel>,
+                           insertList: Boolean) {
 
-            FirebaseDatabase.getInstance().getReference("users/$id")
+            FirebaseDatabase.getInstance().getReference("users/$firebaseId")
                     .addListenerForSingleValueEvent(
                             UserValueEventListener(
                                     emitter,
                                     this,
-                                    id
+                                    firebaseId,
+                                    insertList
                             ))
     }
 

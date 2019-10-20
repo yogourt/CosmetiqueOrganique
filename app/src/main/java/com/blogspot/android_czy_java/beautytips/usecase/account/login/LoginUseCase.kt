@@ -42,7 +42,7 @@ class LoginUseCase(private val userRepository: UserRepository,
             Single.create { emitter ->
                 getCurrentUserFirebaseId()?.let { id ->
                     if (userShouldBeInserted(id)) {
-                        userRepository.insertCurrentFirebaseUser(id, emitter)
+                        userRepository.insertFirebaseUser(id, emitter, true)
                     } else {
                         //return from local db
                         userRepository.getUserByFirebaseId(id)?.let {

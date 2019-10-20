@@ -19,5 +19,7 @@ interface FirebaseKeys {
         const val KEY_COMMENT_AUTHOR = "a"
         const val KEY_COMMENT_AUTHOR_ID = "b"
         const val KEY_COMMENT_RESPONSE_TO = "response_to"
+
+        const val REFERENCE_USERS = "users"
     }
 }

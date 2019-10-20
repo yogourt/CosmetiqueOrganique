@@ -9,13 +9,10 @@ import com.blogspot.android_czy_java.beautytips.di.view.account.AccountActivityF
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
 import com.blogspot.android_czy_java.beautytips.usecase.comment.AddCommentUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.LoadCommentsUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.view.comment.CommentFragment
-import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
-import com.blogspot.android_czy_java.beautytips.viewmodel.comments.CommentsViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentsViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
-import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector

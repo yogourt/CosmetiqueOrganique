@@ -16,7 +16,6 @@ data class CommentModel(
         @Exclude
         var recipeId: Long,
         var authorId: String,
-        var authorNickname: String,
         var message: String
 ) {
     @PrimaryKey(autoGenerate = true)

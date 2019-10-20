@@ -10,7 +10,8 @@ import io.reactivex.SingleEmitter
 
 class UserValueEventListener(private val emitter: SingleEmitter<UserModel>,
                              private val repository: UserRepository,
-                             private val userId: String) : ValueEventListener {
+                             private val userId: String,
+                             private val insertList: Boolean) : ValueEventListener {
 
     override fun onDataChange(userSnapshot: DataSnapshot) {
 

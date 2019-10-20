@@ -17,12 +17,13 @@ import com.blogspot.android_czy_java.beautytips.view.comment.callback.CommentLis
 import com.blogspot.android_czy_java.beautytips.view.common.AppBottomSheetDialogFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
-import com.blogspot.android_czy_java.beautytips.viewmodel.comments.CommentsViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentsViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.layout_new_comment.view.*
 import android.app.Activity
+import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
 import kotlinx.android.synthetic.main.fragment_comments.view.*
 
 
@@ -82,7 +83,7 @@ class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
         }
     }
 
-    private fun render(uiModel: GenericUiModel<List<CommentModel>>?) {
+    private fun render(uiModel: GenericUiModel<List<CommentWithAuthorModel>>?) {
         when (uiModel) {
             is GenericUiModel.LoadingSuccess -> {
                 hideLoadingIndicator()
@@ -98,7 +99,7 @@ class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
         }
     }
 
-    private fun prepareCommentList(comments: List<CommentModel>) {
+    private fun prepareCommentList(comments: List<CommentWithAuthorModel>) {
 
         if (comments.isEmpty()) {
             commentList.visibility = View.GONE

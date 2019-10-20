@@ -1,9 +1,11 @@
 package com.blogspot.android_czy_java.beautytips.di.usecase.comment
 
+import com.blogspot.android_czy_java.beautytips.di.repository.account.AccountRepositoryModule
 import com.blogspot.android_czy_java.beautytips.di.repository.comment.CommentRepositoryModule
 import com.blogspot.android_czy_java.beautytips.di.usecase.account.AccountUseCaseModule
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.comment.CommentRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepository
+import com.blogspot.android_czy_java.beautytips.repository.forViewModels.user.UserRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.AddCommentUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.GetCommentNumberUseCase
@@ -14,12 +16,14 @@ import dagger.Provides
 
 @Module(includes = [
     CommentRepositoryModule::class,
-    AccountUseCaseModule::class
+    AccountUseCaseModule::class,
+    AccountRepositoryModule::class
 ])
 class CommentUseCaseModule {
 
     @Provides
-    fun provideLoadCommentsUseCase(repository: CommentRepository) = LoadCommentsUseCase(repository)
+    fun provideLoadCommentsUseCase(repository: CommentRepository,
+                                   userRepository: UserRepository) = LoadCommentsUseCase(repository, userRepository)
 
     @Provides
     fun provideGetCommentNumberUseCase(repository: CommentRepository) =

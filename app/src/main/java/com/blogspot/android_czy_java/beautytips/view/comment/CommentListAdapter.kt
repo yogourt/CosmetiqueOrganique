@@ -9,11 +9,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
 import com.blogspot.android_czy_java.beautytips.view.comment.callback.CommentListCallback
+import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
 
 class CommentListAdapter(private val callback: CommentListCallback,
-                         private val comments: List<CommentModel>) : RecyclerView.Adapter<CommentListAdapter.CommentViewHolder>() {
+                         private val comments: List<CommentWithAuthorModel>) : RecyclerView.Adapter<CommentListAdapter.CommentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
 
@@ -30,21 +30,21 @@ class CommentListAdapter(private val callback: CommentListCallback,
         val commentItem = comments[position]
 
         holder.apply {
-            comment.text = commentItem.message
-            author.text = commentItem.authorNickname
+            comment.text = commentItem.comment.message
+            author.text = commentItem.author?.nickname
         }
 
         if(holder is TopicViewHolder) {
             holder.apply {
 
-                if(commentItem.firebaseId == null) {
+                if(commentItem.comment.firebaseId == null) {
                     reply.visibility = View.GONE
                 }
 
                 sendSubcommentButton.setOnClickListener {
                     callback.addComment(
                             newComment.text.toString(),
-                            commentItem.firebaseId
+                            commentItem.comment.firebaseId
                     )
                 }
             }
@@ -53,7 +53,7 @@ class CommentListAdapter(private val callback: CommentListCallback,
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (comments[position].responseTo == null) {
+        return if (comments[position].comment.responseTo == null) {
             TYPE_COMMENT
         } else {
             TYPE_SUBCOMMENT
