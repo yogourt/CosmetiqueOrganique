@@ -26,8 +26,10 @@ class UserValueEventListener(private val emitter: SingleEmitter<UserModel>,
             val user = UserModel(userId, nickname, photo)
             repository.insertUser(user)
 
-            insertUserList("favorites", userSnapshot)
-            insertUserList("my_recipes", userSnapshot)
+            if(insertList) {
+                insertUserList("favorites", userSnapshot)
+                insertUserList("my_recipes", userSnapshot)
+            }
 
             emitter.onSuccess(user)
 

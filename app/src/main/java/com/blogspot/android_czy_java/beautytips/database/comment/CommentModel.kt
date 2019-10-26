@@ -14,10 +14,11 @@ data class CommentModel(
         var firebaseId: String?,
         var responseTo: String?,
         @Exclude
-        var recipeId: Long,
+        var recipeId: String,
         var authorId: String,
         var message: String
 ) {
+    @Exclude
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }
