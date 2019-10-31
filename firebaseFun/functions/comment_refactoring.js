@@ -10,15 +10,30 @@
 				snapshot.forEach(function(item) {
 					if(item.child("comments").numChildren() !== 0) {
 
-						item.child("comments").forEach(function(comment) {
-							comment["d"] = null;
-						});
+						var comments = item.child("comments");
+						json[item.key] = {};
 
-						json[item.key] = item.child("comments").val();
+						console.log("recipe:" + item.key);
+						comments.forEach(function(comment) {
+							var key = comment.key;
+
+							var newComment = {};
+
+    						if(comment.child("b").val() !== null) {
+    							newComment["authorId"] = comment.child("b").val();
+    						}
+    						if(comment.child("c").val() !== null) {
+    							newComment["message"] = comment.child("c").val();
+    						}
+    						console.log(newComment);
+
+    						json[item.key][key] = newComment;
+
+						});
 					}
 				});
 					
-				return admin.database().ref("/comments/").set(json);
+				return admin.database().ref('/comments/').set(json);
 
 			});
 		}

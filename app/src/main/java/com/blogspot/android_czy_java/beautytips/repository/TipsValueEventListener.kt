@@ -20,7 +20,6 @@ class TipsValueEventListener(private val database: AppDatabase,
 
         Thread(Runnable {
 
-            val comments = ArrayList<CommentModel>()
             val tipDetailsMap = LongSparseArray<RecipeDetailModel>()
 
             for (item in tipsDataSnapshot.children) {
@@ -28,13 +27,8 @@ class TipsValueEventListener(private val database: AppDatabase,
                 val id = item.key ?: continue
                 val recipeId = id.toLong()
 
-                comments.addAll(CommentListConverter(item.child("comments"), recipeId).getComments())
-
                 tipDetailsMap.append(recipeId, DetailConverter(item).getDetails())
-
             }
-
-            database.commentDao().insertComments(comments)
 
             val recipes = ArrayList<RecipeModel>()
             for (item in tipListDataSnapshot.children) {

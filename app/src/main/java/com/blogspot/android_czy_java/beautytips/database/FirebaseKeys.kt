@@ -16,10 +16,13 @@ interface FirebaseKeys {
         const val KEY_RECIPE_OPTIONAL_INGREDIENTS = "optionalIngredients"
         const val KEY_RECIPE_SOURCE = "source"
 
+        const val KEY_USER_NICKNAME = "nickname"
+        const val KEY_USER_PHOTO = "photo"
+        const val KEY_USER_ABOUT = "about"
+
         const val KEY_COMMENT_MESSAGE = "message"
         const val KEY_COMMENT_AUTHOR_ID = "authorId"
         const val KEY_COMMENT_RESPONSE_TO = "responseTo"
-        const val KEY_COMMENT_RECIPE_ID = "recipeId"
 
         const val REFERENCE_USERS = "users"
         const val REFERENCE_COMMENTS = "comments"

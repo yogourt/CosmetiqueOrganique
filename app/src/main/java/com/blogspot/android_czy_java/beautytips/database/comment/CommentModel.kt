@@ -14,7 +14,7 @@ data class CommentModel(
         var firebaseId: String?,
         var responseTo: String?,
         @Exclude
-        var recipeId: String,
+        var recipeId: Long,
         var authorId: String,
         var message: String
 ) {
