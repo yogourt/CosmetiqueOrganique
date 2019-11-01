@@ -19,6 +19,7 @@ interface FirebaseKeys {
         const val KEY_USER_NICKNAME = "nickname"
         const val KEY_USER_PHOTO = "photo"
         const val KEY_USER_ABOUT = "about"
+        const val KEY_USER_LIST_FAVORITES = "favorites"
 
         const val KEY_COMMENT_MESSAGE = "message"
         const val KEY_COMMENT_AUTHOR_ID = "authorId"

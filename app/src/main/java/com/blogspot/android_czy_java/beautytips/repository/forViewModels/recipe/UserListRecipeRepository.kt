@@ -31,4 +31,10 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
     private fun createListTitle(recipeRequest: UserListRecipeRequest): String {
         return recipeRequest.userList.capitalize().replace("_", " ")
     }
+
+    fun getRecipeIdsInList(userId: String, listName: String): List<Long> {
+        return userListDao.getListByUserIdAndName(userId, listName)
+                ?.split(",")
+                ?.map { it.trim().toLong() } ?: listOf()
+    }
 }

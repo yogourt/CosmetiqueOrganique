@@ -38,7 +38,7 @@ interface RecipeDao {
     fun getRecipesByCategoryAndSubcategoryOrderByPopularity(category: String, subcategory: String): List<RecipeModel>
 
     @Query("SELECT FavNum FROM Recipes WHERE recipeId=:recipeId")
-    fun getFavNum(recipeId: Long): LiveData<Long>
+    fun getFavNum(recipeId: Long): Long
 
     @Query("SELECT Category FROM Recipes WHERE recipeId=:recipeId")
     fun getCategory(recipeId: Long): String

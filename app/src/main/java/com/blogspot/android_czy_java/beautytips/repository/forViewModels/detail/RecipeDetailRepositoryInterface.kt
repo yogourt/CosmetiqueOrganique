@@ -34,6 +34,6 @@ interface RecipeDetailRepositoryInterface {
 
     fun getIngredientsWithQuantity(recipeId: Long): List<String>
 
-    fun getFavNum(recipeId: Long): LiveData<Long>
+    fun getFavNum(recipeId: Long): Long
 
 }

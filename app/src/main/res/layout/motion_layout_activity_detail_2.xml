@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/category_button_margin"
-        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@id/heart"
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:layout_editor_absoluteX="0dp">
 
@@ -46,12 +46,51 @@
         app:layout_constraintTop_toTopOf="@id/image" />
 
 
+    <ImageView
+        android:id="@+id/heart"
+        android:layout_width="@dimen/item_icon_size"
+        android:layout_height="@dimen/item_icon_size"
+        android:src="@drawable/ic_heart_stroked"
+        app:layout_constraintBottom_toBottomOf="@+id/chips"
+        app:layout_constraintEnd_toStartOf="@id/bookmark"
+        app:layout_constraintTop_toTopOf="@id/chips" />
+
+    <TextView
+        android:id="@+id/fav_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="32"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/heart"
+        app:layout_constraintEnd_toStartOf="@id/bookmark"
+        app:layout_constraintTop_toTopOf="@+id/heart" />
+
+    <ImageView
+        android:id="@+id/bookmark"
+        android:layout_width="@dimen/item_icon_size"
+        android:layout_height="@dimen/item_icon_size"
+        android:src="@drawable/ic_bookmark"
+        app:layout_constraintBottom_toBottomOf="@id/heart"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/save_to"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:text="@string/save"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/bookmark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bookmark" />
+
     <include
         android:id="@+id/scrollable_content"
         layout="@layout/activity_detail_overview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_vert_detail_fragments"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +99,6 @@
     <FrameLayout
         android:id="@+id/detail_for_list_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

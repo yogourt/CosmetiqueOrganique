@@ -76,7 +76,11 @@ class DetailActivity : AppCompatActivity() {
             setOnClickListener {
                 startOneRecipeListFragment(data.category, data.subcategory)
             }
+        }
 
+        fav_num.text = data.favNum.toString()
+        if(data.inFav) {
+            heart.setImageDrawable(getDrawable(R.drawable.ic_heart))
         }
     }
 

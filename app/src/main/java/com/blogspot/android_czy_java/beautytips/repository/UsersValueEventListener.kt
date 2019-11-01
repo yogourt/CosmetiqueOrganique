@@ -12,11 +12,15 @@ class UsersValueEventListener(private val usersToFetch: Set<String>,
 
     override fun onDataChange(snapshot: DataSnapshot) {
 
-        for (userId in usersToFetch) {
-            val userSnapshot = snapshot.child(userId)
-            val user = UserConverter(userSnapshot).execute()
-            user?.let { userDao.insertUser(it) }
-        }
+        Thread(Runnable {
+
+            for (userId in usersToFetch) {
+                val userSnapshot = snapshot.child(userId)
+                val user = UserConverter(userSnapshot).execute()
+                user?.let { userDao.insertUser(it) }
+            }
+
+        }).start()
 
     }
 
