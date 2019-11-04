@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
+import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListDao
@@ -36,5 +37,23 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
         return userListDao.getListByUserIdAndName(userId, listName)
                 ?.split(",")
                 ?.map { it.trim().toLong() } ?: listOf()
+    }
+
+    fun addToUserList(listName: String, recipeId: Long, userId: String) {
+        val favs = getRecipeIdsInList(userId, listName)
+                .toMutableList()
+        favs.add(recipeId)
+        updateRecipesInUserList(listName, userId, favs.joinToString())
+    }
+
+    fun removeFromUserList(listName: String, recipeId: Long, userId: String) {
+        val favs = getRecipeIdsInList(userId, listName)
+                .toMutableList()
+        favs.remove(recipeId)
+        updateRecipesInUserList(listName, userId, favs.joinToString())
+    }
+
+    fun updateRecipesInUserList(listName: String, userId: String, recipes: String) {
+        userListDao.updateRecipesInUserList(listName, userId, recipes)
     }
 }

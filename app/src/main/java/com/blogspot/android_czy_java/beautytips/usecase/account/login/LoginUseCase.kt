@@ -20,8 +20,6 @@ class LoginUseCase(private val userRepository: UserRepository,
         return FirebaseAuth.getInstance().currentUser?.isAnonymous
     }
 
-    fun isUserNull() = FirebaseAuth.getInstance().currentUser == null
-
     fun loginAnonymously(): Task<AuthResult> {
         if (isUserLoggedIn()) FirebaseAuth.getInstance().signOut()
         return FirebaseAuth.getInstance().signInAnonymously()

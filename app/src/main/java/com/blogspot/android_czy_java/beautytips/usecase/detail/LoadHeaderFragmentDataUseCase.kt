@@ -9,9 +9,7 @@ import com.blogspot.android_czy_java.beautytips.usecase.common.UseCaseInterface
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderData
 import io.reactivex.Single
 
-class LoadHeaderFragmentDataUseCase(private val detailRepository: RecipeDetailRepositoryInterface,
-                                    private val userListRecipeRepository: UserListRecipeRepository,
-                                    private val currentUserUseCase: GetCurrentUserUseCase) :
+class LoadHeaderFragmentDataUseCase(private val detailRepository: RecipeDetailRepositoryInterface) :
         UseCaseInterface<Long, HeaderData> {
 
     override fun execute(request: Long): Single<HeaderData> {
@@ -21,16 +19,8 @@ class LoadHeaderFragmentDataUseCase(private val detailRepository: RecipeDetailRe
                 val imageUrl = detailRepository.getImageUrl(request)
                 val category = detailRepository.getCategory(request)
                 val subcategory = detailRepository.getSubcategory(request)
-                val favNum = detailRepository.getFavNum(request)
 
-
-                val inFav = currentUserUseCase.currentUserId()?.let { userId ->
-                    userListRecipeRepository.getRecipeIdsInList(
-                            userId, FirebaseKeys.KEY_USER_LIST_FAVORITES
-                    ).contains(request)
-                } ?: false
-
-                it.onSuccess(HeaderData(title, imageUrl, category, subcategory, favNum, inFav))
+                it.onSuccess(HeaderData(title, imageUrl, category, subcategory))
 
 
             } catch (e: DataNotFoundException) {

@@ -18,4 +18,6 @@ interface UserListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: UserListModel)
 
+    @Query("UPDATE UserLists SET recipesInList=:recipes WHERE userId=:userId AND listName=:listName")
+    fun updateRecipesInUserList(listName: String, userId: String, recipes: String)
 }

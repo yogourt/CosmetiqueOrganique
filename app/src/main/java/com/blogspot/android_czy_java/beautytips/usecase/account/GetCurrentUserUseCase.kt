@@ -30,4 +30,8 @@ class GetCurrentUserUseCase(private val userRepository: UserRepository) :
 
     fun currentUserId() = FirebaseAuth.getInstance().currentUser?.uid
 
+    fun isUserAnonymousOrNull(): Boolean {
+        return FirebaseAuth.getInstance().currentUser?.isAnonymous ?: true
+    }
+
 }

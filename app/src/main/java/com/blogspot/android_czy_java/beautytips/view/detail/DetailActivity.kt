@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.view.detail
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.lifecycle.Observer
@@ -14,7 +15,9 @@ import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
 import com.blogspot.android_czy_java.beautytips.view.recipe.OneListFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderData
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderHeartData
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.HeaderViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -28,6 +31,10 @@ class DetailActivity : AppCompatActivity() {
     @Inject
     lateinit var headerViewModel: HeaderViewModel
 
+    @Inject
+    lateinit var accountViewModel: AccountViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.motion_layout_activity_detail_1)
@@ -37,6 +44,7 @@ class DetailActivity : AppCompatActivity() {
         setStatusBarTransparent()
 
         headerViewModel.headerFragmentLiveData.observe(this, Observer { render(it) })
+        headerViewModel.headerHeartLiveData.observe(this, Observer { renderHeart(it) })
 
         getRecipeId()?.let { headerViewModel.init(it) }
     }
@@ -54,11 +62,42 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun renderHeart(uiModel: GenericUiModel<HeaderHeartData>) {
+
+        when (uiModel) {
+            is GenericUiModel.LoadingSuccess -> {
+                prepareHeartAndFavNum(uiModel.data)
+            }
+
+            is GenericUiModel.StatusLoading -> {
+                heart.setOnClickListener { }
+            }
+
+            is GenericUiModel.LoadingError -> {
+                showInfoAboutError(uiModel.message)
+                heart.setOnClickListener {
+                    handleHeartClick()
+                }
+            }
+        }
+
+    }
+
     private fun prepareContent(data: HeaderData) {
 
         loadImage(data)
         findViewById<TextView>(R.id.title).text = data.title
         prepareButtons(data)
+    }
+
+    private fun prepareHeartAndFavNum(data: HeaderHeartData) {
+        fav_num.text = data.favNum.toString()
+        setHeartIcon(data.inFav)
+
+        heart.setOnClickListener {
+            handleHeartClick()
+        }
+
     }
 
     private fun prepareButtons(data: HeaderData) {
@@ -78,14 +117,51 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        fav_num.text = data.favNum.toString()
-        if(data.inFav) {
+    }
+
+    private fun handleHeartClick() {
+        if (accountViewModel.isUserAnonymous()) {
+            showLoginSnackbar()
+        } else {
+            headerViewModel.handleHeartClick()
+        }
+    }
+
+    private fun setHeartIcon(inFav: Boolean) {
+        if (inFav) {
             heart.setImageDrawable(getDrawable(R.drawable.ic_heart))
+        } else {
+            heart.setImageDrawable(getDrawable(R.drawable.ic_heart_stroked))
         }
     }
 
     private fun showInfoAboutError(error: String) {
         Snackbar.make(scrollable_content, error, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showLoginSnackbar() {
+
+        Snackbar.make(layout_detail, R.string.login_prompt, Snackbar.LENGTH_LONG)
+                .setAction(R.string.login) {
+                    handleLoginClick()
+                }
+                .show()
+    }
+
+    private fun handleLoginClick() {
+        if (accountViewModel.isNetworkConnection()) {
+            openLoginActivity()
+        } else {
+            showInfoAboutError(getString(R.string.no_internet))
+        }
+    }
+
+    private fun openLoginActivity() {
+        startActivityForResult(
+                accountViewModel.buildIntentForLoginActivity(),
+                accountViewModel.requestCode
+        )
+
     }
 
     private fun loadImage(data: HeaderData) {
