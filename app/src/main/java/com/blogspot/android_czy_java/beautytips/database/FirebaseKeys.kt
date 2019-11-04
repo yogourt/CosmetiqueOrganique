@@ -27,5 +27,9 @@ interface FirebaseKeys {
 
         const val REFERENCE_USERS = "users"
         const val REFERENCE_COMMENTS = "comments"
+
+        const val FUNCTION_NAME_UPDATE_FAV_NUM = "onFavNumChanged"
+        const val FUNCTION_KEY_RECIPE_ID = "recipeId"
+        const val FUNCTION_KEY_INCREMENT = "increment"
     }
 }

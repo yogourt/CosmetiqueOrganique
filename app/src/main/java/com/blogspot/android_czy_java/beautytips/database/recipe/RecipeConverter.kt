@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.database.recipe
 
 import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
 import com.google.firebase.database.DataSnapshot
+import kotlin.math.absoluteValue
 
 class RecipeConverter(private val recipeDataSnapshot: DataSnapshot) {
 
@@ -21,7 +22,7 @@ class RecipeConverter(private val recipeDataSnapshot: DataSnapshot) {
         }
         subcategory = subcategory.capitalize()
 
-        val favNum = favNumDb?.toString()?.toLong() ?: 0L
+        val favNum = (favNumDb?.toString()?.toLong() ?: 0L).absoluteValue
 
         return if (authorId != null) {
             RecipeModel(

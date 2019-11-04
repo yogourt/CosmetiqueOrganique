@@ -46,4 +46,10 @@ interface RecipeDao {
     @Query("SELECT Subcategory FROM Recipes WHERE recipeId=:recipeId")
     fun getSubcategory(recipeId: Long): String
 
+    @Query("UPDATE Recipes SET favNum = favNum + 1 Where recipeId = :recipeId")
+    fun incrementFavNum(recipeId: Long)
+
+    @Query("UPDATE Recipes SET favNum = favNum - 1 Where recipeId = :recipeId")
+    fun decrementFavNum(recipeId: Long)
+
 }

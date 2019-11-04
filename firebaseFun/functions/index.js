@@ -14,6 +14,7 @@ const mailTransport = nodemailer.createTransport({
 var admin = require("firebase-admin");
 
 var commentRefactoring = require("./comment_refactoring.js");
+var favNumChange = require("./favNumChange.js");
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -243,3 +244,12 @@ function refactorUserData() {
 	});
 
 }
+
+exports.onFavNumChanged = functions.https.onCall((data, context) => {
+
+	var recipeId = data.recipeId;
+	var increment = data.increment;
+
+	favNumChange.changeFavNum(admin, recipeId, increment);
+
+});

@@ -23,36 +23,36 @@ class NotificationService : FirebaseMessagingService() {
 
     private var isChannelCreated = false
 
-    override fun onNewToken(token: String?) {
-           //TODO:
+
+    override fun onNewToken(token: String) {
+        //TODO:
         //FirebaseDatabase.getInstance().getReference("userTokens").child(
-          //          FirebaseLoginHelper.getUserId()).setValue(token)
+        //          FirebaseLoginHelper.getUserId()).setValue(token)
     }
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
-        if (remoteMessage != null) {
-            createNotificationChannel()
+        createNotificationChannel()
 
-            val intent = Intent().setClass(this, MainActivity::class.java)
-            val tipId = remoteMessage.data["tip"]
-            intent.putExtra(KEY_ITEM, tipId)
-            val uniqueInt = (System.currentTimeMillis() and 0xfffffff).toInt()
-            val pendingIntent = PendingIntent.getActivity(this, uniqueInt,
-                    intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val intent = Intent().setClass(this, MainActivity::class.java)
+        val tipId = remoteMessage.data["tip"]
+        intent.putExtra(KEY_ITEM, tipId)
+        val uniqueInt = (System.currentTimeMillis() and 0xfffffff).toInt()
+        val pendingIntent = PendingIntent.getActivity(this, uniqueInt,
+                intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
-            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.withoutback)
-                    .setContentTitle(remoteMessage.data["title"])
-                    .setContentText(remoteMessage.data["body"])
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true)
-                    .build()
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.withoutback)
+                .setContentTitle(remoteMessage.data["title"])
+                .setContentText(remoteMessage.data["body"])
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build()
 
-            val manager = NotificationManagerCompat.from(applicationContext)
-            manager.notify(123, notification)
-        }
+        val manager = NotificationManagerCompat.from(applicationContext)
+        manager.notify(123, notification)
+
     }
 
     private fun createNotificationChannel() {

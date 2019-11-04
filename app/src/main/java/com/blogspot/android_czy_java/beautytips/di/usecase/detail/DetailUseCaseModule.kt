@@ -5,11 +5,9 @@ import com.blogspot.android_czy_java.beautytips.di.usecase.account.AccountUseCas
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.UserListRecipeRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.account.UpdateUserDataInFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.GetCommentNumberUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadDescriptionFragmentDataUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeartDataForHeaderFragmentUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadIngredientsUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.detail.*
 import dagger.Module
 import dagger.Provides
 
@@ -30,15 +28,20 @@ class DetailUseCaseModule {
     @Provides
     fun provideLoadHeartDataForHeaderFragmentUseCase(recipeDetailRepository: RecipeDetailRepository,
                                                      userListRecipeRepository: UserListRecipeRepository,
-                                                     getCurrentUserUseCase: GetCurrentUserUseCase) =
+                                                     getCurrentUserUseCase: GetCurrentUserUseCase,
+                                                     updateFavNumInFirebaseUseCase: UpdateFavNumInFirebaseUseCase) =
             LoadHeartDataForHeaderFragmentUseCase(
                     recipeDetailRepository,
                     userListRecipeRepository,
-                    getCurrentUserUseCase
+                    getCurrentUserUseCase,
+                    updateFavNumInFirebaseUseCase
             )
 
     @Provides
     fun provideLoadIngredientsUseCase(recipeDetailRepository: RecipeDetailRepository) =
             LoadIngredientsUseCase(recipeDetailRepository)
+
+    @Provides
+    fun provideUpdateFavNumInFirebaseUseCase() = UpdateFavNumInFirebaseUseCase()
 
 }

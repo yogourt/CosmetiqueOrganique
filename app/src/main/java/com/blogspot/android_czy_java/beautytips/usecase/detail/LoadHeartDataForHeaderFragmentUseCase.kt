@@ -11,7 +11,8 @@ import io.reactivex.Single
 
 class LoadHeartDataForHeaderFragmentUseCase(private val detailRepository: RecipeDetailRepository,
                                             private val userListRecipeRepository: UserListRecipeRepository,
-                                            private val currentUserUseCase: GetCurrentUserUseCase) :
+                                            private val currentUserUseCase: GetCurrentUserUseCase,
+                                            private val updateFavNumInFirebaseUseCase: UpdateFavNumInFirebaseUseCase) :
         UseCaseInterface<Long, HeaderHeartData> {
 
     override fun execute(request: Long): Single<HeaderHeartData> =
@@ -37,11 +38,16 @@ class LoadHeartDataForHeaderFragmentUseCase(private val detailRepository: Recipe
                 emitter.onError(UserNotLoggedInException())
             }
             currentUserUseCase.currentUserId()?.let {
-                if (isInFav(request)) {
+                val inFav = isInFav(request);
+                if (inFav) {
                     userListRecipeRepository.removeFromUserList(FirebaseKeys.KEY_USER_LIST_FAVORITES, request, it)
+
                 } else {
                     userListRecipeRepository.addToUserList(FirebaseKeys.KEY_USER_LIST_FAVORITES, request, it)
                 }
+
+                updateFavNumInFirebaseUseCase.execute(UpdateFavNumInFirebaseRequest(request, !inFav))
+
                 execute(request).subscribe(
                         { result -> emitter.onSuccess(result) },
                         { error -> emitter.onError(error) }

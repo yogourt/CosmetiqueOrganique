@@ -36,7 +36,7 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
     fun getRecipeIdsInList(userId: String, listName: String): List<Long> {
         return userListDao.getListByUserIdAndName(userId, listName)
                 ?.split(",")
-                ?.map { it.trim().toLong() } ?: listOf()
+                ?.map { it.trim().toLong() } ?: mutableListOf()
     }
 
     fun addToUserList(listName: String, recipeId: Long, userId: String) {
@@ -44,6 +44,10 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
                 .toMutableList()
         favs.add(recipeId)
         updateRecipesInUserList(listName, userId, favs.joinToString())
+
+        if(listName == FirebaseKeys.KEY_USER_LIST_FAVORITES) {
+            recipeDao.incrementFavNum(recipeId)
+        }
     }
 
     fun removeFromUserList(listName: String, recipeId: Long, userId: String) {
@@ -51,9 +55,13 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
                 .toMutableList()
         favs.remove(recipeId)
         updateRecipesInUserList(listName, userId, favs.joinToString())
+
+        if(listName == FirebaseKeys.KEY_USER_LIST_FAVORITES) {
+            recipeDao.decrementFavNum(recipeId)
+        }
     }
 
-    fun updateRecipesInUserList(listName: String, userId: String, recipes: String) {
+    private fun updateRecipesInUserList(listName: String, userId: String, recipes: String) {
         userListDao.updateRecipesInUserList(listName, userId, recipes)
     }
 }
