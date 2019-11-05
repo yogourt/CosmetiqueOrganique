@@ -1,7 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.usecase.detail
 
 import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
-import com.blogspot.android_czy_java.beautytips.exception.account.UserNotLoggedInException
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.UserListRecipeRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
@@ -34,9 +33,7 @@ class LoadHeartDataForHeaderFragmentUseCase(private val detailRepository: Recipe
 
     fun handleHeartClick(request: Long): Single<HeaderHeartData> {
         return Single.create { emitter ->
-            if (currentUserUseCase.isUserAnonymousOrNull()) {
-                emitter.onError(UserNotLoggedInException())
-            }
+
             currentUserUseCase.currentUserId()?.let {
                 val inFav = isInFav(request);
                 if (inFav) {

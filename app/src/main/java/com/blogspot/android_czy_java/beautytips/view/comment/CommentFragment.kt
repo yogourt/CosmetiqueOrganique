@@ -23,6 +23,7 @@ import javax.inject.Inject
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.layout_new_comment.view.*
 import android.app.Activity
+import android.content.Intent
 import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
 import kotlinx.android.synthetic.main.fragment_comments.view.*
 
@@ -166,6 +167,16 @@ class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
                 accountViewModel.requestCode
         )
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == accountViewModel.requestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                accountViewModel.loginUser()
+            } else {
+                showInfoAboutError(commentList, getString(R.string.error_msg_common))
+            }
+        } else super.onActivityResult(requestCode, resultCode, data)
     }
 
     companion object {

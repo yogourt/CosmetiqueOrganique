@@ -1,6 +1,8 @@
 package com.blogspot.android_czy_java.beautytips.view.detail
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,6 +15,7 @@ import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.Subca
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
+import com.blogspot.android_czy_java.beautytips.view.detail.callback.UserListChooserCallback
 import com.blogspot.android_czy_java.beautytips.view.recipe.OneListFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
@@ -117,6 +120,13 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
+        bookmark.setOnClickListener {
+            handleSaveToListClick()
+        }
+        save_to.setOnClickListener {
+            handleSaveToListClick()
+        }
+
     }
 
     private fun handleHeartClick() {
@@ -127,12 +137,24 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun handleSaveToListClick() {
+        if (accountViewModel.isUserAnonymous()) {
+            showLoginSnackbar()
+        } else {
+            showUserListChooser()
+        }
+    }
+
     private fun setHeartIcon(inFav: Boolean) {
         if (inFav) {
             heart.setImageDrawable(getDrawable(R.drawable.ic_heart))
         } else {
             heart.setImageDrawable(getDrawable(R.drawable.ic_heart_stroked))
         }
+    }
+
+    private fun showUserListChooser() {
+        UserListChooserDialogFragment().show(supportFragmentManager, UserListChooserDialogFragment.TAG)
     }
 
     private fun showInfoAboutError(error: String) {
@@ -164,8 +186,17 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun loadImage(data: HeaderData) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == accountViewModel.requestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                accountViewModel.loginUser()
+            } else {
+                showInfoAboutError(getString(R.string.error_msg_common))
+            }
+        } else super.onActivityResult(requestCode, resultCode, data)
+    }
 
+    private fun loadImage(data: HeaderData) {
         Glide.with(this).load(data.imageUrl).into(image)
         image.contentDescription = resources.getString(R.string.description_tip_image, data.title)
     }

@@ -2,6 +2,8 @@ package com.blogspot.android_czy_java.beautytips.viewmodel.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.blogspot.android_czy_java.beautytips.usecase.detail.AddToUserListRequest
+import com.blogspot.android_czy_java.beautytips.usecase.detail.AddToUserListUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeartDataForHeaderFragmentUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
@@ -10,7 +12,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class HeaderViewModel(private val loadHeaderFragmentDataUseCase: LoadHeaderFragmentDataUseCase,
-                      private val loadHeartDataForHeaderFragmentUseCase: LoadHeartDataForHeaderFragmentUseCase)
+                      private val loadHeartDataForHeaderFragmentUseCase: LoadHeartDataForHeaderFragmentUseCase,
+                      private val addToUserListUseCase: AddToUserListUseCase)
     : ViewModel() {
 
     private val defaultErrorMessage = "Sorry, an error occurred"
@@ -76,4 +79,9 @@ class HeaderViewModel(private val loadHeaderFragmentDataUseCase: LoadHeaderFragm
                         }
                 ))
     }
+
+    fun saveToList(listName: String) {
+        addToUserListUseCase.execute(AddToUserListRequest(recipeId, listName))
+    }
+
 }

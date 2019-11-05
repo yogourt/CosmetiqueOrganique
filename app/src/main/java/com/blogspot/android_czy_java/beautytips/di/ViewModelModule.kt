@@ -32,7 +32,8 @@ import javax.inject.Provider
     SearchResultFragmentModule::class,
     CommentFragmentModule::class,
     OneRecipeListFragmentModule::class,
-    OneUserRecipeListFragmentModule::class
+    OneUserRecipeListFragmentModule::class,
+    UserListChooserModule::class
 ])
 class ViewModelModule {
 

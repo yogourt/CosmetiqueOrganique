@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bluegrey900">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/NormalTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/activity_margin"
+            android:text="@string/user_list_chooser_title"
+            android:textStyle="bold"/>
+
+        <GridView xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/user_lists"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/chooser_height"
+            android:layout_margin="@dimen/activity_margin"
+            android:horizontalSpacing="@dimen/activity_margin"
+            android:numColumns="2"
+            android:orientation="vertical"
+            android:verticalSpacing="@dimen/activity_margin"
+            tools:listitem="@layout/fragment_one_list" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

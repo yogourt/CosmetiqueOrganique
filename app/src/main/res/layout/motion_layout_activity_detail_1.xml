@@ -2,10 +2,10 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/motion_scene_activity_detail"
-    android:id="@+id/layout_detail">
+    app:layoutDescription="@xml/motion_scene_activity_detail">
 
     <ImageView
         android:id="@+id/image"
@@ -50,8 +50,8 @@
         android:id="@+id/heart"
         android:layout_width="@dimen/item_icon_size"
         android:layout_height="@dimen/item_icon_size"
-        android:src="@drawable/ic_heart_stroked"
         android:layout_marginTop="@dimen/small_space"
+        android:src="@drawable/ic_heart_stroked"
         app:layout_constraintEnd_toStartOf="@+id/fav_num"
         app:layout_constraintTop_toBottomOf="@+id/chips" />
 
@@ -59,11 +59,11 @@
         android:id="@+id/fav_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:text="32"
         app:layout_constraintBottom_toBottomOf="@id/heart"
         app:layout_constraintEnd_toStartOf="@id/bookmark"
-        android:layout_marginEnd="@dimen/activity_margin"
-        app:layout_constraintTop_toTopOf="@+id/heart"
-        android:text="32" />
+        app:layout_constraintTop_toTopOf="@+id/heart" />
 
     <ImageView
         android:id="@+id/bookmark"
@@ -71,17 +71,17 @@
         android:layout_height="@dimen/item_icon_size"
         android:src="@drawable/ic_bookmark"
         app:layout_constraintBottom_toBottomOf="@id/heart"
-        app:layout_constraintEnd_toStartOf="@id/save_to"/>
+        app:layout_constraintEnd_toStartOf="@id/save_to" />
 
     <TextView
         android:id="@+id/save_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_margin"
         android:text="@string/save"
         android:textAllCaps="true"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/bookmark"
-        android:layout_marginEnd="@dimen/activity_margin"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/bookmark" />
 
 
@@ -100,5 +100,6 @@
         android:id="@+id/detail_for_list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

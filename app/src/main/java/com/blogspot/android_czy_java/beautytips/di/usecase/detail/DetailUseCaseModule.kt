@@ -44,4 +44,9 @@ class DetailUseCaseModule {
     @Provides
     fun provideUpdateFavNumInFirebaseUseCase() = UpdateFavNumInFirebaseUseCase()
 
+    @Provides
+    fun provideAddToUserListUseCase(userListRecipeRepository: UserListRecipeRepository,
+                                    currentUserUseCase: GetCurrentUserUseCase) =
+            AddToUserListUseCase(userListRecipeRepository, currentUserUseCase)
+
 }
