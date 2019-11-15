@@ -28,6 +28,7 @@
             android:numColumns="2"
             android:orientation="vertical"
             android:verticalSpacing="@dimen/activity_margin"
+            android:nestedScrollingEnabled="true"
             tools:listitem="@layout/fragment_one_list" />
 
     </LinearLayout>

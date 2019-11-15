@@ -49,4 +49,9 @@ class DetailUseCaseModule {
                                     currentUserUseCase: GetCurrentUserUseCase) =
             AddToUserListUseCase(userListRecipeRepository, currentUserUseCase)
 
+    @Provides
+    fun provideCreateUserListUseCase(getCurrentUserUseCase: GetCurrentUserUseCase,
+                                     userListRecipeRepository: UserListRecipeRepository) =
+            CreateUserListUseCase(userListRecipeRepository, getCurrentUserUseCase)
+
 }

@@ -31,7 +31,7 @@ class UserListChooserDialogFragment : AppBottomSheetDialogFragment(), UserListCh
     @Inject
     lateinit var headerViewModel: HeaderViewModel
 
-    lateinit var loadingIndicator: ProgressBar
+    private lateinit var loadingIndicator: ProgressBar
     lateinit var userLists: GridView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,6 +53,7 @@ class UserListChooserDialogFragment : AppBottomSheetDialogFragment(), UserListCh
 
     private fun prepareViewModel() {
         viewModel.recipeListLiveData.observe(this, Observer { render(it) })
+        headerViewModel.errorLiveData.observe(this, Observer { showInfoAboutError(it.message) })
         viewModel.init()
     }
 
@@ -80,13 +81,19 @@ class UserListChooserDialogFragment : AppBottomSheetDialogFragment(), UserListCh
         }
     }
 
-    private fun showInfoAboutError(error: String) {
-        Snackbar.make(userLists, error, Snackbar.LENGTH_LONG).show()
+    private fun showInfoAboutError(error: String?) {
+        Snackbar.make(userLists,
+                error ?: getString(R.string.error_msg_common),
+                Snackbar.LENGTH_LONG).show()
     }
 
     override fun onClick(listName: String) {
         headerViewModel.saveToList(listName)
         dismiss()
+    }
+
+    override fun addList(listName: String) {
+        headerViewModel.addList(listName, viewModel::retry)
     }
 
     companion object {

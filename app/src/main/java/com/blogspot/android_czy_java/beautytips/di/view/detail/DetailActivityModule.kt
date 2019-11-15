@@ -8,6 +8,7 @@ import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.usecase.detail.AddToUserListUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.detail.CreateUserListUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeaderFragmentDataUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.LoadHeartDataForHeaderFragmentUseCase
 import com.blogspot.android_czy_java.beautytips.view.comment.CommentFragment
@@ -41,11 +42,13 @@ abstract class DetailActivityModule {
         @ViewModelKey(HeaderViewModel::class)
         fun provideHeaderViewModel(loadHeaderFragmentDataUseCase: LoadHeaderFragmentDataUseCase,
                                    loadHeartDataForHeaderFragmentUseCase: LoadHeartDataForHeaderFragmentUseCase,
-                                   addToUserListUseCase: AddToUserListUseCase): ViewModel =
+                                   addToUserListUseCase: AddToUserListUseCase,
+                                   createUserListUseCase: CreateUserListUseCase): ViewModel =
                 HeaderViewModel(
                         loadHeaderFragmentDataUseCase,
                         loadHeartDataForHeaderFragmentUseCase,
-                        addToUserListUseCase
+                        addToUserListUseCase,
+                        createUserListUseCase
                 )
 
     }

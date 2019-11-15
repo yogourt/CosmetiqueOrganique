@@ -12,6 +12,9 @@ interface UserListDao {
     @Query("SELECT * FROM UserLists WHERE userId=:userId")
     fun getAllUserLists(userId: String): List<UserListModel>
 
+    @Query("SELECT listName FROM UserLists WHERE userId=:userId")
+    fun getAllUserListTitles(userId: String): List<String>
+
     @Query("SELECT recipesInList FROM UserLists WHERE userId=:userId AND listName=:listName")
     fun getListByUserIdAndName(userId: String, listName: String): String?
 

@@ -22,7 +22,9 @@ import dagger.Provides
 class AccountUseCaseModule {
 
     @Provides
-    fun provideCreateUserListRequestsUseCase(getCurrentUserUseCase: GetCurrentUserUseCase) = CreateUserListRequestsUseCase(getCurrentUserUseCase)
+    fun provideCreateUserListRequestsUseCase(getCurrentUserUseCase: GetCurrentUserUseCase,
+                                             recipeRepository: UserListRecipeRepository) =
+            CreateUserListRequestsUseCase(getCurrentUserUseCase, recipeRepository)
 
     @Provides
     fun provideLoadRecipesFromUserListUseCase(

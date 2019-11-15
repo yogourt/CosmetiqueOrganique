@@ -43,7 +43,7 @@ class MainActivityFragment : RecipeListFragment() {
 
     override fun onListClick(listId: Int) {
 
-        val request = recipeViewModel.getRequestForId(listId)
+        val request = recipeViewModel.getRequestForId(listId) ?: return
         val fragment = OneListFragment.OneRecipeListFragment.getInstance(request)
         fragmentManager
                 ?.beginTransaction()

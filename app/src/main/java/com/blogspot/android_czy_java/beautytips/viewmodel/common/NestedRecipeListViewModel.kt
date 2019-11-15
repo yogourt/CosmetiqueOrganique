@@ -9,11 +9,12 @@ import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-abstract class NestedRecipeListViewModel<RECIPE_REQUEST: OneListRequest>(
+abstract class NestedRecipeListViewModel<RECIPE_REQUEST : OneListRequest>(
         private val nestedListRequestUseCase: NestedListRequestUseCase<RECIPE_REQUEST>,
         private val loadListDataUseCase: LoadNestedListDataUseCase<RECIPE_REQUEST>) : ViewModel() {
 
@@ -22,21 +23,26 @@ abstract class NestedRecipeListViewModel<RECIPE_REQUEST: OneListRequest>(
     val recipeListLiveData: MutableLiveData<GenericUiModel<MainListData>> = MutableLiveData()
     private val disposable = CompositeDisposable()
 
+    private var requests: NestedListRequest<RECIPE_REQUEST>? = null
+
     open fun init() {
         loadRecipes(nestedListRequestUseCase.execute())
     }
 
     fun retry() {
-            loadRecipes(nestedListRequestUseCase.execute())
+        loadRecipes(nestedListRequestUseCase.execute())
     }
 
-    fun getRequestForId(listId: Int):RECIPE_REQUEST {
-        return nestedListRequestUseCase.getOneRequest(listId)
+    fun getRequestForId(listId: Int): RECIPE_REQUEST? {
+        return requests?.requests?.getOrNull(listId)
     }
 
-    internal fun loadRecipes(requests: NestedListRequest<RECIPE_REQUEST>) {
+    internal fun loadRecipes(requestSingle: Single<NestedListRequest<RECIPE_REQUEST>>) {
 
-        disposable.add(loadListDataUseCase.execute(requests)
+        disposable.add(requestSingle.flatMap { requests ->
+            this.requests = requests
+            loadListDataUseCase.execute(requests)
+        }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {

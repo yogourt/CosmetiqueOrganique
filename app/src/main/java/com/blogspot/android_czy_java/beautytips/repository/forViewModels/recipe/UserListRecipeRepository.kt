@@ -5,6 +5,7 @@ import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListDao
+import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import io.reactivex.Single
@@ -64,4 +65,10 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
     private fun updateRecipesInUserList(listName: String, userId: String, recipes: String) {
         userListDao.updateRecipesInUserList(listName, userId, recipes)
     }
+
+    fun createUserList(userList: UserListModel) {
+        userListDao.insertList(userList)
+    }
+
+    fun getAllUserListTitles(userId: String) = userListDao.getAllUserListTitles(userId)
 }
