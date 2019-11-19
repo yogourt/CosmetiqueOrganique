@@ -21,7 +21,7 @@ class CreateUserListUseCase(private val userListRecipeRepository: UserListRecipe
                         it.onError(ListAlreadyExistsException())
                     }
 
-                    userListRecipeRepository.createUserList(UserListModel(userId, request.trim(), ""))
+                    userListRecipeRepository.createUserList(UserListModel(userId, request.trim(), " "))
                     it.onSuccess(true)
                 }
             }

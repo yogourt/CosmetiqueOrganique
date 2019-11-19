@@ -1,8 +1,9 @@
-package com.blogspot.android_czy_java.beautytips.repository.forViewModels.user
+package com.blogspot.android_czy_java.beautytips.repository
 
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
 import com.blogspot.android_czy_java.beautytips.exception.common.FirebaseValueEventListenerException
+import com.blogspot.android_czy_java.beautytips.repository.forViewModels.user.UserRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -45,7 +46,8 @@ class UserValueEventListener(private val emitter: SingleEmitter<UserModel>,
     private fun insertUserList(listName: String, userSnapshot: DataSnapshot) {
         val favorites = userSnapshot.child(listName).value
         favorites?.let {
-            val list = UserListModel(userId, listName, favorites.toString())
+            val listNameRefactored = listName.replace("_", " ").capitalize()
+            val list = UserListModel(userId, listNameRefactored, favorites.toString())
             repository.insertUserList(list)
         }
     }

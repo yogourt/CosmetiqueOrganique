@@ -26,18 +26,8 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
                         ?.map { it.trim() }
                         ?.contains(it.recipeId.toString()) ?: false
             }
-            emitter.onSuccess(OneListData(recipes, createListTitle(request)))
+            emitter.onSuccess(OneListData(recipes, request.userList))
         }
-    }
-
-    private fun createListTitle(recipeRequest: UserListRecipeRequest): String {
-        return recipeRequest.userList.capitalize().replace("_", " ")
-    }
-
-    fun getRecipeIdsInList(userId: String, listName: String): List<Long> {
-        return userListDao.getListByUserIdAndName(userId, listName)
-                ?.split(",")
-                ?.map { it.trim().toLong() } ?: mutableListOf()
     }
 
     fun addToUserList(listName: String, recipeId: Long, userId: String) {
@@ -60,6 +50,13 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
         if(listName == FirebaseKeys.KEY_USER_LIST_FAVORITES) {
             recipeDao.decrementFavNum(recipeId)
         }
+    }
+
+    fun getRecipeIdsInList(userId: String, listName: String): List<Long> {
+        return userListDao.getListByUserIdAndName(userId, listName)
+                ?.split(",")
+                ?.map { it.trim().toLongOrNull() }
+                ?.filterNotNull() ?: mutableListOf()
     }
 
     private fun updateRecipesInUserList(listName: String, userId: String, recipes: String) {

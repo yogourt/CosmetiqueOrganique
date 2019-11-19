@@ -4,6 +4,7 @@ import com.blogspot.android_czy_java.beautytips.database.user.UserDao
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListDao
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
+import com.blogspot.android_czy_java.beautytips.repository.UserValueEventListener
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.SingleEmitter
 

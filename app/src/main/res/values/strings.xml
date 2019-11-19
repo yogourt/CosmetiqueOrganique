@@ -196,6 +196,7 @@
     <string name="reply">Reply</string>
     <string name="login_prompt">Log in to use this feature</string>
     <string name="user_list_chooser_title">Choose the list to save this recipe</string>
-    <string name="add_new_list">New list...</string>
+    <string name="add_new_list">New list title…</string>
+    <string name="add_new_list_label">New list</string>
 
 </resources>
