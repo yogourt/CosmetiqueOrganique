@@ -11,10 +11,13 @@ import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment;
 import com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment;
 import com.blogspot.android_czy_java.beautytips.view.listView.view.BaseMainActivity;
+import com.blogspot.android_czy_java.beautytips.view.recipe.callback.ListCallback;
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel;
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainActivityViewModel;
 import com.kobakei.ratethisapp.RateThisApp;
 
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -24,7 +27,7 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import static android.content.Intent.ACTION_SEARCH;
 
 public class MainActivity extends BaseMainActivity implements
-        IngredientActivityFragment.IngredientFragmentInterface {
+        IngredientActivityFragment.IngredientFragmentInterface, ListCallback.OuterListCallback {
 
 
     public static final String TAG_FRAGMENT_OPENING = "fragment_opening";
@@ -154,4 +157,14 @@ public class MainActivity extends BaseMainActivity implements
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
+    @Override
+    public void onUserListClick(@NotNull OneListFragment.OneUserRecipeListFragment fragment) {
+        if(fragmentManager != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_container, fragment, OneListFragment.TAG_ONE_LIST_FRAGMENT)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
 }

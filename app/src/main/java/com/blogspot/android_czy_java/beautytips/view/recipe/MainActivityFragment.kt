@@ -1,7 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.view.recipe
 
 
-import android.os.Bundle
 import android.text.TextUtils
 import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.R
@@ -10,7 +9,6 @@ import com.blogspot.android_czy_java.beautytips.notifications.NotificationServic
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 
 import com.blogspot.android_czy_java.beautytips.view.common.RecipeListFragment
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 import javax.inject.Inject
 
