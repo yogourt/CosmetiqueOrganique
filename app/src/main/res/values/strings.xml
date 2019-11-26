@@ -198,5 +198,7 @@
     <string name="user_list_chooser_title">Choose the list to save this recipe</string>
     <string name="add_new_list">New list title…</string>
     <string name="add_new_list_label">New list</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="notifications">Notifications</string>
 
 </resources>

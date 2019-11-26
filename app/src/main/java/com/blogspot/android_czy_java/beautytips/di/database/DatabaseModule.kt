@@ -37,6 +37,10 @@ class DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideNotificationDao(db: AppDatabase) = db.notificationDao()
+
+    @Provides
+    @Singleton
     fun provideAppDatabase(context: Context) = AppDatabase.getInstance(context)
 
     @Provides

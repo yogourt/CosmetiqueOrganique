@@ -29,7 +29,7 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
 
     private val disposable = CompositeDisposable()
 
-    val userLiveData = MutableLiveData<GenericUiModel<UserModel>>()
+    val userLiveData = MutableLiveData<GenericUiModel<UserModel>?>()
 
     fun init() {
         if (!isUserAnonymous()) {

@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.account.AccountActivityFragment
+import com.blogspot.android_czy_java.beautytips.view.notification.NotificationFragment
 import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivityFragment
 import com.blogspot.android_czy_java.beautytips.view.search.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_main_bottom_navigation.view.bottom_navigation
 
 class BottomNavigationFragment : AppFragment() {
@@ -22,7 +24,8 @@ class BottomNavigationFragment : AppFragment() {
     private val indexToIdMap = mapOf(
             Pair(R.id.menu_home, 0),
             Pair(R.id.menu_account, 1),
-            Pair(R.id.menu_search, 2)
+            Pair(R.id.menu_notifications, 2),
+            Pair(R.id.menu_search, 3)
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +71,7 @@ class BottomNavigationFragment : AppFragment() {
         when (fragment) {
             is MainActivityFragment -> selectItem(R.id.menu_home)
             is AccountActivityFragment -> selectItem(R.id.menu_account)
+            is NotificationFragment -> selectItem(R.id.menu_notifications)
             is SearchFragment -> selectItem(R.id.menu_search)
         }
     }
@@ -77,19 +81,18 @@ class BottomNavigationFragment : AppFragment() {
 
             val fragment = getCurrentFragment(item)
             if (fragment != null) {
-                if (fragment is SearchFragment) {
-                    showSearchFragment()
-                } else {
-                    replaceFragment(fragment)
+                when (fragment) {
+                    is AppBottomSheetDialogFragment -> showBottomSheetDialogFragment(fragment)
+                    else -> replaceFragment(fragment)
                 }
             }
             true
         }
     }
 
-    private fun showSearchFragment() {
+    private fun showBottomSheetDialogFragment(fragment: BottomSheetDialogFragment) {
         fragmentManager?.let {
-            searchFragment.apply {
+            fragment.apply {
                 show(it, SearchFragment.TAG_SEARCH_FRAGMENT)
                 it.executePendingTransactions()
                 dialog?.setOnCancelListener {
@@ -112,6 +115,7 @@ class BottomNavigationFragment : AppFragment() {
         return when (item.itemId) {
             R.id.menu_home -> MainActivityFragment()
             R.id.menu_account -> AccountActivityFragment()
+            R.id.menu_notifications -> NotificationFragment()
             R.id.menu_search -> searchFragment
             else -> null
         }

@@ -15,6 +15,12 @@
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
 
+    <item android:id="@+id/menu_notifications"
+        android:title="@string/nav_notifications"
+        android:icon="@drawable/ic_bell"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView" />
+
 
     <item android:id="@+id/menu_search"
         android:title="@string/search"

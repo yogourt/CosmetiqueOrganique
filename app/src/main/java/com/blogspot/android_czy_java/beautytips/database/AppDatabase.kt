@@ -10,6 +10,8 @@ import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.detail.DetailDao
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
 import com.blogspot.android_czy_java.beautytips.database.error.ErrorModel
+import com.blogspot.android_czy_java.beautytips.database.notification.NotificationDao
+import com.blogspot.android_czy_java.beautytips.database.notification.NotificationModel
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.database.user.UserDao
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
@@ -21,10 +23,11 @@ import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
         CommentModel::class,
         ErrorModel::class,
         UserModel::class,
-        UserListModel::class),
-        version = 16,
+        UserListModel::class,
+        NotificationModel::class),
+        version = 18,
         exportSchema = false)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao
     abstract fun recipeDetailDao(): DetailDao
@@ -32,10 +35,12 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun errorDao(): ErrorDao
     abstract fun userDao(): UserDao
     abstract fun userListDao(): UserListDao
+    abstract fun notificationDao(): NotificationDao
 
     companion object {
 
-        @Volatile private var INSTANCE: AppDatabase? = null
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
         fun getInstance(context: Context): AppDatabase =
                 INSTANCE ?: synchronized(this) {

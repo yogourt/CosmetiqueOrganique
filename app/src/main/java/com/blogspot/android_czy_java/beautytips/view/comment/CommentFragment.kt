@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
 import com.blogspot.android_czy_java.beautytips.view.comment.callback.CommentListCallback
 import com.blogspot.android_czy_java.beautytips.view.common.AppBottomSheetDialogFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
