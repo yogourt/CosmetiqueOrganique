@@ -45,6 +45,8 @@ class CommentsViewModel(private val loadCommentsUseCase: LoadCommentsUseCase,
         disposable.add(
                 addCommentUseCase
                         .execute(newComment, responseTo, recipeId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
         )
     }

@@ -4,7 +4,7 @@ package com.blogspot.android_czy_java.beautytips.view.recipe
 import android.text.TextUtils
 import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.R
-import com.blogspot.android_czy_java.beautytips.notifications.NotificationService.Companion.KEY_ITEM
+import com.blogspot.android_czy_java.beautytips.service.notification.NotificationService.Companion.KEY_ITEM
 
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.RecipeViewModel
 

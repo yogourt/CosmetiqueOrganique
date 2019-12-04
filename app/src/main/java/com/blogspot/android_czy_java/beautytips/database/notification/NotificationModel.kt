@@ -7,9 +7,9 @@ import java.text.DateFormat
 @Entity(tableName = "Notifications")
 class NotificationModel(
         val message: String,
-        val image: String,
-        val recipeId: Long,
-        val commentId: Long,
+        val image: String?,
+        val recipeId: Long?,
+        val commentId: String?,
         val userId: String
 ) {
     @PrimaryKey(autoGenerate = true)

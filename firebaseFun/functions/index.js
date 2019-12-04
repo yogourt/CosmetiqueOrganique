@@ -15,6 +15,7 @@ var admin = require("firebase-admin");
 
 var commentRefactoring = require("./comment_refactoring.js");
 var favNumChange = require("./favNumChange.js");
+var newNotifications = require("./new_notifications.js");
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -25,7 +26,7 @@ admin.initializeApp({
 	databaseURL: "https://beautytips-28e20.firebaseio.com"
 });
 
-exports.newCommentNotification = functions.database.ref('/tips/{tipId}/comments/{new_comment}')
+exports.commentNotification = functions.database.ref('/tips/{tipId}/comments/{new_comment}')
 .onCreate(async (change, context) => {
 
   var db = admin.database();
@@ -251,5 +252,12 @@ exports.onFavNumChanged = functions.https.onCall((data, context) => {
 	var increment = data.increment;
 
 	favNumChange.changeFavNum(admin, recipeId, increment);
+
+});
+
+exports.newCommentNotification = functions.database.ref('/comments/{recipeId}/{new_comment}')
+	.onCreate(async (change, context) => {
+
+		newNotifications.sendCommentNotification(admin, context.params.recipeId, change);
 
 });

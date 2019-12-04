@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips
 
 import android.app.Activity
 import android.app.Application
+import android.app.Service
 
 import androidx.fragment.app.Fragment
 import com.blogspot.android_czy_java.beautytips.di.DaggerAppComponent
@@ -9,6 +10,7 @@ import com.blogspot.android_czy_java.beautytips.di.DaggerAppComponent
 import com.google.firebase.database.FirebaseDatabase
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import dagger.android.HasServiceInjector
 
 import javax.inject.Inject
 
@@ -20,13 +22,16 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.reactivex.plugins.RxJavaPlugins
 
 
-class MyApplication : Application(), HasSupportFragmentInjector, HasActivityInjector {
+class MyApplication : Application(), HasSupportFragmentInjector, HasActivityInjector, HasServiceInjector {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+
+    @Inject
+    lateinit var serviceInjector: DispatchingAndroidInjector<Service>
 
     override fun onCreate() {
         super.onCreate()
@@ -69,5 +74,7 @@ class MyApplication : Application(), HasSupportFragmentInjector, HasActivityInje
     override fun supportFragmentInjector() = fragmentInjector
 
     override fun activityInjector() = activityInjector
+
+    override fun serviceInjector() = serviceInjector
 
 }

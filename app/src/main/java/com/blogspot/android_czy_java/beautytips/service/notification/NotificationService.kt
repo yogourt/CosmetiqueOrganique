@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.notifications
+package com.blogspot.android_czy_java.beautytips.service.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,21 +8,33 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.blogspot.android_czy_java.beautytips.R
+import com.blogspot.android_czy_java.beautytips.usecase.notification.SaveNotificationUseCase
 import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivity
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
 
-class NotificationService : FirebaseMessagingService() {
+class NotificationService :
+        FirebaseMessagingService() {
 
     companion object {
         private const val CHANNEL_ID = "Comments notifications"
-        public const val KEY_ITEM = "recipe firebaseId"
+        const val KEY_ITEM = "recipe firebaseId"
+
     }
+
+    @Inject
+    lateinit var saveNotificationUseCase: SaveNotificationUseCase
 
     private var isChannelCreated = false
 
+    override fun onCreate() {
+        super.onCreate()
+        AndroidInjection.inject(this)
+    }
 
     override fun onNewToken(token: String) {
         //TODO:
@@ -33,6 +45,8 @@ class NotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
         createNotificationChannel()
+
+        saveNotificationUseCase.execute(remoteMessage)
 
         val intent = Intent().setClass(this, MainActivity::class.java)
         val tipId = remoteMessage.data["tip"]

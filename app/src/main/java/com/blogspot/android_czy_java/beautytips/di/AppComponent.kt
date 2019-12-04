@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.di
 import android.content.Context
 import com.blogspot.android_czy_java.beautytips.MyApplication
 import com.blogspot.android_czy_java.beautytips.di.database.DatabaseModule
+import com.blogspot.android_czy_java.beautytips.di.service.notification.NotificationServiceModule
 import com.blogspot.android_czy_java.beautytips.di.usecase.detail.DetailUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.usecase.search.SearchUseCaseModule
 import dagger.BindsInstance
@@ -16,7 +17,8 @@ import javax.inject.Singleton
     ViewModelModule::class,
     DatabaseModule::class,
     DetailUseCaseModule::class,
-    SearchUseCaseModule::class
+    SearchUseCaseModule::class,
+    NotificationServiceModule::class
 ])
 
 @Singleton

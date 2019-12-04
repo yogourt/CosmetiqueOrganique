@@ -81,7 +81,7 @@
             android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"
             android:exported="true" />
 
-        <service android:name=".notifications.NotificationService">
+        <service android:name=".service.notification.NotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

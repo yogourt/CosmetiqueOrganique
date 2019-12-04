@@ -5,7 +5,7 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.comment
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import org.json.JSONObject
+import timber.log.Timber
 
 class PushCommentToFirebaseUseCase(private val commentRepository: CommentRepository) {
 
@@ -25,7 +25,12 @@ class PushCommentToFirebaseUseCase(private val commentRepository: CommentReposit
     inner class OnCompleteListener(private val commentId: Long) :
             DatabaseReference.CompletionListener {
         override fun onComplete(error: DatabaseError?, ref: DatabaseReference) {
-            if (error != null) return
+            if (error != null) {
+                Timber.e("Comment push error: ${error.message}")
+                return
+            }
+
+            Timber.d("created ref: ${ref.key}")
 
             Thread(Runnable {
                 ref.key?.let {

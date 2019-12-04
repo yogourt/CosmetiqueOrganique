@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.layout_new_comment.view.*
 import android.app.Activity
 import android.content.Intent
+import android.widget.EditText
 import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
 import kotlinx.android.synthetic.main.fragment_comments.view.*
 
@@ -40,6 +41,7 @@ class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var commentList: RecyclerView
     private lateinit var commentsLayout: CoordinatorLayout
+    private lateinit var newComment: EditText
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,6 +50,7 @@ class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
         loadingIndicator = view.loading_indicator
         commentList = view.comments_list
         commentsLayout = view.comments_layout
+        newComment = view.new_comment
 
         expand()
         prepareNewCommentLayout(view)
@@ -77,7 +80,7 @@ class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
     private fun prepareNewCommentLayout(view: View) {
         view.button_add_new.setOnClickListener {
             addComment(
-                    view.new_comment.text.toString(),
+                    newComment.text.toString(),
                     null
             )
         }
