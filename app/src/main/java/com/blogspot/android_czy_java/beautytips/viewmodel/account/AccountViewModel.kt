@@ -56,7 +56,7 @@ class AccountViewModel(private val loginUseCase: LoginUseCase,
     }
 
     fun loginUser() {
-        disposable.add(loginUseCase.saveAndReturnUser()
+        disposable.add(loginUseCase.loginUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { userLiveData.value = GenericUiModel.StatusLoading() }

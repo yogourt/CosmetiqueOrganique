@@ -36,6 +36,7 @@ class UpdateUserDataInFirebaseUseCase(private val errorRepository: ErrorReposito
                 uploadPhotoAndPushUserDataToFirebase(emitter)
             }
 
+
         }
     }
 

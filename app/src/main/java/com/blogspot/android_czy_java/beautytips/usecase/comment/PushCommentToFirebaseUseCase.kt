@@ -1,5 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.usecase.comment
 
+import android.database.sqlite.SQLiteConstraintException
 import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.comment.CommentRepository
 import com.google.firebase.database.DatabaseError
@@ -40,7 +41,15 @@ class PushCommentToFirebaseUseCase(private val commentRepository: CommentReposit
         }
 
         private fun updateFirebaseId(firebaseId: String) {
-            commentRepository.updateCommentFirebaseId(commentId, firebaseId)
+            try {
+                commentRepository.updateCommentFirebaseId(commentId, firebaseId)
+            } catch (e: SQLiteConstraintException) {
+                Timber.e("An error during firebase push: " +
+                        "firebaseId $firebaseId already exists and cannot " +
+                        "be set for comment $commentId")
+            }
+
+
         }
     }
 }

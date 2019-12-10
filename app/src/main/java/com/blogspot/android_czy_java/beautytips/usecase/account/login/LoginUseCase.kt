@@ -14,7 +14,8 @@ import io.reactivex.Single
 
 class LoginUseCase(private val userRepository: UserRepository,
                    private val errorRepository: ErrorRepository,
-                   private val updateUserDataInFirebaseUseCase: UpdateUserDataInFirebaseUseCase) {
+                   private val updateUserDataInFirebaseUseCase: UpdateUserDataInFirebaseUseCase,
+                   private val passTokenToFirebaseUseCase: PassTokenToFirebaseUseCase) {
 
     fun isUserAnonymousOrNull(): Boolean? {
         return FirebaseAuth.getInstance().currentUser?.isAnonymous
@@ -30,14 +31,19 @@ class LoginUseCase(private val userRepository: UserRepository,
 
 
     fun loginAnonymouslyIfNull(): Task<AuthResult>? {
-        if (FirebaseAuth.getInstance().currentUser == null)
-            return loginAnonymously()
+        return if (FirebaseAuth.getInstance().currentUser == null)
+            loginAnonymously()
         else
-            return null
+            null
     }
 
-    fun saveAndReturnUser(): Single<UserModel> =
+    fun loginUser(): Single<UserModel> =
             Single.create { emitter ->
+
+                if (!isUserLoggedIn()) {
+                    emitter.onError(UserNotLoggedInException())
+                }
+
                 getCurrentUserFirebaseId()?.let { id ->
                     if (userShouldBeInserted(id)) {
                         userRepository.insertFirebaseUser(id, emitter, true)
@@ -47,7 +53,8 @@ class LoginUseCase(private val userRepository: UserRepository,
                             emitter.onSuccess(it)
                         } ?: emitter.onError(UserNotFoundException())
                     }
-                } ?: emitter.onError(UserNotLoggedInException())
+                    passTokenToFirebaseUseCase.execute(id)
+                }
             }
 
     private fun userShouldBeInserted(firebaseId: String): Boolean {
