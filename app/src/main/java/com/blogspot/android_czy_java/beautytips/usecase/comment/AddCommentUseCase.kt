@@ -31,7 +31,6 @@ class AddCommentUseCase(private val getCurrentUserUseCase: GetCurrentUserUseCase
                                 )
 
                                 saveComment(comment)
-                                disposable.dispose()
 
                             },
                             {

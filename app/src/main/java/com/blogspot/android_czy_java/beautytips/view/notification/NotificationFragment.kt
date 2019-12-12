@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.notification.NotificationModel
@@ -80,6 +81,7 @@ class NotificationFragment : AppBottomSheetDialogFragment() {
         when (uiModel) {
             is GenericUiModel.LoadingSuccess -> {
                 loadingIndicator.visibility = View.GONE
+                prepareNotificationList(uiModel.data)
             }
 
             is GenericUiModel.StatusLoading -> {
@@ -89,6 +91,14 @@ class NotificationFragment : AppBottomSheetDialogFragment() {
                 loadingIndicator.visibility = View.GONE
                 showInfoAboutError(notifications, uiModel.message)
             }
+        }
+    }
+
+    private fun prepareNotificationList(data: List<NotificationModel>) {
+        view?.notifications?.apply {
+            adapter = NotificationAdapter(data)
+            layoutManager =  LinearLayoutManager(context,
+                    RecyclerView.VERTICAL, false)
         }
     }
 

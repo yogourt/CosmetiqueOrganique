@@ -1,15 +1,16 @@
 package com.blogspot.android_czy_java.beautytips.usecase.notification
 
+import com.blogspot.android_czy_java.beautytips.database.comment.CommentModel
 import com.blogspot.android_czy_java.beautytips.database.notification.NotificationModel
+import com.blogspot.android_czy_java.beautytips.repository.forViewModels.comment.CommentRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.notification.NotificationRepository
 import com.blogspot.android_czy_java.beautytips.service.notification.NotificationKeys
-import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.google.firebase.messaging.RemoteMessage
 
 class SaveNotificationUseCase(private val notificationRepository: NotificationRepository,
                               private val recipeDetailRepository: RecipeDetailRepository,
-                              private val currentUserUseCase: GetCurrentUserUseCase) {
+                              private val commentRepository: CommentRepository) {
 
     fun execute(request: RemoteMessage) {
 
@@ -22,12 +23,26 @@ class SaveNotificationUseCase(private val notificationRepository: NotificationRe
                 var image = it[NotificationKeys.KEY_IMAGE]
                 val commentId = it[NotificationKeys.KEY_COMMENT_ID]
                 val userId = it[NotificationKeys.KEY_USER_ID] ?: return@Runnable
+                val authorId = it[NotificationKeys.KEY_AUTHOR_ID]
+                val firebaseId = it[NotificationKeys.KEY_FIREBASE_COMMENT_ID] ?: return@Runnable
 
                 if (image.isNullOrEmpty() && recipeId != null) {
                     image = getRecipeImage(recipeId)
                 }
 
-                notification = NotificationModel(message, image, recipeId, commentId, userId)
+                notification = NotificationModel(authorId, message, image, recipeId, commentId, userId)
+                notificationRepository.insertNotification(notification)
+
+                when (it[NotificationKeys.KEY_NOTIFICATION_TYPE]?.toInt()) {
+                    NotificationKeys.NOTIFICATION_TYPE_COMMENT_ON_USER_RECIPE -> {
+
+                        if (recipeId != null && authorId != null)
+                            commentRepository.addComment(
+                                    CommentModel(firebaseId, null, recipeId, authorId, message)
+                            )
+                    }
+                }
+
             }
 
         }).start()

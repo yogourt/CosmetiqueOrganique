@@ -12,6 +12,9 @@ class NotificationKeys {
         public const val KEY_COMMENT_ID = "comment_id"
         public const val KEY_USER_ID = "user_id"
         public const val KEY_IMAGE = "image"
+        public const val KEY_AUTHOR_ID = "author_id"
+        public const val KEY_NOTIFICATION_TYPE = "notification_type"
+        public const val KEY_FIREBASE_COMMENT_ID = "comment_firebase_id"
 
     }
 

@@ -5,7 +5,9 @@ import androidx.room.PrimaryKey
 import java.text.DateFormat
 
 @Entity(tableName = "Notifications")
-class NotificationModel(
+class NotificationModel
+(
+        val authorId: String?,
         val message: String,
         val image: String?,
         val recipeId: Long?,

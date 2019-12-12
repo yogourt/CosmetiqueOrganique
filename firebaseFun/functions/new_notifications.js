@@ -9,10 +9,12 @@ this.sendCommentNotification = function(admin, recipeIdValue, commentSnapshot) {
 
 				var message = {
 					data: {
-						recipeId: recipeIdValue,
-						authorId: commentSnapshot.child("authorId").val(),
+						recipe_id: recipeIdValue,
+						author_id: commentSnapshot.child("authorId").val(),
 						message: commentSnapshot.child("message").val(),
-						userId: recipeAuthorId.val()
+						user_id: recipeAuthorId.val(),
+						notification_type: "1",
+						comment_firebase_id: commentSnapshot.key
 					},
 						token: userToken.val()
 				};
