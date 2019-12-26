@@ -14,24 +14,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.notification.NotificationModel
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
+import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
 import com.blogspot.android_czy_java.beautytips.view.common.AppBottomSheetDialogFragment
+import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
+import com.blogspot.android_czy_java.beautytips.view.notification.callback.NotificationListCallback
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.notification.NotificationViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_notification.view.*
 import kotlinx.android.synthetic.main.layout_info_for_anonymous.info_for_anonymous
-import kotlinx.android.synthetic.main.layout_info_for_anonymous.login_button
 import javax.inject.Inject
 
-class NotificationFragment : AppBottomSheetDialogFragment() {
+class NotificationFragment : AppBottomSheetDialogFragment(), NotificationListCallback {
 
     @Inject
     lateinit var viewModel: NotificationViewModel
 
     @Inject
     lateinit var accountViewModel: AccountViewModel
+
+    @Inject
+    lateinit var activityViewModel: DetailActivityViewModel
 
     private lateinit var notifications: RecyclerView
     private lateinit var loadingIndicator: ProgressBar
@@ -96,8 +102,8 @@ class NotificationFragment : AppBottomSheetDialogFragment() {
 
     private fun prepareNotificationList(data: List<NotificationModel>) {
         view?.notifications?.apply {
-            adapter = NotificationAdapter(data)
-            layoutManager =  LinearLayoutManager(context,
+            adapter = NotificationAdapter(data, this@NotificationFragment)
+            layoutManager = LinearLayoutManager(context,
                     RecyclerView.VERTICAL, false)
         }
     }
@@ -130,6 +136,17 @@ class NotificationFragment : AppBottomSheetDialogFragment() {
                 showInfoAboutError(notifications, getString(R.string.error_msg_common))
             }
         } else super.onActivityResult(requestCode, resultCode, data)
+    }
+
+
+    override fun onRecipeClick(recipeId: Long) {
+        if (isTablet) {
+            activityViewModel.chosenItemId = recipeId
+        } else {
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
+            startActivity(intent)
+        }
     }
 
 

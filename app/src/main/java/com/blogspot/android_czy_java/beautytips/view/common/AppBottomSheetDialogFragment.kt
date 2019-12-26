@@ -1,14 +1,20 @@
 package com.blogspot.android_czy_java.beautytips.view.common
 
-import android.os.Bundle
-import android.view.LayoutInflater
+import android.content.Context
 import android.view.View
-import android.view.ViewGroup
+import com.blogspot.android_czy_java.beautytips.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 open class AppBottomSheetDialogFragment : BottomSheetDialogFragment() {
+
+    var isTablet = false
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        isTablet = resources.getBoolean(R.bool.is_tablet)
+    }
 
     internal fun expand() {
         dialog?.let { dialog ->
@@ -29,6 +35,5 @@ open class AppBottomSheetDialogFragment : BottomSheetDialogFragment() {
             BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
-
 
 }

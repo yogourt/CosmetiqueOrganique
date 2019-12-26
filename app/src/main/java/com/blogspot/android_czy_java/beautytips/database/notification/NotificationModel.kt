@@ -8,7 +8,7 @@ import java.text.DateFormat
 class NotificationModel
 (
         val authorId: String?,
-        val message: String,
+        var message: String,
         val image: String?,
         val recipeId: Long?,
         val commentId: String?,

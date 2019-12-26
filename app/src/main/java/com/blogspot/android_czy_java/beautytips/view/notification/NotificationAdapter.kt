@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.notification.NotificationModel
+import com.blogspot.android_czy_java.beautytips.view.notification.callback.NotificationListCallback
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_notification.view.*
 
-class NotificationAdapter(private val data: List<NotificationModel>) :
+class NotificationAdapter(private val data: List<NotificationModel>,
+                          private val callback: NotificationListCallback) :
         RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
@@ -28,8 +30,17 @@ class NotificationAdapter(private val data: List<NotificationModel>) :
             Glide.with(itemView).load(notification.image).into(image)
             message.text = notification.message
             date.text = notification.time
+            itemView.setOnClickListener {
+                handleClick(notification)
+            }
         }
 
+    }
+
+    private fun handleClick(notification: NotificationModel) {
+        if(notification.recipeId != null) {
+            callback.onRecipeClick(notification.recipeId)
+        }
     }
 
     override fun getItemCount() = data.size

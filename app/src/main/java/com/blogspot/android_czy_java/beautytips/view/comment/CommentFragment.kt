@@ -121,6 +121,7 @@ class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
                     responseTo != null)
         } else {
             viewModel.addComment(newComment, responseTo)
+            this.newComment.text.clear()
             collapse()
         }
     }

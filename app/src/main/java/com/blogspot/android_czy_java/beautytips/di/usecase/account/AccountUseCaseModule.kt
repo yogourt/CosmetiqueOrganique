@@ -6,6 +6,7 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.error.E
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.UserListRecipeRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.user.UserRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.UpdateUserDataInFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.PassTokenToFirebaseUseCase
@@ -64,5 +65,9 @@ class AccountUseCaseModule {
 
     @Provides
     fun providePassTokenToFirebaseUseCase() = PassTokenToFirebaseUseCase()
+
+    @Provides
+    fun provideGetUserFromFirebaseUseCase(userRepository: UserRepository) =
+            GetUserFromFirebaseUseCase(userRepository)
 
 }

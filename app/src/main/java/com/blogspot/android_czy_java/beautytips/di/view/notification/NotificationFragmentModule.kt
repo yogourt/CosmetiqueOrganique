@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.notification.NotificationUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.view.account.AccountActivityFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
 import com.blogspot.android_czy_java.beautytips.usecase.notification.GetNotificationsUseCase
 import com.blogspot.android_czy_java.beautytips.view.notification.NotificationFragment
+import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivityFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.notification.NotificationViewModel
 import dagger.Module
 import dagger.Provides
@@ -23,7 +26,8 @@ abstract class NotificationFragmentModule {
 
     @ContributesAndroidInjector(modules = [
         NotificationFragmentModule.InjectViewModel::class,
-        AccountActivityFragmentModule.ProvideViewModel::class
+        AccountActivityFragmentModule.ProvideViewModel::class,
+        DetailActivityModule.ProvideViewModel::class
     ])
     abstract fun bind(): NotificationFragment
 
@@ -54,6 +58,12 @@ abstract class NotificationFragmentModule {
         ): AccountViewModel =
                 ViewModelProviders.of(target.requireActivity(), factory).get(AccountViewModel::class.java)
 
+        @Provides
+        fun provideDetailActivityViewModel(
+                factory: ViewModelProvider.Factory,
+                target: NotificationFragment
+        ): DetailActivityViewModel =
+                ViewModelProviders.of(target.requireActivity(), factory).get(DetailActivityViewModel::class.java)
     }
 
 }

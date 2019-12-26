@@ -3,13 +3,15 @@ package com.blogspot.android_czy_java.beautytips.usecase.comment
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.comment.CommentRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.user.UserRepository
+import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
 class LoadCommentsUseCase(private val repository: CommentRepository,
-                          private val userRepository: UserRepository) {
+                          private val userRepository: UserRepository,
+                          private val getUserFromFirebaseUseCase: GetUserFromFirebaseUseCase) {
 
     fun execute(request: Long): Observable<List<CommentWithAuthorModel>> =
             repository.getCommentsForRecipe(request).flatMap { comments ->
@@ -31,7 +33,7 @@ class LoadCommentsUseCase(private val repository: CommentRepository,
 
                     for (item in list) {
                         if (item.author == null) {
-                            singleToZip.add(getAuthor(item.comment.authorId))
+                            singleToZip.add(getUserFromFirebaseUseCase.execute(item.comment.authorId))
                         }
                     }
 
@@ -54,21 +56,5 @@ class LoadCommentsUseCase(private val repository: CommentRepository,
     private fun getAuthorSynchronously(firebaseId: String) =
             userRepository.getUserByFirebaseId(firebaseId)
 
-    private fun getAuthor(firebaseId: String): Single<UserModel> {
-        return Single.create { emitter ->
-            userRepository.getUserByFirebaseId(firebaseId)?.let {
-                emitter.onSuccess(it)
-            } ?: getUserFromFirebase(firebaseId, emitter)
-        }
-    }
-
-    private fun getUserFromFirebase(firebaseId: String,
-                                    emitter: SingleEmitter<UserModel>) {
-        userRepository.insertFirebaseUser(
-                firebaseId,
-                emitter,
-                false
-        )
-    }
 
 }

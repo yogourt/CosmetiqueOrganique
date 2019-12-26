@@ -7,6 +7,7 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.comment
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.user.UserRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.AddCommentUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.GetCommentNumberUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.LoadCommentsUseCase
@@ -23,7 +24,9 @@ class CommentUseCaseModule {
 
     @Provides
     fun provideLoadCommentsUseCase(repository: CommentRepository,
-                                   userRepository: UserRepository) = LoadCommentsUseCase(repository, userRepository)
+                                   userRepository: UserRepository,
+                                   getUserFromFirebaseUseCase: GetUserFromFirebaseUseCase) =
+            LoadCommentsUseCase(repository, userRepository, getUserFromFirebaseUseCase)
 
     @Provides
     fun provideGetCommentNumberUseCase(repository: CommentRepository) =
