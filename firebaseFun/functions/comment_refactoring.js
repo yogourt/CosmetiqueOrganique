@@ -5,35 +5,39 @@
 
 			admin.database().ref("/tips").on("value", function(snapshot) {
 
-				var json = {};
-
 				snapshot.forEach(function(item) {
+
+					var ref = admin.database().ref('/comments/' + item.key);
 					if(item.child("comments").numChildren() !== 0) {
 
+						ref.set(null);
+
 						var comments = item.child("comments");
-						json[item.key] = {};
 
 						console.log("recipe:" + item.key);
 						comments.forEach(function(comment) {
-							var key = comment.key;
 
 							var newComment = {};
 
     						if(comment.child("b").val() !== null) {
     							newComment["authorId"] = comment.child("b").val();
+    						} else {
+    							return;
     						}
     						if(comment.child("c").val() !== null) {
     							newComment["message"] = comment.child("c").val();
+    						} else {
+    							return;
     						}
-    						console.log(newComment);
 
-    						json[item.key][key] = newComment;
+    						ref.push().set(newComment);
+
 
 						});
 					}
 				});
 					
-				return admin.database().ref('/comments/').set(json);
+				return;
 
 			});
 		}

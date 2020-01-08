@@ -3,7 +3,6 @@ package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListDao
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
@@ -45,7 +44,7 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
         val favs = getRecipeIdsInList(userId, listName)
                 .toMutableList()
         favs.remove(recipeId)
-        updateRecipesInUserList(listName, userId, favs.joinToString())
+        updateRecipesInUserList(listName, userId, favs.joinToString(","))
 
         if(listName == FirebaseKeys.KEY_USER_LIST_FAVORITES) {
             recipeDao.decrementFavNum(recipeId)
@@ -54,9 +53,7 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
 
     fun getRecipeIdsInList(userId: String, listName: String): List<Long> {
         return userListDao.getListByUserIdAndName(userId, listName)
-                ?.split(",")
-                ?.map { it.trim().toLongOrNull() }
-                ?.filterNotNull() ?: mutableListOf()
+                ?.split(",")?.mapNotNull { it.trim().toLongOrNull() } ?: mutableListOf()
     }
 
     private fun updateRecipesInUserList(listName: String, userId: String, recipes: String) {

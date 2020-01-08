@@ -18,6 +18,7 @@ interface CommentDao {
     @Query("SELECT COUNT(recipeId) FROM RecipeComments WHERE recipeId = :recipeId")
     fun getCommentNumberForRecipe(recipeId: Long): Int
 
-    @Query("UPDATE RecipeComments SET firebaseId = :firebaseId WHERE id = :commentId")
-    fun updateCommentFirebaseId(commentId: Long, firebaseId: String)
+    @Query("SELECT * FROM RecipeComments WHERE id = :commentId")
+    fun getCommentById(commentId: Long): CommentModel?
+
 }

@@ -11,7 +11,10 @@ class CommentRepository(private val commentDao: CommentDao) {
 
     fun addComment(comment: CommentModel) = commentDao.insertComment(comment)
 
-    fun updateCommentFirebaseId(commentId: Long, firebaseId: String) =
-            commentDao.updateCommentFirebaseId(commentId, firebaseId)
+    fun updateCommentFirebaseId(commentId: Long, firebaseId: String) {
+        val comment = commentDao.getCommentById(commentId) ?: return
+        comment.firebaseId = firebaseId
+        commentDao.insertComment(comment)
+    }
 
 }

@@ -7,7 +7,6 @@ import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFireb
 import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.SingleEmitter
 
 class LoadCommentsUseCase(private val repository: CommentRepository,
                           private val userRepository: UserRepository,
@@ -27,7 +26,7 @@ class LoadCommentsUseCase(private val repository: CommentRepository,
                                 )
                         )
                     }
-                    it.onNext(list)
+                    it.onNext(sort(list))
 
                     val singleToZip = mutableListOf<Single<UserModel>>()
 
@@ -48,7 +47,8 @@ class LoadCommentsUseCase(private val repository: CommentRepository,
                         }
                         list
                     }.subscribe { newList ->
-                        it.onNext(newList)
+
+                        it.onNext(sort(newList))
                     }
                 }
             }
@@ -56,5 +56,41 @@ class LoadCommentsUseCase(private val repository: CommentRepository,
     private fun getAuthorSynchronously(firebaseId: String) =
             userRepository.getUserByFirebaseId(firebaseId)
 
+    private fun sort(list: List<CommentWithAuthorModel>): List<CommentWithAuthorModel> {
+        val tempList = mutableListOf<CommentWithAuthorModel>()
+
+        for (commentWithAuthor in list) {
+            if (commentWithAuthor.comment.responseTo == null) {
+                tempList.add(commentWithAuthor)
+            }
+        }
+
+        for (commentWithAuthor in list) {
+            commentWithAuthor.comment.responseTo?.let { responseTo ->
+                val commentIndex = tempList.indexOfFirst { it.comment.firebaseId == responseTo }
+                val comment = tempList[commentIndex]
+                comment.subcomments.add(commentWithAuthor)
+                tempList[commentIndex] = comment
+            }
+        }
+
+        tempList.sortBy { it.comment.firebaseId }
+
+        for (commentWithAuthor in tempList) {
+            if (commentWithAuthor.subcomments.isNotEmpty()) {
+                commentWithAuthor.subcomments.sortBy { it.comment.firebaseId }
+            }
+        }
+
+        val newList = mutableListOf<CommentWithAuthorModel>()
+
+        for (commentWithAuthor in tempList) {
+            newList.add(commentWithAuthor)
+            newList.addAll(commentWithAuthor.subcomments)
+            commentWithAuthor.subcomments.clear()
+        }
+
+        return newList
+    }
 
 }

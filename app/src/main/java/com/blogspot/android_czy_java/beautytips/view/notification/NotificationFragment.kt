@@ -104,7 +104,7 @@ class NotificationFragment : AppBottomSheetDialogFragment(), NotificationListCal
         view?.notifications?.apply {
             adapter = NotificationAdapter(data, this@NotificationFragment)
             layoutManager = LinearLayoutManager(context,
-                    RecyclerView.VERTICAL, false)
+                    RecyclerView.VERTICAL, true)
         }
     }
 

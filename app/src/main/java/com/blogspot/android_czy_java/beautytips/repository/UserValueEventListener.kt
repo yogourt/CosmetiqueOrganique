@@ -1,5 +1,6 @@
 package com.blogspot.android_czy_java.beautytips.repository
 
+import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
 import com.blogspot.android_czy_java.beautytips.exception.common.FirebaseValueEventListenerException
@@ -28,8 +29,8 @@ class UserValueEventListener(private val emitter: SingleEmitter<UserModel>,
             repository.insertUser(user)
 
             if(insertList) {
-                insertUserList("favorites", userSnapshot)
-                insertUserList("my_recipes", userSnapshot)
+                insertUserList(FirebaseKeys.KEY_USER_LIST_FAVORITES, userSnapshot)
+                insertUserList(FirebaseKeys.KEY_USER_LIST_MY_RECIPES, userSnapshot)
             }
 
             emitter.onSuccess(user)
@@ -46,8 +47,7 @@ class UserValueEventListener(private val emitter: SingleEmitter<UserModel>,
     private fun insertUserList(listName: String, userSnapshot: DataSnapshot) {
         val favorites = userSnapshot.child(listName).value
         favorites?.let {
-            val listNameRefactored = listName.replace("_", " ").capitalize()
-            val list = UserListModel(userId, listNameRefactored, favorites.toString())
+            val list = UserListModel(userId, listName, favorites.toString())
             repository.insertUserList(list)
         }
     }

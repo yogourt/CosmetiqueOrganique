@@ -110,7 +110,7 @@ class CommentFragment : AppBottomSheetDialogFragment(), CommentListCallback {
             commentList.visibility = View.VISIBLE
             commentList.apply {
                 adapter = CommentListAdapter(this@CommentFragment, comments)
-                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
+                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             }
         }
     }

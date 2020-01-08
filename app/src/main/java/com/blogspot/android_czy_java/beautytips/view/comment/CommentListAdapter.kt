@@ -19,7 +19,7 @@ class CommentListAdapter(private val callback: CommentListCallback,
 
         val inflater = LayoutInflater.from(parent.context)
 
-        return if(viewType == TYPE_COMMENT) {
+        return if (viewType == TYPE_COMMENT) {
             TopicViewHolder(inflater.inflate(R.layout.item_discussion_topic, parent, false))
         } else {
             CommentViewHolder(inflater.inflate(R.layout.item_discussion_comment, parent, false))
@@ -34,11 +34,13 @@ class CommentListAdapter(private val callback: CommentListCallback,
             author.text = commentItem.author?.nickname
         }
 
-        if(holder is TopicViewHolder) {
+        if (holder is TopicViewHolder) {
             holder.apply {
 
-                if(commentItem.comment.firebaseId == null) {
+                if (commentItem.comment.firebaseId == null) {
                     reply.visibility = View.GONE
+                } else {
+                    reply.visibility = View.VISIBLE
                 }
 
                 sendSubcommentButton.setOnClickListener {
