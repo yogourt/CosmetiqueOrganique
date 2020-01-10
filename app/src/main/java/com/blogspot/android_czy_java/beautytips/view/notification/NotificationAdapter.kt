@@ -14,10 +14,19 @@ class NotificationAdapter(private val data: List<NotificationModel>,
                           private val callback: NotificationListCallback) :
         RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
+    companion object {
+        const val ITEM_TYPE_SEEN = 1
+        const val ITEM_TYPE_UNSEEN = 2
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        val view = inflater.inflate(R.layout.item_notification, parent, false)
+        val view = inflater.inflate(
+                if (viewType == ITEM_TYPE_SEEN) R.layout.item_notification
+                else R.layout.item_notification_unseen,
+                parent,
+                false)
 
         return NotificationViewHolder(view)
     }
@@ -37,9 +46,20 @@ class NotificationAdapter(private val data: List<NotificationModel>,
 
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (data[position].seen) {
+            ITEM_TYPE_SEEN
+        } else {
+            ITEM_TYPE_UNSEEN
+        }
+    }
+
     private fun handleClick(notification: NotificationModel) {
-        if(notification.recipeId != null) {
+        if (notification.recipeId != null) {
             callback.onRecipeClick(notification.recipeId)
+        }
+        if (!notification.seen) {
+            callback.makeNotificationSeen(notification.id)
         }
     }
 

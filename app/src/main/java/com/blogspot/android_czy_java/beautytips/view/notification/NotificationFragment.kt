@@ -147,6 +147,11 @@ class NotificationFragment : AppBottomSheetDialogFragment(), NotificationListCal
             intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
             startActivity(intent)
         }
+        dismiss()
+    }
+
+    override fun makeNotificationSeen(notificationId: Int) {
+        viewModel.makeNotificationSeen(notificationId)
     }
 
 

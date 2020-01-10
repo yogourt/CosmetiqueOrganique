@@ -4,12 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.database.notification.NotificationModel
 import com.blogspot.android_czy_java.beautytips.usecase.notification.GetNotificationsUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.notification.MakeNotificationSeenUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class NotificationViewModel(private val getNotificationsUseCase: GetNotificationsUseCase) : ViewModel() {
+class NotificationViewModel(private val getNotificationsUseCase: GetNotificationsUseCase,
+                            private val makeNotificationSeenUseCase: MakeNotificationSeenUseCase) : ViewModel() {
 
     private val defaultErrorMessage = "An error occurred"
 
@@ -35,6 +37,10 @@ class NotificationViewModel(private val getNotificationsUseCase: GetNotification
                                     ?: defaultErrorMessage)
                         }
                 ))
+    }
+
+    fun makeNotificationSeen(notificationId: Int) {
+        makeNotificationSeenUseCase.execute(notificationId)
     }
 }
 

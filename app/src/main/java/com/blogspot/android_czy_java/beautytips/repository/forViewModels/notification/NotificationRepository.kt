@@ -11,4 +11,7 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     fun insertNotification(notification: NotificationModel) =
             notificationDao.insertNotification(notification)
 
+    fun makeNotificationSeen(notificationId: Int) =
+            notificationDao.updateNotificationSeen(notificationId)
+
 }

@@ -14,4 +14,7 @@ interface NotificationDao {
     @Query("SELECT * FROM Notifications WHERE userId = :userId")
     fun getNotificationsForUser(userId: String): List<NotificationModel>
 
+    @Query("UPDATE Notifications SET seen = 1 WHERE id = :notificationId")
+    fun updateNotificationSeen(notificationId: Int)
+
 }

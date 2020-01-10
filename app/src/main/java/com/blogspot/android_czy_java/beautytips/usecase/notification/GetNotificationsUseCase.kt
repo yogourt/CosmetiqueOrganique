@@ -7,20 +7,26 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.notific
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class GetNotificationsUseCase(private val notificationRepository: NotificationRepository,
                               private val currentUserUseCase: GetCurrentUserUseCase,
                               private val getUserFromFirebaseUseCase: GetUserFromFirebaseUseCase) {
 
-    fun execute(): Single<List<NotificationModel>> {
-        return Single.create { emitter ->
+    fun execute(): Observable<List<NotificationModel>> {
+        return Observable.create { emitter ->
 
             currentUserUseCase.currentUserId()?.let { userId ->
                 val notifications =
                         notificationRepository.getNotificationsForUser(userId)
 
+                emitter.onNext(notifications)
                 val singleToZip = createUserRequests(notifications)
+
+                if(singleToZip == null) {
+                    emitter.onComplete()
+                }
 
                 Single.zip(singleToZip) { results ->
                     for (result in results) {
@@ -34,7 +40,8 @@ class GetNotificationsUseCase(private val notificationRepository: NotificationRe
                     }
                     notifications
                 }.subscribe { newList ->
-                    emitter.onSuccess(newList)
+                    emitter.onNext(newList)
+                    emitter.onComplete()
                 }
 
             } ?: emitter.onError(UserNotFoundException())
@@ -42,7 +49,7 @@ class GetNotificationsUseCase(private val notificationRepository: NotificationRe
         }
     }
 
-    private fun createUserRequests(notifications: List<NotificationModel>): List<Single<UserModel>> {
+    private fun createUserRequests(notifications: List<NotificationModel>): List<Single<UserModel>>? {
         val singleToZip = mutableListOf<Single<UserModel>>()
 
         val alreadyAddedIds = mutableListOf<String>()
@@ -54,6 +61,10 @@ class GetNotificationsUseCase(private val notificationRepository: NotificationRe
                 alreadyAddedIds.add(it)
             }
         }
-        return singleToZip
+        return if (singleToZip.isNotEmpty()) {
+            singleToZip
+        } else {
+            null
+        }
     }
 }

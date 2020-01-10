@@ -8,6 +8,7 @@ import com.blogspot.android_czy_java.beautytips.di.usecase.notification.Notifica
 import com.blogspot.android_czy_java.beautytips.di.view.account.AccountActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
 import com.blogspot.android_czy_java.beautytips.usecase.notification.GetNotificationsUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.notification.MakeNotificationSeenUseCase
 import com.blogspot.android_czy_java.beautytips.view.notification.NotificationFragment
 import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivityFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
@@ -37,8 +38,9 @@ abstract class NotificationFragmentModule {
         @Provides
         @IntoMap
         @ViewModelKey(NotificationViewModel::class)
-        fun provideNotificationViewModel(getNotificationsUseCase: GetNotificationsUseCase): ViewModel =
-                NotificationViewModel(getNotificationsUseCase)
+        fun provideNotificationViewModel(getNotificationsUseCase: GetNotificationsUseCase,
+                                         makeNotificationSeenUseCase: MakeNotificationSeenUseCase): ViewModel =
+                NotificationViewModel(getNotificationsUseCase, makeNotificationSeenUseCase)
     }
 
     @Module
