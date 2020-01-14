@@ -418,7 +418,7 @@ public abstract class BaseMainActivity extends AppCompatActivity
 
     private void prepareInterstitialAd() {
         interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(getString(R.string.support_unit_ad_id));
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
         interstitialAd.loadAd(new AdRequest.Builder().build());
 
         interstitialAd.setAdListener(new AdListener() {

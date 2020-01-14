@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.listView.view;
 
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,7 +24,12 @@ import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils
 import com.blogspot.android_czy_java.beautytips.listView.utils.recyclerViewUtils.SpacesItemDecoration;
 import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.DeleteTipDialog;
 import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,6 +59,11 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
     private TabletListViewViewModel viewModel;
 
+    private AdLoader adLoader;
+    private ArrayList<UnifiedNativeAd> ads = new ArrayList<>();
+
+    private static final int NATIVE_AD_NUMBER = 10;
+
     public MainActivityFragment() {
         // Required empty public constructor
     }
@@ -71,6 +82,8 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
         View view = inflater.inflate(R.layout.fragment_main_activity, container, false);
 
         ButterKnife.bind(this, view);
+
+        loadAds(view.getContext());
 
         return view;
 
@@ -123,7 +136,7 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
     private void prepareRecyclerView(List<ListItem> recyclerViewList) {
 
-        if(loadingIndicator.getVisibility() == View.VISIBLE) {
+        if (loadingIndicator.getVisibility() == View.VISIBLE) {
             loadingIndicator.setVisibility(View.INVISIBLE);
         }
 
@@ -146,7 +159,23 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
             if (isSmallTablet) itemDivider *= 0.8f;
         }
 
-        mAdapter = new ListViewAdapter(getContext(), recyclerViewList, this,
+
+        List listWithAds = recyclerViewList;
+
+        int offset = 7;
+
+        Collections.shuffle(ads);
+
+        for(UnifiedNativeAd ad: ads) {
+            if (offset < recyclerViewList.size()) {
+                listWithAds.add(offset, ad);
+                offset += 7;
+            }
+        }
+        listWithAds.add(0, new Object());
+
+
+        mAdapter = new ListViewAdapter(getContext(), listWithAds, this,
                 viewModel, itemDivider);
 
 
@@ -170,6 +199,16 @@ public class MainActivityFragment extends Fragment implements BaseListViewAdapte
 
     }
 
+    private void loadAds(Context context) {
+
+        AdLoader.Builder builder = new AdLoader.Builder(context, getString(R.string.native_ad_unit_id));
+        adLoader = builder.forUnifiedNativeAd(
+                unifiedNativeAd -> {
+                    ads.add(unifiedNativeAd);
+                }).build();
+
+        adLoader.loadAds(new AdRequest.Builder().build(), NATIVE_AD_NUMBER);
+    }
 
     public void setTipIdFromDynamicLink(String tipId) {
         if (mAdapter != null) mAdapter.openTipWithId(tipId);

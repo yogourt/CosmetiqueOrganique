@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +23,9 @@ import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivity;
 import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
+import com.google.android.gms.ads.formats.NativeAd;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 
 import java.util.List;
 
@@ -36,7 +43,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
     public static final int REQUEST_CODE_DETAIL_ACTIVITY = 50;
 
 
-    public ListViewAdapter(Context context, List<ListItem> list,
+    public ListViewAdapter(Context context, List list,
                            PositionListener positionListener, TabletListViewViewModel viewModel,
                            float itemHeightDivider) {
         super(context, list, positionListener, viewModel);
@@ -57,6 +64,11 @@ public class ListViewAdapter extends BaseListViewAdapter {
         if (viewType == VIEW_TYPE_HEADER) {
             itemView = inflater.inflate(R.layout.header_item_grid_view, parent, false);
             return new HeaderViewHolder(itemView);
+        } else if (viewType == VIEW_TYPE_NATIVE_AD) {
+            View unifiedNativeLayoutView = LayoutInflater.from(
+                    parent.getContext()).inflate(R.layout.item_native_ad,
+                    parent, false);
+            return new NativeAdViewHolder(unifiedNativeLayoutView);
         } else {
             itemView = inflater.inflate(R.layout.item_grid_view,
                     parent, false);
@@ -67,8 +79,8 @@ public class ListViewAdapter extends BaseListViewAdapter {
     //this method is used when dynamic link is passed
     @Override
     public void openTipWithId(String id) {
-        for (ListItem listItem : list) {
-            if (listItem.getId().equals(id)) {
+        for (Object listItem : list) {
+            if (listItem instanceof  ListItem && ((ListItem) listItem).id.equals(id)) {
                 openDetailScreen((TipListItem) listItem, null);
             }
         }
@@ -78,14 +90,17 @@ public class ListViewAdapter extends BaseListViewAdapter {
 
         Timber.d("setFavNum: " + favNum);
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getId().equals(id)) {
+            if(list.get(i) instanceof TipListItem) {
                 TipListItem item = ((TipListItem) list.get(i));
+                if (item.getId().equals(id)) {
                 item.setFavNum(favNum);
                 list.set(i, item);
+            }
             }
 
         }
     }
+
 
     public class ItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
 
@@ -109,7 +124,7 @@ public class ListViewAdapter extends BaseListViewAdapter {
             //if the ingredient was chosen
             if (tabletViewModel.getCategory().equals(CATEGORY_INGREDIENTS)) {
 
-                ListItem item = list.get(getAdapterPosition() - 1);
+                ListItem item = (ListItem)list.get(getAdapterPosition());
 
                 //if the configuration is portrait, start detail activity
                 if (mContext.getResources().getConfiguration().orientation ==
@@ -135,14 +150,15 @@ public class ListViewAdapter extends BaseListViewAdapter {
             }
             //if the tip was chosen
             else {
-                TipListItem item = (TipListItem) list.get(getAdapterPosition() - 1);
-                Timber.d("chosen tip: " + String.valueOf(getAdapterPosition() - 1));
+                TipListItem item = (TipListItem) list.get(getAdapterPosition());
                 openDetailScreen(item, createSharedElementTransition());
 
             }
 
         }
+
     }
+
 
     private void openDetailScreen(TipListItem item, @Nullable Bundle sharedElementTransition) {
 
@@ -152,16 +168,16 @@ public class ListViewAdapter extends BaseListViewAdapter {
         //if the configuration is portrait, start detail activity
         if (!mContext.getResources().getBoolean(R.bool.is_tablet) ||
                 mContext.getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT) {
+                        Configuration.ORIENTATION_PORTRAIT) {
 
             Bundle bundle = new Bundle();
             bundle.putSerializable(KEY_ITEM, item);
             Intent detailActivityIntent = new Intent(mContext, DetailActivity.class);
             detailActivityIntent.putExtras(bundle);
             if (sharedElementTransition != null)
-                ((Activity)mContext).startActivityForResult(detailActivityIntent,
+                ((Activity) mContext).startActivityForResult(detailActivityIntent,
                         REQUEST_CODE_DETAIL_ACTIVITY, sharedElementTransition);
-            else ((Activity)mContext).startActivityForResult(detailActivityIntent,
+            else ((Activity) mContext).startActivityForResult(detailActivityIntent,
                     REQUEST_CODE_DETAIL_ACTIVITY);
         }
 
@@ -172,6 +188,5 @@ public class ListViewAdapter extends BaseListViewAdapter {
         tabletViewModel.setCurrentDetailFragmentLiveData(TAG_FRAGMENT_DETAIL);
 
     }
-
 
 }

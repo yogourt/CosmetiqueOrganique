@@ -33,8 +33,13 @@
     <string name="source_label">&lt;a href=\"%1$s\">Source&lt;/a></string>
     <string name="description_fab">Add to favourites button</string>
     <string name="fav_label">%1$s</string>
+
     <string name="banner_ad_unit_id">ca-app-pub-5993828134151976/3917748262</string>
     <string name="banner_ad_test_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_test_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="native_ad_unit_id">ca-app-pub-5993828134151976/2648824193</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-5993828134151976/1635349488</string>
+
     <string name="ad_size">SMART_BANNER</string>
     <string name="add_mob_app_id">ca-app-pub-5993828134151976~2879998761</string>
     <string name ="label_comments" formatted="true">Comments (%1$s)</string>

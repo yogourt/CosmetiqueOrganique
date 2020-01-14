@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.detail.DetailActivityFragment;
 import com.blogspot.android_czy_java.beautytips.ingredient.IngredientActivityFragment;
-import com.blogspot.android_czy_java.beautytips.listView.view.dialogs.SupportPromptDialogInterface;
 import com.blogspot.android_czy_java.beautytips.listView.viewmodel.TabletListViewViewModel;
 import com.kobakei.ratethisapp.RateThisApp;
 
@@ -34,7 +33,6 @@ public class MainActivity extends BaseMainActivity implements OpeningFragment.Op
     public static final String TAG_FRAGMENT_DETAIL = "fragment_detail";
 
     public static final String KEY_FIRST_OPEN = "first open";
-    public static final String KEY_DETAIL_SCREEN_OPEN_TIMES = "detail screen open times";
 
     private FragmentManager fragmentManager;
 

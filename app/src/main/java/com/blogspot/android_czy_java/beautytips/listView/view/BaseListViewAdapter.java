@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,9 @@ import com.blogspot.android_czy_java.beautytips.listView.model.ListItem;
 import com.blogspot.android_czy_java.beautytips.listView.model.TipListItem;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.formats.NativeAd;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 
 import java.util.List;
 
@@ -57,18 +62,19 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
     public static final String KEY_FAV_NUM = "fav_num";
     public static final String KEY_AUTHOR = "author";
 
-    public static final int VIEW_TYPE_HEADER = 0;
-    public static final int VIEW_TYPE_ITEM = 1;
+    static final int VIEW_TYPE_HEADER = 0;
+    static final int VIEW_TYPE_ITEM = 1;
+    static final int VIEW_TYPE_NATIVE_AD = 2;
 
     public int[] itemHeightsInDp = {630, 670, 640, 600, 670, 630, 640, 600};
 
     Context mContext;
     int lastPosition;
     private PositionListener mPositionListener;
-    List<ListItem> list;
+    List list;
     ListViewViewModel viewModel;
 
-    public BaseListViewAdapter(Context context, List<ListItem> list, PositionListener
+    public BaseListViewAdapter(Context context, List list, PositionListener
             positionListener, ListViewViewModel viewModel) {
         mContext = context;
         this.list = list;
@@ -96,17 +102,22 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
 
 
         //add header with chips that takes whole width of the list
-        if (h.getItemViewType() == VIEW_TYPE_HEADER) {
+        if (getItemViewType(position) == VIEW_TYPE_HEADER) {
             HeaderViewHolder holder = (HeaderViewHolder) h;
             StaggeredGridLayoutManager.LayoutParams layoutParams =
                     (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
         }
 
+        else if(getItemViewType(position) == VIEW_TYPE_NATIVE_AD) {
+            UnifiedNativeAd nativeAd = (UnifiedNativeAd) list.get(position);
+            populateNativeAdView(nativeAd, ((NativeAdViewHolder) h).getAdView());
+        }
+
         //fill in normal list item
-        else if (h.getItemViewType() == VIEW_TYPE_ITEM) {
+        else if (getItemViewType(position) == VIEW_TYPE_ITEM) {
             final BaseItemViewHolder holder = (BaseItemViewHolder) h;
-            final ListItem item = list.get(position - 1);
+            final ListItem item = (ListItem)list.get(position);
             ViewGroup.LayoutParams params = holder.mCardView.getLayoutParams();
 
             //here item height in pixels is calculated from height in dp
@@ -161,14 +172,19 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public int getItemCount() {
-        //list size + header
-        return list.size() + 1;
+        return list.size();
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return VIEW_TYPE_HEADER;
-        else return VIEW_TYPE_ITEM;
+
+        Object recyclerViewItem = list.get(position);
+
+        if (recyclerViewItem instanceof UnifiedNativeAd) {
+            return VIEW_TYPE_NATIVE_AD;
+        }
+        return VIEW_TYPE_ITEM;
     }
 
     public void setAnimation(View viewToAnimate, int position) {
@@ -184,7 +200,7 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
     //this method is used when dynamic link is passed
     public abstract void openTipWithId(String id);
 
-    public class BaseItemViewHolder extends RecyclerView.ViewHolder  {
+    public class BaseItemViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.image)
         ImageView mImage;
@@ -218,124 +234,176 @@ public abstract class BaseListViewAdapter extends RecyclerView.Adapter<RecyclerV
 
     }
 
-        public class HeaderViewHolder extends RecyclerView.ViewHolder {
+    public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-            @BindView(R.id.chip_cloud)
-            ChipCloud mChipCloud;
+        @BindView(R.id.chip_cloud)
+        ChipCloud mChipCloud;
 
-            @BindView(R.id.switch_popular)
-            TextView mSwitchPopular;
+        @BindView(R.id.switch_popular)
+        TextView mSwitchPopular;
 
-            @BindView(R.id.switch_new)
-            TextView mSwitchNew;
+        @BindView(R.id.switch_new)
+        TextView mSwitchNew;
 
-            @BindView(R.id.searching_text_view)
-            TextView mSearchingTv;
+        @BindView(R.id.searching_text_view)
+        TextView mSearchingTv;
 
-            @BindView(R.id.switch_layout)
-            FrameLayout mSwitchLayout;
+        @BindView(R.id.switch_layout)
+        FrameLayout mSwitchLayout;
 
-            HeaderViewHolder(View itemView) {
-                super(itemView);
-                ButterKnife.bind(this, itemView);
+        HeaderViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
 
-                //if there was a search, do show in header just some text
-                if (viewModel.getSearchWasConducted()) {
-                    mSwitchPopular.setVisibility(View.INVISIBLE);
-                    mSwitchNew.setVisibility(View.INVISIBLE);
-                    mSearchingTv.setVisibility(View.VISIBLE);
-                    mSearchingTv.setText(mContext.getResources().
-                            getString(R.string.searching_text, viewModel.getQuery()));
-                    return;
-                }
-
-                String category = viewModel.getCategory();
-
-                if (category.equals(CATEGORY_INGREDIENTS)) mSwitchLayout.setVisibility(View.GONE);
-                if (category.equals(CATEGORY_HAIR) || category.equals(CATEGORY_BODY)
-                        || category.equals(CATEGORY_FACE) || category.equals(CATEGORY_INGREDIENTS)) {
-                    mChipCloud.setVisibility(View.VISIBLE);
-                    final String[] chipLabels;
-                    switch (category) {
-                        case CATEGORY_HAIR:
-                            chipLabels = mContext.getResources()
-                                    .getStringArray(R.array.hair_chip_labels);
-                            break;
-                        case CATEGORY_BODY:
-                            chipLabels = mContext.getResources()
-                                    .getStringArray(R.array.body_chip_labels);
-                            break;
-                        case CATEGORY_FACE:
-                            chipLabels = mContext.getResources()
-                                    .getStringArray(R.array.face_chip_labels);
-                            break;
-                        default:
-                            chipLabels = mContext.getResources()
-                                    .getStringArray(R.array.ingredients_chip_labels);
-                    }
-
-                    new ChipCloud.Configure()
-                            .chipCloud(mChipCloud)
-                            .selectedColor(mContext.getResources().getColor(R.color.pink200))
-                            .selectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
-                            .deselectedColor(mContext.getResources().getColor(R.color.bluegray700_semi))
-                            .deselectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
-                            .mode(ChipCloud.Mode.REQUIRED)
-                            .labels(chipLabels)
-                            .allCaps(false)
-                            .gravity(ChipCloud.Gravity.CENTER)
-                            .textSize((int) mContext.getResources().getDimension(R.dimen.chip_text_size))
-                            .minHorizontalSpacing(mContext.getResources()
-                                    .getDimensionPixelSize(R.dimen.chip_horiz_spacing))
-                            .typeface(Typeface.createFromAsset(mContext.getAssets(),
-                                    "OpenSans-SemiBold.ttf"))
-                            .chipListener(new ChipListener() {
-                                @Override
-                                public void chipSelected(int index) {
-                                    viewModel.setSubcategory(chipLabels[index]);
-                                }
-
-                                @Override
-                                public void chipDeselected(int index) {
-                                }
-                            })
-                            .build();
-
-
-                    //select appropriate chip
-                    for (int i = 0; i < chipLabels.length; i++) {
-                        if (chipLabels[i] != null &&
-                                chipLabels[i].toLowerCase().equals(viewModel.getSubcategory())) {
-                            mChipCloud.setSelectedChip(i);
-                            break;
-                        }
-                    }
-                }
-
-                //set appropriate order chosen
-                if (viewModel.getOrder().equals(ORDER_NEW)) {
-                    mSwitchPopular.setTextColor(mContext.getResources().getColor(R.color.white));
-                    mSwitchNew.setTextColor(mContext.getResources().getColor(R.color.pink200));
-                }
-
-                mSwitchPopular.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (viewModel.getOrder().equals(ORDER_NEW)) {
-                            viewModel.setOrder(ORDER_POPULAR);
-                        }
-                    }
-                });
-
-                mSwitchNew.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (viewModel.getOrder().equals(ORDER_POPULAR)) {
-                            viewModel.setOrder(ORDER_NEW);
-                        }
-                    }
-                });
+            //if there was a search, do show in header just some text
+            if (viewModel.getSearchWasConducted()) {
+                mSwitchPopular.setVisibility(View.INVISIBLE);
+                mSwitchNew.setVisibility(View.INVISIBLE);
+                mSearchingTv.setVisibility(View.VISIBLE);
+                mSearchingTv.setText(mContext.getResources().
+                        getString(R.string.searching_text, viewModel.getQuery()));
+                return;
             }
+
+            String category = viewModel.getCategory();
+
+            if (category.equals(CATEGORY_INGREDIENTS)) mSwitchLayout.setVisibility(View.GONE);
+            if (category.equals(CATEGORY_HAIR) || category.equals(CATEGORY_BODY)
+                    || category.equals(CATEGORY_FACE) || category.equals(CATEGORY_INGREDIENTS)) {
+                mChipCloud.setVisibility(View.VISIBLE);
+                final String[] chipLabels;
+                switch (category) {
+                    case CATEGORY_HAIR:
+                        chipLabels = mContext.getResources()
+                                .getStringArray(R.array.hair_chip_labels);
+                        break;
+                    case CATEGORY_BODY:
+                        chipLabels = mContext.getResources()
+                                .getStringArray(R.array.body_chip_labels);
+                        break;
+                    case CATEGORY_FACE:
+                        chipLabels = mContext.getResources()
+                                .getStringArray(R.array.face_chip_labels);
+                        break;
+                    default:
+                        chipLabels = mContext.getResources()
+                                .getStringArray(R.array.ingredients_chip_labels);
+                }
+
+                new ChipCloud.Configure()
+                        .chipCloud(mChipCloud)
+                        .selectedColor(mContext.getResources().getColor(R.color.pink200))
+                        .selectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
+                        .deselectedColor(mContext.getResources().getColor(R.color.bluegray700_semi))
+                        .deselectedFontColor(mContext.getResources().getColor(R.color.almostWhite))
+                        .mode(ChipCloud.Mode.REQUIRED)
+                        .labels(chipLabels)
+                        .allCaps(false)
+                        .gravity(ChipCloud.Gravity.CENTER)
+                        .textSize((int) mContext.getResources().getDimension(R.dimen.chip_text_size))
+                        .minHorizontalSpacing(mContext.getResources()
+                                .getDimensionPixelSize(R.dimen.chip_horiz_spacing))
+                        .typeface(Typeface.createFromAsset(mContext.getAssets(),
+                                "OpenSans-SemiBold.ttf"))
+                        .chipListener(new ChipListener() {
+                            @Override
+                            public void chipSelected(int index) {
+                                viewModel.setSubcategory(chipLabels[index]);
+                            }
+
+                            @Override
+                            public void chipDeselected(int index) {
+                            }
+                        })
+                        .build();
+
+
+                //select appropriate chip
+                for (int i = 0; i < chipLabels.length; i++) {
+                    if (chipLabels[i] != null &&
+                            chipLabels[i].toLowerCase().equals(viewModel.getSubcategory())) {
+                        mChipCloud.setSelectedChip(i);
+                        break;
+                    }
+                }
+            }
+
+            //set appropriate order chosen
+            if (viewModel.getOrder().equals(ORDER_NEW)) {
+                mSwitchPopular.setTextColor(mContext.getResources().getColor(R.color.white));
+                mSwitchNew.setTextColor(mContext.getResources().getColor(R.color.pink200));
+            }
+
+            mSwitchPopular.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (viewModel.getOrder().equals(ORDER_NEW)) {
+                        viewModel.setOrder(ORDER_POPULAR);
+                    }
+                }
+            });
+
+            mSwitchNew.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (viewModel.getOrder().equals(ORDER_POPULAR)) {
+                        viewModel.setOrder(ORDER_NEW);
+                    }
+                }
+            });
         }
     }
+
+
+    private void populateNativeAdView(UnifiedNativeAd nativeAd,
+                                      UnifiedNativeAdView adView) {
+        // Some assets are guaranteed to be in every UnifiedNativeAd.
+        ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
+        ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
+        ((Button) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
+
+        // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
+        // check before trying to display them.
+        NativeAd.Image icon = nativeAd.getIcon();
+
+        if (icon == null) {
+            adView.getIconView().setVisibility(View.INVISIBLE);
+        } else {
+            ((ImageView) adView.getIconView()).setImageDrawable(icon.getDrawable());
+            adView.getIconView().setVisibility(View.VISIBLE);
+        }
+
+        if (nativeAd.getPrice() == null) {
+            adView.getPriceView().setVisibility(View.INVISIBLE);
+        } else {
+            adView.getPriceView().setVisibility(View.VISIBLE);
+            ((TextView) adView.getPriceView()).setText(nativeAd.getPrice());
+        }
+
+        if (nativeAd.getStore() == null) {
+            adView.getStoreView().setVisibility(View.INVISIBLE);
+        } else {
+            adView.getStoreView().setVisibility(View.VISIBLE);
+            ((TextView) adView.getStoreView()).setText(nativeAd.getStore());
+        }
+
+        if (nativeAd.getStarRating() == null) {
+            adView.getStarRatingView().setVisibility(View.INVISIBLE);
+        } else {
+            ((RatingBar) adView.getStarRatingView())
+                    .setRating(nativeAd.getStarRating().floatValue());
+            adView.getStarRatingView().setVisibility(View.VISIBLE);
+        }
+
+        if (nativeAd.getAdvertiser() == null) {
+            adView.getAdvertiserView().setVisibility(View.INVISIBLE);
+        } else {
+            ((TextView) adView.getAdvertiserView()).setText(nativeAd.getAdvertiser());
+            adView.getAdvertiserView().setVisibility(View.VISIBLE);
+        }
+
+        // Assign native ad object to the native view.
+        adView.setNativeAd(nativeAd);
+    }
+}
 
