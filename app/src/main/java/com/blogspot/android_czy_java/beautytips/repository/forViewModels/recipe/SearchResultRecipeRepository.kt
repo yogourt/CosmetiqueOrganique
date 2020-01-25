@@ -16,17 +16,19 @@ class SearchResultRecipeRepository(private val recipeRepository:
                 RecipeRequest(request.category,
                         request.order))
                 .map {
-                    if (titleAndKeywordsBlank(request.title, request.keywords)) {
-                        return@map it
-                    } else {
-                        OneListData(it.data.filter { recipe ->
-                            (prepareExpression(recipe)).let { exp ->
-                                checkIfTitleMatches(exp, request.title) ||
-                                        checkIfKeywordsMatch(exp, request.keywords)
-                            }
-                        },
-                                createTitle(request))
-                    }
+                    OneListData(
+                            if (titleAndKeywordsBlank(request.title, request.keywords)) {
+                                it.data
+                            } else {
+                                it.data.filter { recipe ->
+                                    (prepareExpression(recipe)).let { exp ->
+                                        checkIfTitleMatches(exp, request.title) ||
+                                                checkIfKeywordsMatch(exp, request.keywords)
+                                    }
+                                }
+                            }.filter { recipe -> recipe.language.equals(request.language) }
+                            , createTitle(request, it.listTitle)
+                    )
                 }
 
     }
@@ -51,8 +53,10 @@ class SearchResultRecipeRepository(private val recipeRepository:
                 }
     }
 
-    private fun createTitle(request: SearchResultRequest) =
-            "Searching for: ${request.title} ${request.keywords}"
+    private fun createTitle(request: SearchResultRequest, oldTitle: String): String {
+        return if (titleAndKeywordsBlank(request.title, request.keywords)) oldTitle
+        else "Searching for: ${request.title} ${request.keywords}"
+    }
 }
 
 

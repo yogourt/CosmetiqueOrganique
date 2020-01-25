@@ -200,5 +200,6 @@
     <string name="add_new_list_label">New list</string>
     <string name="nav_notifications">Notifications</string>
     <string name="notifications">Notifications</string>
+    <string name="language_spinner_label">Language</string>
 
 </resources>

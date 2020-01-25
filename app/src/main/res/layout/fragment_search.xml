@@ -27,19 +27,19 @@
             android:id="@+id/category_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:foregroundTint="@color/white"
             app:labelText="@string/spinner_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_title"
-            app:widgetColor="@color/white_title_tint"
-            android:foregroundTint="@color/white" />
+            app:widgetColor="@color/white_title_tint" />
 
         <com.farbod.labelledspinner.LabelledSpinner
             android:id="@+id/subcategory_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/activity_margin"
-            app:labelText="@string/subcategory_spinner_label"
             android:visibility="gone"
+            app:labelText="@string/subcategory_spinner_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/category_spinner"
             app:widgetColor="@color/white_title_tint" />
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_recipe_title"
                 android:imeOptions="actionNext"
-                android:nextFocusDown="@id/keywords_et_layout"/>
+                android:nextFocusDown="@id/keywords_et_layout" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,25 +84,34 @@
                 android:id="@+id/keywords_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nextFocusDown="@id/button_search"
+                android:hint="@string/hint_keywords"
                 android:imeOptions="actionNext"
-                android:textColor="@color/white"
-                android:hint="@string/hint_keywords" />
+                android:nextFocusDown="@id/button_search"
+                android:textColor="@color/white" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.farbod.labelledspinner.LabelledSpinner
+            android:id="@+id/language_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_margin"
+            app:labelText="@string/language_spinner_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/keywords_et_layout"
+            app:widgetColor="@color/white_title_tint" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/search_button_margin"
+            android:layout_marginTop="@dimen/search_button_top_margin"
             android:layout_marginEnd="@dimen/search_button_margin"
             android:layout_marginBottom="32dp"
+            android:imeOptions="actionDone"
             android:text="@string/search"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/keywords_et_layout"
-            android:imeOptions="actionDone"/>
+            app:layout_constraintTop_toBottomOf="@id/language_spinner" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

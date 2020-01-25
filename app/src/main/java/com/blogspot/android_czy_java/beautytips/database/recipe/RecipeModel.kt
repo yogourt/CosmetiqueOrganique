@@ -15,7 +15,8 @@ data class RecipeModel(
         var category: String,
         var subcategory: String,
         var favNum: Long,
-        var tags: String
+        var tags: String,
+        var language: String
 ) {
 
     var userLists: String = ""

@@ -168,5 +168,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="reply_start_margin">64dp</dimen>
     <dimen name="small_space">4dp</dimen>
     <dimen name="chooser_height">300dp</dimen>
+    <dimen name="search_button_top_margin">32dp</dimen>
 
 </resources>

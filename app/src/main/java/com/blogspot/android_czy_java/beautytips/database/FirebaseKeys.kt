@@ -10,6 +10,7 @@ interface FirebaseKeys {
         const val KEY_RECIPE_SUBCATEGORY = "subcategory"
         const val KEY_RECIPE_FAV_NUM = "favNum"
         const val KEY_RECIPE_TAGS = "tags"
+        const val KEY_RECIPE_LANGUAGE = "language"
 
         const val KEY_RECIPE_DESCRIPTION = "description"
         const val KEY_RECIPE_INGREDIENTS = "ingredients"

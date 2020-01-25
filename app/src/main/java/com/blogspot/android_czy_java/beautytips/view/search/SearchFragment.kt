@@ -10,6 +10,7 @@ import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
+import com.blogspot.android_czy_java.beautytips.appUtils.languages.Language
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
 import com.blogspot.android_czy_java.beautytips.view.common.AppBottomSheetDialogFragment
@@ -23,6 +24,7 @@ class SearchFragment : AppBottomSheetDialogFragment() {
 
     private var category: CategoryInterface = CategoryAll.SUBCATEGORY_ALL
     private var order = Order.NEW
+    private var language = Language.ENGLISH
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
@@ -58,12 +60,18 @@ class SearchFragment : AppBottomSheetDialogFragment() {
             setItemsArray(Order.values().map { it.label })
             onItemChosenListener = OrderSpinnerListener()
         }
+
+        view.language_spinner.apply {
+            setItemsArray(Language.values().map { it.label })
+            onItemChosenListener = LanguageSpinnerListener()
+        }
     }
 
     private fun prepareRequest(view: View): SearchResultRequest {
         return SearchResultRequest(
                 category,
                 order,
+                language.code,
                 view.title_et.text.toString(),
                 "",
                 view.keywords_et.text.toString()
@@ -97,6 +105,14 @@ class SearchFragment : AppBottomSheetDialogFragment() {
         override fun onItemChosen(adapterView: AdapterView<*>?,
                                   id: Long) {
             order = Order.values()[id.toInt()]
+        }
+    }
+
+    inner class LanguageSpinnerListener: SpinnerListener() {
+        override fun onItemChosen(adapterView: AdapterView<*>?,
+                                  id: Long) {
+            language = Language.values()[id.toInt()]
+
         }
     }
 
