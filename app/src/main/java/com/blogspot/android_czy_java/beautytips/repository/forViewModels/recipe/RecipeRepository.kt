@@ -4,7 +4,6 @@ import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
-import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
 import com.blogspot.android_czy_java.beautytips.exception.common.DatabaseIsEmptyException
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
@@ -45,7 +44,7 @@ class RecipeRepository(override val recipeDao: RecipeDao) :
         }
         emitter.onSuccess(
                 OneListData(list,
-                category.getListTitle()
+                        createListTitle(category, Order.NEW)
                 )
         )
     }
@@ -67,13 +66,25 @@ class RecipeRepository(override val recipeDao: RecipeDao) :
             category == CategoryAll.SUBCATEGORY_ALL -> recipeDao.getAllRecipesOrderByPopularity()
 
             category.isSubcategoryAll() ->
-                    recipeDao.getRecipesByCategoryOrderByPopularity(category.getCategoryLabel())
+                recipeDao.getRecipesByCategoryOrderByPopularity(category.getCategoryLabel())
 
             else -> recipeDao.getRecipesByCategoryAndSubcategoryOrderByPopularity(
                     category.getCategoryLabel(), category.getSubcategoryLabel())
         }
 
-        emitter.onSuccess(OneListData(list, category.getListTitle()))
+        emitter.onSuccess(
+                OneListData(list,
+                        createListTitle(category, Order.POPULARITY)
+                )
+        )
+    }
+
+    private fun createListTitle(category: CategoryInterface, order: Order): String {
+        return when {
+            category is CategoryAll -> order.label
+            category.isSubcategoryAll() -> "${order.label} ${category.getListTitle()}"
+            else -> category.getListTitle()
+        }
     }
 
 
