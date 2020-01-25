@@ -133,7 +133,7 @@ dependencies {
     //kotlin std lib
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    def room_version = "2.2.1"
+    def room_version = "2.2.3"
 
     //Room
     implementation "androidx.room:room-runtime:$room_version"

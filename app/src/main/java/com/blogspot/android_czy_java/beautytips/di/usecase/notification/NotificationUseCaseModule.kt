@@ -6,10 +6,7 @@ import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.notification.NotificationRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFirebaseUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.notification.GetNotificationsUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.notification.MakeNotificationSeenUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.notification.ProcessNotificationUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.notification.SaveNotificationUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.notification.*
 import dagger.Module
 import dagger.Provides
 
@@ -37,4 +34,10 @@ class NotificationUseCaseModule {
     @Provides
     fun provideMakeNotificationSeenUseCase(notificationRepository: NotificationRepository) =
             MakeNotificationSeenUseCase(notificationRepository)
+
+    @Provides
+    fun provideGetNotificationNumberUseCase(notificationRepository: NotificationRepository,
+                                            currentUserUseCase: GetCurrentUserUseCase) =
+            GetNotificationNumberUseCase(notificationRepository, currentUserUseCase)
+
 }

@@ -6,7 +6,6 @@ import com.blogspot.android_czy_java.beautytips.exception.account.UserNotFoundEx
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.notification.NotificationRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFirebaseUseCase
-import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
 import io.reactivex.Observable
 import io.reactivex.Single
 

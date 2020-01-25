@@ -1,21 +1,30 @@
 package com.blogspot.android_czy_java.beautytips.view.common
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.account.AccountActivityFragment
 import com.blogspot.android_czy_java.beautytips.view.notification.NotificationFragment
 import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivityFragment
 import com.blogspot.android_czy_java.beautytips.view.search.SearchFragment
+import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
+import com.blogspot.android_czy_java.beautytips.viewmodel.common.NavigationViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_main_bottom_navigation.view.bottom_navigation
+import javax.inject.Inject
 
 class BottomNavigationFragment : AppFragment() {
+
+    @Inject
+    lateinit var viewModel: NavigationViewModel
 
     private lateinit var navigation: BottomNavigationView
 
@@ -41,7 +50,14 @@ class BottomNavigationFragment : AppFragment() {
         prepareBottomNavigation()
         addBackStackChangeListener()
 
+        prepareViewModel()
+
         return view
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
     }
 
     private fun prepareBottomNavigation() {
@@ -52,6 +68,23 @@ class BottomNavigationFragment : AppFragment() {
     private fun addBackStackChangeListener() {
         fragmentManager?.addOnBackStackChangedListener {
             selectItem()
+        }
+    }
+
+    private fun prepareViewModel() {
+        viewModel.notificationNumberLiveData.observe(this, Observer { render(it) })
+        viewModel.init()
+    }
+
+    private fun render(uiModel: GenericUiModel<Int>) {
+        when (uiModel) {
+            is GenericUiModel.LoadingSuccess -> {
+                if (uiModel.data == 0) {
+                    navigation.removeBadge(R.id.menu_notifications)
+                } else {
+                    navigation.getOrCreateBadge(R.id.menu_notifications).number = uiModel.data
+                }
+            }
         }
     }
 

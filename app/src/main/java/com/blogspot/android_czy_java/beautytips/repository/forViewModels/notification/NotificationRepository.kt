@@ -14,4 +14,7 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     fun makeNotificationSeen(notificationId: Int) =
             notificationDao.updateNotificationSeen(notificationId)
 
+    fun getUnreadNotificationNumberForUser(userId: String) =
+            notificationDao.getUnreadNotificationNumberForUser(userId)
+
 }
