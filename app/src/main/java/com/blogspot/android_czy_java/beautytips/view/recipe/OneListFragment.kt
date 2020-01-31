@@ -136,9 +136,11 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
         val request = RecipeRequest(
                 CategoryLabel.get(categoryLabel, subcategory),
                 Order.NEW)
+
+        val container = if (activity is MainActivity) R.id.main_container else R.id.detail_for_list_container
         activity?.supportFragmentManager
                 ?.beginTransaction()?.replace(
-                        R.id.main_container,
+                        container,
                         OneRecipeListFragment.getInstance(request),
                         TAG_ONE_LIST_FRAGMENT)
                 ?.addToBackStack(null)
