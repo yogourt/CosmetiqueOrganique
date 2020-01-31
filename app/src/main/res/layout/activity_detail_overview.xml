@@ -49,6 +49,15 @@
                 android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <fragment
+                android:id="@+id/fragment_author"
+                android:name="com.blogspot.android_czy_java.beautytips.view.detail.DetailAuthorFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_margin"
+                android:layout_marginBottom="@dimen/activity_margin" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

@@ -35,7 +35,7 @@ class RecipeDetailRepository(private val detailDao: DetailDao, private val recip
         return checkIfValid(description)
     }
 
-    override fun getAuthor(recipeId: Long) = detailDao.getDescription(recipeId)
+    override fun getAuthor(recipeId: Long) = detailDao.getAuthorId(recipeId)
 
 
     override fun getSource(recipeId: Long) = detailDao.getSource(recipeId)

@@ -5,6 +5,7 @@ import com.blogspot.android_czy_java.beautytips.di.usecase.account.AccountUseCas
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.detail.RecipeDetailRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.UserListRecipeRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.UpdateUserDataInFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.comment.GetCommentNumberUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.detail.*
@@ -53,5 +54,10 @@ class DetailUseCaseModule {
     fun provideCreateUserListUseCase(getCurrentUserUseCase: GetCurrentUserUseCase,
                                      userListRecipeRepository: UserListRecipeRepository) =
             CreateUserListUseCase(userListRecipeRepository, getCurrentUserUseCase)
+
+    @Provides
+    fun provideGetRecipeAuthorUseCase(detailRepository: RecipeDetailRepository,
+                                      getUserFromFirebaseUseCase: GetUserFromFirebaseUseCase) =
+            GetRecipeAuthorUseCase(detailRepository, getUserFromFirebaseUseCase)
 
 }

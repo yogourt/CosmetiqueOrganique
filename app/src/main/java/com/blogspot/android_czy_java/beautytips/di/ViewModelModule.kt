@@ -37,7 +37,8 @@ import javax.inject.Provider
     OneUserRecipeListFragmentModule::class,
     UserListChooserModule::class,
     NotificationFragmentModule::class,
-    BottomNavigationFragmentModule::class
+    BottomNavigationFragmentModule::class,
+    DetailAuthorModule::class
 ])
 class ViewModelModule {
 
