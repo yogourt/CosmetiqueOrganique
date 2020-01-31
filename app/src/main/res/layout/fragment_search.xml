@@ -18,7 +18,7 @@
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="@dimen/icon_padding"
             android:padding="@dimen/activity_margin"
-            android:text="@string/Search_engine"
+            android:text="@string/search"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

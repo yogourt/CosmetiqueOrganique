@@ -1,4 +1,4 @@
-package com.blogspot.android_czy_java.beautytips.view.listView.view
+package com.blogspot.android_czy_java.beautytips.view.recipe
 
 
 import android.os.Bundle

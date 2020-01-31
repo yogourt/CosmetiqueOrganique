@@ -44,7 +44,8 @@ class RecipeRepository(override val recipeDao: RecipeDao) :
         }
         emitter.onSuccess(
                 OneListData(list,
-                        createListTitle(category, Order.NEW)
+                        createListTitle(category, Order.NEW),
+                        category
                 )
         )
     }
@@ -74,7 +75,8 @@ class RecipeRepository(override val recipeDao: RecipeDao) :
 
         emitter.onSuccess(
                 OneListData(list,
-                        createListTitle(category, Order.POPULARITY)
+                        createListTitle(category, Order.POPULARITY),
+                        category
                 )
         )
     }

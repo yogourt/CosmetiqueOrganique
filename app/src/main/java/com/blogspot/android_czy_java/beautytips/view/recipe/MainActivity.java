@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 import com.blogspot.android_czy_java.beautytips.R;
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailDescriptionFragment;
 import com.blogspot.android_czy_java.beautytips.view.ingredient.IngredientActivityFragment;
-import com.blogspot.android_czy_java.beautytips.view.listView.view.BaseMainActivity;
 import com.blogspot.android_czy_java.beautytips.view.recipe.callback.ListCallback;
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel;
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainActivityViewModel;

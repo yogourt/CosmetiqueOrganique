@@ -3,11 +3,10 @@ package com.blogspot.android_czy_java.beautytips.view.detail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
@@ -15,7 +14,6 @@ import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.Subca
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
-import com.blogspot.android_czy_java.beautytips.view.detail.callback.UserListChooserCallback
 import com.blogspot.android_czy_java.beautytips.view.recipe.OneListFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel

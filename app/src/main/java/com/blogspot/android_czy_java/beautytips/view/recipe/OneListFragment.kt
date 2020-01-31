@@ -22,12 +22,19 @@ import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityV
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListViewModel
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_one_list.*
 import javax.inject.Inject
-import android.view.ContextThemeWrapper
-import androidx.constraintlayout.widget.ConstraintLayout
+import com.adroitandroid.chipcloud.ChipCloud
+import com.adroitandroid.chipcloud.FlowLayout
 import com.blogspot.android_czy_java.beautytips.R
+import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
+import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
+import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
+import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
+import com.blogspot.android_czy_java.beautytips.view.recipe.callback.SubcategoryListener
+import kotlinx.android.synthetic.main.fragment_one_list.recipe_list
+import kotlinx.android.synthetic.main.fragment_one_list.title
 import kotlinx.android.synthetic.main.fragment_one_list.view.*
+import kotlinx.android.synthetic.main.motion_layout_fragment_one_list.*
 
 
 sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneListViewModel<RECIPE_REQUEST>> :
@@ -42,7 +49,7 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_one_list, container, false)
+        val view = inflater.inflate(R.layout.motion_layout_fragment_one_list, container, false)
         prepareRecipeList(view)
         return view
     }
@@ -62,7 +69,7 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
             view.recipe_list.setPadding(0, 0, 0,
                     resources.getDimensionPixelSize(R.dimen.main_list_bottom_padding)
             )
-        } else if(context is DetailActivity) {
+        } else if (context is DetailActivity) {
             view.status_bar.visibility = View.VISIBLE
         }
     }
@@ -84,6 +91,8 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
                     layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 }
                 title.text = uiModel.data.listTitle
+
+                uiModel.data.category?.let { configureChipCloud(it) }
             }
 
             is GenericUiModel.StatusLoading -> {
@@ -91,6 +100,24 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
             is GenericUiModel.LoadingError -> {
 
             }
+        }
+    }
+
+    private fun configureChipCloud(category: CategoryInterface) {
+
+        if (this is OneRecipeListFragment) {
+
+            if (category is CategoryAll) return
+
+            ChipCloud.Configure()
+                    .chipCloud(subcategories)
+                    .labels(category.subcategories().toTypedArray())
+                    .mode(ChipCloud.Mode.REQUIRED)
+                    .gravity(FlowLayout.Gravity.CENTER)
+                    .build()
+
+            subcategories.setSelectedChip(category.indexOfSubcategory())
+            subcategories.setChipListener(SubcategoryListener(category, ::startOneRecipeListFragment))
         }
     }
 
@@ -102,6 +129,20 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
             intent.putExtra(IntentDataKeys.KEY_RECIPE_ID, recipeId)
             startActivity(intent)
         }
+    }
+
+    private fun startOneRecipeListFragment(category: String, subcategory: String) {
+        val categoryLabel = CategoryLabel.get(category) ?: return
+        val request = RecipeRequest(
+                CategoryLabel.get(categoryLabel, subcategory),
+                Order.NEW)
+        activity?.supportFragmentManager
+                ?.beginTransaction()?.replace(
+                        R.id.main_container,
+                        OneRecipeListFragment.getInstance(request),
+                        TAG_ONE_LIST_FRAGMENT)
+                ?.addToBackStack(null)
+                ?.commit()
     }
 
 

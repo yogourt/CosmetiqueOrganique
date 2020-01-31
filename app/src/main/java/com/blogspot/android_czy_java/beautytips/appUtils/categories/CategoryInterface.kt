@@ -21,4 +21,6 @@ interface CategoryInterface {
         }
     }
 
+    fun indexOfSubcategory() = subcategories().indexOf(subcategory.label)
+
 }

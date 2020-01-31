@@ -10,7 +10,7 @@ import com.blogspot.android_czy_java.beautytips.view.recipe.MainActivity;
 
 import butterknife.ButterKnife;
 
-import static com.blogspot.android_czy_java.beautytips.view.listView.view.BaseMainActivity.KEY_QUERY;
+import static com.blogspot.android_czy_java.beautytips.view.recipe.BaseMainActivity.KEY_QUERY;
 
 public class IngredientActivity extends BaseItemActivity
         implements IngredientActivityFragment.IngredientFragmentInterface {
