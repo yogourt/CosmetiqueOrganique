@@ -240,6 +240,7 @@ function refactorUserData() {
 	    	}
 		});
 	    
+	    console.log("user data updated");
 		return admin.database().ref('/users/').set(json);
 			
 	});

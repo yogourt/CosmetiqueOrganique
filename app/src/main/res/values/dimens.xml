@@ -137,7 +137,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="collapsed_image_height">60dp</dimen>
     <dimen name="bottom_action_vert_padding">8dp</dimen>
     <dimen name="margin_vert_detail_fragments">16dp</dimen>
-    <dimen name="very_high_bottom_margin_for_detail">60dp</dimen>
+    <dimen name="very_high_bottom_margin_for_detail">48dp</dimen>
     <dimen name="horiz_list_bottom_padding">24dp</dimen>
     <dimen name="main_list_bottom_padding">48dp</dimen>
     <dimen name="card_expanded_padding">12dp</dimen>
@@ -169,5 +169,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="small_space">4dp</dimen>
     <dimen name="chooser_height">300dp</dimen>
     <dimen name="search_button_top_margin">32dp</dimen>
+    <dimen name="author_photo_size">78dp</dimen>
 
 </resources>

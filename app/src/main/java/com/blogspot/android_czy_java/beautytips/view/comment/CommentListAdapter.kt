@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.view.comment.callback.CommentListCallback
 import com.blogspot.android_czy_java.beautytips.viewmodel.comment.CommentWithAuthorModel
+import com.bumptech.glide.Glide
 
 class CommentListAdapter(private val callback: CommentListCallback,
                          private val comments: List<CommentWithAuthorModel>) : RecyclerView.Adapter<CommentListAdapter.CommentViewHolder>() {
@@ -32,6 +33,7 @@ class CommentListAdapter(private val callback: CommentListCallback,
         holder.apply {
             comment.text = commentItem.comment.message
             author.text = commentItem.author?.nickname
+            Glide.with(photo).load(commentItem.author?.photo).into(photo)
         }
 
         if (holder is TopicViewHolder) {

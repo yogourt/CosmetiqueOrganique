@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:paddingBottom="@dimen/very_high_bottom_margin_for_detail"
     android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:paddingStart="@dimen/author_padding_start">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/photo"
-        android:layout_width="@dimen/photo_size"
-        android:layout_height="@dimen/photo_size"
-        android:contentDescription="@string/description_user_image"
-        android:src="@color/bluegrey700" />
+        android:layout_width="@dimen/author_photo_size"
+        android:layout_height="@dimen/author_photo_size"
+        android:contentDescription="@string/description_user_image" />
 
     <TextView
         android:id="@+id/nickname"
@@ -20,7 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_margin"
         android:drawablePadding="@dimen/icon_padding"
-        android:gravity="center_vertical"
-        android:text="@string/label_anonymous" />
+        android:gravity="center_vertical" />
 
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.blogspot.android_czy_java.beautytips.repository
 import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
+import com.blogspot.android_czy_java.beautytips.exception.account.UserNotFoundInFirebaseException
 import com.blogspot.android_czy_java.beautytips.exception.common.FirebaseValueEventListenerException
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.user.UserRepository
 import com.google.firebase.database.DataSnapshot
@@ -19,6 +20,10 @@ class UserValueEventListener(private val emitter: SingleEmitter<UserModel>,
 
         Thread(Runnable {
 
+            if (!userSnapshot.hasChildren()) {
+                emitter.onError(UserNotFoundInFirebaseException())
+            }
+
             var nickname = userSnapshot.child("nickname").value ?: ""
             nickname = nickname.toString()
 
@@ -28,7 +33,7 @@ class UserValueEventListener(private val emitter: SingleEmitter<UserModel>,
             val user = UserModel(userId, nickname, photo)
             repository.insertUser(user)
 
-            if(insertList) {
+            if (insertList) {
                 insertUserList(FirebaseKeys.KEY_USER_LIST_FAVORITES, userSnapshot)
                 insertUserList(FirebaseKeys.KEY_USER_LIST_MY_RECIPES, userSnapshot)
             }

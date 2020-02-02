@@ -13,7 +13,7 @@
         android:id="@+id/description_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/very_high_bottom_margin_for_detail"
+        android:layout_marginBottom="@dimen/activity_margin"
         style="@style/NormalTextStyle"/>
 
 </LinearLayout>
