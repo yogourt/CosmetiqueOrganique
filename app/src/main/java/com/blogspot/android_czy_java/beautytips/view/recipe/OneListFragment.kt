@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
 import com.blogspot.android_czy_java.beautytips.view.common.AppFragment
 import com.blogspot.android_czy_java.beautytips.view.detail.DetailActivity
@@ -28,13 +26,13 @@ import com.adroitandroid.chipcloud.FlowLayout
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
-import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
+import com.blogspot.android_czy_java.beautytips.usecase.common.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.UserListRecipeRequest
 import com.blogspot.android_czy_java.beautytips.view.recipe.callback.SubcategoryListener
-import kotlinx.android.synthetic.main.fragment_one_list.recipe_list
-import kotlinx.android.synthetic.main.fragment_one_list.title
-import kotlinx.android.synthetic.main.fragment_one_list.view.*
 import kotlinx.android.synthetic.main.motion_layout_fragment_one_list.*
+import kotlinx.android.synthetic.main.motion_layout_fragment_one_list.view.*
 
 
 sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneListViewModel<RECIPE_REQUEST>> :
@@ -46,10 +44,16 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
     @Inject
     lateinit var viewModel: VIEW_MODEL
 
+    private lateinit var request: RECIPE_REQUEST
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.motion_layout_fragment_one_list, container, false)
+
+        //TODO: error prone
+        request = arguments?.getSerializable(KEY_REQUEST) as RECIPE_REQUEST
+
         prepareRecipeList(view)
         return view
     }
@@ -72,13 +76,14 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
         } else if (context is DetailActivity) {
             view.status_bar.visibility = View.VISIBLE
         }
+
+        prepareListTitle()
     }
 
     private fun prepareViewModel() {
         viewModel.recipeListLiveData.observe(this, Observer { render(it) })
-        arguments?.getSerializable(KEY_REQUEST)?.let {
-            viewModel.getList(it as RECIPE_REQUEST)
-        }
+        viewModel.getList(request)
+
     }
 
     private fun render(uiModel: GenericUiModel<OneListData>?) {
@@ -90,7 +95,6 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
                             uiModel.data.data, false)
                     layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 }
-                title.text = uiModel.data.listTitle
 
                 uiModel.data.category?.let { configureChipCloud(it) }
             }
@@ -100,6 +104,28 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
             is GenericUiModel.LoadingError -> {
 
             }
+        }
+    }
+
+    private fun prepareListTitle() {
+
+        if(request is SearchResultRequest) {
+            title?.text = (request as SearchResultRequest).title
+        }
+        if (request.category !is CategoryAll) {
+            title?.text = request.category.getListTitle()
+        }
+        preparePopularNewSwitch()
+    }
+
+    private fun preparePopularNewSwitch() {
+        val pink = resources.getColor(R.color.colorAccent)
+        if (request.order == Order.NEW) {
+            switch_new?.setTextColor(pink)
+            switch_popular?.setOnClickListener { startOneListFragment(request.newOrder(Order.POPULARITY)) }
+        } else {
+            switch_popular?.setTextColor(pink)
+            switch_new?.setOnClickListener { startOneListFragment(request.newOrder(Order.NEW)) }
         }
     }
 
@@ -117,7 +143,7 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
                     .build()
 
             subcategories.setSelectedChip(category.indexOfSubcategory())
-            subcategories.setChipListener(SubcategoryListener(category, ::startOneRecipeListFragment))
+            subcategories.setChipListener(SubcategoryListener(request, ::startOneListFragment))
         }
     }
 
@@ -131,17 +157,13 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
         }
     }
 
-    private fun startOneRecipeListFragment(category: String, subcategory: String) {
-        val categoryLabel = CategoryLabel.get(category) ?: return
-        val request = RecipeRequest(
-                CategoryLabel.get(categoryLabel, subcategory),
-                Order.NEW)
 
+    private fun startOneListFragment(request: OneListRequest) {
         val container = if (activity is MainActivity) R.id.main_container else R.id.detail_for_list_container
         activity?.supportFragmentManager
                 ?.beginTransaction()?.replace(
                         container,
-                        OneRecipeListFragment.getInstance(request),
+                        getInstance(request),
                         TAG_ONE_LIST_FRAGMENT)
                 ?.addToBackStack(null)
                 ?.commit()
@@ -151,6 +173,15 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
     companion object {
         const val KEY_REQUEST = "recipe request"
         const val TAG_ONE_LIST_FRAGMENT = "one list fragment"
+
+        private fun getInstance(request: OneListRequest): Fragment {
+            return when (request) {
+                is RecipeRequest -> OneRecipeListFragment.getInstance(request)
+                is UserListRecipeRequest -> OneUserRecipeListFragment.getInstance(request)
+                is SearchResultRequest -> OneSearchRecipeListFragment.getInstance(request)
+            }
+        }
+
     }
 
 
@@ -165,6 +196,7 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
                 return fragment
             }
         }
+
     }
 
     class OneUserRecipeListFragment : OneListFragment<UserListRecipeRequest,

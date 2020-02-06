@@ -7,7 +7,7 @@ import com.blogspot.android_czy_java.beautytips.di.core.ViewModelKey
 import com.blogspot.android_czy_java.beautytips.di.usecase.recipe.RecipeUseCaseModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.DetailActivityModule
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.view.recipe.OneListFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.detail.DetailActivityViewModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListViewModel

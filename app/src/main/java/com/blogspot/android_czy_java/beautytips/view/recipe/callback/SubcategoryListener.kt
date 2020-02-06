@@ -1,17 +1,20 @@
 package com.blogspot.android_czy_java.beautytips.view.recipe.callback
 
 import com.adroitandroid.chipcloud.ChipListener
-import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
+import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
 
 class SubcategoryListener(
-        private val category: CategoryInterface,
-        private val onSubcategoryClicked: (category: String, subcategory: String) -> Unit): ChipListener {
+        private var request: OneListRequest,
+        private val onSubcategoryClicked: (request: OneListRequest) -> Unit) : ChipListener {
 
     override fun chipDeselected(index: Int) {
     }
 
     override fun chipSelected(index: Int) {
-        onSubcategoryClicked(category.getCategoryLabel(), category.subcategories()[index])
+        onSubcategoryClicked(createNewRequest(index))
     }
+
+    private fun createNewRequest(index: Int) =
+            request.newCategory(request.category.newSubcategory(index))
 
 }

@@ -34,6 +34,6 @@
         android:elevation="20dp"
         android:padding="@dimen/activity_margin"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-        tools:text="Sample category"/>
+        tools:text="Sample category" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

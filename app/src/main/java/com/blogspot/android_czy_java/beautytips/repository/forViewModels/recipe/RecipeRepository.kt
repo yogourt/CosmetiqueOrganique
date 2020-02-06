@@ -5,7 +5,7 @@ import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInte
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.exception.common.DatabaseIsEmptyException
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import io.reactivex.Single
 import io.reactivex.SingleEmitter

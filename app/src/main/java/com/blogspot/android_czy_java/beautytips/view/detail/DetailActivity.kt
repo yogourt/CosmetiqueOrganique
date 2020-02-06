@@ -12,7 +12,7 @@ import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.SubcategoryLabel
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.view.IntentDataKeys
 import com.blogspot.android_czy_java.beautytips.view.recipe.OneListFragment
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel

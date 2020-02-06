@@ -6,7 +6,6 @@ import com.blogspot.android_czy_java.beautytips.usecase.common.LoadNestedListDat
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequestUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.MainListData
 import io.reactivex.Single

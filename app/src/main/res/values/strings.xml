@@ -201,5 +201,6 @@
     <string name="nav_notifications">Notifications</string>
     <string name="notifications">Notifications</string>
     <string name="language_spinner_label">Language</string>
+    <string name="vert_line">|</string>
 
 </resources>

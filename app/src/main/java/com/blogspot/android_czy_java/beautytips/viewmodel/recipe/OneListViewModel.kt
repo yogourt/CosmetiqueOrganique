@@ -2,11 +2,7 @@ package com.blogspot.android_czy_java.beautytips.viewmodel.recipe
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
-import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.common.OneListRequest
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.*
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

@@ -3,8 +3,8 @@ package com.blogspot.android_czy_java.beautytips.di.repository.search
 import com.blogspot.android_czy_java.beautytips.di.repository.recipe.RecipeRepositoryModule
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.RecipeRepositoryInterface
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.SearchResultRecipeRepository
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.SearchResultRequest
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

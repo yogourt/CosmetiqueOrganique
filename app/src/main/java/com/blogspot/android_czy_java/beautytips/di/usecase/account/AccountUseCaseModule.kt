@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.di.usecase.account
 
 import com.blogspot.android_czy_java.beautytips.di.repository.account.AccountRepositoryModule
 import com.blogspot.android_czy_java.beautytips.di.repository.error.ErrorRepositoryModule
+import com.blogspot.android_czy_java.beautytips.di.usecase.recipe.RecipeUseCaseModule
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.error.ErrorRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.UserListRecipeRepository
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.user.UserRepository
@@ -12,14 +13,15 @@ import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCa
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.PassTokenToFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.CreateUserListRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.LoadRecipesFromUserListUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.common.UserListRecipeRequest
 import dagger.Module
 import dagger.Provides
 
 @Module(includes = [
     AccountRepositoryModule::class,
-    ErrorRepositoryModule::class
+    ErrorRepositoryModule::class,
+    RecipeUseCaseModule::class
 ])
 class AccountUseCaseModule {
 

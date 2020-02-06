@@ -1,8 +1,8 @@
 package com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe
 
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeModel
-import com.blogspot.android_czy_java.beautytips.usecase.recipe.RecipeRequest
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.RecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.SearchResultRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import io.reactivex.Single
 

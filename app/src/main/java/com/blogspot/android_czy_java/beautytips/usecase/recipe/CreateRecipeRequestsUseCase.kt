@@ -2,10 +2,9 @@ package com.blogspot.android_czy_java.beautytips.usecase.recipe
 
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.*
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
-import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
-import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequestUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.common.RecipeRequest
 import io.reactivex.Single
 
 class CreateRecipeRequestsUseCase : NestedListRequestUseCase<RecipeRequest> {

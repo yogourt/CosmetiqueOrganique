@@ -3,9 +3,9 @@ package com.blogspot.android_czy_java.beautytips.usecase.account.userlist
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.recipe.UserListRecipeRepository
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
-import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.NestedListRequestUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.common.UserListRecipeRequest
 import io.reactivex.Single
 
 class CreateUserListRequestsUseCase(private val currentUserUseCase: GetCurrentUserUseCase,

@@ -5,7 +5,7 @@ import com.blogspot.android_czy_java.beautytips.database.FirebaseKeys
 import com.blogspot.android_czy_java.beautytips.database.recipe.RecipeDao
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListDao
 import com.blogspot.android_czy_java.beautytips.database.userlist.UserListModel
-import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.UserListRecipeRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.UserListRecipeRequest
 import com.blogspot.android_czy_java.beautytips.viewmodel.recipe.OneListData
 import io.reactivex.Single
 

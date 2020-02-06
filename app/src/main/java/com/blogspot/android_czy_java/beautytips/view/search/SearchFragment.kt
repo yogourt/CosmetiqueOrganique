@@ -1,6 +1,5 @@
 package com.blogspot.android_czy_java.beautytips.view.search
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,10 @@ import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInte
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
 import com.blogspot.android_czy_java.beautytips.appUtils.languages.Language
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
-import com.blogspot.android_czy_java.beautytips.usecase.search.SearchResultRequest
+import com.blogspot.android_czy_java.beautytips.usecase.common.SearchResultRequest
 import com.blogspot.android_czy_java.beautytips.view.common.AppBottomSheetDialogFragment
 import com.blogspot.android_czy_java.beautytips.view.recipe.OneListFragment
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_search.view.*
-import javax.inject.Inject
 
 class SearchFragment : AppBottomSheetDialogFragment() {
 
