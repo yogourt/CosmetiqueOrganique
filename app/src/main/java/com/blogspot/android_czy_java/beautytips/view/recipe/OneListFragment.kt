@@ -26,6 +26,7 @@ import com.adroitandroid.chipcloud.FlowLayout
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryAll
 import com.blogspot.android_czy_java.beautytips.appUtils.categories.CategoryInterface
+import com.blogspot.android_czy_java.beautytips.appUtils.categories.labels.CategoryLabel
 import com.blogspot.android_czy_java.beautytips.appUtils.orders.Order
 import com.blogspot.android_czy_java.beautytips.usecase.common.RecipeRequest
 import com.blogspot.android_czy_java.beautytips.usecase.common.SearchResultRequest
@@ -45,7 +46,6 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
     lateinit var viewModel: VIEW_MODEL
 
     private lateinit var request: RECIPE_REQUEST
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -77,13 +77,12 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
             view.status_bar.visibility = View.VISIBLE
         }
 
-        prepareListTitle()
+        prepareListTitle(view)
     }
 
     private fun prepareViewModel() {
         viewModel.recipeListLiveData.observe(this, Observer { render(it) })
         viewModel.getList(request)
-
     }
 
     private fun render(uiModel: GenericUiModel<OneListData>?) {
@@ -94,6 +93,10 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
                     adapter = RecipeListAdapter(this@OneListFragment,
                             uiModel.data.data, false)
                     layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                }
+
+                if (shouldGetTitleFromUiModel()) {
+                    title.text = uiModel.data.listTitle
                 }
 
                 uiModel.data.category?.let { configureChipCloud(it) }
@@ -107,25 +110,36 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
         }
     }
 
-    private fun prepareListTitle() {
-
-        if(request is SearchResultRequest) {
-            title?.text = (request as SearchResultRequest).title
-        }
-        if (request.category !is CategoryAll) {
-            title?.text = request.category.getListTitle()
-        }
-        preparePopularNewSwitch()
+    private fun shouldGetTitleFromUiModel(): Boolean {
+        return request is SearchResultRequest && titleOrKeywordsNotEmpty(request as SearchResultRequest)
     }
 
-    private fun preparePopularNewSwitch() {
+    private fun titleOrKeywordsNotEmpty(request: SearchResultRequest) =
+            request.title.isNotEmpty() || request.keywords.isNotEmpty()
+
+    private fun prepareListTitle(view: View) {
+
+        view.apply {
+            if (request is SearchResultRequest) {
+                this.title?.text = (request as SearchResultRequest).title
+            }
+            if (request.category !is CategoryAll) {
+                this.title?.text = request.category.getListTitle()
+            }
+            preparePopularNewSwitch(this)
+        }
+    }
+
+    private fun preparePopularNewSwitch(view: View) {
         val pink = resources.getColor(R.color.colorAccent)
-        if (request.order == Order.NEW) {
-            switch_new?.setTextColor(pink)
-            switch_popular?.setOnClickListener { startOneListFragment(request.newOrder(Order.POPULARITY)) }
-        } else {
-            switch_popular?.setTextColor(pink)
-            switch_new?.setOnClickListener { startOneListFragment(request.newOrder(Order.NEW)) }
+        view.apply {
+            if (request.order == Order.NEW) {
+                this.switch_new?.setTextColor(pink)
+                this.switch_popular?.setOnClickListener { startOneListFragment(request.newOrder(Order.POPULARITY)) }
+            } else {
+                this.switch_popular?.setTextColor(pink)
+                this.switch_new?.setOnClickListener { startOneListFragment(request.newOrder(Order.NEW)) }
+            }
         }
     }
 
@@ -143,7 +157,7 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
                     .build()
 
             subcategories.setSelectedChip(category.indexOfSubcategory())
-            subcategories.setChipListener(SubcategoryListener(request, ::startOneListFragment))
+            subcategories.setChipListener(SubcategoryListener(category, ::startOneRecipeListFragment))
         }
     }
 
@@ -157,6 +171,10 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
         }
     }
 
+    private fun startOneRecipeListFragment(category: CategoryInterface) {
+        val request = RecipeRequest(category, request.order)
+        startOneListFragment(request)
+    }
 
     private fun startOneListFragment(request: OneListRequest) {
         val container = if (activity is MainActivity) R.id.main_container else R.id.detail_for_list_container
@@ -181,7 +199,6 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
                 is SearchResultRequest -> OneSearchRecipeListFragment.getInstance(request)
             }
         }
-
     }
 
 
@@ -196,7 +213,6 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
                 return fragment
             }
         }
-
     }
 
     class OneUserRecipeListFragment : OneListFragment<UserListRecipeRequest,

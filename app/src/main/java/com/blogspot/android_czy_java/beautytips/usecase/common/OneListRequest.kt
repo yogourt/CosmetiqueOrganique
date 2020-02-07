@@ -7,14 +7,6 @@ import java.io.Serializable
 
 sealed class OneListRequest(open val category: CategoryInterface, open val order: Order) : Serializable {
 
-    fun newCategory(category: CategoryInterface):OneListRequest {
-        return when(this) {
-            is RecipeRequest -> RecipeRequest(category, order)
-            is UserListRecipeRequest -> UserListRecipeRequest(userList, userId, order)
-            is SearchResultRequest -> SearchResultRequest(category, order, language, title, author, keywords)
-        }
-    }
-
     fun newOrder(order: Order): OneListRequest {
         return when(this) {
             is RecipeRequest -> RecipeRequest(category, order)
