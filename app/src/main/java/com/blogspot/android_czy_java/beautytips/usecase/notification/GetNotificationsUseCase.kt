@@ -4,6 +4,7 @@ import com.blogspot.android_czy_java.beautytips.database.notification.Notificati
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.exception.account.UserNotFoundException
 import com.blogspot.android_czy_java.beautytips.repository.forViewModels.notification.NotificationRepository
+import com.blogspot.android_czy_java.beautytips.service.notification.NotificationKeys
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetCurrentUserUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.GetUserFromFirebaseUseCase
 import io.reactivex.Observable
@@ -23,7 +24,7 @@ class GetNotificationsUseCase(private val notificationRepository: NotificationRe
                 emitter.onNext(notifications)
                 val singleToZip = createUserRequests(notifications)
 
-                if(singleToZip == null) {
+                if (singleToZip == null) {
                     emitter.onComplete()
                 }
 
@@ -32,7 +33,7 @@ class GetNotificationsUseCase(private val notificationRepository: NotificationRe
                         if (result is UserModel) {
                             notifications.map {
                                 if (it.authorId == result.id) {
-                                    it.message = "${result.nickname}: ${it.message}"
+                                    createMessageToDisplay(it, result)
                                 }
                             }
                         }
@@ -47,6 +48,7 @@ class GetNotificationsUseCase(private val notificationRepository: NotificationRe
 
         }
     }
+
 
     private fun createUserRequests(notifications: List<NotificationModel>): List<Single<UserModel>>? {
         val singleToZip = mutableListOf<Single<UserModel>>()
@@ -64,6 +66,15 @@ class GetNotificationsUseCase(private val notificationRepository: NotificationRe
             singleToZip
         } else {
             null
+        }
+    }
+
+
+    private fun createMessageToDisplay(it: NotificationModel, result: UserModel) {
+        if (it.type == NotificationKeys.NOTIFICATION_TYPE_COMMENT_ON_USER_RECIPE) {
+            it.message = "${result.nickname} commented your recipe: ${it.message}"
+        } else if (it.type == NotificationKeys.NOTIFICATION_TYPE_SUBCOMMENT_ON_USER_COMMENT) {
+            it.message = "${result.nickname} commented your comment: ${it.message}"
         }
     }
 }

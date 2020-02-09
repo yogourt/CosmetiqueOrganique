@@ -15,6 +15,7 @@ class NotificationKeys {
         public const val KEY_AUTHOR_ID = "author_id"
         public const val KEY_NOTIFICATION_TYPE = "notification_type"
         public const val KEY_FIREBASE_COMMENT_ID = "comment_firebase_id"
+        public const val KEY_RESPONSE_TO = "response_to"
 
     }
 

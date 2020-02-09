@@ -12,7 +12,8 @@ class NotificationModel
         val image: String?,
         val recipeId: Long?,
         val commentId: String?,
-        val userId: String
+        val userId: String,
+        val type: Int
 ) {
     @PrimaryKey(autoGenerate = true)
     var id = 0

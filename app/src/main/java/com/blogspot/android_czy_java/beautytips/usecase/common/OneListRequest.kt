@@ -8,7 +8,7 @@ import java.io.Serializable
 sealed class OneListRequest(open val category: CategoryInterface, open val order: Order) : Serializable {
 
     fun newOrder(order: Order): OneListRequest {
-        return when(this) {
+        return when (this) {
             is RecipeRequest -> RecipeRequest(category, order)
             is UserListRecipeRequest -> UserListRecipeRequest(userList, userId, order)
             is SearchResultRequest -> SearchResultRequest(category, order, language, title, author, keywords)
@@ -17,7 +17,9 @@ sealed class OneListRequest(open val category: CategoryInterface, open val order
 }
 
 class UserListRecipeRequest(val userList: String, val userId: String, override val order: Order)
-    : OneListRequest(CategoryAll.SUBCATEGORY_ALL, order)
+    : OneListRequest(CategoryAll.SUBCATEGORY_ALL, order) {
+    val userListTitle = userList.replace("_", " ");
+}
 
 class RecipeRequest(override val category: CategoryInterface, override val order: Order) :
         OneListRequest(category, order)

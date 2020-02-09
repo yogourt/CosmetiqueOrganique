@@ -25,21 +25,20 @@ class SaveNotificationUseCase(private val notificationRepository: NotificationRe
                 val userId = it[NotificationKeys.KEY_USER_ID] ?: return@Runnable
                 val authorId = it[NotificationKeys.KEY_AUTHOR_ID]
                 val firebaseId = it[NotificationKeys.KEY_FIREBASE_COMMENT_ID] ?: return@Runnable
+                val type = it[NotificationKeys.KEY_NOTIFICATION_TYPE]?.toInt() ?: return@Runnable
 
                 if (image.isNullOrEmpty() && recipeId != null) {
                     image = getRecipeImage(recipeId)
                 }
 
-                notification = NotificationModel(authorId, message, image, recipeId, commentId, userId)
+                notification = NotificationModel(authorId, message, image, recipeId, commentId, userId, type)
                 notificationRepository.insertNotification(notification)
 
                 when (it[NotificationKeys.KEY_NOTIFICATION_TYPE]?.toInt()) {
-                    NotificationKeys.NOTIFICATION_TYPE_COMMENT_ON_USER_RECIPE -> {
+                    NotificationKeys.NOTIFICATION_TYPE_COMMENT_ON_USER_RECIPE,
+                    NotificationKeys.NOTIFICATION_TYPE_SUBCOMMENT_ON_USER_COMMENT -> {
 
-                        if (recipeId != null && authorId != null)
-                            commentRepository.addComment(
-                                    CommentModel(firebaseId, null, recipeId, authorId, message)
-                            )
+                        tryToSaveComment(recipeId, authorId, firebaseId, commentId, message)
                     }
                 }
 
@@ -47,6 +46,14 @@ class SaveNotificationUseCase(private val notificationRepository: NotificationRe
 
         }).start()
 
+    }
+
+    private fun tryToSaveComment(recipeId: Long?, authorId: String?, firebaseId: String,
+                                 responseTo: String?, message: String) {
+        if (recipeId != null && authorId != null)
+            commentRepository.addComment(
+                    CommentModel(firebaseId, responseTo, recipeId, authorId, message)
+            )
     }
 
     private fun getRecipeImage(recipeId: Long) = recipeDetailRepository.getImageUrl(recipeId)

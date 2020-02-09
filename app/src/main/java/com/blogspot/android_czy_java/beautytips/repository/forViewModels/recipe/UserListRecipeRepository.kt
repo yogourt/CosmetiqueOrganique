@@ -25,7 +25,7 @@ class UserListRecipeRepository(override val recipeDao: RecipeDao,
                         ?.map { it.trim() }
                         ?.contains(it.recipeId.toString()) ?: false
             }
-            emitter.onSuccess(OneListData(recipes, request.userList))
+            emitter.onSuccess(OneListData(recipes, request.userListTitle))
         }
     }
 

@@ -120,10 +120,9 @@ sealed class OneListFragment<RECIPE_REQUEST : OneListRequest, VIEW_MODEL : OneLi
     private fun prepareListTitle(view: View) {
 
         view.apply {
-            if (request is SearchResultRequest) {
-                this.title?.text = (request as SearchResultRequest).title
-            }
-            if (request.category !is CategoryAll) {
+            if (request is UserListRecipeRequest) {
+                this.title?.text = (request as UserListRecipeRequest).userListTitle
+            } else if (request.category !is CategoryAll) {
                 this.title?.text = request.category.getListTitle()
             }
             preparePopularNewSwitch(this)
