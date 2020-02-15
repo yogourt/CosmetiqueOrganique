@@ -13,6 +13,7 @@ import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCa
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.PassTokenToFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.CreateUserListRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.LoadRecipesFromUserListUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.PushUserListToFirebaseUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.common.LoadRecipesUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.common.UserListRecipeRequest
 import dagger.Module
@@ -72,4 +73,6 @@ class AccountUseCaseModule {
     fun provideGetUserFromFirebaseUseCase(userRepository: UserRepository) =
             GetUserFromFirebaseUseCase(userRepository)
 
+    @Provides
+    fun providePushUserListToFirebaseUseCase() = PushUserListToFirebaseUseCase()
 }

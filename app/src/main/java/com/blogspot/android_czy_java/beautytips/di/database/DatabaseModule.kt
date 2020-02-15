@@ -1,6 +1,7 @@
 package com.blogspot.android_czy_java.beautytips.di.database
 
 import android.content.Context
+import com.blogspot.android_czy_java.beautytips.appUtils.PreferencesName.Companion.PREFS_NAME
 import com.blogspot.android_czy_java.beautytips.database.AppDatabase
 import com.blogspot.android_czy_java.beautytips.repository.FirebaseToRoom
 import dagger.Module
@@ -46,6 +47,10 @@ class DatabaseModule {
     @Provides
     @Singleton
     fun provideFirebaseToRoom(db: AppDatabase) = FirebaseToRoom(db)
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(context: Context) = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.blogspot.android_czy_java.beautytips.livedata.common.NetworkLiveData
 import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.splash.FetchDataFromFirebaseUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.splash.UpdateInBackgroundUseCase
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -12,7 +13,8 @@ import io.reactivex.schedulers.Schedulers
 
 class SplashViewModel(private val fetchDataFromFirebaseUseCase: FetchDataFromFirebaseUseCase,
                       private val loginUseCase: LoginUseCase,
-                      val networkLiveData: NetworkLiveData) : ViewModel() {
+                      val networkLiveData: NetworkLiveData,
+                      private val updateInBackgroundUseCase: UpdateInBackgroundUseCase) : ViewModel() {
 
     private val defaultErrorMessage = "Sorry, an error occurred. "
 
@@ -51,5 +53,8 @@ class SplashViewModel(private val fetchDataFromFirebaseUseCase: FetchDataFromFir
         }
     }
 
+    fun makeUpdatesInBackground() {
+        updateInBackgroundUseCase.execute()
+    }
 
 }

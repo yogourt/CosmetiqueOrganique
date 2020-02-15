@@ -12,6 +12,7 @@ import com.blogspot.android_czy_java.beautytips.usecase.account.login.LoginUseCa
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.CreateUserListRequestsUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.account.userlist.LoadRecipesFromUserListUseCase
 import com.blogspot.android_czy_java.beautytips.usecase.splash.FetchDataFromFirebaseUseCase
+import com.blogspot.android_czy_java.beautytips.usecase.splash.UpdateInBackgroundUseCase
 import com.blogspot.android_czy_java.beautytips.view.account.UserListFragment
 import com.blogspot.android_czy_java.beautytips.view.splash.SplashActivity
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.UserListViewModel
@@ -42,8 +43,9 @@ abstract class SplashActivityModule {
         @ViewModelKey(SplashViewModel::class)
         fun provideSplashViewModel(fetchDataFromFirebaseUseCase: FetchDataFromFirebaseUseCase,
                                    loginUseCase: LoginUseCase,
-                                   networkLiveData: NetworkLiveData): ViewModel =
-                SplashViewModel(fetchDataFromFirebaseUseCase, loginUseCase, networkLiveData)
+                                   networkLiveData: NetworkLiveData,
+                                   updateInBackgroundUseCase: UpdateInBackgroundUseCase): ViewModel =
+                SplashViewModel(fetchDataFromFirebaseUseCase, loginUseCase, networkLiveData, updateInBackgroundUseCase)
     }
 
     @Module

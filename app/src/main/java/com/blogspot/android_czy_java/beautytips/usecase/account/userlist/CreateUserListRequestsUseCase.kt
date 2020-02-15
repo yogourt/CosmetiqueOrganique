@@ -16,7 +16,7 @@ class CreateUserListRequestsUseCase(private val currentUserUseCase: GetCurrentUs
             val requests = arrayListOf<UserListRecipeRequest>()
 
             currentUserUseCase.currentUserId()?.let { userId ->
-                userListRecipeRepository.getAllUserListTitles(userId).forEach { title ->
+                userListRecipeRepository.getAllUserListTitles(userId)?.forEach { title ->
                     requests.add(UserListRecipeRequest(title, userId, Order.NEW))
                 }
             }

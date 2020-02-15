@@ -2,6 +2,7 @@ package com.blogspot.android_czy_java.beautytips.view.splash
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -16,19 +17,27 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.android.synthetic.main.activity_splash.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
 
     companion object {
         const val KEY_FIRST_FETCH_COMPLETED = "first fetch completed"
+        const val KEY_LAST_FETCH_IN_MILLIS = "last fetch in millis"
+        private val FETCH_INTERVAL = 10
+                //TimeUnit.DAYS.toMillis(3)
     }
 
     @Inject
     lateinit var viewModel: SplashViewModel
 
+    @Inject
+    lateinit var prefs: SharedPreferences
+
     private lateinit var networkNeededSnackbar: Snackbar
     private lateinit var splashInfo: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,21 +58,33 @@ class SplashActivity : AppCompatActivity() {
 
         splashInfo = splash_info
 
+        initViewModel()
+    }
+
+    private fun initViewModel() {
         viewModel.networkLiveData.observe(this, Observer { handleNetworkChange(it) })
         viewModel.fetchSuccessLiveData.observe(this, Observer { handleFetchResult(it) })
         viewModel.init()
     }
 
     private fun startMainActivityIfFirstFetchNotNeeded() {
-        if (getPreferences(MODE_PRIVATE).contains(KEY_FIRST_FETCH_COMPLETED)) {
+        if (prefs.contains(KEY_FIRST_FETCH_COMPLETED)) {
+            if(isFetchTime()) {
+                viewModel.makeUpdatesInBackground()
+            }
             startMainActivity()
         }
     }
 
+
+    private fun isFetchTime() =
+            System.currentTimeMillis() - prefs.getLong(KEY_LAST_FETCH_IN_MILLIS, 0) > FETCH_INTERVAL
+
+
     private fun handleFetchResult(uiModel: GenericUiModel<Boolean>) {
         when (uiModel) {
             is GenericUiModel.LoadingSuccess -> {
-                getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_FIRST_FETCH_COMPLETED, true).apply()
+                updatePrefs()
                 startMainActivity()
             }
             is GenericUiModel.StatusLoading -> {
@@ -75,6 +96,11 @@ class SplashActivity : AppCompatActivity() {
                 viewModel.retry()
             }
         }
+    }
+
+    private fun updatePrefs() {
+        prefs.edit().putBoolean(KEY_FIRST_FETCH_COMPLETED, true).apply()
+        prefs.edit().putLong(KEY_LAST_FETCH_IN_MILLIS, System.currentTimeMillis()).apply()
     }
 
     private fun handleNetworkChange(isConnected: Boolean) {

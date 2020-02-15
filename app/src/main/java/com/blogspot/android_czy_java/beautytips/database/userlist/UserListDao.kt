@@ -10,10 +10,10 @@ import io.reactivex.Observable
 interface UserListDao {
 
     @Query("SELECT * FROM UserLists WHERE userId=:userId")
-    fun getAllUserLists(userId: String): List<UserListModel>
+    fun getAllUserLists(userId: String): List<UserListModel>?
 
     @Query("SELECT listName FROM UserLists WHERE userId=:userId")
-    fun getAllUserListTitles(userId: String): List<String>
+    fun getAllUserListTitles(userId: String): List<String>?
 
     @Query("SELECT recipesInList FROM UserLists WHERE userId=:userId AND listName=:listName")
     fun getListByUserIdAndName(userId: String, listName: String): String?
@@ -23,4 +23,7 @@ interface UserListDao {
 
     @Query("UPDATE UserLists SET recipesInList=:recipes WHERE userId=:userId AND listName=:listName")
     fun updateRecipesInUserList(listName: String, userId: String, recipes: String)
+
+    @Query("SELECT * FROM UserLists")
+    fun getAllLists(): List<UserListModel>?
 }

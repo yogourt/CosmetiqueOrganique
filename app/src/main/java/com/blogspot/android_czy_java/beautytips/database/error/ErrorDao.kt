@@ -15,4 +15,7 @@ interface ErrorDao {
     @Query("SELECT * FROM Errors WHERE tableName=:tableName AND rowId=:rowId")
     fun queryError(tableName: String, rowId: String): ErrorModel?
 
+    @Query("SELECT * FROM Errors WHERE tableName = :tableName")
+    fun getAllErrorsFromTable(tableName: String): List<ErrorModel>?
+
 }

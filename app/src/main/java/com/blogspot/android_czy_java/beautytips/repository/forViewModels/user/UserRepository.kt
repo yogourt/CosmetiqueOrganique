@@ -32,4 +32,6 @@ class UserRepository(private val userDao: UserDao,
     }
 
     fun updateUser(user: UserModel) = userDao.updateUser(user)
+
+    fun getAllLists() = userListDao.getAllLists()
 }

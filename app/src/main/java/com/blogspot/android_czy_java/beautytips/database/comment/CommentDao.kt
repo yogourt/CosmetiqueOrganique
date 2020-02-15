@@ -21,4 +21,6 @@ interface CommentDao {
     @Query("SELECT * FROM RecipeComments WHERE id = :commentId")
     fun getCommentById(commentId: Long): CommentModel?
 
+    @Query("SELECT * FROM RecipeComments WHERE firebaseId = null")
+    fun getCommentsWithNullFirebaseId(): List<CommentModel>?
 }

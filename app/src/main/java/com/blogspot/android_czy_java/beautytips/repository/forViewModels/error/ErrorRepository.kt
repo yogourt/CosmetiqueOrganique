@@ -17,5 +17,7 @@ class ErrorRepository(private val errorDao: ErrorDao) {
     fun getError(error: ErrorModel) =
             errorDao.queryError(error.tableName, error.rowId)
 
+    fun getAllUserErrors() = errorDao.getAllErrorsFromTable("Users")
+
 
 }

@@ -16,8 +16,8 @@ class CreateUserListUseCase(private val userListRecipeRepository: UserListRecipe
 
                 getCurrentUserUseCase.currentUserId()?.let { userId ->
                     if (userListRecipeRepository.getAllUserListTitles(userId)
-                                    .map { it.toLowerCase() }
-                                    .contains(request.trim().toLowerCase())) {
+                                    ?.map { it.toLowerCase() }
+                                    ?.contains(request.trim().toLowerCase()) == true) {
                         it.onError(ListAlreadyExistsException())
                     }
 

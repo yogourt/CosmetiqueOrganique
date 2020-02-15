@@ -17,4 +17,6 @@ class CommentRepository(private val commentDao: CommentDao) {
         commentDao.insertComment(comment)
     }
 
+    fun getCommentsToPush() = commentDao.getCommentsWithNullFirebaseId()
+
 }
