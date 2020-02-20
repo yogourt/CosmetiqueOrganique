@@ -25,8 +25,7 @@ class SplashActivity : AppCompatActivity() {
     companion object {
         const val KEY_FIRST_FETCH_COMPLETED = "first fetch completed"
         const val KEY_LAST_FETCH_IN_MILLIS = "last fetch in millis"
-        private val FETCH_INTERVAL = 10
-                //TimeUnit.DAYS.toMillis(3)
+        private val FETCH_INTERVAL = TimeUnit.DAYS.toMillis(3)
     }
 
     @Inject

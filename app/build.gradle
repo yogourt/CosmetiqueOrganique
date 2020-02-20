@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 
-def keystorePropertiesFile = file("D:\\Users\\Jagoda\\Desktop\\keystore.properties")
+def keystorePropertiesFile = file("C:\\Users\\Runboy\\Desktop\\Jagoda\\keystore.properties")
 
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()

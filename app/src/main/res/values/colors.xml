@@ -23,7 +23,8 @@
     <color name="bluegrey800">#37474f</color>
     <color name="bluegrey800_darker">#34434B</color>
     <color name="bluegrey900">#232E33</color>
-    <color name="bluegrey900_semi">#55263238</color>
+    <color name="bluegrey900_trans">#00232E33</color>
+    <color name="bluegrey900_semi">#77232E33</color>
     <color name="black_semi">#73000000</color>
 
     <color name="colorWhite">#ffffff</color>

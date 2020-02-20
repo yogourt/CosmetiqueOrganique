@@ -76,6 +76,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".view.newrecipe.NewRecipeActivity"
+            android:label="@string/title_activity_new_tip"
+            android:launchMode="singleTop"
+            android:parentActivityName=".view.recipe.MainActivity"/>
+
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider{1782748508439535}"
