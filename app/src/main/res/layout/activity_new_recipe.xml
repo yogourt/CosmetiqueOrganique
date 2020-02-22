@@ -2,9 +2,9 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,42 +12,55 @@
         android:background="@color/bluegrey900">
 
         <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
+            android:id="@+id/app_icon"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:paddingTop="@dimen/activity_margin"
+            android:scaleType="centerInside"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@color/purple300" />
+            app:srcCompat="@drawable/withoutback" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_add_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_margin"
+            android:backgroundTint="@color/bluegrey300_semi"
+            android:text="add photo"
+            android:textSize="@dimen/small_text_size"
+            app:icon="@drawable/ic_add_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image" />
+
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_icon" />
 
         <EditText
             android:id="@+id/title"
             style="@style/ExpandedTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
             android:hint="Recipe title"
             android:textColorHint="@color/purple100"
-            android:layout_margin="@dimen/activity_margin"
-            app:layout_constraintTop_toBottomOf="@+id/image" />
+            app:layout_constraintTop_toBottomOf="@+id/button_add_photo" />
 
-        <TextView
-            android:id="@+id/image_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/image_label"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="@+id/image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/activity_margin"
             android:orientation="horizontal"
+            android:padding="@dimen/activity_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title">
 
@@ -73,8 +86,8 @@
             android:id="@+id/ingredients"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="@dimen/activity_margin"
             android:orientation="vertical"
+            android:padding="@dimen/activity_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
@@ -93,12 +106,14 @@
                 android:textSize="@dimen/small_text_size" />
 
             <include
+                android:id="@+id/first_ingredient"
                 layout="@layout/item_detail_ingredient_new_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/description_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
@@ -117,10 +132,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_margin"
+                android:gravity="top"
                 android:hint="Write recipe details here"
+                android:minLines="3"
                 android:textColorHint="@color/bluegrey300" />
 
         </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:layout_marginBottom="@dimen/activity_margin"
+            android:text="@string/add_new_recipe"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_draft"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description_layout" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_draft"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_draft"
+            android:textColor="@color/white"
+            android:textSize="@dimen/small_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/button_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_add"
+            app:layout_constraintTop_toTopOf="@+id/button_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

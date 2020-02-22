@@ -9,7 +9,7 @@
         <item name="colorPrimary">@color/pink200</item>
         <item name="colorPrimaryVariant">@color/pink300</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/purple300</item>
+        <item name="colorSecondary">@color/purple200</item>
         <item name="colorSecondaryVariant">@color/purple100</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>

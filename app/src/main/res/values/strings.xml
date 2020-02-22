@@ -182,6 +182,8 @@
     <string name="splash_info_bottom">App is downloading necessary data</string>
     <string name="no_internet">No internet</string>
     <string name="error_msg_common">An error occurred</string>
+
+
     <string name="about_me">About me:</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
@@ -202,7 +204,8 @@
     <string name="notifications">Notifications</string>
     <string name="language_spinner_label">Language</string>
     <string name="vert_line">|</string>
-    <string name="image_label">Add recipe image by clicking here</string>
+    <string name="image_label">Add recipe image by clicking on app icon</string>
     <string name="add_new_recipe">Add new recipe</string>
+    <string name="save_draft">save draft</string>
 
 </resources>
