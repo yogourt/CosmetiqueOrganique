@@ -48,7 +48,7 @@ class MainListAdapter(private val callback: ListCallback,
 
     private fun prepareRecipeList(holder: ViewHolder, data: List<RecipeModel>) {
         val childLayoutManager = LinearLayoutManager(
-                holder.recyclerView.context, LinearLayout.HORIZONTAL, false)
+                holder.recyclerView.context, RecyclerView.HORIZONTAL, false)
         childLayoutManager.initialPrefetchItemCount = 4
 
         holder.recyclerView.apply {

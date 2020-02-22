@@ -170,5 +170,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="chooser_height">300dp</dimen>
     <dimen name="search_button_top_margin">32dp</dimen>
     <dimen name="author_photo_size">78dp</dimen>
+    <dimen name="fab_size_normal">56dp</dimen>
 
 </resources>

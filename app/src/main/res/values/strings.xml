@@ -203,5 +203,6 @@
     <string name="language_spinner_label">Language</string>
     <string name="vert_line">|</string>
     <string name="image_label">Add recipe image by clicking here</string>
+    <string name="add_new_recipe">Add new recipe</string>
 
 </resources>

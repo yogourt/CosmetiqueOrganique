@@ -12,8 +12,10 @@ import androidx.lifecycle.Observer
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
 import com.blogspot.android_czy_java.beautytips.view.common.AppFragment
+import com.blogspot.android_czy_java.beautytips.view.newrecipe.NewRecipeActivity
 import com.blogspot.android_czy_java.beautytips.viewmodel.GenericUiModel
 import com.blogspot.android_czy_java.beautytips.viewmodel.account.AccountViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_activity_account.*
@@ -28,8 +30,8 @@ class AccountActivityFragment : AppFragment() {
     lateinit var viewModel: AccountViewModel
 
     private lateinit var infoForAnonymous: View
-
     private lateinit var loginButton: Button
+    private lateinit var fab: FloatingActionButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -39,8 +41,10 @@ class AccountActivityFragment : AppFragment() {
 
         infoForAnonymous = view.fragment_info_for_anonymous
         loginButton = view.login_button
+        fab = view.fab
 
         prepareInfoForAnonymous()
+        prepareFab()
 
         viewModel.userLiveData.observe(this, Observer { render(it) })
         viewModel.init()
@@ -64,11 +68,19 @@ class AccountActivityFragment : AppFragment() {
         }
     }
 
+    private fun prepareFab() {
+        fab.setOnClickListener {
+            startActivity(Intent(context, NewRecipeActivity::class.java))
+        }
+    }
+
     private fun render(uiModel: GenericUiModel<UserModel>?) {
         if (uiModel != null) {
             infoForAnonymous.visibility = View.INVISIBLE
+            fab.visibility = View.VISIBLE
         } else {
             infoForAnonymous.visibility = View.VISIBLE
+            fab.visibility = View.INVISIBLE
         }
         when (uiModel) {
             is GenericUiModel.LoadingSuccess -> {
