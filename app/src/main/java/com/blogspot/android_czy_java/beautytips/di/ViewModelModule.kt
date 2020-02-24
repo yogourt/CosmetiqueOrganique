@@ -10,12 +10,15 @@ import com.blogspot.android_czy_java.beautytips.di.view.account.UserListFragment
 import com.blogspot.android_czy_java.beautytips.di.view.comment.CommentFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.detail.*
 import com.blogspot.android_czy_java.beautytips.di.view.navigation.BottomNavigationFragmentModule
+import com.blogspot.android_czy_java.beautytips.di.view.newrecipe.NewRecipeActivityModule
+import com.blogspot.android_czy_java.beautytips.di.view.newrecipe.NewRecipeImageModule
 import com.blogspot.android_czy_java.beautytips.di.view.notification.NotificationFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.MainActivityFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.OneRecipeListFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.recipe.OneUserRecipeListFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.search.SearchResultFragmentModule
 import com.blogspot.android_czy_java.beautytips.di.view.splash.SplashActivityModule
+import com.blogspot.android_czy_java.beautytips.viewmodel.newrecipe.NewRecipeActivityViewModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
@@ -38,7 +41,9 @@ import javax.inject.Provider
     UserListChooserModule::class,
     NotificationFragmentModule::class,
     BottomNavigationFragmentModule::class,
-    DetailAuthorModule::class
+    DetailAuthorModule::class,
+    NewRecipeActivityModule::class,
+    NewRecipeImageModule::class
 ])
 class ViewModelModule {
 

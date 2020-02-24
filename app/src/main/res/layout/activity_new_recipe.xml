@@ -2,58 +2,21 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_new_recipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bluegrey900">
 
-        <ImageView
-            android:id="@+id/app_icon"
-            android:layout_width="@dimen/logo_size"
-            android:layout_height="@dimen/logo_size"
-            android:paddingTop="@dimen/activity_margin"
-            android:scaleType="centerInside"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/withoutback" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_add_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_margin"
-            android:backgroundTint="@color/bluegrey300_semi"
-            android:text="add photo"
-            android:textSize="@dimen/small_text_size"
-            app:icon="@drawable/ic_add_photo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image" />
-
-
-        <ImageView
-            android:id="@+id/image"
+        <fragment
+            android:id="@+id/fragment_image"
+            android:name="com.blogspot.android_czy_java.beautytips.view.newrecipe.NewRecipeImageFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_icon" />
-
-        <EditText
-            android:id="@+id/title"
-            style="@style/ExpandedTitleStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin"
-            android:hint="Recipe title"
-            android:textColorHint="@color/purple100"
-            app:layout_constraintTop_toBottomOf="@+id/button_add_photo" />
-
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -62,7 +25,7 @@
             android:orientation="horizontal"
             android:padding="@dimen/activity_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title">
+            app:layout_constraintTop_toBottomOf="@+id/fragment_image">
 
             <com.farbod.labelledspinner.LabelledSpinner
                 android:id="@+id/category_spinner"

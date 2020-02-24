@@ -11,6 +11,10 @@ import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.blogspot.android_czy_java.beautytips.R
 import com.blogspot.android_czy_java.beautytips.database.user.UserModel
+import com.blogspot.android_czy_java.beautytips.view.extensions.PERMISSIONS_REQUEST_CODE
+import com.blogspot.android_czy_java.beautytips.view.extensions.arePermissionsGranted
+import com.blogspot.android_czy_java.beautytips.view.extensions.isAnyPermissionGranted
+import com.blogspot.android_czy_java.beautytips.view.extensions.requestPermissionsCompat
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_profile_details_edit_popup.view.*
 import kotlinx.android.synthetic.main.layout_profile_details_edit_popup.view.nickname
@@ -46,6 +50,7 @@ class ProfileDetailsEditDialogFragment : DialogFragment() {
                 .allowMultiple(false)
                 .build()
 
+
         return view
     }
 
@@ -54,12 +59,23 @@ class ProfileDetailsEditDialogFragment : DialogFragment() {
         setStyle(STYLE_NORMAL, R.style.fullscreenDialogStyle)
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSIONS_REQUEST_CODE && isAnyPermissionGranted()) {
+            easyImage.openChooser(this)
+        }
+    }
+
     private fun prepareUserInfo(view: View) {
         view.let {
             image = it.photo
             Glide.with(this).load(user.photo).into(image)
             image.setOnClickListener {
-                easyImage.openChooser(this)
+                if (arePermissionsGranted()) {
+                    easyImage.openChooser(this)
+                } else {
+                    requestPermissionsCompat();
+                }
             }
 
             nickname = it.nickname
@@ -108,6 +124,7 @@ class ProfileDetailsEditDialogFragment : DialogFragment() {
     inner class PhotoPickerCallback : DefaultCallback() {
         override fun onMediaFilesPicked(imageFiles: Array<MediaFile>, source: MediaSource) {
             imagePath = imageFiles[0].file.absolutePath
+            Glide.with(image).load(imagePath).into(image)
         }
     }
 
